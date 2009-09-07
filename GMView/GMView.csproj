@@ -1,0 +1,452 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{00881AE4-68E1-4857-8672-0331739547F1}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GMView</RootNamespace>
+    <AssemblyName>Knowhere</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <StartupObject>GMView.Program</StartupObject>
+    <ApplicationIcon>gmview_icon.ICO</ApplicationIcon>
+    <ManifestCertificateThumbprint>936BFDF6C03C86917023A9810A7D2487869B106C</ManifestCertificateThumbprint>
+    <ManifestKeyFile>GMView_TemporaryKey.pfx</ManifestKeyFile>
+    <GenerateManifests>true</GenerateManifests>
+    <TargetZone>LocalIntranet</TargetZone>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+    <SignManifests>true</SignManifests>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Bookmark\BookMarkFactory.cs" />
+    <Compile Include="CenterPositioning.cs" />
+    <Compile Include="Dash\DashBoardBase.cs" />
+    <Compile Include="Dash\GPSInfoDash.cs" />
+    <Compile Include="Dash\Speedometer.cs" />
+    <Compile Include="Dash\TrackInfoDash.cs" />
+    <Compile Include="Forms\AboutBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AboutBox.Designer.cs">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AboutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AboutForm.Designer.cs">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Bookmark\bookmark.cs" />
+    <Compile Include="Forms\BookmarkForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\BookmarkForm.Designer.cs">
+      <DependentUpon>BookmarkForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DownloadQueryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DownloadQueryForm.Designer.cs">
+      <DependentUpon>DownloadQueryForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\EditBooks.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\EditBooks.Designer.cs">
+      <DependentUpon>EditBooks.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MainFormGPSHandlers.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MainFormKeyProc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Geo\BaseGeo.cs" />
+    <Compile Include="Geo\GoogleGeo.cs" />
+    <Compile Include="Geo\YandexGeo.cs" />
+    <Compile Include="Dash\DashBoardContainer.cs" />
+    <Compile Include="GML\FadingText.cs" />
+    <Compile Include="GML\FontFactory.cs" />
+    <Compile Include="GML\FrameTimer.cs" />
+    <Compile Include="GML\IDashBoard.cs" />
+    <Compile Include="Dash\MiniTilesDash.cs" />
+    <Compile Include="GPS\GPSTrackFactory.cs" />
+    <Compile Include="GPS\TrackPositionInformer.cs" />
+    <Compile Include="ILog.cs" />
+    <Compile Include="Forms\MainFormDrawPane.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MainFormManualTrack.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NMEA\NMEAEmuDev.cs" />
+    <Compile Include="NMEA\NMEAVirtualDev.cs" />
+    <Compile Include="PositionStack.cs" />
+    <Compile Include="ThreadImageRenderer.cs" />
+    <Compile Include="Tiles\GLImgTile.cs" />
+    <Compile Include="GLUserPosition.cs" />
+    <Compile Include="GLUserSelectionArea.cs" />
+    <Compile Include="GML\TextureFactory.cs" />
+    <Compile Include="GPS\GPSInfoPanel.cs" />
+    <Compile Include="GPS\GPSTrack.cs" />
+    <Compile Include="Forms\GPSTrackInfoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\GPSTrackInfoForm.Designer.cs">
+      <DependentUpon>GPSTrackInfoForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GML\IFrameUpdate.cs" />
+    <Compile Include="GML\ImageDot.cs" />
+    <Compile Include="Tiles\ImgCacheManager.cs" />
+    <Compile Include="Tiles\ImgDirInfo.cs" />
+    <Compile Include="Tiles\ImgTile.cs" />
+    <Compile Include="Forms\LogWin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LogWin.Designer.cs">
+      <DependentUpon>LogWin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tiles\ImgCollector.cs" />
+    <Compile Include="GML\MapDrawControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GML\MapDrawControl.Designer.cs">
+      <DependentUpon>MapDrawControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MapForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MapForm.Designer.cs">
+      <DependentUpon>MapForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MapObject.cs" />
+    <Compile Include="MenuItemObject.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="NMEA\NMEACom.cs" />
+    <Compile Include="NMEA\NMEACommand.cs" />
+    <Compile Include="NMEA\NMEALL.cs" />
+    <Compile Include="NMEA\NMEAString.cs" />
+    <Compile Include="NMEA\NMEAThread.cs" />
+    <Compile Include="NMEA\NMEA_GGA.cs" />
+    <Compile Include="NMEA\NMEA_GLL.cs" />
+    <Compile Include="NMEA\NMEA_GSA.cs" />
+    <Compile Include="NMEA\NMEA_GSV.cs" />
+    <Compile Include="NMEA\NMEA_RMC.cs" />
+    <Compile Include="NMEA\NMEA_VTG.cs" />
+    <Compile Include="Options.cs" />
+    <Compile Include="Forms\OptionsDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\OptionsDlg.Designer.cs">
+      <DependentUpon>OptionsDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Forms\AboutBox.resx">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AboutForm.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\BookmarkForm.resx">
+      <DependentUpon>BookmarkForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DownloadQueryForm.resx">
+      <DependentUpon>DownloadQueryForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\EditBooks.resx">
+      <DependentUpon>EditBooks.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\GPSTrackInfoForm.resx">
+      <DependentUpon>GPSTrackInfoForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LogWin.resx">
+      <DependentUpon>LogWin.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GML\MapDrawControl.resx">
+      <DependentUpon>MapDrawControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MapForm.resx">
+      <DependentUpon>MapForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OptionsDlg.resx">
+      <DependentUpon>OptionsDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SatelliteForm.resx">
+      <DependentUpon>SatelliteForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\IntroForm.resx">
+      <DependentUpon>IntroForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="GML\ISprite.cs" />
+    <Compile Include="GPS\Satellite.cs" />
+    <Compile Include="GPS\SatelliteCollection.cs" />
+    <Compile Include="Forms\SatelliteForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SatelliteForm.Designer.cs">
+      <DependentUpon>SatelliteForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GML\SpriteContainer.cs" />
+    <Compile Include="Forms\IntroForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\IntroForm.Designer.cs">
+      <DependentUpon>IntroForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Traffic\BaseTraffic.cs" />
+    <Compile Include="Traffic\GoogleTraffic.cs" />
+    <Compile Include="Traffic\YandexTraffic.cs" />
+    <Compile Include="UserPosition.cs" />
+    <Compile Include="UserSelectionArea.cs" />
+    <Compile Include="GPS\Way.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="GMView_TemporaryKey.pfx" />
+    <None Include="Properties\app.manifest" />
+    <None Include="Resources\icon_main.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="gmview_icon.ICO" />
+    <Content Include="icon_main.ico" />
+    <None Include="Resources\trafOff.png" />
+    <None Include="Resources\trafOn.png" />
+    <None Include="Resources\pointBG.png" />
+    <None Include="Resources\arrow_point.png" />
+    <None Include="Resources\crosshair1.png" />
+    <None Include="Resources\hdop_3_moderate.png" />
+    <None Include="Resources\hdop_2_good.png" />
+    <None Include="Resources\hdop_1_excellent.png" />
+    <None Include="Resources\hdop_0_ideal.png" />
+    <None Include="Resources\hdop_4_fair.png" />
+    <None Include="Resources\speedBarMask.png" />
+    <None Include="Resources\satSmallInUse.png" />
+    <None Include="Resources\satSmallUnused.png" />
+    <None Include="Resources\dashGPSOverlay.png" />
+    <None Include="Resources\dashGPSBg.png" />
+    <None Include="Resources\dashGPSWrapped.png" />
+    <None Include="Resources\mark_new.png" />
+    <None Include="Resources\route.png" />
+    <None Include="Resources\finishmark.png" />
+    <None Include="Resources\startmark.png" />
+    <None Include="Resources\markwp_red.png" />
+    <None Include="Resources\markwp_green.png" />
+    <None Include="Resources\markwp_blue.png" />
+    <None Include="Resources\markwp_yellow.png" />
+    <None Include="Resources\dashTextBg130.png" />
+    <None Include="Resources\dashTrackWrapped.png" />
+    <None Include="Resources\dashTrackBg.png" />
+    <None Include="Resources\dashTextBg.png" />
+    <None Include="Resources\dot_small.png" />
+    <None Include="Resources\dot1.png" />
+    <None Include="Resources\stay.png" />
+    <None Include="Resources\zoom17.png" />
+    <None Include="Resources\zoom16.png" />
+    <None Include="Resources\zoom15.png" />
+    <None Include="Resources\zoom14.png" />
+    <None Include="Resources\zoom13.png" />
+    <None Include="Resources\zoom12.png" />
+    <None Include="Resources\zoom11.png" />
+    <None Include="Resources\zoom10.png" />
+    <None Include="Resources\zoom09.png" />
+    <None Include="Resources\zoom08.png" />
+    <None Include="Resources\zoom07.png" />
+    <None Include="Resources\zoom06.png" />
+    <None Include="Resources\zoom05.png" />
+    <None Include="Resources\zoom04.png" />
+    <None Include="Resources\zoom03.png" />
+    <None Include="Resources\zoom02.png" />
+    <None Include="Resources\zoom01.png" />
+    <None Include="Resources\zoom00.png" />
+    <None Include="Resources\zoom18.png" />
+    <None Include="Resources\back_but.png" />
+    <None Include="Resources\forw_but.png" />
+    <None Include="Resources\dashMiniTilesWrapped.png" />
+    <None Include="Resources\dashMiniTilesBg.png" />
+    <None Include="Resources\intro.png" />
+    <None Include="Resources\rosa.png" />
+    <None Include="Resources\semitrans128empty.png" />
+    <None Include="Resources\semitrans64empty.png" />
+    <None Include="Resources\semitrans64.png" />
+    <None Include="Resources\semitrans128.png" />
+    <None Include="Resources\gmview_icon.ICO" />
+    <None Include="Resources\gmview_icon.png" />
+    <None Include="Resources\test1.ico" />
+    <None Include="Resources\arrows.png" />
+    <None Include="Resources\white.png" />
+    <None Include="Resources\start_pos.png" />
+    <None Include="Resources\track_remove.png" />
+    <None Include="Resources\track_load.png" />
+    <None Include="Resources\track_save.png" />
+    <None Include="Resources\gps_point_small.png" />
+    <None Include="Resources\smallpin_red.png" />
+    <None Include="Resources\smallpin_green.png" />
+    <None Include="Resources\largepin_yellow.png" />
+    <None Include="Resources\largepin_red.png" />
+    <None Include="Resources\largepin_green.png" />
+    <None Include="Resources\smallpin_yellow.png" />
+    <None Include="Resources\arrow_large.png" />
+    <None Include="Resources\arrow_small.png" />
+    <None Include="Resources\sat_info.png" />
+    <None Include="Resources\gps_panel.png" />
+    <None Include="Resources\gps_point.png" />
+    <None Include="Resources\move_map.png" />
+    <None Include="Resources\record_track.png" />
+    <None Include="Resources\show_track.png" />
+    <None Include="Resources\sat.ico" />
+    <None Include="Resources\ball.png" />
+    <None Include="Resources\lamp-on.png" />
+    <None Include="Resources\lamp-on2.png" />
+    <None Include="Resources\lamp-off2.png" />
+    <None Include="Resources\lamp-off.png" />
+    <None Include="Resources\contexthelp.png" />
+    <None Include="Resources\viewmagfit.png" />
+    <None Include="Resources\wp.png" />
+    <None Include="Resources\personal.png" />
+    <None Include="Resources\xpaint.png" />
+    <None Include="Resources\logo.png" />
+    <None Include="Resources\largepinplus2.png" />
+    <None Include="Resources\largepin3.png" />
+    <None Include="Resources\largepingreen.png" />
+    <None Include="Resources\largepin.png" />
+    <None Include="Resources\largepinplus.png" />
+    <None Include="Resources\viewmag+.png" />
+    <None Include="Resources\viewmag-.png" />
+    <None Include="Resources\reload.png" />
+    <None Include="Resources\help.png" />
+    <None Include="Resources\gohome.png" />
+    <None Include="Resources\wizard.png" />
+    <None Include="Resources\network.png" />
+    <None Include="Resources\config.ico" />
+    <None Include="Resources\exit.png" />
+    <None Include="Resources\configure.png" />
+    <None Include="Resources\browser.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GMLBase\GMLBase.csproj">
+      <Project>{C5C0008D-5D68-4BB9-9F54-D1AA723885E2}</Project>
+      <Name>GMLBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ncUtils\ncUtils.csproj">
+      <Project>{C3A3C585-F715-4A0C-8222-F87C82AEB7EA}</Project>
+      <Name>ncUtils</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

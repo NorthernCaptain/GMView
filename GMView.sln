@@ -1,0 +1,56 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMView", "GMView\GMView.csproj", "{00881AE4-68E1-4857-8672-0331739547F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMLDirect3D", "GMLDirect3D\GMLDirect3D.csproj", "{6DE28117-EA28-4B4B-B09D-FB5E4C509A4C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMLOpenGL", "GMLOpenGL\GMLOpenGL.csproj", "{468FEB0F-A27C-4503-938B-7AE17F6D2A51}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMLBase", "GMLBase\GMLBase.csproj", "{C5C0008D-5D68-4BB9-9F54-D1AA723885E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMLgdiPlus", "GMLgdiPlus\GMLgdiPlus.csproj", "{7AFF640E-1B42-41E9-A28E-B583FB8B08EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XnGFL", "XnGFL\XnGFL.csproj", "{1633B183-E970-4AA2-885B-7548DD4B6148}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ncUtils", "ncUtils\ncUtils.csproj", "{C3A3C585-F715-4A0C-8222-F87C82AEB7EA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{00881AE4-68E1-4857-8672-0331739547F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00881AE4-68E1-4857-8672-0331739547F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00881AE4-68E1-4857-8672-0331739547F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00881AE4-68E1-4857-8672-0331739547F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DE28117-EA28-4B4B-B09D-FB5E4C509A4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DE28117-EA28-4B4B-B09D-FB5E4C509A4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DE28117-EA28-4B4B-B09D-FB5E4C509A4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DE28117-EA28-4B4B-B09D-FB5E4C509A4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{468FEB0F-A27C-4503-938B-7AE17F6D2A51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{468FEB0F-A27C-4503-938B-7AE17F6D2A51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{468FEB0F-A27C-4503-938B-7AE17F6D2A51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{468FEB0F-A27C-4503-938B-7AE17F6D2A51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5C0008D-5D68-4BB9-9F54-D1AA723885E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5C0008D-5D68-4BB9-9F54-D1AA723885E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5C0008D-5D68-4BB9-9F54-D1AA723885E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5C0008D-5D68-4BB9-9F54-D1AA723885E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AFF640E-1B42-41E9-A28E-B583FB8B08EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AFF640E-1B42-41E9-A28E-B583FB8B08EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AFF640E-1B42-41E9-A28E-B583FB8B08EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AFF640E-1B42-41E9-A28E-B583FB8B08EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1633B183-E970-4AA2-885B-7548DD4B6148}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1633B183-E970-4AA2-885B-7548DD4B6148}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1633B183-E970-4AA2-885B-7548DD4B6148}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1633B183-E970-4AA2-885B-7548DD4B6148}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3A3C585-F715-4A0C-8222-F87C82AEB7EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3A3C585-F715-4A0C-8222-F87C82AEB7EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3A3C585-F715-4A0C-8222-F87C82AEB7EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3A3C585-F715-4A0C-8222-F87C82AEB7EA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE dotfuscator SYSTEM "http://www.preemptive.com/dotfuscator/dtd/dotfuscator_v2.1.dtd">
+<dotfuscator version="2.1">
+  <!--This is application generated code. Do not edit manually.-->
+  <input>
+    <asmlist>
+      <inputassembly>
+        <option>stripoa</option>
+        <file dir="D:\tmp\1" name="GMView.exe" />
+      </inputassembly>
+      <inputassembly>
+        <option>stripoa</option>
+        <file dir="D:\tmp\1" name="GMLBase.dll" />
+      </inputassembly>
+      <inputassembly>
+        <option>stripoa</option>
+        <file dir="D:\tmp\1" name="GMLDirect3D.dll" />
+      </inputassembly>
+    </asmlist>
+  </input>
+  <output>
+    <file dir="${configdir}\Dotfuscated" />
+  </output>
+  <renaming>
+    <excludelist>
+      <assembly>
+        <file dir="D:\tmp\1" name="GMLDirect3D.dll" />
+      </assembly>
+      <type name="GMView.SyncQueue`1&lt;DataType&gt;" />
+      <type name="GMView.Properties.Resources">
+        <method name="get_browser" signature="" />
+        <method name="get_Culture" signature="" />
+        <method name="get_exit" signature="" />
+        <method name="get_ResourceManager" signature="" />
+        <method name="set_Culture" signature="System.Globalization.CultureInfo" />
+        <field name="resourceCulture" />
+        <field name="resourceMan" />
+      </type>
+      <type name="GMView.Properties.Settings" />
+    </excludelist>
+    <mapping>
+      <mapoutput overwrite="false">
+        <file dir="${configdir}\Dotfuscated" name="Map.xml" />
+      </mapoutput>
+    </mapping>
+  </renaming>
+</dotfuscator>
