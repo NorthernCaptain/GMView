@@ -7,8 +7,18 @@ namespace XnGFL
     /// <summary>
     /// Store EXIF data that we use in the application converted to the C-Sharp variables
     /// </summary>
-    public class EXIFData
+    public class EXIFData: ncUtils.IRunnable
     {
+        public static string exifToolExecutable = @"D:\Arcs\exiftoolgui\exiftool.exe";
+        public static readonly string exifToolUpdateOptions = "-overwrite_original ";
+        public static readonly string exifToolUpdateDateTimeOriginal = "-exif:datetimeoriginal=";
+        public static readonly string exifToolUpdateGPSLatitude = "-exif:gpslatitude=";
+        public static readonly string exifToolUpdateGPSLatitudeRef = "-exif:gpslatituderef="; //north or south
+        public static readonly string exifToolUpdateGPSLongitude = "-exif:gpslongitude=";
+        public static readonly string exifToolUpdateGPSLongitudeRef = "-exif:gpslongituderef="; //east or west
+        public static readonly string exifToolUpdateGPSAltitude = "-exif:gpsaltitude=";
+        public static readonly string exifToolUpdateGPSAltitudeRef = "-exif:gpsaltituderef="; //above sea level, under sea level, sea level
+
         /// <summary>
         /// Main IFDs used in EXIF
         /// </summary>
@@ -52,7 +62,25 @@ namespace XnGFL
             GPSInfo_GPSAltitude = 0x0006, //Rational 	Indicates the altitude based on the reference in GPSAltitudeRef. Altitude is expressed as one RATIONAL value. The reference unit is meters.
         }
 
+        private string fname;
+
+        /// <summary>
+        /// File name of this EXIF data.
+        /// </summary>
+        public string filename
+        {
+            get { return fname; }
+        }
+
         private bool modified = false;
+
+        /// <summary>
+        /// Return true if data has been modified
+        /// </summary>
+        public bool isModified
+        {
+            get { return modified; }
+        }
 
         private DateTime vDateTimeOriginal = DateTime.Now;
 
@@ -134,9 +162,11 @@ namespace XnGFL
 
         private double gps_lon = 0;
         private double gps_lat = 0;
+        private double gps_alt = 0;
 
         private string gps_lon_string = string.Empty;
         private string gps_lat_string = string.Empty;
+        private string gps_alt_string = string.Empty;
 
         private bool has_gps = false;
 
@@ -195,6 +225,22 @@ namespace XnGFL
         }
 
         /// <summary>
+        /// Gets or sets GPS altitude
+        /// </summary>
+        public double gpsAlt
+        {
+            get { return gps_alt; }
+            set
+            {
+                if (almostEqual(gps_alt, value))
+                    return;
+                gps_alt = value;
+                gps_alt_string = gps_alt.ToString("F3");
+                modified = true;
+            }
+        }
+
+        /// <summary>
         /// String representation of lon value
         /// </summary>
         public string gpsLonSting
@@ -208,6 +254,14 @@ namespace XnGFL
         public string gpsLatString
         {
             get { return gps_lat_string; }
+        }
+
+        /// <summary>
+        /// String representation of altitude value
+        /// </summary>
+        public string gpsAltString
+        {
+            get { return gps_alt_string; }
         }
 
         /// <summary>
@@ -232,6 +286,8 @@ namespace XnGFL
             tagsInUse.Add(makeKey(IFD.GPS_IFD, Tags.GPSInfo_GPSLatitude), cnvString);
             tagsInUse.Add(makeKey(IFD.GPS_IFD, Tags.GPSInfo_GPSLongitudeRef), cnvString);
             tagsInUse.Add(makeKey(IFD.GPS_IFD, Tags.GPSInfo_GPSLongitude), cnvString);
+            tagsInUse.Add(makeKey(IFD.GPS_IFD, Tags.GPSInfo_GPSAltitude), cnvString);
+            tagsInUse.Add(makeKey(IFD.GPS_IFD, Tags.GPSInfo_GPSAltitudeRef), cnvString);
         }
 
         /// <summary>
@@ -268,8 +324,10 @@ namespace XnGFL
         /// Constructor that initializes needed data from exif context
         /// </summary>
         /// <param name="gflExifContext"></param>
-        public EXIFData(MetaDataWrap.XnMetaContext gflExifContext)
+        public EXIFData(string fname, MetaDataWrap.XnMetaContext gflExifContext)
         {
+            this.fname = fname;
+
             initMap();
 
             loadFromCtx(gflExifContext);
@@ -320,6 +378,17 @@ namespace XnGFL
                         gps_lat_string = ncUtils.Glob.latString(gps_lat);
                         has_gps = true;
                     }
+
+                    if (items.TryGetValue(makeKey(IFD.GPS_IFD, Tags.GPSInfo_GPSAltitude), out val))
+                    {
+                        gps_alt = Double.Parse(val, ncUtils.Glob.numformat);
+                        if (items.TryGetValue(makeKey(IFD.GPS_IFD, Tags.GPSInfo_GPSAltitudeRef), out val)
+                            && val.Equals("Other"))
+                        {
+                            gps_alt = -gps_alt;
+                        }
+                        gps_alt_string = gps_alt.ToString("F3");
+                    }
                 }
             }
 
@@ -352,5 +421,40 @@ namespace XnGFL
                 }
             }
         }
+
+        #region IRunnable Members
+
+        /// <summary>
+        /// Here we do update of our file if we have changes in the exif data (isModified)
+        /// </summary>
+        public void run()
+        {
+            if (!isModified)
+                return;
+
+            string parameters = exifToolUpdateOptions + " \"" + exifToolUpdateDateTimeOriginal
+                + EXIFUtil.FormatDateTime(dateTimeOriginal) + "\" \"";
+
+            {
+                //GPS construction
+                parameters += exifToolUpdateGPSLatitude + Math.Abs(gps_lat).ToString("F6", ncUtils.Glob.numformat) + "\" \""
+                    + exifToolUpdateGPSLatitudeRef + (gps_lat < 0.0 ? "south\" \"" : "north\" \"");
+
+                parameters += exifToolUpdateGPSLongitude + Math.Abs(gps_lon).ToString("F6", ncUtils.Glob.numformat) + "\" \""
+                    + exifToolUpdateGPSLongitudeRef + (gps_lon < 0.0 ? "west\" \"" : "east\" \"");
+
+                parameters += exifToolUpdateGPSAltitude + Math.Abs(gps_alt).ToString("F3", ncUtils.Glob.numformat) + "\" \""
+                    + exifToolUpdateGPSAltitudeRef + (gps_alt < 0.0 ? "below sea level\" \"" : "above sea level\" \"");
+            }
+
+            parameters += filename + "\"";
+
+            object result = ncUtils.ShellExec.ExecuteCommandSyncNoCMD(exifToolExecutable, parameters);
+            //We done our update
+            if (result is string)
+                modified = false;
+        }
+
+        #endregion
     }
 }

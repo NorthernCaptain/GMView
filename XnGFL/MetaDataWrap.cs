@@ -89,6 +89,8 @@ namespace XnGFL
             public Int32 numItems;
         }
 
+        public static readonly object ctxLock = new object();
+
         /// <summary>
         /// Creates meta context - wrapper for retrieving EXIF metadata from GLF bitmap
         /// </summary>
@@ -114,6 +116,9 @@ namespace XnGFL
 
         [DllImport(Common.XNWRAP_DLL, EntryPoint = "xnFreeMetaContext")]
         public static extern void xnFreeMetaContext(XnMetaContext ctx);
+
+        [DllImport(Common.XNWRAP_DLL, EntryPoint = "xnDisposeAvailable")]
+        public static extern void xnDisposeAvailable();
 
 
     }

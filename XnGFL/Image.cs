@@ -28,7 +28,6 @@ namespace XnGFL
         /// <summary>
         /// EXIF information retrieved from image using Exiv2
         /// </summary>
-        public Exiv2Net.Image exiv;
 
         public Image(string image_file_name)
         {
@@ -150,8 +149,12 @@ namespace XnGFL
         {
             if (ctx != null)
             {
-                MetaDataWrap.xnFreeMetaContext(ctx);
-                ctx = null;
+                lock (MetaDataWrap.ctxLock)
+                {
+                    MetaDataWrap.xnFreeMetaContext(ctx);
+                    ctx = null;
+                    //MetaDataWrap.xnDisposeAvailable();
+                }
             }
 
             if (ibitmap != null)
@@ -231,8 +234,11 @@ namespace XnGFL
         /// </summary>
         public void loadExif()
         {
-            ctx = MetaDataWrap.xnCreateMetaContext(ibitmap);
-            exif = new EXIFData(ctx);
+            lock (MetaDataWrap.ctxLock)
+            {
+                ctx = MetaDataWrap.xnCreateMetaContext(ibitmap);
+                exif = new EXIFData(fname, ctx);
+            }
         }
 
         /// <summary>

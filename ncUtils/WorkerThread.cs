@@ -38,6 +38,7 @@ namespace ncUtils
         public virtual void start()
         {
             worker = new Thread(new ParameterizedThreadStart(processWorkerStub));
+            worker.IsBackground = true;
             worker.Start(this);
         }
 

@@ -36,30 +36,31 @@
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.gpsTab = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.trackPage = new System.Windows.Forms.TabPage();
-            this.label2 = new System.Windows.Forms.Label();
-            this.trackListCB = new System.Windows.Forms.ComboBox();
-            this.manualDatePicker = new System.Windows.Forms.DateTimePicker();
-            this.label3 = new System.Windows.Forms.Label();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.manualLatTBox = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.manualLonTBox = new System.Windows.Forms.TextBox();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.gpsDatePicker = new System.Windows.Forms.DateTimePicker();
-            this.label8 = new System.Windows.Forms.Label();
-            this.shotDatePicker = new System.Windows.Forms.DateTimePicker();
-            this.deltaTimeTbox = new System.Windows.Forms.MaskedTextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.hourSetCB = new System.Windows.Forms.ComboBox();
-            this.assignGPSBut = new System.Windows.Forms.Button();
-            this.assignManualBut = new System.Windows.Forms.Button();
-            this.applyFilesBut = new System.Windows.Forms.Button();
-            this.setDeltaFromGPSBut = new System.Windows.Forms.Button();
             this.bookmarkCB = new System.Windows.Forms.ComboBox();
+            this.assignManualBut = new System.Windows.Forms.Button();
+            this.manualLonTBox = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.manualLatTBox = new System.Windows.Forms.TextBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.manualDatePicker = new System.Windows.Forms.DateTimePicker();
+            this.trackPage = new System.Windows.Forms.TabPage();
+            this.assignGPSBut = new System.Windows.Forms.Button();
+            this.hourSetCB = new System.Windows.Forms.ComboBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.deltaTimeTbox = new System.Windows.Forms.MaskedTextBox();
+            this.shotDatePicker = new System.Windows.Forms.DateTimePicker();
+            this.label8 = new System.Windows.Forms.Label();
+            this.gpsDatePicker = new System.Windows.Forms.DateTimePicker();
+            this.label7 = new System.Windows.Forms.Label();
+            this.trackListCB = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.setDeltaFromGPSBut = new System.Windows.Forms.Button();
+            this.batchProgBar = new System.Windows.Forms.ProgressBar();
+            this.progressLbl = new System.Windows.Forms.Label();
+            this.applyFilesBut = new System.Windows.Forms.Button();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.filesGBox.SuspendLayout();
             this.gpsTab.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -104,7 +105,6 @@
             this.dirView.BackColor = System.Drawing.Color.Black;
             this.dirView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dirView.ForeColor = System.Drawing.Color.White;
-            this.dirView.GridLines = true;
             this.dirView.Location = new System.Drawing.Point(3, 16);
             this.dirView.Name = "dirView";
             this.dirView.OwnerDraw = true;
@@ -158,6 +158,91 @@
             this.tabPage1.Text = "Manual";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // bookmarkCB
+            // 
+            this.bookmarkCB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.bookmarkCB.FormattingEnabled = true;
+            this.bookmarkCB.Location = new System.Drawing.Point(204, 31);
+            this.bookmarkCB.Name = "bookmarkCB";
+            this.bookmarkCB.Size = new System.Drawing.Size(172, 21);
+            this.bookmarkCB.TabIndex = 12;
+            // 
+            // assignManualBut
+            // 
+            this.assignManualBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.assignManualBut.Location = new System.Drawing.Point(322, 52);
+            this.assignManualBut.Name = "assignManualBut";
+            this.assignManualBut.Size = new System.Drawing.Size(75, 23);
+            this.assignManualBut.TabIndex = 11;
+            this.assignManualBut.Text = "Assign";
+            this.assignManualBut.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
+            this.assignManualBut.UseVisualStyleBackColor = true;
+            this.assignManualBut.Click += new System.EventHandler(this.assignManualBut_Click);
+            // 
+            // manualLonTBox
+            // 
+            this.manualLonTBox.Location = new System.Drawing.Point(68, 55);
+            this.manualLonTBox.Name = "manualLonTBox";
+            this.manualLonTBox.Size = new System.Drawing.Size(130, 20);
+            this.manualLonTBox.TabIndex = 6;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 58);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(57, 13);
+            this.label5.TabIndex = 5;
+            this.label5.Text = "Longitude:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 35);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(48, 13);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "Latitude:";
+            // 
+            // manualLatTBox
+            // 
+            this.manualLatTBox.Location = new System.Drawing.Point(68, 32);
+            this.manualLatTBox.Name = "manualLatTBox";
+            this.manualLatTBox.Size = new System.Drawing.Size(130, 20);
+            this.manualLatTBox.TabIndex = 3;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(382, 10);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(15, 14);
+            this.checkBox1.TabIndex = 2;
+            this.checkBox1.ThreeState = true;
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 10);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(56, 13);
+            this.label3.TabIndex = 1;
+            this.label3.Text = "Shot date:";
+            // 
+            // manualDatePicker
+            // 
+            this.manualDatePicker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.manualDatePicker.CustomFormat = "dd MMMM yyyy HH:mm:ss";
+            this.manualDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.manualDatePicker.Location = new System.Drawing.Point(68, 6);
+            this.manualDatePicker.Name = "manualDatePicker";
+            this.manualDatePicker.Size = new System.Drawing.Size(308, 20);
+            this.manualDatePicker.TabIndex = 0;
+            // 
             // trackPage
             // 
             this.trackPage.Controls.Add(this.assignGPSBut);
@@ -179,168 +264,15 @@
             this.trackPage.Text = "Track";
             this.trackPage.UseVisualStyleBackColor = true;
             // 
-            // label2
+            // assignGPSBut
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 9);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(38, 13);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "Track:";
-            // 
-            // trackListCB
-            // 
-            this.trackListCB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.trackListCB.FormattingEnabled = true;
-            this.trackListCB.Location = new System.Drawing.Point(70, 6);
-            this.trackListCB.Name = "trackListCB";
-            this.trackListCB.Size = new System.Drawing.Size(200, 21);
-            this.trackListCB.TabIndex = 1;
-            // 
-            // manualDatePicker
-            // 
-            this.manualDatePicker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.manualDatePicker.CustomFormat = "dd MMMM yyyy HH:mm:ss";
-            this.manualDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.manualDatePicker.Location = new System.Drawing.Point(68, 6);
-            this.manualDatePicker.Name = "manualDatePicker";
-            this.manualDatePicker.Size = new System.Drawing.Size(308, 20);
-            this.manualDatePicker.TabIndex = 0;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 10);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(56, 13);
-            this.label3.TabIndex = 1;
-            this.label3.Text = "Shot date:";
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(382, 10);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(15, 14);
-            this.checkBox1.TabIndex = 2;
-            this.checkBox1.ThreeState = true;
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // manualLatTBox
-            // 
-            this.manualLatTBox.Location = new System.Drawing.Point(68, 32);
-            this.manualLatTBox.Name = "manualLatTBox";
-            this.manualLatTBox.Size = new System.Drawing.Size(130, 20);
-            this.manualLatTBox.TabIndex = 3;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 35);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(48, 13);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "Latitude:";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 58);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(57, 13);
-            this.label5.TabIndex = 5;
-            this.label5.Text = "Longitude:";
-            // 
-            // manualLonTBox
-            // 
-            this.manualLonTBox.Location = new System.Drawing.Point(68, 55);
-            this.manualLonTBox.Name = "manualLonTBox";
-            this.manualLonTBox.Size = new System.Drawing.Size(130, 20);
-            this.manualLonTBox.TabIndex = 6;
-            // 
-            // progressBar1
-            // 
-            this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar1.Location = new System.Drawing.Point(6, 135);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(381, 10);
-            this.progressBar1.TabIndex = 4;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(7, 148);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(52, 13);
-            this.label6.TabIndex = 6;
-            this.label6.Text = "Selected:";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 33);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(58, 13);
-            this.label7.TabIndex = 2;
-            this.label7.Text = "GPS Date:";
-            // 
-            // gpsDatePicker
-            // 
-            this.gpsDatePicker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.gpsDatePicker.CustomFormat = "dd MMMM yyyy HH:mm:ss";
-            this.gpsDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.gpsDatePicker.Location = new System.Drawing.Point(70, 29);
-            this.gpsDatePicker.Name = "gpsDatePicker";
-            this.gpsDatePicker.Size = new System.Drawing.Size(163, 20);
-            this.gpsDatePicker.TabIndex = 3;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(6, 56);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(58, 13);
-            this.label8.TabIndex = 4;
-            this.label8.Text = "Shot Date:";
-            // 
-            // shotDatePicker
-            // 
-            this.shotDatePicker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.shotDatePicker.CustomFormat = "dd MMMM yyyy HH:mm:ss";
-            this.shotDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.shotDatePicker.Location = new System.Drawing.Point(70, 52);
-            this.shotDatePicker.Name = "shotDatePicker";
-            this.shotDatePicker.Size = new System.Drawing.Size(163, 20);
-            this.shotDatePicker.TabIndex = 5;
-            // 
-            // deltaTimeTbox
-            // 
-            this.deltaTimeTbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.deltaTimeTbox.Culture = new System.Globalization.CultureInfo("");
-            this.deltaTimeTbox.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Overwrite;
-            this.deltaTimeTbox.Location = new System.Drawing.Point(276, 30);
-            this.deltaTimeTbox.Mask = "#99.00:00:00";
-            this.deltaTimeTbox.Name = "deltaTimeTbox";
-            this.deltaTimeTbox.Size = new System.Drawing.Size(71, 20);
-            this.deltaTimeTbox.TabIndex = 6;
-            this.deltaTimeTbox.Text = "000000000";
-            this.deltaTimeTbox.TypeValidationCompleted += new System.Windows.Forms.TypeValidationEventHandler(this.deltaTimeTbox_TypeValidationCompleted);
-            // 
-            // label9
-            // 
-            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(273, 9);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(59, 13);
-            this.label9.TabIndex = 7;
-            this.label9.Text = "Time delta:";
+            this.assignGPSBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.assignGPSBut.Location = new System.Drawing.Point(322, 52);
+            this.assignGPSBut.Name = "assignGPSBut";
+            this.assignGPSBut.Size = new System.Drawing.Size(75, 23);
+            this.assignGPSBut.TabIndex = 10;
+            this.assignGPSBut.Text = "Assign";
+            this.assignGPSBut.UseVisualStyleBackColor = true;
             // 
             // hourSetCB
             // 
@@ -372,27 +304,115 @@
             this.hourSetCB.Text = "00 h";
             this.hourSetCB.SelectedIndexChanged += new System.EventHandler(this.hourSetCB_SelectedIndexChanged);
             // 
-            // assignGPSBut
+            // label9
             // 
-            this.assignGPSBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.assignGPSBut.Location = new System.Drawing.Point(322, 52);
-            this.assignGPSBut.Name = "assignGPSBut";
-            this.assignGPSBut.Size = new System.Drawing.Size(75, 23);
-            this.assignGPSBut.TabIndex = 10;
-            this.assignGPSBut.Text = "Assign";
-            this.assignGPSBut.UseVisualStyleBackColor = true;
+            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(273, 9);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(59, 13);
+            this.label9.TabIndex = 7;
+            this.label9.Text = "Time delta:";
             // 
-            // assignManualBut
+            // deltaTimeTbox
             // 
-            this.assignManualBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.assignManualBut.Location = new System.Drawing.Point(322, 52);
-            this.assignManualBut.Name = "assignManualBut";
-            this.assignManualBut.Size = new System.Drawing.Size(75, 23);
-            this.assignManualBut.TabIndex = 11;
-            this.assignManualBut.Text = "Assign";
-            this.assignManualBut.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.assignManualBut.UseVisualStyleBackColor = true;
-            this.assignManualBut.Click += new System.EventHandler(this.assignManualBut_Click);
+            this.deltaTimeTbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.deltaTimeTbox.Culture = new System.Globalization.CultureInfo("");
+            this.deltaTimeTbox.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Overwrite;
+            this.deltaTimeTbox.Location = new System.Drawing.Point(276, 30);
+            this.deltaTimeTbox.Mask = "#99.00:00:00";
+            this.deltaTimeTbox.Name = "deltaTimeTbox";
+            this.deltaTimeTbox.Size = new System.Drawing.Size(71, 20);
+            this.deltaTimeTbox.TabIndex = 6;
+            this.deltaTimeTbox.Text = "000000000";
+            this.deltaTimeTbox.TypeValidationCompleted += new System.Windows.Forms.TypeValidationEventHandler(this.deltaTimeTbox_TypeValidationCompleted);
+            // 
+            // shotDatePicker
+            // 
+            this.shotDatePicker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.shotDatePicker.CustomFormat = "dd MMMM yyyy HH:mm:ss";
+            this.shotDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.shotDatePicker.Location = new System.Drawing.Point(70, 52);
+            this.shotDatePicker.Name = "shotDatePicker";
+            this.shotDatePicker.Size = new System.Drawing.Size(163, 20);
+            this.shotDatePicker.TabIndex = 5;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 56);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(58, 13);
+            this.label8.TabIndex = 4;
+            this.label8.Text = "Shot Date:";
+            // 
+            // gpsDatePicker
+            // 
+            this.gpsDatePicker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.gpsDatePicker.CustomFormat = "dd MMMM yyyy HH:mm:ss";
+            this.gpsDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.gpsDatePicker.Location = new System.Drawing.Point(70, 29);
+            this.gpsDatePicker.Name = "gpsDatePicker";
+            this.gpsDatePicker.Size = new System.Drawing.Size(163, 20);
+            this.gpsDatePicker.TabIndex = 3;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(6, 33);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(58, 13);
+            this.label7.TabIndex = 2;
+            this.label7.Text = "GPS Date:";
+            // 
+            // trackListCB
+            // 
+            this.trackListCB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.trackListCB.FormattingEnabled = true;
+            this.trackListCB.Location = new System.Drawing.Point(70, 6);
+            this.trackListCB.Name = "trackListCB";
+            this.trackListCB.Size = new System.Drawing.Size(200, 21);
+            this.trackListCB.TabIndex = 1;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 9);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(38, 13);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "Track:";
+            // 
+            // setDeltaFromGPSBut
+            // 
+            this.setDeltaFromGPSBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.setDeltaFromGPSBut.Image = global::XnGFL.Properties.Resources.gps_on;
+            this.setDeltaFromGPSBut.Location = new System.Drawing.Point(239, 29);
+            this.setDeltaFromGPSBut.Name = "setDeltaFromGPSBut";
+            this.setDeltaFromGPSBut.Size = new System.Drawing.Size(31, 22);
+            this.setDeltaFromGPSBut.TabIndex = 8;
+            this.setDeltaFromGPSBut.UseVisualStyleBackColor = true;
+            this.setDeltaFromGPSBut.Click += new System.EventHandler(this.setDeltaFromGPSBut_Click);
+            // 
+            // batchProgBar
+            // 
+            this.batchProgBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.batchProgBar.Location = new System.Drawing.Point(6, 135);
+            this.batchProgBar.Name = "batchProgBar";
+            this.batchProgBar.Size = new System.Drawing.Size(381, 10);
+            this.batchProgBar.TabIndex = 4;
+            // 
+            // progressLbl
+            // 
+            this.progressLbl.AutoSize = true;
+            this.progressLbl.Location = new System.Drawing.Point(7, 148);
+            this.progressLbl.Name = "progressLbl";
+            this.progressLbl.Size = new System.Drawing.Size(0, 13);
+            this.progressLbl.TabIndex = 6;
             // 
             // applyFilesBut
             // 
@@ -406,34 +426,17 @@
             this.applyFilesBut.UseVisualStyleBackColor = true;
             this.applyFilesBut.Click += new System.EventHandler(this.applyFilesBut_Click);
             // 
-            // setDeltaFromGPSBut
+            // openFileDialog
             // 
-            this.setDeltaFromGPSBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.setDeltaFromGPSBut.Image = global::XnGFL.Properties.Resources.gps_on;
-            this.setDeltaFromGPSBut.Location = new System.Drawing.Point(239, 29);
-            this.setDeltaFromGPSBut.Name = "setDeltaFromGPSBut";
-            this.setDeltaFromGPSBut.Size = new System.Drawing.Size(31, 22);
-            this.setDeltaFromGPSBut.TabIndex = 8;
-            this.setDeltaFromGPSBut.UseVisualStyleBackColor = true;
-            this.setDeltaFromGPSBut.Click += new System.EventHandler(this.setDeltaFromGPSBut_Click);
-            // 
-            // bookmarkCB
-            // 
-            this.bookmarkCB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.bookmarkCB.FormattingEnabled = true;
-            this.bookmarkCB.Location = new System.Drawing.Point(204, 31);
-            this.bookmarkCB.Name = "bookmarkCB";
-            this.bookmarkCB.Size = new System.Drawing.Size(172, 21);
-            this.bookmarkCB.TabIndex = 12;
+            this.openFileDialog.Title = "Select directory with images";
             // 
             // ExifViewControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.label6);
+            this.Controls.Add(this.progressLbl);
             this.Controls.Add(this.applyFilesBut);
-            this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.batchProgBar);
             this.Controls.Add(this.gpsTab);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.filesGBox);
@@ -473,9 +476,9 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox manualLatTBox;
-        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.ProgressBar batchProgBar;
         private System.Windows.Forms.Button applyFilesBut;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label progressLbl;
         private System.Windows.Forms.DateTimePicker gpsDatePicker;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.MaskedTextBox deltaTimeTbox;
@@ -487,5 +490,6 @@
         private System.Windows.Forms.Button assignGPSBut;
         private System.Windows.Forms.Button assignManualBut;
         private System.Windows.Forms.ComboBox bookmarkCB;
+        private System.Windows.Forms.OpenFileDialog openFileDialog;
     }
 }

@@ -30,19 +30,13 @@ extern "C"
 struct XNGFL_MetaContext
 {
 	GFL_BITMAP* bitmap;
-	GFL_EXIF_DATAEX*  exifdata;
-	GFL_EXIF_ENTRYEX* curItem;
 	GFL_EXIF_DATA* exiftextdata;
 	int            curTextItem;
-
-	int numEntries;
 
 	XNGFL_MetaContext(GFL_BITMAP *bmp)
 	{
 		bitmap = bmp;
-		exifdata = 0;
-		curItem = 0;
-		numEntries = 0;
+		curTextItem = 0;
 	}
 
 	//Initializes context env
@@ -71,6 +65,7 @@ XNGFLWRAP_API GFL_EXIF_ENTRYEX* xnStartEXIF(XNGFL_MetaContext* ctx);
 XNGFLWRAP_API GFL_EXIF_ENTRY* xnNextEXIF1(XNGFL_MetaContext* ctx);
 XNGFLWRAP_API GFL_EXIF_ENTRY* xnStartEXIF1(XNGFL_MetaContext* ctx);
 XNGFLWRAP_API void xnFreeMetaContext(XNGFL_MetaContext* ctx);
+XNGFLWRAP_API void xnDisposeAvailable();
 }
 
 

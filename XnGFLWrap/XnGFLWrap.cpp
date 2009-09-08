@@ -40,21 +40,6 @@ void XNGFL_MetaContext::initCtx(GFL_BITMAP *bmp)
 	if(!gflBitmapHasEXIF(bmp))
 		return;
 
-	/*
-	this->exifdata = gflBitmapGetEXIF2(bitmap);
-	if(exifdata == 0)
-		return;
-	
-	curItem = exifdata->Root;
-	numEntries = 0;
-	GFL_EXIF_ENTRYEX* item = exifdata->Root;
-	while(item != 0)
-	{
-		numEntries ++;
-		item = item->Next;
-	}
-	*/
-
 	exiftextdata = gflBitmapGetEXIF(bmp, GFL_EXIF_WANT_MAKERNOTES);
 	curTextItem = 0;
 }
@@ -75,7 +60,7 @@ extern "C" {
 XNGFL_MetaContext*  xnCreateMetaContext(GFL_BITMAP* bitmap)
 {
 	XNGFL_MetaContext* ctx;
-	if(!freeCtxPool.empty())
+	if(false && !freeCtxPool.empty())
 	{
 		ctx = freeCtxPool.front();
 		ctx->initCtx(bitmap);
@@ -95,23 +80,6 @@ int xnHasEXIF(XNGFL_MetaContext* ctx)
 		return 0;
 
 	return ctx->hasEXIF();
-}
-
-GFL_EXIF_ENTRYEX* xnStartEXIF(XNGFL_MetaContext* ctx)
-{
-	if(ctx == 0 || ctx->exifdata == 0)
-		return 0;
-	ctx->curItem = ctx->exifdata->Root;
-	return ctx->curItem;
-}
-
-GFL_EXIF_ENTRYEX* xnNextEXIF(XNGFL_MetaContext* ctx)
-{
-	if(ctx == 0 || ctx->curItem == 0)
-		return 0;
-	ctx->curItem = ctx->curItem->Next;
-	
-	return ctx->curItem;
 }
 
 GFL_EXIF_ENTRY* xnStartEXIF1(XNGFL_MetaContext* ctx)
@@ -134,6 +102,17 @@ GFL_EXIF_ENTRY* xnNextEXIF1(XNGFL_MetaContext* ctx)
 void xnFreeMetaContext(XNGFL_MetaContext* ctx)
 {
 	freeCtxPool.push(ctx);
+}
+
+
+void xnDisposeAvailable()
+{
+	while(!freeCtxPool.empty())
+	{
+		XNGFL_MetaContext* ctx = freeCtxPool.front();
+		freeCtxPool.pop();
+		delete ctx;
+	}
 }
 
 }

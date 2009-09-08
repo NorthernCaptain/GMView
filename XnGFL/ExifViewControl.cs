@@ -20,6 +20,11 @@ namespace XnGFL
             imageLoader.taskCompleted += loadingComplete;
             imageLoader.start();
 
+            batchUpdater = new EXIFBatchUpdate(this);
+            batchUpdater.onBatchFinished += batchUpdateFinished;
+            batchUpdater.onOneUpdate += itemUpdated;
+            batchUpdater.start();
+
             deltaTimeTbox.ValidatingType = typeof(TimeSpan);
         }
 
@@ -52,6 +57,31 @@ namespace XnGFL
             filesGBox.Text = "Files [Loading " + items.Count + "...]:";
         }
 
+
+        /// <summary>
+        /// Object that process all updates to the files that were modified
+        /// </summary>
+        private EXIFBatchUpdate batchUpdater = null;
+
+        /// <summary>
+        /// After every file update we move progress bar
+        /// </summary>
+        /// <param name="dat"></param>
+        private void itemUpdated(EXIFData dat)
+        {
+            batchProgBar.Value++;
+        }
+
+        /// <summary>
+        /// Update of files finished, reenable controls
+        /// </summary>
+        private void batchUpdateFinished()
+        {
+            applyFilesBut.Enabled = true;
+            dirView.Invalidate();
+            progressLbl.Text = "Done";
+        }
+
         /// <summary>
         /// Opens dialog for choosing directory with images
         /// </summary>
@@ -59,11 +89,14 @@ namespace XnGFL
         /// <param name="e"></param>
         private void openDirBut_Click(object sender, EventArgs e)
         {
-            if(dirTBox.Text.Length>0)
-                folderBrowserDialog.SelectedPath = dirTBox.Text;
-            if (folderBrowserDialog.ShowDialog() != DialogResult.OK)
+            if (dirTBox.Text.Length > 0)
+            {
+                openFileDialog.InitialDirectory = dirTBox.Text;
+            }
+
+            if (openFileDialog.ShowDialog() != DialogResult.OK)
                 return;
-            dirTBox.Text = folderBrowserDialog.SelectedPath;
+            dirTBox.Text = Path.GetDirectoryName(openFileDialog.FileName);
 
             clearList();
 
@@ -91,7 +124,7 @@ namespace XnGFL
         private List<Image> itemList = new List<Image>();
         private Dictionary<string, XnGFL.Image> imageMap = new Dictionary<string, XnGFL.Image>();
 
-
+        #region Draw methods and variables
         private int imgWidth = 160;
         private int imgHeight = 120;
 
@@ -155,6 +188,11 @@ namespace XnGFL
                     e.Graphics.DrawString(img.exif.gpsLonSting, textFont2, textBrush3,
                         (float)x + lonTextWidth, (float)y);
                     y += textFont2.Height;
+                    e.Graphics.DrawString("Altitude: ", textFont2, textBrush3,
+                        (float)x, (float)y);
+                    e.Graphics.DrawString(img.exif.gpsAltString, textFont2, textBrush3,
+                        (float)x + lonTextWidth, (float)y);
+                    y += textFont2.Height;
                 }
                 else
                 {
@@ -182,6 +220,7 @@ namespace XnGFL
                 e.Graphics.DrawRectangle(selectPen, e.Bounds.X +1, e.Bounds.Y +1, e.Bounds.Width - 2, e.Bounds.Height - 2);
         }
 
+        #endregion
 
         private int abs(int val)
         {
@@ -203,6 +242,10 @@ namespace XnGFL
             setDeltaTime(delta);
         }
 
+        /// <summary>
+        /// Sets delta time as diff between GPS and shot time
+        /// </summary>
+        /// <param name="delta"></param>
         private void setDeltaTime(TimeSpan delta)
         {
             string valstr;
@@ -264,6 +307,30 @@ namespace XnGFL
         }
 
         /// <summary>
+        /// We store modified entries here
+        /// </summary>
+        private Dictionary<string, EXIFData> modifiedList = new Dictionary<string, EXIFData>();
+
+        /// <summary>
+        /// Adds or update information in the modified list (items that need to be saved)
+        /// </summary>
+        /// <param name="img"></param>
+        /// <returns></returns>
+        private bool addModified(Image img)
+        {
+            if (!img.exif.isModified)
+                return false;
+
+            if (modifiedList.ContainsKey(img.filename))
+            {
+                modifiedList[img.filename] = img.exif;
+            }
+            else
+                modifiedList.Add(img.filename, img.exif);
+            return true;
+        }
+
+        /// <summary>
         /// Here we will assign new values from the manual tab page to the selected images
         /// </summary>
         /// <param name="sender"></param>
@@ -297,24 +364,30 @@ namespace XnGFL
                     img.exif.gpsLon = lon;
                     img.exif.gpsLat = lat;
                 }
+
+                addModified(img);
             }
 
+            progressLbl.Text = "Scheduled: " + modifiedList.Count + " images";
             dirView.Invalidate();
         }
 
+        /// <summary>
+        /// Executes batch update for modified files
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void applyFilesBut_Click(object sender, EventArgs e)
         {
-            DateTime before = DateTime.Now;
-            System.Diagnostics.Process proc = new System.Diagnostics.Process();
-
-            proc.StartInfo.FileName = @"D:\Arcs\exiftoolgui\exiftool.exe";
-            proc.StartInfo.Arguments = "-q \"-exif:datetimeoriginal=2008:08:08 08:08:14\" _MG_1676.CR2";
-            proc.StartInfo.CreateNoWindow = true;
-            proc.Start();
-            proc.WaitForExit();
-
-            TimeSpan span = DateTime.Now - before;
-            MessageBox.Show("Command called, time spent: " + span.ToString());
+            int count = batchUpdater.addBatch(modifiedList);
+            if (count > 0)
+            {
+                modifiedList = new Dictionary<string, EXIFData>();
+                batchProgBar.Maximum = count;
+                batchProgBar.Value = 0;
+                applyFilesBut.Enabled = false;
+                progressLbl.Text = "Updating: " + count + " images";
+            }
         }
     }
 }
