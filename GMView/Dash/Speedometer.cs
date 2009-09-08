@@ -32,6 +32,7 @@ namespace GMView
             imgMask = TextureFactory.singleton.getImg(TextureFactory.TexAlias.DashSpeedBarMask);
             Program.onShutdown += shutdown;
             calculate((int)R0, 120);
+            visualizer.IsBackground = true;
         }
 
         public void startThread()

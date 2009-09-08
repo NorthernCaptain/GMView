@@ -101,16 +101,18 @@ namespace GMView.GPS
 
             if (findctx.nearest != null)
             {
+                int capx = xy.X - centerx;
+                int capy = centery - xy.Y;
+
                 GML.device.pushMatrix();
-                GML.device.translate(xy.X - centerx, centery - xy.Y, 0);
+                GML.device.translate(capx, capy, 0);
                 GML.device.rotateZ(-findctx.nearest.Value.dir_angle);
                 GML.device.texDrawBegin();
+                GML.device.texFilter(arrows_tex, TexFilter.Smooth);
                 GML.device.texDraw(arrows_tex, -arrows.delta_x, arrows.delta_y, 3, arrows.img.Width, arrows.img.Height);
                 GML.device.texDrawEnd();
                 GML.device.popMatrix();
 
-                int capx = xy.X - centerx;
-                int capy = centery - xy.Y;
 
                 int wl = window_img.delta_x;
                 int wh = window_img.delta_y;

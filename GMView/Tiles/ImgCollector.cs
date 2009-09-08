@@ -62,7 +62,9 @@ namespace GMView
         /// </summary>
         public ImgCollector()
         {
+            downloader.IsBackground = true;
             downloader.Start(this);
+            sched_downloader.IsBackground = true;
             sched_downloader.Start(this);
 
             diskloader1.Start(new DiskLoaderContext(diskload1, diskloadAnswer, this));

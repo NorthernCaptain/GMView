@@ -42,7 +42,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.manualLatTBox = new System.Windows.Forms.TextBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.needShotDateCB = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.manualDatePicker = new System.Windows.Forms.DateTimePicker();
             this.trackPage = new System.Windows.Forms.TabPage();
@@ -61,6 +61,8 @@
             this.progressLbl = new System.Windows.Forms.Label();
             this.applyFilesBut = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.cancelShedBut = new System.Windows.Forms.Button();
+            this.needGPSCb = new System.Windows.Forms.CheckBox();
             this.filesGBox.SuspendLayout();
             this.gpsTab.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -141,13 +143,14 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.needGPSCb);
             this.tabPage1.Controls.Add(this.bookmarkCB);
             this.tabPage1.Controls.Add(this.assignManualBut);
             this.tabPage1.Controls.Add(this.manualLonTBox);
             this.tabPage1.Controls.Add(this.label5);
             this.tabPage1.Controls.Add(this.label4);
             this.tabPage1.Controls.Add(this.manualLatTBox);
-            this.tabPage1.Controls.Add(this.checkBox1);
+            this.tabPage1.Controls.Add(this.needShotDateCB);
             this.tabPage1.Controls.Add(this.label3);
             this.tabPage1.Controls.Add(this.manualDatePicker);
             this.tabPage1.Location = new System.Drawing.Point(4, 18);
@@ -212,16 +215,15 @@
             this.manualLatTBox.Size = new System.Drawing.Size(130, 20);
             this.manualLatTBox.TabIndex = 3;
             // 
-            // checkBox1
+            // needShotDateCB
             // 
-            this.checkBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(382, 10);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(15, 14);
-            this.checkBox1.TabIndex = 2;
-            this.checkBox1.ThreeState = true;
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.needShotDateCB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.needShotDateCB.AutoSize = true;
+            this.needShotDateCB.Location = new System.Drawing.Point(382, 10);
+            this.needShotDateCB.Name = "needShotDateCB";
+            this.needShotDateCB.Size = new System.Drawing.Size(15, 14);
+            this.needShotDateCB.TabIndex = 2;
+            this.needShotDateCB.UseVisualStyleBackColor = true;
             // 
             // label3
             // 
@@ -403,7 +405,7 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.batchProgBar.Location = new System.Drawing.Point(6, 135);
             this.batchProgBar.Name = "batchProgBar";
-            this.batchProgBar.Size = new System.Drawing.Size(381, 10);
+            this.batchProgBar.Size = new System.Drawing.Size(349, 10);
             this.batchProgBar.TabIndex = 4;
             // 
             // progressLbl
@@ -419,7 +421,7 @@
             this.applyFilesBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.applyFilesBut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.applyFilesBut.Image = global::XnGFL.Properties.Resources.stock_download;
-            this.applyFilesBut.Location = new System.Drawing.Point(392, 135);
+            this.applyFilesBut.Location = new System.Drawing.Point(361, 135);
             this.applyFilesBut.Name = "applyFilesBut";
             this.applyFilesBut.Size = new System.Drawing.Size(25, 25);
             this.applyFilesBut.TabIndex = 5;
@@ -430,10 +432,35 @@
             // 
             this.openFileDialog.Title = "Select directory with images";
             // 
+            // cancelShedBut
+            // 
+            this.cancelShedBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cancelShedBut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cancelShedBut.Image = global::XnGFL.Properties.Resources.gtk_no;
+            this.cancelShedBut.Location = new System.Drawing.Point(388, 135);
+            this.cancelShedBut.Name = "cancelShedBut";
+            this.cancelShedBut.Size = new System.Drawing.Size(25, 25);
+            this.cancelShedBut.TabIndex = 7;
+            this.cancelShedBut.UseVisualStyleBackColor = true;
+            this.cancelShedBut.Click += new System.EventHandler(this.cancelShedBut_Click);
+            // 
+            // needGPSCb
+            // 
+            this.needGPSCb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.needGPSCb.AutoSize = true;
+            this.needGPSCb.Checked = true;
+            this.needGPSCb.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.needGPSCb.Location = new System.Drawing.Point(382, 34);
+            this.needGPSCb.Name = "needGPSCb";
+            this.needGPSCb.Size = new System.Drawing.Size(15, 14);
+            this.needGPSCb.TabIndex = 8;
+            this.needGPSCb.UseVisualStyleBackColor = true;
+            // 
             // ExifViewControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.cancelShedBut);
             this.Controls.Add(this.progressLbl);
             this.Controls.Add(this.applyFilesBut);
             this.Controls.Add(this.batchProgBar);
@@ -471,7 +498,7 @@
         private System.Windows.Forms.DateTimePicker manualDatePicker;
         private System.Windows.Forms.ComboBox trackListCB;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox needShotDateCB;
         private System.Windows.Forms.TextBox manualLonTBox;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
@@ -491,5 +518,7 @@
         private System.Windows.Forms.Button assignManualBut;
         private System.Windows.Forms.ComboBox bookmarkCB;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private System.Windows.Forms.Button cancelShedBut;
+        private System.Windows.Forms.CheckBox needGPSCb;
     }
 }

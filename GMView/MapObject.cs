@@ -311,7 +311,8 @@ namespace GMView
         /// </summary>
         private void mapTypeChanged()
         {
-            geoSystem = Program.opt.getGeoSystem();
+            geoSystem = Program.opt.getGeoSystem().copy();
+            geoSystem.zoomLevel = this.zoom_lvl;
         }
 
         public void ResetCache()
@@ -467,6 +468,10 @@ namespace GMView
 
         }
 
+        /// <summary>
+        /// Centering the map according to relative (screen) coordinates in pixels
+        /// </summary>
+        /// <param name="xy"></param>
         public void CenterMapVisibleXY(Point xy)
         {
             xy.X += (start_nx * Program.opt.image_len - start_p.X);
@@ -475,6 +480,10 @@ namespace GMView
             CenterMapAbsXY(xy);
         }
 
+        /// <summary>
+        /// Centering the map by given absolute XY values (in pixel on current zoom level)
+        /// </summary>
+        /// <param name="xy"></param>
         public void CenterMapAbsXY(Point xy)
         {
             int max_x = max_piece * Program.opt.image_len;
@@ -612,30 +621,6 @@ namespace GMView
 
             //Program.Log("Lon/Lat -> XY: " + xy.ToString() + " LonLat:" + lon + "/" + lat * 180.0 / System.Math.PI);
         }
-
-        /// <summary>
-        /// Convert LonLat coordinates to tile number in x and y
-        /// </summary>
-        /// <param name="lon"></param>
-        /// <param name="lat"></param>
-        /// <param name="xy"></param>
-        public void getNXNYByLonLat(double lon, double lat, int zoom_lvl, out Point xy)
-        {
-            ulong center_pix = 1ul << (zoom_lvl + 6);
-
-            lat = Math.PI * lat / 180.0;
-            double sin_lat = Math.Sin(lat);
-            double fx = (double)center_pix * (1.0 + lon / 180.0);
-            //            (1 - 0.5 * ln((1 + sin(Lat)) / (1 - sin(Lat))) / Pi);
-            double fy = (double)center_pix * (1.0 - 0.5 * Math.Log((1.0 + sin_lat)
-                                                                   / (1.0 - sin_lat))
-                                                          / Math.PI);
-
-            xy = new Point();
-            xy.X = (int)(fx/Program.opt.image_len);
-            xy.Y = (int)(fy/Program.opt.image_hei);
-        }
-
 
         public void getLonLatByVisibleXY(Point xy, out double lon, out double lat)
         {

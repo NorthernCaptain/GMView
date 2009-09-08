@@ -56,6 +56,9 @@ namespace GMView
         private GPS.TrackPositionInformer trackinformer;
         private CenterPositioning centerPos = null;
 
+        private XnGFL.ExifViewControl geoTagger;
+        private Forms.GeoTagForm geoTagForm;
+
         #region Our events
         private delegate void onStartDownloadDelegate(int total_pieces);
         private delegate void onProgressDownloadDelegate(ImgTile tile, double percent);
@@ -72,6 +75,9 @@ namespace GMView
             intro = new GMView.Forms.IntroForm();
             intro.showIntro();
             intro.doInit();
+
+            //Initializing GFL library
+            XnGFL.Common.LibraryInit();
 
             mapo = new MapObject();
             mapo.onCenterChanged += new MapObject.onLonLatChange(mapo_onCenterChanged);
@@ -190,6 +196,19 @@ namespace GMView
             BookMarkFactory.singleton.map = mapo;
             BookMarkFactory.singleton.fillMenuItems(poiMI.DropDown.Items);
 
+            initGeoTagger();
+        }
+
+        /// <summary>
+        /// Initialize Geo tagger objects
+        /// </summary>
+        void initGeoTagger()
+        {
+            geoTagger = new XnGFL.ExifViewControl();
+            geoTagForm = new GMView.Forms.GeoTagForm(geoTagger);
+            geoTagForm.Owner = this;
+            geoTagger.needCenteringLonLat += centerMapLonLat;
+            mapo.onCenterChanged += geoTagger.setLonLatFromMap;
         }
 
         void GMViewForm_onLostDevice(object sender, EventArgs e)
@@ -513,6 +532,20 @@ namespace GMView
             mapo.getXYByLonLat(opt.lon, opt.lat, out xy);
             mapo.getLonLatByXY(xy, out lon, out lat);
             mapo.CenterMapLonLat(opt.lon, opt.lat);
+            repaintMap();
+            miniform.repaintMap();
+        }
+
+        /// <summary>
+        /// Centers map by given Lon, Lat
+        /// </summary>
+        /// <param name="lon"></param>
+        /// <param name="lat"></param>
+        private void centerMapLonLat(double lon, double lat)
+        {
+            upos.setLonLat(lon, lat);
+            upos_mini.setLonLat(lon, lat);
+            mapo.CenterMapLonLat(lon, lat);
             repaintMap();
             miniform.repaintMap();
         }
@@ -1400,10 +1433,7 @@ namespace GMView
             {
                 pos_stack.push(new PositionStack.PositionInfo(upos.Lon, upos.Lat, mapo.zoom, opt.mapType));
                 PositionStack.PositionInfo pinfo = pos_stack_fwd.pop();
-                upos.setLonLat(pinfo.lon, pinfo.lat);
-                upos_mini.setLonLat(pinfo.lon, pinfo.lat);
-                mapo.CenterMapLonLat(pinfo.lon, pinfo.lat);
-                repaintMap();
+                centerMapLonLat(pinfo.lon, pinfo.lat);
             }
         }
 
@@ -1537,7 +1567,7 @@ namespace GMView
 
         private void mouseOverTimer_Tick(object sender, EventArgs e)
         {
-            trackinformer.doAction(mouse_last_p);
+            trackinformer.doAction(GML.translateAbsToScene(mouse_last_p));
         }
 
         private void trackInformerStop()
@@ -1556,6 +1586,16 @@ namespace GMView
             mapo.ResetCache();
             minimapo.ResetCache();
             repaintMap();
+        }
+
+        /// <summary>
+        /// Opens GeoTagging window. Window where we select photos and assign GPS posititon to them
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void GeoTagMI_Click(object sender, EventArgs e)
+        {
+            geoTagForm.Visible = true;
         }
 
     }

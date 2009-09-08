@@ -106,6 +106,7 @@ namespace GMView
             backPen = new SolidBrush(Color.FromArgb(25, 45, 80));
 
             Program.opt.onMapTypeChanged += new Options.OnChangedDelegate(opt_onMapTypeChanged);
+            visualizer.IsBackground = true;
             visualizer.Start(this);
             this.updateTimer = new System.Windows.Forms.Timer();
             this.updateTimer.Interval = 300;

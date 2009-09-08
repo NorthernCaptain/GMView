@@ -35,19 +35,23 @@
             // 
             // infoLb
             // 
+            this.infoLb.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.infoLb.BackColor = System.Drawing.Color.Black;
             this.infoLb.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.infoLb.ForeColor = System.Drawing.Color.Yellow;
             this.infoLb.Location = new System.Drawing.Point(7, 230);
             this.infoLb.Name = "infoLb";
-            this.infoLb.Size = new System.Drawing.Size(270, 16);
+            this.infoLb.Size = new System.Drawing.Size(363, 16);
             this.infoLb.TabIndex = 0;
             this.infoLb.Text = "Initializing...";
             // 
             // appNameLbl
             // 
+            this.appNameLbl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.appNameLbl.BackColor = System.Drawing.Color.Transparent;
-            this.appNameLbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.appNameLbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(204)));
             this.appNameLbl.ForeColor = System.Drawing.Color.White;
             this.appNameLbl.Location = new System.Drawing.Point(10, 157);
             this.appNameLbl.Name = "appNameLbl";
@@ -58,6 +62,8 @@
             // 
             // rendererLbl
             // 
+            this.rendererLbl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.rendererLbl.BackColor = System.Drawing.Color.Transparent;
             this.rendererLbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.rendererLbl.ForeColor = System.Drawing.Color.WhiteSmoke;

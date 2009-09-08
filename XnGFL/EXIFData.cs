@@ -9,7 +9,7 @@ namespace XnGFL
     /// </summary>
     public class EXIFData: ncUtils.IRunnable
     {
-        public static string exifToolExecutable = @"D:\Arcs\exiftoolgui\exiftool.exe";
+        public static string exifToolExecutable = @"exiftool.exe";
         public static readonly string exifToolUpdateOptions = "-overwrite_original ";
         public static readonly string exifToolUpdateDateTimeOriginal = "-exif:datetimeoriginal=";
         public static readonly string exifToolUpdateGPSLatitude = "-exif:gpslatitude=";

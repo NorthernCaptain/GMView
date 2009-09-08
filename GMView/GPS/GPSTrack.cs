@@ -113,8 +113,14 @@ namespace GMView
                     else
                     {
                         waypoint_num = "No waypoint";
-                        waypoint_time = "";
-                        waypoint_lonlat = "";
+                        waypoint_time = string.Empty;
+                        waypoint_lonlat = string.Empty;
+                        waypoint_distance_from_prev = string.Empty;
+                        waypoint_distance_from_start = string.Empty;
+                        waypoint_distance_to_next = string.Empty;
+                        waypoint_time_from_prev = string.Empty;
+                        waypoint_time_from_start = string.Empty;
+                        waypoint_time_to_next = string.Empty;
                     }
                 }
                 catch
@@ -1508,6 +1514,10 @@ namespace GMView
             trackData.Clear();
             drawPoints.Clear();
             way.clear();
+            distance_km = 0.0;
+            travel_avg_speed = Program.opt.manual_avg_speed;
+            travel_time = TimeSpan.FromHours(distance_km / travel_avg_speed);
+            textInfo.fill_all_info(this);
         }
 
         const int delta_inv = 10;

@@ -78,6 +78,7 @@ namespace XnGFL
         private void batchUpdateFinished()
         {
             applyFilesBut.Enabled = true;
+            cancelShedBut.Enabled = true;
             dirView.Invalidate();
             progressLbl.Text = "Done";
         }
@@ -300,10 +301,12 @@ namespace XnGFL
             if (img == null)
                 return;
 
-            manualLatTBox.Text = img.exif.gpsLat.ToString("F6", ncUtils.Glob.numformat);
-            manualLonTBox.Text = img.exif.gpsLon.ToString("F6", ncUtils.Glob.numformat);
             manualDatePicker.Value = img.exif.dateTimeOriginal;
             shotDatePicker.Value = img.exif.dateTimeOriginal;
+
+            setLonLatFromMap(img.exif.gpsLon, img.exif.gpsLat);
+            if (needCenteringLonLat != null)
+                needCenteringLonLat(img.exif.gpsLon, img.exif.gpsLat);
         }
 
         /// <summary>
@@ -338,6 +341,7 @@ namespace XnGFL
         private void assignManualBut_Click(object sender, EventArgs e)
         {
             DateTime dtnew = manualDatePicker.Value;
+            bool needShotDate = needShotDateCB.Checked;
             double lon = 0, lat = 0;
             bool needGPS = false;
 
@@ -345,16 +349,23 @@ namespace XnGFL
             {
                 lon = ncUtils.Glob.parseLonLat(manualLonTBox.Text);
                 lat = ncUtils.Glob.parseLonLat(manualLatTBox.Text);
-                needGPS = true;
+                needGPS = needGPSCb.Checked;
             }
             catch { }
+
+            if (!needGPS && !needShotDate)
+            {
+                MessageBox.Show("Please, check one of the boxes on the right, GPS or Shot Date.", "Nothing to assign", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
 
             foreach (ListViewItem item in dirView.SelectedItems)
             {
                 Image img = item as Image;
                 if (img == null)
                     continue;
-                img.exif.dateTimeOriginal = dtnew;
+                if(needShotDate)
+                    img.exif.dateTimeOriginal = dtnew;
                 if (needGPS)
                 {
                     if (!img.exif.hasGPS)
@@ -386,8 +397,53 @@ namespace XnGFL
                 batchProgBar.Maximum = count;
                 batchProgBar.Value = 0;
                 applyFilesBut.Enabled = false;
+                cancelShedBut.Enabled = false;
                 progressLbl.Text = "Updating: " + count + " images";
             }
+        }
+
+        /// <summary>
+        /// Execute on shutdown the application, stops all threads
+        /// </summary>
+        public void shutdown()
+        {
+            batchUpdater.stop();
+            imageLoader.stop();
+        }
+
+        /// <summary>
+        /// Delegate for calling when we need to center map on given lon, lat position
+        /// </summary>
+        /// <param name="lon"></param>
+        /// <param name="lat"></param>
+        public delegate void needCenteringLonLatDelegate(double lon, double lat);
+        /// <summary>
+        /// Event fired, when we need to center map on given lon, lat
+        /// </summary>
+        public event needCenteringLonLatDelegate needCenteringLonLat;
+
+        /// <summary>
+        /// LOn, lat coordinates for manual tab
+        /// </summary>
+        private double manual_lon, manual_lat;
+
+        /// <summary>
+        /// Sets lon, lat coordinates in manual tab for later assigning
+        /// </summary>
+        /// <param name="lon"></param>
+        /// <param name="lat"></param>
+        public void setLonLatFromMap(double lon, double lat)
+        {
+            manual_lat = lat;
+            manual_lon = lon;
+            manualLatTBox.Text = lat.ToString("F6", ncUtils.Glob.numformat);
+            manualLonTBox.Text = lon.ToString("F6", ncUtils.Glob.numformat);
+        }
+
+        private void cancelShedBut_Click(object sender, EventArgs e)
+        {
+            modifiedList.Clear();
+            progressLbl.Text = "Cleared";
         }
     }
 }

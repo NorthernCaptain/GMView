@@ -153,6 +153,7 @@ namespace GMView
             points.Clear();
             total_distance = 0.0;
             total_points = 0;
+            currentWayPoint = null;
         }
 
         public void updateXY(MapObject mapo)
