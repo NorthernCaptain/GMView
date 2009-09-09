@@ -82,9 +82,9 @@ namespace ncUtils
             }
             if (parts.Length >= 4) // we have degrees,minutes,seconds.fraction_of_seconds
             {
-                int integral = int.Parse(parts[0]);
-                int minutes = int.Parse(parts[1]);
-                int seconds = int.Parse(parts[2]);
+                int integral = (int)parseRationalToDouble(parts[0]);
+                int minutes = (int) parseRationalToDouble(parts[1]);
+                int seconds = (int) parseRationalToDouble(parts[2]);
                 double fractional = double.Parse(parts[3].Length > 8 ? parts[3].Substring(0, 8) : parts[3]);
 
                 result = (double)seconds + fractional / Math.Pow(10.0, (double)parts[3].Length);
@@ -94,5 +94,19 @@ namespace ncUtils
             return result;
         }
 
+        /// <summary>
+        /// Parses rational string value (ex: 14/3) and return double.
+        /// </summary>
+        /// <param name="rval"></param>
+        /// <returns></returns>
+        public static double parseRationalToDouble(string rval)
+        {
+            if (rval.Contains("/"))
+            {
+                string[] part = rval.Split('/');
+                return double.Parse(part[0]) / double.Parse(part[1]);
+            }
+            return double.Parse(rval);
+        }
     }
 }

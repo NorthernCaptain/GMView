@@ -311,6 +311,7 @@
   <ItemGroup>
     <Content Include="gmview_icon.ICO" />
     <Content Include="icon_main.ico" />
+    <None Include="Resources\kwicon1.ico" />
     <None Include="Resources\trafOff.png" />
     <None Include="Resources\trafOn.png" />
     <None Include="Resources\pointBG.png" />

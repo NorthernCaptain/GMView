@@ -363,31 +363,53 @@ namespace XnGFL
                 string val;
                 if (items.TryGetValue(makeKey(IFD.GPS_IFD, Tags.GPSInfo_GPSLongitude), out val))
                 {
-                    gps_lon = EXIFUtil.EXIFtoGPSDegrees(val);
-                    if (items.TryGetValue(makeKey(IFD.GPS_IFD, Tags.GPSInfo_GPSLongitudeRef), out val)
-                        && val.Equals("West"))
-                        gps_lon = -gps_lon;
-                    gps_lon_string = ncUtils.Glob.lonString(gps_lon);
+                    try
+                    {
+                        gps_lon = EXIFUtil.EXIFtoGPSDegrees(val);
+                        if (items.TryGetValue(makeKey(IFD.GPS_IFD, Tags.GPSInfo_GPSLongitudeRef), out val)
+                            && val.Equals("West"))
+                            gps_lon = -gps_lon;
+                        gps_lon_string = ncUtils.Glob.lonString(gps_lon);
+                    }
+                    catch (Exception ex)
+                    {
+                        gps_lon_string = "ERR:" + ex.Message;
+                    }
 
                     if (items.TryGetValue(makeKey(IFD.GPS_IFD, Tags.GPSInfo_GPSLatitude), out val))
                     {
-                        gps_lat = EXIFUtil.EXIFtoGPSDegrees(val);
-                        if (items.TryGetValue(makeKey(IFD.GPS_IFD, Tags.GPSInfo_GPSLatitudeRef), out val)
-                            && val.Equals("South"))
-                            gps_lat = -gps_lat;
-                        gps_lat_string = ncUtils.Glob.latString(gps_lat);
+                        try
+                        {
+                            gps_lat = EXIFUtil.EXIFtoGPSDegrees(val);
+                            if (items.TryGetValue(makeKey(IFD.GPS_IFD, Tags.GPSInfo_GPSLatitudeRef), out val)
+                                && val.Equals("South"))
+                                gps_lat = -gps_lat;
+                            gps_lat_string = ncUtils.Glob.latString(gps_lat);
+                        }
+                        catch (Exception ex2)
+                        {
+                            gps_lat_string = "ERR:" + ex2.Message;
+                        }
+
                         has_gps = true;
                     }
 
                     if (items.TryGetValue(makeKey(IFD.GPS_IFD, Tags.GPSInfo_GPSAltitude), out val))
                     {
-                        gps_alt = Double.Parse(val, ncUtils.Glob.numformat);
-                        if (items.TryGetValue(makeKey(IFD.GPS_IFD, Tags.GPSInfo_GPSAltitudeRef), out val)
-                            && val.Equals("Other"))
+                        try
                         {
-                            gps_alt = -gps_alt;
+                            gps_alt = Double.Parse(val, ncUtils.Glob.numformat);
+                            if (items.TryGetValue(makeKey(IFD.GPS_IFD, Tags.GPSInfo_GPSAltitudeRef), out val)
+                                && val.Equals("Other"))
+                            {
+                                gps_alt = -gps_alt;
+                            }
+                            gps_alt_string = gps_alt.ToString("F3");
                         }
-                        gps_alt_string = gps_alt.ToString("F3");
+                        catch (Exception ex3)
+                        {
+                            gps_alt_string = "ERR:" + ex3.Message;
+                        }
                     }
                 }
             }

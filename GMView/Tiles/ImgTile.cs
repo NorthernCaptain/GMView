@@ -170,6 +170,11 @@ namespace GMView
             return loadFromDisk(true);
         }
 
+        /// <summary>
+        /// Loads image tile from disk. If call_bitmap_loaded = true then loads into texture
+        /// </summary>
+        /// <param name="call_bitmap_loaded"></param>
+        /// <returns></returns>
         public bool loadFromDisk(bool call_bitmap_loaded)
         {
             string fname = getFileName();
@@ -197,22 +202,15 @@ namespace GMView
 
                     if (Program.opt.show_fname_on_image)
                     {
-                        Bitmap bmp = new Bitmap(img.Width, img.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                        Graphics gr = Graphics.FromImage(bmp);
-                        Font fnt = FontFactory.singleton.getGDIFont(FontFactory.FontAlias.Sans10B);
-                        gr.DrawImage(img, 0, 0, 256, 256);
-                        gr.DrawLine(Pens.DarkRed, 0, 0, 75, 0);
-                        gr.DrawLine(Pens.DarkRed, 0, 0, 0, 30);
-                        gr.DrawString(getFileNameOnly(), fnt, Brushes.DarkRed, 1, 16);
-                        gr.DrawString(getPathPart(), fnt, Brushes.DarkRed, 1, 1);
-                        gr.Dispose();
-                        img.Dispose();
-                        img = bmp;
+                        img = addFileInfo(img);
                     }
 
                     bitmap_loaded();
 
                 }
+                else
+                    if (Program.opt.show_fname_on_image)
+                        img = addFileInfo(img);
 
                 lock (this)
                 {
@@ -244,6 +242,29 @@ namespace GMView
             return true;
         }
 
+        /// <summary>
+        /// Draw file info on the tile
+        /// </summary>
+        /// <param name="img"></param>
+        /// <returns></returns>
+        private Bitmap addFileInfo(Bitmap img)
+        {
+            Bitmap bmp = new Bitmap(img.Width, img.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            Graphics gr = Graphics.FromImage(bmp);
+            Font fnt = FontFactory.singleton.getGDIFont(FontFactory.FontAlias.Sans10B);
+            gr.DrawImage(img, 0, 0, 256, 256);
+            gr.DrawLine(Pens.DarkRed, 0, 0, 75, 0);
+            gr.DrawLine(Pens.DarkRed, 0, 0, 0, 30);
+            gr.DrawString(getFileNameOnly(), fnt, Brushes.DarkRed, 1, 16);
+            gr.DrawString(getPathPart(), fnt, Brushes.DarkRed, 1, 1);
+            gr.Dispose();
+            img.Dispose();
+            return bmp;
+        }
+
+        /// <summary>
+        /// Virtual method that calls after image loading, we need it for loading textures into the video card
+        /// </summary>
         public virtual void bitmap_loaded()
         {
         }
