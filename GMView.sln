@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ncUtils", "ncUtils\ncUtils.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XnGFLWrap", "XnGFLWrap\XnGFLWrap.vcproj", "{BA8996D6-FED4-449B-A22E-46FBFBC6ABBB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ncGeo", "ncGeo\ncGeo.csproj", "{D2746CB8-C982-4618-9A1B-603F49F69FD1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -107,6 +109,16 @@ Global
 		{BA8996D6-FED4-449B-A22E-46FBFBC6ABBB}.Release|Mixed Platforms.Build.0 = Release|Win32
 		{BA8996D6-FED4-449B-A22E-46FBFBC6ABBB}.Release|Win32.ActiveCfg = Release|Win32
 		{BA8996D6-FED4-449B-A22E-46FBFBC6ABBB}.Release|Win32.Build.0 = Release|Win32
+		{D2746CB8-C982-4618-9A1B-603F49F69FD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2746CB8-C982-4618-9A1B-603F49F69FD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2746CB8-C982-4618-9A1B-603F49F69FD1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D2746CB8-C982-4618-9A1B-603F49F69FD1}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D2746CB8-C982-4618-9A1B-603F49F69FD1}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{D2746CB8-C982-4618-9A1B-603F49F69FD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2746CB8-C982-4618-9A1B-603F49F69FD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2746CB8-C982-4618-9A1B-603F49F69FD1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D2746CB8-C982-4618-9A1B-603F49F69FD1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D2746CB8-C982-4618-9A1B-603F49F69FD1}.Release|Win32.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

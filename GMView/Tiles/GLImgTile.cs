@@ -11,7 +11,7 @@ namespace GMView
     {
         protected object texture;
 
-        public GLImgTile(int ix_idx, int iy_idx, int izoom_lvl, MapTileType itype)
+        public GLImgTile(int ix_idx, int iy_idx, int izoom_lvl, ncGeo.MapTileType itype)
             : base(ix_idx, iy_idx, izoom_lvl, itype)
         { }
 

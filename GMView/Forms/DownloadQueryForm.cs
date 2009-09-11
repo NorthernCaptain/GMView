@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using ncGeo;
 
 namespace GMView
 {
@@ -132,7 +133,7 @@ namespace GMView
             }
         }
 
-        private void fillOneLevel(Point nxny1, Point nxny2, int zlvl, MapTileType type)
+        private void fillOneLevel(Point nxny1, Point nxny2, int zlvl, ncGeo.MapTileType type)
         {
             for (int x = nxny1.X; x <= nxny2.X; x++)
             {

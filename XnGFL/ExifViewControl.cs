@@ -440,10 +440,35 @@ namespace XnGFL
             manualLonTBox.Text = lon.ToString("F6", ncUtils.Glob.numformat);
         }
 
+        /// <summary>
+        /// Cancel all scheduled, but not executed tasks
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cancelShedBut_Click(object sender, EventArgs e)
         {
             modifiedList.Clear();
             progressLbl.Text = "Cleared";
+        }
+
+        /// <summary>
+        /// Fills in the POI combobox
+        /// </summary>
+        /// <param name="dic"></param>
+        public void setPOIs(ncGeo.IGeoCoord[] items)
+        {
+            bookmarkCB.Items.Clear();
+            bookmarkCB.Items.AddRange(items);
+            bookmarkCB.SelectedItem = null;
+        }
+
+        private void bookmarkCB_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            ncGeo.IGeoCoord item = bookmarkCB.SelectedItem as ncGeo.IGeoCoord;
+            if (item != null && needCenteringLonLat != null)
+            {
+                needCenteringLonLat(item.longitude, item.latitude);
+            }
         }
     }
 }

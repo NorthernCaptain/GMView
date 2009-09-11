@@ -24,6 +24,26 @@ namespace GMView.Forms
             this.PerformLayout();
 
             Program.onShutdown += shutdown;
+
+            BookMarkFactory.singleton.onChanged += bookmark_onChanged;
+            bookmark_onChanged(BookMarkFactory.singleton);
+        }
+
+        /// <summary>
+        /// Calls when bookmarks were changed, reloads info into exifcontrol
+        /// </summary>
+        /// <param name="factory"></param>
+        private void bookmark_onChanged(BookMarkFactory factory)
+        {
+            if (factory.bookmarks.Count == 0)
+            {
+                exifcontrol.setPOIs(null);
+                return;
+            }
+
+            Bookmark[] arr = new Bookmark[factory.bookmarks.Count];
+            factory.bookmarks.Values.CopyTo(arr, 0);
+            exifcontrol.setPOIs(arr);
         }
 
         private void GeoTagForm_FormClosing(object sender, FormClosingEventArgs e)

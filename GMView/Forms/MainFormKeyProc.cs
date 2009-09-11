@@ -155,7 +155,7 @@ namespace GMView
         void changeMapType_Key(object sender, KeyEventArgs e)
         {
             int val = (int)opt.mapType + 1;
-            if (val > (int)MapTileType.YandexSat)
+            if (val > (int)ncGeo.MapTileType.YandexSat)
                 val = 0;
             mapTypeSCombo.SelectedIndex = val;
             infoMessage("Map type: " + opt.MapTileTypeString);

@@ -117,7 +117,6 @@
     <Compile Include="Forms\MainFormKeyProc.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Geo\BaseGeo.cs" />
     <Compile Include="Geo\GoogleGeo.cs" />
     <Compile Include="Geo\YandexGeo.cs" />
     <Compile Include="Dash\DashBoardContainer.cs" />
@@ -296,7 +295,6 @@
     <Compile Include="Forms\IntroForm.Designer.cs">
       <DependentUpon>IntroForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Traffic\BaseTraffic.cs" />
     <Compile Include="Traffic\GoogleTraffic.cs" />
     <Compile Include="Traffic\YandexTraffic.cs" />
     <Compile Include="UserPosition.cs" />
@@ -446,6 +444,10 @@
     <ProjectReference Include="..\GMLBase\GMLBase.csproj">
       <Project>{C5C0008D-5D68-4BB9-9F54-D1AA723885E2}</Project>
       <Name>GMLBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ncGeo\ncGeo.csproj">
+      <Project>{D2746CB8-C982-4618-9A1B-603F49F69FD1}</Project>
+      <Name>ncGeo</Name>
     </ProjectReference>
     <ProjectReference Include="..\ncUtils\ncUtils.csproj">
       <Project>{C3A3C585-F715-4A0C-8222-F87C82AEB7EA}</Project>

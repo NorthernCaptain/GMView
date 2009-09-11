@@ -3,8 +3,25 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 
-namespace GMView
+namespace ncGeo
 {
+    public enum MapTileType
+    {
+        MapOnly, //Only street map
+        SatMap,  //Satellite view map
+        OSMMapnik, // openstreetmaps.org mapnik images
+        YandexMap, // maps.yandex.ru - images from yandex
+        YandexSat, // satellite view from yandex
+        YandexSatSteet, //satellite view with streets from yandex
+        SatStreet, //Satellite view with streets on top on it
+        TerMap, //Terrain map with streets
+        OSMRenderer, // openstreetmaps.org OSMArenderer images
+        YandexTraffic, // Yandex.Probki traffic information (Russia only)
+        GooTraffic, //Google traffic information (USA only)
+        MaxValue
+    };
+
+
     /// <summary>
     /// Base class for different geo coordinate systems
     /// </summary>

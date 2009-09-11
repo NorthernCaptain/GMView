@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
+using ncGeo;
 
 namespace GMView
 {
     /// <summary>
     /// Yandex Maps coordinate system with all their transformation calls that we need.
     /// </summary>
-    public class YandexGeo: BaseGeo
+    public class YandexGeo: ncGeo.BaseGeo
     {
         /// <summary>
         /// Earth radius in meters for mercantor projection

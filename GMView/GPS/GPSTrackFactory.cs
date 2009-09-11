@@ -8,6 +8,10 @@ namespace GMView
     public class GPSTrackFactory
     {
         private static GPSTrackFactory instance = new GPSTrackFactory();
+
+        /// <summary>
+        /// Return sigleton of the track factory
+        /// </summary>
         public static GPSTrackFactory singleton
         {
             get { return instance; }
@@ -25,6 +29,10 @@ namespace GMView
         public event TrackChanged onRecordingTrackChanged;
 
         private GPSTrack curTrack; //current track
+
+        /// <summary>
+        /// Gets or sets current track
+        /// </summary>
         public GPSTrack currentTrack
         {
             get { return curTrack; }
@@ -37,6 +45,10 @@ namespace GMView
         }
 
         private GPSTrack recTrack;
+
+        /// <summary>
+        /// Gets or sets current recording track
+        /// </summary>
         public GPSTrack recordingTrack
         {
             get { return recTrack; }

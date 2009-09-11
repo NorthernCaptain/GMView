@@ -4,6 +4,7 @@ using System.Text;
 using System.Drawing;
 using System.Net;
 using System.IO;
+using ncGeo;
 
 namespace GMView
 {

@@ -4,10 +4,11 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Drawing;
+using ncGeo;
 
 namespace GMView
 {
-    public class Bookmark: ISprite
+    public class Bookmark: ISprite, ncGeo.IGeoCoord
     {
         [XmlIgnore]
         public string id;
@@ -134,6 +135,56 @@ namespace GMView
             mapo.getXYByLonLat(lon, lat, out xy);
             x = xy.X;
             y = xy.Y;
+        }
+
+        #region IGeoCoord Members
+
+        [XmlIgnore]
+        public double longitude
+        {
+            get
+            {
+                return lon;
+            }
+            set
+            {
+                lon = value;
+            }
+        }
+
+        [XmlIgnore]
+        public double latitude
+        {
+            get
+            {
+                return lat;
+            }
+            set
+            {
+                lat = value;
+            }
+        }
+
+        /// <summary>
+        /// We do not use altitude in bookmarks, it's wrong, but ....
+        /// </summary>
+        [XmlIgnore]
+        public double altitude
+        {
+            get
+            {
+                return 0;
+            }
+            set
+            {
+            }
+        }
+
+        #endregion
+
+        public override string ToString()
+        {
+            return id;
         }
     }
 }

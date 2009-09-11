@@ -6,25 +6,10 @@ using System.IO;
 using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
+using ncGeo;
 
 namespace GMView
 {
-    public enum MapTileType
-    {
-        MapOnly, //Only street map
-        SatMap,  //Satellite view map
-        OSMMapnik, // openstreetmaps.org mapnik images
-        YandexMap, // maps.yandex.ru - images from yandex
-        YandexSat, // satellite view from yandex
-        YandexSatSteet, //satellite view with streets from yandex
-        SatStreet, //Satellite view with streets on top on it
-        TerMap, //Terrain map with streets
-        OSMRenderer, // openstreetmaps.org OSMArenderer images
-        YandexTraffic, // Yandex.Probki traffic information (Russia only)
-        GooTraffic, //Google traffic information (USA only)
-        MaxValue
-    };
-
     class Options
     {
         public delegate void OnChangedDelegate();

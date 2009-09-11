@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 
-namespace GMView
+namespace ncGeo
 {
     /// <summary>
     /// Base class for all trffic information systems

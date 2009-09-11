@@ -73,6 +73,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ncGeo\ncGeo.csproj">
+      <Project>{D2746CB8-C982-4618-9A1B-603F49F69FD1}</Project>
+      <Name>ncGeo</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ncUtils\ncUtils.csproj">
       <Project>{C3A3C585-F715-4A0C-8222-F87C82AEB7EA}</Project>
       <Name>ncUtils</Name>

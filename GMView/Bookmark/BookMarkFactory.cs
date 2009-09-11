@@ -11,13 +11,37 @@ namespace GMView
     [XmlRoot("BookmarkList")]
     public class BookMarkFactory
     {
+        /// <summary>
+        /// Instance of bookmark factory
+        /// </summary>
         private static BookMarkFactory instance = null;
 
-        //private List<Bookmark> marks = new List<Bookmark>();
+        /// <summary>
+        /// Bookmark list stored by name
+        /// </summary>
         private SortedDictionary<string, Bookmark> marks = new SortedDictionary<string, Bookmark>();
         private MapObject mapo;
 
+        public delegate void BookmarkFactoryChangedDelegate(BookMarkFactory factory);
+        /// <summary>
+        /// Event fired if bookmarks were changed in the factory
+        /// </summary>
+        public event BookmarkFactoryChangedDelegate onChanged;
+
         #region Get/Set methods + XML serialization
+        
+        /// <summary>
+        /// Return a list of bookmarks, i.e not a list but sorted dictionary
+        /// </summary>
+        [XmlIgnore]
+        public SortedDictionary<string, Bookmark> bookmarks
+        {
+            get { return marks; }
+        }
+
+        /// <summary>
+        /// Return instance of the factory
+        /// </summary>
         [XmlIgnore]
         public static BookMarkFactory singleton
         {
@@ -165,6 +189,9 @@ namespace GMView
                     grp.DropDown.Items.Add(tstrip);
                 tstrip.Click += tstrip_Click;
             }
+
+            if (onChanged != null)
+                onChanged(this);
         }
 
         public void tstrip_Click(object sender, EventArgs e)
@@ -211,7 +238,24 @@ namespace GMView
             }
         }
 
+        /// <summary>
+        /// Adds new bookmark to the factory
+        /// </summary>
+        /// <param name="newone"></param>
+        /// <returns></returns>
         public bool addBookmark(Bookmark newone)
+        {
+            bool ret = addBookmarkSilently(newone);
+            if (ret && onChanged != null)
+                onChanged(this);
+            return ret;
+        }
+        /// <summary>
+        /// Internal method for adding bookmarks
+        /// </summary>
+        /// <param name="newone"></param>
+        /// <returns></returns>
+        private bool addBookmarkSilently(Bookmark newone)
         {
             newone.makeId();
 
@@ -446,9 +490,12 @@ namespace GMView
                 if (xnode != null)
                     bmark.original_zoom = int.Parse(xnode.InnerText);
 
-                if (addBookmark(bmark))
+                if (addBookmarkSilently(bmark))
                     count++;
             }
+
+            if (onChanged != null)
+                onChanged(this);
             return count;
         }
 
@@ -486,10 +533,12 @@ namespace GMView
                         bmark.is_temporary = true;
                     }
 
-                    if (addBookmark(bmark))
+                    if (addBookmarkSilently(bmark))
                         count++;
                 }
             }
+            if (onChanged != null)
+                onChanged(this);
             return count;
         }
 
