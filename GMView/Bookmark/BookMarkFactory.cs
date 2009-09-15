@@ -5,6 +5,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Windows.Forms;
+using ncGeo;
 
 namespace GMView
 {

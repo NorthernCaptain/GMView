@@ -22,6 +22,25 @@ namespace GMView
         public static EventHandler onMenuClick;
 
         private List<GPSTrack> tracks = new List<GPSTrack>();
+        /// <summary>
+        /// Return list of tracks
+        /// </summary>
+        public List<GPSTrack> trackList
+        {
+            get { return tracks; }
+        }
+
+        /// <summary>
+        /// Delegate that need to process changes in track list
+        /// </summary>
+        /// <param name="factory"></param>
+        public delegate void onTrackListChangedDelegate(GPSTrackFactory factory);
+        /// <summary>
+        /// Event fires when track list changes
+        /// </summary>
+        public event onTrackListChangedDelegate onTrackListChanged;
+
+
         private Dictionary<GPSTrack, GPSTrackInfoForm> infos = new Dictionary<GPSTrack,GPSTrackInfoForm>();
 
         public delegate void TrackChanged(GPSTrack gtrack);
@@ -98,6 +117,9 @@ namespace GMView
             nfo.onRemove += onRemove;
 
             currentTrack = gtrack;
+
+            if (onTrackListChanged != null)
+                onTrackListChanged(this);
         }
 
         /// <summary>
@@ -108,6 +130,8 @@ namespace GMView
         {
             tracks.Remove(gtrack);
             infos.Remove(gtrack);
+            if (onTrackListChanged != null)
+                onTrackListChanged(this);
         }
 
         /// <summary>
@@ -121,6 +145,8 @@ namespace GMView
             }
             tracks.Clear();
             infos.Clear();
+            if (onTrackListChanged != null)
+                onTrackListChanged(this);
         }
 
 
@@ -129,19 +155,21 @@ namespace GMView
         /// select and resturn nearest track and point.
         /// </summary>
         /// <param name="ctx"></param>
-        public void findNearestTrack(ref GPSTrack.FindContext ctx)
+        public GPS.IFindPoint findNearestTrack(GPS.IFindPoint ctx)
         {
-            GPSTrack.FindContext curctx = ctx;
+            GPS.IFindPoint curctx;
             foreach (GPSTrack track in tracks)
             {
-                curctx.init(ctx.lon, ctx.lat);
-                track.findNearest(ref curctx);
-                if (ctx.nearest == null ||
-                    ctx.distance > curctx.distance)
+                curctx = ctx.Clone() as GPS.IFindPoint;
+
+                track.findNearest(curctx);
+                if (ctx.resultPoint == null ||
+                    ctx.CompareTo(curctx) > 0)
                 {
                     ctx = curctx;
                 }
             }
+            return ctx;
         }
 
         /// <summary>

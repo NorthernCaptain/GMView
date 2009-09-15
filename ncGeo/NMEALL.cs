@@ -4,7 +4,7 @@ using System.Text;
 using System.Drawing;
 using System.Xml.Serialization;
 
-namespace GMView
+namespace ncGeo
 {
     /// <summary>
     /// Class contains information about Lon Lat coordinates.

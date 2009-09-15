@@ -67,7 +67,7 @@ namespace GMView
         {
             if (mode == UserAction.Navigate)
             {
-                if (gtrack.markLastPoint(NMEA_LL.PointType.MWP))
+                if (gtrack.markLastPoint(ncGeo.NMEA_LL.PointType.MWP))
                     repaintMap();
             }
         }

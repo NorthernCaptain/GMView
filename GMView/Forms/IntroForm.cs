@@ -74,7 +74,7 @@ namespace GMView.Forms
             Application.DoEvents();
         }
 
-        public void NMEALog(NMEAString str)
+        public void NMEALog(ncGeo.NMEAString str)
         {
             throw new NotImplementedException();
         }

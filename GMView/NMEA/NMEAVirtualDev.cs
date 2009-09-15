@@ -50,12 +50,12 @@ namespace GMView
         /// Read one sentence and return it as NMEAString (pre-parsed)
         /// </summary>
         /// <returns></returns>
-        public NMEAString read()
+        public ncGeo.NMEAString read()
         {
             string buf = readNMEASentence();
             if (buf == null || buf.Length <= 3)
-                return new NMEAString(error_ex);
-            return new NMEAString(buf);
+                return new ncGeo.NMEAString(error_ex);
+            return new ncGeo.NMEAString(buf);
         }
 
         /// <summary>

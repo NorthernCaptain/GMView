@@ -40,8 +40,18 @@
   <ItemGroup>
     <Compile Include="BaseGeo.cs" />
     <Compile Include="BaseTraffic.cs" />
+    <Compile Include="CommonGeo.cs" />
     <Compile Include="IGeoCoord.cs" />
+    <Compile Include="NMEACommand.cs" />
+    <Compile Include="NMEALL.cs" />
+    <Compile Include="NMEAString.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ncUtils\ncUtils.csproj">
+      <Project>{C3A3C585-F715-4A0C-8222-F87C82AEB7EA}</Project>
+      <Name>ncUtils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

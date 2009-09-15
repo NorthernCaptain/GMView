@@ -470,5 +470,31 @@ namespace XnGFL
                 needCenteringLonLat(item.longitude, item.latitude);
             }
         }
+
+        /// <summary>
+        /// Asiigns new coordinates to selected items by searching them on GPS track
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void assignGPSBut_Click(object sender, EventArgs e)
+        {
+            bool needDateCorrection = needDeltaTimeCB.Checked;
+
+            foreach (ListViewItem item in dirView.SelectedItems)
+            {
+                Image img = item as Image;
+                if (img == null)
+                    continue;
+                DateTime newDate = img.exif.dateTimeOriginal - deltaTime;
+
+                if (needDateCorrection)
+                    img.exif.dateTimeOriginal = newDate;
+
+
+                addModified(img);
+            }
+            progressLbl.Text = "Scheduled: " + modifiedList.Count + " images";
+            dirView.Invalidate();
+        }
     }
 }

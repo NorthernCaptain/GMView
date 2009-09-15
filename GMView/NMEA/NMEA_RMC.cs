@@ -7,7 +7,7 @@ namespace GMView
     /// <summary>
     /// Realises RMC sentence parsing
     /// </summary>
-    public class NMEA_RMC:NMEA_LL
+    public class NMEA_RMC: ncGeo.NMEA_LL
     {
         public const double knot2km = 1.852;
 
@@ -16,7 +16,7 @@ namespace GMView
         {
         }
 
-        public NMEA_RMC(NMEAString str)
+        public NMEA_RMC(ncGeo.NMEAString str)
             : base(str)
         {
         }

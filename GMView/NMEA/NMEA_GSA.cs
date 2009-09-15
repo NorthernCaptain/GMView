@@ -7,7 +7,7 @@ namespace GMView
     /// <summary>
     /// Realises GSA sentence parsing
     /// </summary>
-    public class NMEA_GSA: NMEACommand
+    public class NMEA_GSA: ncGeo.NMEACommand
     {
         public int [] usedSatNums = new int[12];
         public int numSats = 0;
@@ -22,7 +22,7 @@ namespace GMView
         public static double lastHDOP = 0.0;
         public static int lastUsedSats = 0;
 
-        public NMEA_GSA(NMEAString str)
+        public NMEA_GSA(ncGeo.NMEAString str)
             : base(str)
         {
         }

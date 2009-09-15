@@ -8,7 +8,6 @@ namespace GMView
 {
     public class MapObject: SpriteContainer
     {
-        const double avgREarth = 6378.137; //average radius of earth in km.
         const double fastDeltaDegree = 1.0;
         static double degree2km = 0.1; //we use this for fast distance calculations
 
@@ -645,50 +644,6 @@ namespace GMView
             xy.Y = xy.Y - start_ny * Program.opt.image_hei + start_p.Y;
         }
 
-        /// <summary>
-        /// Calculates distance (in km) between two points with coordinates in lon/lat.
-        /// </summary>
-        /// <param name="lon1">point 1 lon</param>
-        /// <param name="lat1">point 1 lat</param>
-        /// <param name="lon2">point 2 lon</param>
-        /// <param name="lat2">point 2 lat</param>
-        /// <returns>distance in km</returns>
-        public static double getDistanceByLonLat(double lon1, double lat1, double lon2, double lat2)
-        {
-            //convert degrees to radians
-            lat1 = Math.PI * lat1 / 180.0;
-            lat2 = Math.PI * lat2 / 180.0;
-            lon1 = Math.PI * lon1 / 180.0;
-            lon2 = Math.PI * lon2 / 180.0;
-
-            double v1 = Math.Sin(lat1) * Math.Sin(lat2);
-            double v2 = Math.Cos(lat1)*Math.Cos(lat2)*Math.Cos(lon1 - lon2);
-            double d = Math.Acos(v1 + v2);
-            return d * avgREarth;
-        }
-
-        /// <summary>
-        /// More accurate method for distance calculation between two geo coordinates (lon, lat)
-        /// </summary>
-        /// <param name="lon1"></param>
-        /// <param name="lat1"></param>
-        /// <param name="lon2"></param>
-        /// <param name="lat2"></param>
-        /// <returns></returns>
-        public static double getDistanceByLonLat2(double lon1, double lat1, double lon2, double lat2)
-        {
-            //convert degrees to radians
-            lat1 = Math.PI * lat1 / 180.0;
-            lat2 = Math.PI * lat2 / 180.0;
-            lon1 = Math.PI * lon1 / 180.0;
-            lon2 = Math.PI * lon2 / 180.0;
-
-            double sinlat = Math.Sin((lat2 - lat1) / 2.0);
-            double sinlon = Math.Sin((lon2 - lon1) / 2.0);
-            double v1 = sinlat * sinlat + Math.Cos(lat1) * Math.Cos(lat2) * sinlon * sinlon;
-            return 2.0 * Math.Asin(Math.Sqrt(v1))* avgREarth;
-        }
-
         public static double getDistanceByLonLatFast(double lon1, double lat1, double lon2, double lat2)
         {
             double dlon = lon1 - lon2;
@@ -699,7 +654,7 @@ namespace GMView
 
         protected void updateFastDistance()
         {
-            degree2km = MapObject.getDistanceByLonLat2(center_lon, center_lat,
+            degree2km = CommonGeo.getDistanceByLonLat2(center_lon, center_lat,
                                                 center_lon + fastDeltaDegree, center_lat + fastDeltaDegree)/1.4142/fastDeltaDegree;
         }
 

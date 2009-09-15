@@ -186,11 +186,6 @@ namespace XnGFL
             get { return modified; }
         }
 
-        private bool almostEqual(double v1, double v2)
-        {
-            return Math.Abs(v1 - v2) < 0.000001;
-        }
-
         /// <summary>
         /// Gets or sets GPS longitude
         /// </summary>
@@ -199,7 +194,7 @@ namespace XnGFL
             get { return gps_lon; }
             set 
             {
-                if (almostEqual(gps_lon, value))
+                if (ncGeo.CommonGeo.almostEqual(gps_lon, value))
                     return;
 
                 gps_lon = value; 
@@ -216,7 +211,7 @@ namespace XnGFL
             get { return gps_lat;}
             set 
             {
-                if (almostEqual(gps_lat, value))
+                if (ncGeo.CommonGeo.almostEqual(gps_lat, value))
                     return;
                 gps_lat = value; 
                 gps_lat_string = ncUtils.Glob.latString(gps_lat); 
@@ -232,7 +227,7 @@ namespace XnGFL
             get { return gps_alt; }
             set
             {
-                if (almostEqual(gps_alt, value))
+                if (ncGeo.CommonGeo.almostEqual(gps_alt, value))
                     return;
                 gps_alt = value;
                 gps_alt_string = gps_alt.ToString("F3");

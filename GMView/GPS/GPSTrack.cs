@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Xml;
 using System.Xml.Serialization;
 using System.IO;
+using ncGeo;
 
 namespace GMView
 {
@@ -57,6 +58,9 @@ namespace GMView
         public bool need_arrows = true;
 
         public delegate void OnTrackChangedDelegate();
+        /// <summary>
+        /// Fires when track was changed
+        /// </summary>
         public event OnTrackChangedDelegate onTrackChanged;
 
         private int lastSavedPoint = -1;
@@ -183,12 +187,12 @@ namespace GMView
             public string dist_from_lwp;
             public string time_from_lwp;
 
-            internal void fill_all_info(FindContext ctx)
+            internal void fill_all_info(GPS.IFindPoint ctx)
             {
-                point_time = ctx.nearest.Value.utc_time.ToLocalTime().ToString("dd-MM-yy HH:mm");
-                point_speed = (ctx.nearest.Value.speed / Program.opt.km_or_miles).ToString("F1");
+                point_time = ctx.resultPoint.Value.utc_time.ToLocalTime().ToString("dd-MM-yy HH:mm");
+                point_speed = (ctx.resultPoint.Value.speed / Program.opt.km_or_miles).ToString("F1");
                 {
-                    TimeSpan tt = ctx.nearest.Value.utc_time - ctx.track.trackData.First.Value.utc_time;
+                    TimeSpan tt = ctx.resultPoint.Value.utc_time - ctx.track.trackData.First.Value.utc_time;
                     if (tt.TotalHours > 0.0)
                         time_from_start = DateTime.MinValue.Add(tt).ToString("HH:mm:ss");
                     else
@@ -199,13 +203,13 @@ namespace GMView
                     double dist_start = 0.0;
                     double dist_lwp = 0.0;
 
-                    LinkedListNode<NMEA_LL> curnode = ctx.nearest.Previous;
+                    LinkedListNode<NMEA_LL> curnode = ctx.resultPoint.Previous;
                     LinkedListNode<NMEA_LL> prevnode;
                     NMEA_LL lwp = null;
                     while (curnode != null)
                     {
                         prevnode = curnode.Next;
-                        dist_start += MapObject.getDistanceByLonLat2(prevnode.Value.lon, prevnode.Value.lat,
+                        dist_start += CommonGeo.getDistanceByLonLat2(prevnode.Value.lon, prevnode.Value.lat,
                                 curnode.Value.lon, curnode.Value.lat);
                         if (curnode.Value.ptype != NMEA_LL.PointType.TP && lwp == null)
                         {
@@ -221,7 +225,7 @@ namespace GMView
 
                     if(lwp != null)
                     {
-                        TimeSpan tt = ctx.nearest.Value.utc_time - lwp.utc_time;
+                        TimeSpan tt = ctx.resultPoint.Value.utc_time - lwp.utc_time;
                         if (tt.TotalHours > 0.0)
                             time_from_lwp = DateTime.MinValue.Add(tt).ToString("HH:mm:ss");
                     }
@@ -461,97 +465,42 @@ namespace GMView
                 reducedTrackData.Add(point);
         }
 
-
-        public struct FindContext
-        {
-            //point on the surface - we need to find track point nearest to the given coords.
-            public double lon;
-            public double lat;
-
-            //results:
-            public LinkedListNode<NMEA_LL> nearest;
-            public double distance; //distance from requested point
-            public GPSTrack track;
-
-            public FindContext(double ilon, double ilat)
-            {
-                lon = ilon;
-                lat = ilat;
-                nearest = null;
-                distance = 0.0;
-                track = null;
-            }
-
-            public void init(double ilon, double ilat)
-            {
-                lon = ilon;
-                lat = ilat;
-                nearest = null;
-                distance = 0.0;
-                track = null;
-            }
-        }
-
         /// <summary>
-        /// Find point on the track nearest to the give lon,lat in the context parameter
+        /// Find point on the track using provided find point context
         /// </summary>
         /// <param name="ctx"></param>
-        public void findNearest(ref FindContext ctx)
+        public void findNearest(GPS.IFindPoint ctx)
         {
             if (reducedTrackData.Count < 2)
                 return;
 
-            ctx.distance = MapObject.getDistanceByLonLat2(ctx.lon, ctx.lat,
-                                reducedTrackData[0].Value.lon,
-                                reducedTrackData[0].Value.lat);
-            ctx.nearest = reducedTrackData[0];
+            ctx.findStart(this, reducedTrackData[0]);
             foreach (LinkedListNode<NMEA_LL> lnode in reducedTrackData)
             {
-                double dist = MapObject.getDistanceByLonLat2(ctx.lon, ctx.lat,
-                                lnode.Value.lon,
-                                lnode.Value.lat);
-                if (ctx.distance > dist)
-                {
-                    ctx.distance = dist;
-                    ctx.nearest = lnode;
-                }
+                ctx.checkPoint(lnode);
             }
 
             int count = 0;
 
             {
-                LinkedListNode<NMEA_LL> lnode = ctx.nearest.Next;
+                LinkedListNode<NMEA_LL> lnode = ctx.resultPoint.Next;
                 for (count = 0; count < reduced_max_step && lnode != null; count++)
                 {
-                    double dist = MapObject.getDistanceByLonLat2(ctx.lon, ctx.lat,
-                                    lnode.Value.lon,
-                                    lnode.Value.lat);
-                    if (ctx.distance > dist)
-                    {
-                        ctx.distance = dist;
-                        ctx.nearest = lnode;
-                    }
+                    ctx.checkPoint(lnode);
                     lnode = lnode.Next;
                 }
             }
 
             {
-                LinkedListNode<NMEA_LL> lnode = ctx.nearest.Previous;
+                LinkedListNode<NMEA_LL> lnode = ctx.resultPoint.Previous;
                 for (count = 0; count < reduced_max_step && lnode != null; count++)
                 {
-                    double dist = MapObject.getDistanceByLonLat2(ctx.lon, ctx.lat,
-                                    lnode.Value.lon,
-                                    lnode.Value.lat);
-                    if (ctx.distance > dist)
-                    {
-                        ctx.distance = dist;
-                        ctx.nearest = lnode;
-                    }
+                    ctx.checkPoint(lnode);
                     lnode = lnode.Previous;
                 }
             }
 
-            ctx.track = this;
+            ctx.findFinish();
         }
 
         /// <summary>
@@ -883,7 +832,7 @@ namespace GMView
             foreach (NMEA_LL ll in track.trackData)
             {
                 NMEA_RMC rmc = ll as NMEA_RMC;
-                double dist = MapObject.getDistanceByLonLat2(lastll.lon, lastll.lat, ll.lon, ll.lat);
+                double dist = CommonGeo.getDistanceByLonLat2(lastll.lon, lastll.lat, ll.lon, ll.lat);
                 if ((need_day_split && rmc.utc_time.DayOfYear != lastday) ||
                     dist > distThreshold)
                 {
@@ -1287,7 +1236,7 @@ namespace GMView
                 NMEA_LL nm = linked_nm.Value;
                 if (nm != first_nm)
                 {
-                    distance_km += MapObject.getDistanceByLonLat2(first_nm.lon, first_nm.lat,
+                    distance_km += CommonGeo.getDistanceByLonLat2(first_nm.lon, first_nm.lat,
                                                             nm.lon, nm.lat);
                     if (nm.speed > travel_max_speed)
                         travel_max_speed = nm.speed;
@@ -1387,7 +1336,7 @@ namespace GMView
         {
             if (trackData.Count > 0 && lastTrackPos != null)
             {
-                distance_km += MapObject.getDistanceByLonLat2(lastTrackPos.lon,
+                distance_km += CommonGeo.getDistanceByLonLat2(lastTrackPos.lon,
                                                               lastTrackPos.lat,
                                                               nmea_ll.lon, nmea_ll.lat);
                 travel_avg_speed = Program.opt.manual_avg_speed;
@@ -1429,7 +1378,7 @@ namespace GMView
                         {
                             if (lastTrackPos != null)
                             {
-                                distance_km += MapObject.getDistanceByLonLat2(lastTrackPos.lon, lastTrackPos.lat,
+                                distance_km += CommonGeo.getDistanceByLonLat2(lastTrackPos.lon, lastTrackPos.lat,
                                                                             nmea_ll.lon, nmea_ll.lat);
                                 trav_time = nmea_ll.utc_time - trackData.First.Value.utc_time;
                                 travel_avg_speed = distance_km / trav_time.TotalHours;
@@ -1482,7 +1431,7 @@ namespace GMView
                 {
                     if (lastTrackPos != null)
                     {
-                        distance_km += MapObject.getDistanceByLonLat2(lastTrackPos.lon, lastTrackPos.lat,
+                        distance_km += CommonGeo.getDistanceByLonLat2(lastTrackPos.lon, lastTrackPos.lat,
                                                                     nmea_ll.lon, nmea_ll.lat);
                         trav_time = nmea_ll.utc_time - trackData.First.Value.utc_time;
                         travel_avg_speed = distance_km / trav_time.TotalHours;

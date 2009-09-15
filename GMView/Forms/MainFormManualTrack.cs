@@ -32,7 +32,7 @@ namespace GMView
         {
             double lon, lat;
             mapo.getLonLatByVisibleXY(mouse_p, out lon, out lat);
-            NMEA_LL nmea_ll = new NMEA_RMC(lon, lat, NMEA_LL.PointType.MWP);
+            ncGeo.NMEA_LL nmea_ll = new NMEA_RMC(lon, lat, ncGeo.NMEA_LL.PointType.MWP);
             manual_track.addManualPoint(nmea_ll);
             manual_track.show();
             repaintMap();

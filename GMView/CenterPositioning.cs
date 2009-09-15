@@ -140,7 +140,7 @@ namespace GMView
         /// </summary>
         /// <param name="gpos"></param>
         /// <returns></returns>
-        private Point getDeltaCenter(NMEA_LL gpos)
+        private Point getDeltaCenter(ncGeo.NMEA_LL gpos)
         {
             Point cur_pos = static_pos;
             int speed_factor = getSpeedFactor(gpos.speed);

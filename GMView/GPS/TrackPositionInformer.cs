@@ -21,7 +21,7 @@ namespace GMView.GPS
         protected double lon;
         protected double lat;
         protected MapObject mapo;
-        protected GPSTrack.FindContext findctx = new GPSTrack.FindContext();
+        protected GPS.FindNearestPointByDistance findctx = new FindNearestPointByDistance();
         protected GPSTrack.PointInfo pointnfo = new GPSTrack.PointInfo();
 
         public TrackPositionInformer(MapObject imapo)
@@ -49,12 +49,12 @@ namespace GMView.GPS
 
             findctx.init(lon, lat);
 
-            GPSTrackFactory.singleton.findNearestTrack(ref findctx);
-            if (findctx.nearest != null)
+            findctx = GPSTrackFactory.singleton.findNearestTrack(findctx) as FindNearestPointByDistance;
+            if (findctx.resultPoint != null)
             {
 
-                lon = findctx.nearest.Value.lon;
-                lat = findctx.nearest.Value.lat;
+                lon = findctx.resultPoint.Value.lon;
+                lat = findctx.resultPoint.Value.lat;
 
                 Point xy;
                 mapo.getVisibleXYByLonLat(lon, lat, out xy);
@@ -65,7 +65,7 @@ namespace GMView.GPS
                 int ll = (int)(Math.Sqrt(dx * dx + dy * dy));
                 if (ll > 20)
                 {
-                    findctx.nearest = null;
+                    findctx.reset();
                     hide();
                     GML.device.repaint();
                     return;
@@ -92,21 +92,21 @@ namespace GMView.GPS
 
         public void glDraw(int centerx, int centery)
         {
-            if (!shown || findctx.nearest == null)
+            if (!shown || findctx.resultPoint == null)
                 return;
             Point xy;
             mapo.getVisibleXYByLonLat(lon, lat, out xy);
             if (xy.X < 0 || xy.Y < 0 || xy.X > centerx*2 || xy.Y > centery * 2)
                 return;
 
-            if (findctx.nearest != null)
+            if (findctx.resultPoint != null)
             {
                 int capx = xy.X - centerx;
                 int capy = centery - xy.Y;
 
                 GML.device.pushMatrix();
                 GML.device.translate(capx, capy, 0);
-                GML.device.rotateZ(-findctx.nearest.Value.dir_angle);
+                GML.device.rotateZ(-findctx.resultPoint.Value.dir_angle);
                 GML.device.texDrawBegin();
                 GML.device.texFilter(arrows_tex, TexFilter.Smooth);
                 GML.device.texDraw(arrows_tex, -arrows.delta_x, arrows.delta_y, 3, arrows.img.Width, arrows.img.Height);

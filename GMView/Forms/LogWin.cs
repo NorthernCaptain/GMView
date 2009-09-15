@@ -31,7 +31,7 @@ namespace GMView
             total_lines++;
         }
 
-        public void NMEALog(NMEAString str)
+        public void NMEALog(ncGeo.NMEAString str)
         {
             if (!Program.opt.nmea_log)
                 return;

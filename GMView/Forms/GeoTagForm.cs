@@ -46,6 +46,11 @@ namespace GMView.Forms
             exifcontrol.setPOIs(arr);
         }
 
+
+        private void trackList_onChanged(GPSTrackFactory factory)
+        {
+        }
+
         private void GeoTagForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if(e.CloseReason == CloseReason.UserClosing)

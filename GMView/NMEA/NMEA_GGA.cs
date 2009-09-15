@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GMView
 {
-    public class NMEA_GGA: NMEA_LL
+    public class NMEA_GGA: ncGeo.NMEA_LL
     {
         public static double lastHeight = 0.0;
         public NMEA_GGA(): base()
@@ -12,7 +12,7 @@ namespace GMView
             utc_time = DateTime.Now;
         }
 
-        public NMEA_GGA(NMEAString str)
+        public NMEA_GGA(ncGeo.NMEAString str)
             : base(str)
         {
             utc_time = DateTime.Now;

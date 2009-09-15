@@ -7,11 +7,11 @@ namespace GMView
     /// <summary>
     /// Realises VTG sentence parsing
     /// </summary>
-    public class NMEA_VTG: NMEACommand
+    public class NMEA_VTG: ncGeo.NMEACommand
     {
         public double speed = 0.0;
 
-        public NMEA_VTG(NMEAString str)
+        public NMEA_VTG(ncGeo.NMEAString str)
             : base(str)
         {
         }

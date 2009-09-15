@@ -3,16 +3,13 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace GMView
+namespace ncGeo
 {
     /// <summary>
     /// Abstract base class for all NMEA commands
     /// </summary>
     public abstract class NMEACommand
     {
-        private static System.Globalization.CultureInfo cul = new System.Globalization.CultureInfo("");
-        private static System.Globalization.NumberFormatInfo nf = cul.NumberFormat;
-
         //[ XmlElementAttribute("nmea_data") ]
         [XmlIgnore]
         public NMEAString sentence;
@@ -87,7 +84,7 @@ namespace GMView
                 return 0.0;
             try
             {
-                return double.Parse(str, nf);
+                return double.Parse(str, ncUtils.Glob.numformat);
             }
             catch { };
             return 0.0;

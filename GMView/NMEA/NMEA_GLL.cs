@@ -7,9 +7,9 @@ namespace GMView
     /// <summary>
     /// Realises GLL NMEA command parsing
     /// </summary>
-    public class NMEA_GLL: NMEA_LL
+    public class NMEA_GLL: ncGeo.NMEA_LL
     {
-        public NMEA_GLL(NMEAString str)
+        public NMEA_GLL(ncGeo.NMEAString str)
             : base(str)
         {
             utc_time = DateTime.Now;

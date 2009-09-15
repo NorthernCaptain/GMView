@@ -7,10 +7,10 @@ namespace GMView
     /// <summary>
     /// Realises GSV (satellites in view) sentence parsing
     /// </summary>
-    public class NMEA_GSV: NMEACommand
+    public class NMEA_GSV: ncGeo.NMEACommand
     {
         private static NMEA_GSV incomplete_gsv = null;
-        public static NMEA_GSV getNewGSV(NMEAString str)
+        public static NMEA_GSV getNewGSV(ncGeo.NMEAString str)
         {
             if (incomplete_gsv == null || incomplete_gsv.readyForProcessing())
             {
@@ -29,7 +29,7 @@ namespace GMView
         public List<Satellite> satInfo;
         public static int lastVisibleSats = 0;
 
-        public NMEA_GSV(NMEAString str)
+        public NMEA_GSV(ncGeo.NMEAString str)
             : base(str)
         {
             satInfo = new List<Satellite>();

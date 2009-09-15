@@ -7,7 +7,7 @@ namespace GMView
     interface ILog
     {
         void Log(string txt);
-        void NMEALog(NMEAString str);
+        void NMEALog(ncGeo.NMEAString str);
         void Err(string txt);
 
         bool needInvoke
