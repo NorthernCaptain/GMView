@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
+using ncGeo;
 
 namespace GMView
 {
@@ -155,12 +156,12 @@ namespace GMView
         /// select and resturn nearest track and point.
         /// </summary>
         /// <param name="ctx"></param>
-        public GPS.IFindPoint findNearestTrack(GPS.IFindPoint ctx)
+        public IFindPoint findNearestTrack(IFindPoint ctx)
         {
-            GPS.IFindPoint curctx;
+            IFindPoint curctx;
             foreach (GPSTrack track in tracks)
             {
-                curctx = ctx.Clone() as GPS.IFindPoint;
+                curctx = ctx.Clone() as IFindPoint;
 
                 track.findNearest(curctx);
                 if (ctx.resultPoint == null ||

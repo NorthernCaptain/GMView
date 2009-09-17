@@ -14,7 +14,7 @@ namespace GMView
     /// This class can draw tracks on the map also.
     /// </summary>
     [ XmlRoot("gps_track") ]
-    public class GPSTrack: ISprite, IDisposable
+    public class GPSTrack: IGPSTrack, ISprite, IDisposable
     {
         protected string name = "Track: Current track";
         protected string filename = "track1.gtr";
@@ -187,12 +187,12 @@ namespace GMView
             public string dist_from_lwp;
             public string time_from_lwp;
 
-            internal void fill_all_info(GPS.IFindPoint ctx)
+            internal void fill_all_info(IFindPoint ctx)
             {
-                point_time = ctx.resultPoint.Value.utc_time.ToLocalTime().ToString("dd-MM-yy HH:mm");
+                point_time = ctx.resultPoint.Value.utc_time.ToLocalTime().ToString("dd-MM-yy HH:mm:ss");
                 point_speed = (ctx.resultPoint.Value.speed / Program.opt.km_or_miles).ToString("F1");
                 {
-                    TimeSpan tt = ctx.resultPoint.Value.utc_time - ctx.track.trackData.First.Value.utc_time;
+                    TimeSpan tt = ctx.resultPoint.Value.utc_time - ctx.track.trackPointData.First.Value.utc_time;
                     if (tt.TotalHours > 0.0)
                         time_from_start = DateTime.MinValue.Add(tt).ToString("HH:mm:ss");
                     else
@@ -300,6 +300,11 @@ namespace GMView
                 reducedAddLast(trackData.Last);
                 lastTrackPos = lastPos;
             }
+        }
+
+        public LinkedList<NMEA_LL> trackPointData
+        {
+            get { return trackData; }
         }
 
         [XmlAttributeAttribute()]
@@ -469,7 +474,7 @@ namespace GMView
         /// Find point on the track using provided find point context
         /// </summary>
         /// <param name="ctx"></param>
-        public void findNearest(GPS.IFindPoint ctx)
+        public void findNearest(IFindPoint ctx)
         {
             if (reducedTrackData.Count < 2)
                 return;

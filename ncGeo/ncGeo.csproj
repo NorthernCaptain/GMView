@@ -41,7 +41,11 @@
     <Compile Include="BaseGeo.cs" />
     <Compile Include="BaseTraffic.cs" />
     <Compile Include="CommonGeo.cs" />
+    <Compile Include="FindNearestPointByDistance.cs" />
+    <Compile Include="FindNearestPointByTime.cs" />
+    <Compile Include="IFindPoint.cs" />
     <Compile Include="IGeoCoord.cs" />
+    <Compile Include="IGPSTrack.cs" />
     <Compile Include="NMEACommand.cs" />
     <Compile Include="NMEALL.cs" />
     <Compile Include="NMEAString.cs" />

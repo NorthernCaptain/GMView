@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using ncGeo;
 
-namespace GMView.GPS
+namespace ncGeo
 {
     public interface IFindPoint: ICloneable, IComparable
     {
@@ -11,7 +10,7 @@ namespace GMView.GPS
         /// Starts searching for the point of the given track
         /// </summary>
         /// <param name="track"></param>
-        void findStart(GPSTrack track, LinkedListNode<NMEA_LL> first);
+        void findStart(IGPSTrack track, LinkedListNode<NMEA_LL> first);
 
         /// <summary>
         /// Next point for analysing search criteria on it
@@ -40,7 +39,7 @@ namespace GMView.GPS
         /// <summary>
         /// Return the track used for search
         /// </summary>
-        GPSTrack track
+        IGPSTrack track
         {
             get;
         }

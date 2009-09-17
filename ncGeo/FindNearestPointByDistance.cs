@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using ncGeo;
 
-namespace GMView.GPS
+namespace ncGeo
 {
     public class FindNearestPointByDistance : IFindPoint
     {
@@ -20,7 +19,7 @@ namespace GMView.GPS
 
         //results:
         private LinkedListNode<NMEA_LL> nearest;
-        private GPSTrack gtrack;
+        private IGPSTrack gtrack;
 
         public FindNearestPointByDistance(double ilon, double ilat)
         {
@@ -43,7 +42,7 @@ namespace GMView.GPS
 
         #region IFindPoint Members
 
-        public void findStart(GPSTrack track, LinkedListNode<NMEA_LL> first)
+        public void findStart(IGPSTrack track, LinkedListNode<NMEA_LL> first)
         {
             gtrack = track;
             distance = CommonGeo.getDistanceByLonLat2(lon, lat,
@@ -79,7 +78,7 @@ namespace GMView.GPS
             get { return nearest; }
         }
 
-        public GPSTrack track
+        public IGPSTrack track
         {
             get { return gtrack; }
         }

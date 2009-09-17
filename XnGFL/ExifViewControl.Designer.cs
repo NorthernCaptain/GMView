@@ -47,6 +47,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.manualDatePicker = new System.Windows.Forms.DateTimePicker();
             this.trackPage = new System.Windows.Forms.TabPage();
+            this.needDeltaTimeCB = new System.Windows.Forms.CheckBox();
             this.assignGPSBut = new System.Windows.Forms.Button();
             this.hourSetCB = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
@@ -63,7 +64,6 @@
             this.applyFilesBut = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.cancelShedBut = new System.Windows.Forms.Button();
-            this.needDeltaTimeCB = new System.Windows.Forms.CheckBox();
             this.filesGBox.SuspendLayout();
             this.gpsTab.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -156,7 +156,7 @@
             this.tabPage1.Controls.Add(this.manualDatePicker);
             this.tabPage1.Location = new System.Drawing.Point(4, 18);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(403, 83);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Manual";
@@ -277,11 +277,21 @@
             this.trackPage.Controls.Add(this.setDeltaFromGPSBut);
             this.trackPage.Location = new System.Drawing.Point(4, 18);
             this.trackPage.Name = "trackPage";
-            this.trackPage.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.trackPage.Padding = new System.Windows.Forms.Padding(3);
             this.trackPage.Size = new System.Drawing.Size(403, 83);
             this.trackPage.TabIndex = 1;
             this.trackPage.Text = "Track";
             this.trackPage.UseVisualStyleBackColor = true;
+            // 
+            // needDeltaTimeCB
+            // 
+            this.needDeltaTimeCB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.needDeltaTimeCB.AutoSize = true;
+            this.needDeltaTimeCB.Location = new System.Drawing.Point(382, 9);
+            this.needDeltaTimeCB.Name = "needDeltaTimeCB";
+            this.needDeltaTimeCB.Size = new System.Drawing.Size(15, 14);
+            this.needDeltaTimeCB.TabIndex = 11;
+            this.needDeltaTimeCB.UseVisualStyleBackColor = true;
             // 
             // assignGPSBut
             // 
@@ -396,6 +406,7 @@
             this.trackListCB.Name = "trackListCB";
             this.trackListCB.Size = new System.Drawing.Size(200, 21);
             this.trackListCB.TabIndex = 1;
+            this.trackListCB.SelectionChangeCommitted += new System.EventHandler(this.trackListCB_SelectionChangeCommitted);
             // 
             // label2
             // 
@@ -461,16 +472,6 @@
             this.cancelShedBut.TabIndex = 7;
             this.cancelShedBut.UseVisualStyleBackColor = true;
             this.cancelShedBut.Click += new System.EventHandler(this.cancelShedBut_Click);
-            // 
-            // needDeltaTimeCB
-            // 
-            this.needDeltaTimeCB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.needDeltaTimeCB.AutoSize = true;
-            this.needDeltaTimeCB.Location = new System.Drawing.Point(382, 9);
-            this.needDeltaTimeCB.Name = "needDeltaTimeCB";
-            this.needDeltaTimeCB.Size = new System.Drawing.Size(15, 14);
-            this.needDeltaTimeCB.TabIndex = 11;
-            this.needDeltaTimeCB.UseVisualStyleBackColor = true;
             // 
             // ExifViewControl
             // 

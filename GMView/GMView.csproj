@@ -125,10 +125,7 @@
     <Compile Include="GML\FrameTimer.cs" />
     <Compile Include="GML\IDashBoard.cs" />
     <Compile Include="Dash\MiniTilesDash.cs" />
-    <Compile Include="GPS\FindNearestPointByDistance.cs" />
-    <Compile Include="GPS\FindNearestPointByTime.cs" />
     <Compile Include="GPS\GPSTrackFactory.cs" />
-    <Compile Include="GPS\IFindPoint.cs" />
     <Compile Include="GPS\TrackPositionInformer.cs" />
     <Compile Include="ILog.cs" />
     <Compile Include="Forms\MainFormDrawPane.cs">

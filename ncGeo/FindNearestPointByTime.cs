@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using ncGeo;
 
-namespace GMView.GPS
+namespace ncGeo
 {
     public class FindNearestPointByTime: IFindPoint
     {
         //results:
         private LinkedListNode<NMEA_LL> nearest;
-        private GPSTrack gtrack;
+        private IGPSTrack gtrack;
         private DateTime fromDate;
 
         /// <summary>
@@ -32,7 +31,7 @@ namespace GMView.GPS
         /// <param name="from"></param>
         public void init(DateTime from)
         {
-            fromDate = from;
+            fromDate = from.ToUniversalTime();
             nearest = null;
             timeSpan = new TimeSpan();
             gtrack = null;
@@ -40,7 +39,7 @@ namespace GMView.GPS
 
         #region IFindPoint Members
 
-        public void findStart(GPSTrack track, LinkedListNode<NMEA_LL> first)
+        public void findStart(IGPSTrack track, LinkedListNode<NMEA_LL> first)
         {
             gtrack = track;
             nearest = first;
@@ -71,7 +70,7 @@ namespace GMView.GPS
             get { return nearest; }
         }
 
-        public GPSTrack track
+        public IGPSTrack track
         {
             get { return gtrack; }
         }

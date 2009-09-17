@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
+using ncGeo;
 
 namespace GMView.GPS
 {
@@ -21,7 +22,7 @@ namespace GMView.GPS
         protected double lon;
         protected double lat;
         protected MapObject mapo;
-        protected GPS.FindNearestPointByDistance findctx = new FindNearestPointByDistance();
+        protected FindNearestPointByDistance findctx = new FindNearestPointByDistance();
         protected GPSTrack.PointInfo pointnfo = new GPSTrack.PointInfo();
 
         public TrackPositionInformer(MapObject imapo)

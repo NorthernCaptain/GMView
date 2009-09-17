@@ -260,6 +260,23 @@ namespace XnGFL
         }
 
         /// <summary>
+        /// Sets all gps coordinates at once
+        /// </summary>
+        /// <param name="lon"></param>
+        /// <param name="lat"></param>
+        /// <param name="alt"></param>
+        public void setGPS(double lon, double lat, double alt)
+        {
+            if (!hasGPS)
+            {
+                gpsVersion = "2.2.0.0";
+            }
+            gpsLon = lon;
+            gpsLat = lat;
+            gpsAlt = alt;
+        }
+
+        /// <summary>
         /// Initializes dictionary with methods for converting parameters.
         /// </summary>
         private void initMap()

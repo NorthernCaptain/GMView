@@ -27,6 +27,9 @@ namespace GMView.Forms
 
             BookMarkFactory.singleton.onChanged += bookmark_onChanged;
             bookmark_onChanged(BookMarkFactory.singleton);
+
+            GPSTrackFactory.singleton.onTrackListChanged += trackList_onChanged;
+            trackList_onChanged(GPSTrackFactory.singleton);
         }
 
         /// <summary>
@@ -46,9 +49,24 @@ namespace GMView.Forms
             exifcontrol.setPOIs(arr);
         }
 
-
+        /// <summary>
+        /// Calls when tracklist were changed, reloads info into exifcontrol
+        /// </summary>
+        /// <param name="factory"></param>
         private void trackList_onChanged(GPSTrackFactory factory)
         {
+            if (factory.trackList.Count == 0)
+            {
+                exifcontrol.setTracks(null);
+                return;
+            }
+
+            ncGeo.IGPSTrack[] arr = new ncGeo.IGPSTrack[factory.trackList.Count];
+            int idx = 0;
+            foreach (ncGeo.IGPSTrack track in factory.trackList)
+                arr[idx++] = track;
+
+            exifcontrol.setTracks(arr);
         }
 
         private void GeoTagForm_FormClosing(object sender, FormClosingEventArgs e)

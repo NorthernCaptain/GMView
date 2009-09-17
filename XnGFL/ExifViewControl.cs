@@ -304,9 +304,12 @@ namespace XnGFL
             manualDatePicker.Value = img.exif.dateTimeOriginal;
             shotDatePicker.Value = img.exif.dateTimeOriginal;
 
-            setLonLatFromMap(img.exif.gpsLon, img.exif.gpsLat);
-            if (needCenteringLonLat != null)
-                needCenteringLonLat(img.exif.gpsLon, img.exif.gpsLat);
+            if (img.exif.hasGPS)
+            {
+                setLonLatFromMap(img.exif.gpsLon, img.exif.gpsLat);
+                if (needCenteringLonLat != null)
+                    needCenteringLonLat(img.exif.gpsLon, img.exif.gpsLat);
+            }
         }
 
         /// <summary>
@@ -368,12 +371,7 @@ namespace XnGFL
                     img.exif.dateTimeOriginal = dtnew;
                 if (needGPS)
                 {
-                    if (!img.exif.hasGPS)
-                    {
-                        img.exif.gpsVersion = "2.2.0.0";
-                    }
-                    img.exif.gpsLon = lon;
-                    img.exif.gpsLat = lat;
+                    img.exif.setGPS(lon, lat, 0);
                 }
 
                 addModified(img);
@@ -458,8 +456,21 @@ namespace XnGFL
         public void setPOIs(ncGeo.IGeoCoord[] items)
         {
             bookmarkCB.Items.Clear();
-            bookmarkCB.Items.AddRange(items);
+            if(items != null)
+                bookmarkCB.Items.AddRange(items);
             bookmarkCB.SelectedItem = null;
+        }
+
+        /// <summary>
+        /// Fills track list combobox
+        /// </summary>
+        /// <param name="items"></param>
+        public void setTracks(ncGeo.IGPSTrack[] items)
+        {
+            trackListCB.Items.Clear();
+            if(items != null)
+                trackListCB.Items.AddRange(items);
+            trackListCB.SelectedItem = null;
         }
 
         private void bookmarkCB_SelectionChangeCommitted(object sender, EventArgs e)
@@ -480,21 +491,50 @@ namespace XnGFL
         {
             bool needDateCorrection = needDeltaTimeCB.Checked;
 
+            ncGeo.IGPSTrack track = trackListCB.SelectedItem as ncGeo.IGPSTrack;
+
+            if (track == null)
+            {
+                MessageBox.Show("Please, select the track first!");
+                return;
+            }
+
             foreach (ListViewItem item in dirView.SelectedItems)
             {
                 Image img = item as Image;
                 if (img == null)
                     continue;
-                DateTime newDate = img.exif.dateTimeOriginal - deltaTime;
+                DateTime newDate = img.exif.dateTimeOriginal + deltaTime;
+
+                ncGeo.FindNearestPointByTime ctx = new ncGeo.FindNearestPointByTime(newDate);
+                track.findNearest(ctx);
+                if (ctx.timeSpan.TotalMinutes > 1 || ctx.resultPoint == null)
+                    continue;
+
+                img.exif.setGPS(ctx.resultPoint.Value.lon, ctx.resultPoint.Value.lat, ctx.resultPoint.Value.height);
 
                 if (needDateCorrection)
                     img.exif.dateTimeOriginal = newDate;
-
 
                 addModified(img);
             }
             progressLbl.Text = "Scheduled: " + modifiedList.Count + " images";
             dirView.Invalidate();
+        }
+
+        /// <summary>
+        /// Called by GUI when we select another track from the combobox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void trackListCB_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            ncGeo.IGPSTrack track = trackListCB.SelectedItem as ncGeo.IGPSTrack;
+            if (track == null)
+                return;
+
+            if(track.countPoints > 0)
+                gpsDatePicker.Value = track.startTime;
         }
     }
 }

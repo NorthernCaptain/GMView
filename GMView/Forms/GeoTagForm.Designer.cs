@@ -32,11 +32,10 @@
             // 
             // GeoTagForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(456, 756);
+            this.ClientSize = new System.Drawing.Size(432, 614);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "GeoTagForm";
             this.Text = "Image geo-tagging";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GeoTagForm_FormClosing);
