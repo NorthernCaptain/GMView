@@ -58,12 +58,13 @@
             this.label7 = new System.Windows.Forms.Label();
             this.trackListCB = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.setDeltaFromGPSBut = new System.Windows.Forms.Button();
             this.batchProgBar = new System.Windows.Forms.ProgressBar();
             this.progressLbl = new System.Windows.Forms.Label();
-            this.applyFilesBut = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.cancelShedBut = new System.Windows.Forms.Button();
+            this.applyFilesBut = new System.Windows.Forms.Button();
+            this.setDeltaFromGPSBut = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.filesGBox.SuspendLayout();
             this.gpsTab.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -76,13 +77,17 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.dirTBox.Location = new System.Drawing.Point(32, 3);
             this.dirTBox.Name = "dirTBox";
-            this.dirTBox.Size = new System.Drawing.Size(355, 20);
+            this.dirTBox.Size = new System.Drawing.Size(333, 20);
             this.dirTBox.TabIndex = 0;
             // 
             // openDirBut
             // 
             this.openDirBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.openDirBut.Location = new System.Drawing.Point(393, 3);
+            this.openDirBut.FlatAppearance.BorderSize = 0;
+            this.openDirBut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.openDirBut.Image = global::XnGFL.Properties.Resources.fileopen;
+            this.openDirBut.Location = new System.Drawing.Point(369, 3);
+            this.openDirBut.Margin = new System.Windows.Forms.Padding(1, 3, 0, 3);
             this.openDirBut.Name = "openDirBut";
             this.openDirBut.Size = new System.Drawing.Size(24, 20);
             this.openDirBut.TabIndex = 1;
@@ -417,17 +422,6 @@
             this.label2.TabIndex = 0;
             this.label2.Text = "Track:";
             // 
-            // setDeltaFromGPSBut
-            // 
-            this.setDeltaFromGPSBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.setDeltaFromGPSBut.Image = global::XnGFL.Properties.Resources.gps_on;
-            this.setDeltaFromGPSBut.Location = new System.Drawing.Point(239, 29);
-            this.setDeltaFromGPSBut.Name = "setDeltaFromGPSBut";
-            this.setDeltaFromGPSBut.Size = new System.Drawing.Size(31, 22);
-            this.setDeltaFromGPSBut.TabIndex = 8;
-            this.setDeltaFromGPSBut.UseVisualStyleBackColor = true;
-            this.setDeltaFromGPSBut.Click += new System.EventHandler(this.setDeltaFromGPSBut_Click);
-            // 
             // batchProgBar
             // 
             this.batchProgBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
@@ -440,22 +434,11 @@
             // progressLbl
             // 
             this.progressLbl.AutoSize = true;
-            this.progressLbl.Location = new System.Drawing.Point(7, 148);
+            this.progressLbl.Location = new System.Drawing.Point(7, 152);
             this.progressLbl.Name = "progressLbl";
-            this.progressLbl.Size = new System.Drawing.Size(0, 13);
+            this.progressLbl.Size = new System.Drawing.Size(38, 13);
             this.progressLbl.TabIndex = 6;
-            // 
-            // applyFilesBut
-            // 
-            this.applyFilesBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.applyFilesBut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.applyFilesBut.Image = global::XnGFL.Properties.Resources.stock_download;
-            this.applyFilesBut.Location = new System.Drawing.Point(361, 140);
-            this.applyFilesBut.Name = "applyFilesBut";
-            this.applyFilesBut.Size = new System.Drawing.Size(25, 25);
-            this.applyFilesBut.TabIndex = 5;
-            this.applyFilesBut.UseVisualStyleBackColor = true;
-            this.applyFilesBut.Click += new System.EventHandler(this.applyFilesBut_Click);
+            this.progressLbl.Text = "Ready";
             // 
             // openFileDialog
             // 
@@ -473,6 +456,43 @@
             this.cancelShedBut.UseVisualStyleBackColor = true;
             this.cancelShedBut.Click += new System.EventHandler(this.cancelShedBut_Click);
             // 
+            // applyFilesBut
+            // 
+            this.applyFilesBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.applyFilesBut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.applyFilesBut.Image = global::XnGFL.Properties.Resources.stock_download;
+            this.applyFilesBut.Location = new System.Drawing.Point(361, 140);
+            this.applyFilesBut.Name = "applyFilesBut";
+            this.applyFilesBut.Size = new System.Drawing.Size(25, 25);
+            this.applyFilesBut.TabIndex = 5;
+            this.applyFilesBut.UseVisualStyleBackColor = true;
+            this.applyFilesBut.Click += new System.EventHandler(this.applyFilesBut_Click);
+            // 
+            // setDeltaFromGPSBut
+            // 
+            this.setDeltaFromGPSBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.setDeltaFromGPSBut.Image = global::XnGFL.Properties.Resources.gps_on;
+            this.setDeltaFromGPSBut.Location = new System.Drawing.Point(239, 29);
+            this.setDeltaFromGPSBut.Name = "setDeltaFromGPSBut";
+            this.setDeltaFromGPSBut.Size = new System.Drawing.Size(31, 22);
+            this.setDeltaFromGPSBut.TabIndex = 8;
+            this.setDeltaFromGPSBut.UseVisualStyleBackColor = true;
+            this.setDeltaFromGPSBut.Click += new System.EventHandler(this.setDeltaFromGPSBut_Click);
+            // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Image = global::XnGFL.Properties.Resources.reload;
+            this.button1.Location = new System.Drawing.Point(393, 3);
+            this.button1.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(24, 20);
+            this.button1.TabIndex = 1;
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.openDirBut_Click);
+            // 
             // ExifViewControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -484,6 +504,7 @@
             this.Controls.Add(this.gpsTab);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.filesGBox);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.openDirBut);
             this.Controls.Add(this.dirTBox);
             this.DoubleBuffered = true;
@@ -538,5 +559,6 @@
         private System.Windows.Forms.Button cancelShedBut;
         private System.Windows.Forms.CheckBox needGPSCb;
         private System.Windows.Forms.CheckBox needDeltaTimeCB;
+        private System.Windows.Forms.Button button1;
     }
 }
