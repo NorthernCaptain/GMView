@@ -436,6 +436,17 @@ namespace XnGFL
             manual_lon = lon;
             manualLatTBox.Text = lat.ToString("F6", ncUtils.Glob.numformat);
             manualLonTBox.Text = lon.ToString("F6", ncUtils.Glob.numformat);
+
+            ncGeo.IGPSTrack track = trackListCB.SelectedItem as ncGeo.IGPSTrack;
+            if (track != null)
+            {
+                ncGeo.FindNearestPointByDistance ctx = new ncGeo.FindNearestPointByDistance(lon, lat);
+                track.findNearest(ctx);
+                if (ctx.distance < 20.0 && ctx.resultPoint != null)
+                {
+                    gpsDatePicker.Value = ctx.resultPoint.Value.utc_time.ToLocalTime();
+                }
+            }
         }
 
         /// <summary>
@@ -535,6 +546,16 @@ namespace XnGFL
 
             if(track.countPoints > 0)
                 gpsDatePicker.Value = track.startTime;
+        }
+
+        /// <summary>
+        /// Called when clicked on map with new lon,lat
+        /// </summary>
+        /// <param name="lon"></param>
+        /// <param name="lat"></param>
+        public void clickLonLat(double lon, double lat)
+        {
+
         }
     }
 }

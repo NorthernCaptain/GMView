@@ -210,6 +210,7 @@ namespace GMView
             geoTagForm.Owner = this;
             geoTagger.needCenteringLonLat += centerMapLonLat;
             mapo.onCenterChanged += geoTagger.setLonLatFromMap;
+            this.onClickLonLat += geoTagger.clickLonLat;
         }
 
         void GMViewForm_onLostDevice(object sender, EventArgs e)

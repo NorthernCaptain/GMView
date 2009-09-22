@@ -69,6 +69,11 @@ namespace GMView.Forms
             exifcontrol.setTracks(arr);
         }
 
+        /// <summary>
+        /// do not dispose on closing, just hide it
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void GeoTagForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if(e.CloseReason == CloseReason.UserClosing)
@@ -80,5 +85,6 @@ namespace GMView.Forms
         {
             exifcontrol.shutdown();
         }
+
     }
 }

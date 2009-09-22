@@ -53,6 +53,12 @@ namespace GMView
         public event MethodInvoker onEnterSelectMode;
         public event MethodInvoker onEnterMTrackMode;
 
+        /// <summary>
+        /// Event occured when we click (single) on map and have new lon,lat coordinates
+        /// Works only in Navigate mode.
+        /// </summary>
+        public event MapObject.onLonLatChange onClickLonLat;
+
         #region drawPane hook methods
 
         const int autoScrollDelta = 15;
@@ -336,8 +342,10 @@ namespace GMView
 
                                 double lon, lat;
                                 Program.Log("Single click detected at position: " + mouse_release_p.ToString());
-                                mapo.getLonLatByVisibleXY(mouse_release_p, out lon, out lat);
+                                mapo.getLonLatByVisibleXY(GML.translateAbsToScene(mouse_release_p), out lon, out lat);
                                 lonlatSLab.Text = "Lat: " + lat.ToString("F3") + " Lon: " + lon.ToString("F3");
+                                if (onClickLonLat != null)
+                                    onClickLonLat(lon, lat);
                             }
                             break;
                         case UserAction.Zoom:
