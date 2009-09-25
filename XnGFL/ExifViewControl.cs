@@ -99,13 +99,7 @@ namespace XnGFL
                 return;
             dirTBox.Text = Path.GetDirectoryName(openFileDialog.FileName);
 
-            clearList();
-
-            ExifImageLoader loader = new ExifImageLoader(this, dirTBox.Text, imgWidth, imgHeight);
-            loader.onPartialCompletion = this.loadingPartiallyDone;
-            imageLoader.addTask(loader);
-
-            filesGBox.Text = "Files: [Loading ...]";
+            refreshDirBut_Click(sender, e);
         }
 
         /// <summary>
@@ -556,6 +550,25 @@ namespace XnGFL
         public void clickLonLat(double lon, double lat)
         {
 
+        }
+
+        /// <summary>
+        /// Refreshes the list view - reloads images from disk
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void refreshDirBut_Click(object sender, EventArgs e)
+        {
+            if (dirTBox.Text.Length == 0)
+                return;
+
+            clearList();
+
+            ExifImageLoader loader = new ExifImageLoader(this, dirTBox.Text, imgWidth, imgHeight);
+            loader.onPartialCompletion = this.loadingPartiallyDone;
+            imageLoader.addTask(loader);
+
+            filesGBox.Text = "Files: [Loading ...]";
         }
     }
 }
