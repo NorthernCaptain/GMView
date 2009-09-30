@@ -38,7 +38,6 @@ namespace GMView
 
         public void start()
         {
-            newDev();
             ourThread.Start(this);
             Program.onShutdown += new Program.ShutdownDelegate(Program_onShutdown);
             Program.opt.onChanged += new Options.OnChangedDelegate(opt_onChanged);
@@ -47,7 +46,7 @@ namespace GMView
         private void newDev()
         {
             NMEAVirtualDev newdev;
-            if(Program.opt.emulate_gps)
+            if(Program.opt.emulate_gps || !Program.opt.use_gps)
                 newdev = new NMEAEmuDev();
             else 
                 newdev = new NMEACom();
@@ -77,6 +76,7 @@ namespace GMView
 
         private void devRead()
         {
+            newDev();
             while (true)
             {
                 NMEAString nmea;
