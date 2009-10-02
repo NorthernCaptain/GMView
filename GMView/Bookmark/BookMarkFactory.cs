@@ -152,11 +152,11 @@ namespace GMView
 
         #endregion
 
-        internal class TStripBookI : ToolStripMenuItem
+        public class TStripBookI : ToolStripMenuItem
         {
         }
 
-        internal class TStripBookItem : TStripBookI
+        public class TStripBookItem : TStripBookI
         {
             internal Bookmark bmark;
             internal TStripBookItem(Bookmark imark)
@@ -176,7 +176,21 @@ namespace GMView
             }
         }
 
+        //First level menu list with subgroups
         ToolStripItemCollection tsitems;
+
+        //All menu items in all subgroups except groups
+        private List<TStripBookItem> allMenuItems = new List<TStripBookItem>();
+
+        /// <summary>
+        /// Return list of all menu items that are bookmarks
+        /// </summary>
+        [XmlIgnore]
+        public List<TStripBookItem> menuItems
+        {
+            get { return allMenuItems; }
+        }
+
         public void fillMenuItems(ToolStripItemCollection items)
         {
             tsitems = items;
@@ -184,6 +198,7 @@ namespace GMView
             {
                 TStripBookItem tstrip = new TStripBookItem(pair.Value);
                 TStripBookGroup grp = findGroup(pair.Value.group);
+                allMenuItems.Add(tstrip);
                 if (grp == null)
                     tsitems.Add(tstrip);
                 else
@@ -267,6 +282,7 @@ namespace GMView
 
             TStripBookGroup grp = findGroup(newone.group);
             TStripBookItem tstrip = new TStripBookItem(newone);
+            allMenuItems.Add(tstrip);
             if (grp == null)
                 tsitems.Add(tstrip);
             else
@@ -464,18 +480,18 @@ namespace GMView
                 xnode = node.SelectSingleNode("./gpx:name", nsm);
                 if (xnode == null)
                     continue;
-                bmark.name = xnode.InnerText;
+                bmark.name = xnode.InnerText.Trim();
 
                 xnode = node.SelectSingleNode("./gpx:desc", nsm);
                 if (xnode != null)
-                    bmark.comment = xnode.InnerText;
+                    bmark.comment = xnode.InnerText.Trim();
                 if (groupname == null)
                 {
                     bmark.group = "Imported";
 
                     xnode = node.SelectSingleNode("./gpx:extensions/gpx:group", nsm);
                     if (xnode != null)
-                        bmark.group = xnode.InnerText;
+                        bmark.group = xnode.InnerText.Trim();
                 }
                 else
                 {

@@ -1454,9 +1454,8 @@ namespace GMView
 
         private void hideAllBMarksMI_Click(object sender, EventArgs e)
         {
-            foreach (ToolStripItem ti in poiMI.DropDown.Items)
+            foreach (BookMarkFactory.TStripBookItem bitem in BookMarkFactory.singleton.menuItems)
             {
-                BookMarkFactory.TStripBookItem bitem = ti as BookMarkFactory.TStripBookItem;
                 if (bitem != null)
                 {
                     bitem.Checked = false;
