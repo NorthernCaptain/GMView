@@ -145,8 +145,10 @@ namespace GMView
             public string travelTime="";
             public string travelDistance="";
 
-            public string satUsed="";
-            public string satHDOP="";
+            public string satUsed = "";
+            public string satHDOP = "";
+            public string utcTime = "";
+            public string timeZone = "";
 
             /// <summary>
             /// Fills text information from GPSTrack for displaying in the GPS dashboard
@@ -173,6 +175,9 @@ namespace GMView
 
                 satUsed = pos.usedSats.ToString() + "/" + pos.visibleSats;
                 satHDOP = pos.HDOP.ToString("F1");
+
+                utcTime = pos.utc_time.ToString("dd/MM/yy HH:mm:ss");
+                timeZone = pos.utc_time.ToLocalTime().ToString("zzz");
             }
         }
 

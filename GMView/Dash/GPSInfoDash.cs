@@ -160,6 +160,9 @@ namespace GMView
                     fnt.drawright(info.travelDistance, ix + 258, iy - 231, 0);
                     fnt.drawright(info.travelTime, ix + 134, iy - 231, 0);
 
+                    fnt.draw(info.timeZone, ix + 64, iy - 334, 0);
+                    fnt.draw(info.utcTime, ix + 25, iy - 348, 0);
+
                     satfnt.drawright(info.satUsed, ix + 134, iy - 270, 0);
                     satfnt.drawright(info.satHDOP, ix + 134, iy - 288, 0);
                 }
