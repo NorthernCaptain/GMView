@@ -214,6 +214,27 @@ namespace GMView.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap dotgreen {
+            get {
+                object obj = ResourceManager.GetObject("dotgreen", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap dotred {
+            get {
+                object obj = ResourceManager.GetObject("dotred", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap dotyellow {
+            get {
+                object obj = ResourceManager.GetObject("dotyellow", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap exit {
             get {
                 object obj = ResourceManager.GetObject("exit", resourceCulture);

@@ -68,7 +68,10 @@ namespace GMView
             HDOP_4_Fair,
             CrossHair1,
             ArrowPoint,
-            PointBG
+            PointBG,
+            DotRed,
+            DotGreen,
+            DotYellow
         };
 
         private static TextureFactory instance = new TextureFactory();
@@ -140,6 +143,9 @@ namespace GMView
             images.Add(TexAlias.CrossHair1, new ImageDot(global::GMView.Properties.Resources.crosshair1, 12, 12));
             images.Add(TexAlias.ArrowPoint, new ImageDot(global::GMView.Properties.Resources.arrow_point, 15, 48));
             images.Add(TexAlias.PointBG, new ImageDot(global::GMView.Properties.Resources.pointBG, 223, 148));
+            images.Add(TexAlias.DotRed, new ImageDot(global::GMView.Properties.Resources.dotred, 10, 10));
+            images.Add(TexAlias.DotGreen, new ImageDot(global::GMView.Properties.Resources.dotgreen, 10, 10));
+            images.Add(TexAlias.DotYellow, new ImageDot(global::GMView.Properties.Resources.dotyellow, 10, 10));
         }
 
         public void initGLData()

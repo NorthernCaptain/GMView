@@ -125,6 +125,7 @@
     <Compile Include="GML\FrameTimer.cs" />
     <Compile Include="GML\IDashBoard.cs" />
     <Compile Include="Dash\MiniTilesDash.cs" />
+    <Compile Include="GML\WindRose.cs" />
     <Compile Include="GPS\GPSTrackFactory.cs" />
     <Compile Include="GPS\TrackPositionInformer.cs" />
     <Compile Include="ILog.cs" />
@@ -306,6 +307,9 @@
   <ItemGroup>
     <Content Include="gmview_icon.ICO" />
     <Content Include="icon_main.ico" />
+    <None Include="Resources\dotred.png" />
+    <None Include="Resources\dotgreen.png" />
+    <None Include="Resources\dotyellow.png" />
     <None Include="Resources\kwicon1.ico" />
     <None Include="Resources\trafOff.png" />
     <None Include="Resources\trafOn.png" />

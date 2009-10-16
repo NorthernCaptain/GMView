@@ -60,6 +60,8 @@ namespace GMView
         private XnGFL.ExifViewControl geoTagger;
         private Forms.GeoTagForm geoTagForm;
 
+        private WindRose wind_rose;
+
         #region Our events
         private delegate void onStartDownloadDelegate(int total_pieces);
         private delegate void onProgressDownloadDelegate(ImgTile tile, double percent);
@@ -329,6 +331,13 @@ namespace GMView
             FrameTimer.singleton.onUpdated += new EventHandler(frametimer_onUpdated);
             FrameTimer.singleton.Start();
             gpsdash.start();
+
+            wind_rose = new WindRose();
+            wind_rose.initGLData();
+
+            mapo.addSub(wind_rose);
+            if (opt.show_wind_rose)
+                wind_rose.show();
         }
 
         /// <summary>
@@ -1483,6 +1492,10 @@ namespace GMView
         {
             opt.show_wind_rose = windRoseMI.Checked;
             opt.Save();
+            if (opt.show_wind_rose)
+                wind_rose.show();
+            else
+                wind_rose.hide();
             repaintMap();
         }
 

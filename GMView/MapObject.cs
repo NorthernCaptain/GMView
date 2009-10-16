@@ -593,6 +593,31 @@ namespace GMView
                 CenterMapLonLat(parentMapo.center_lon, parentMapo.center_lat);
             }
         }
+        /// <summary>
+        /// Reload all blocks displayed on the screen from site,
+        /// even if they have already been downloaded earlier
+        /// </summary>
+        internal void reloadScreen()
+        {
+            int sy = -1, size_ny = size_nh + 2;
+            int sx = -1, size_nx = size_nw + 2;
+
+            if (rotate_angle > 0.01 || rotate_angle < -0.01)
+            {
+                sy = -2;
+                size_ny += 1;
+            }
+
+            startTileAcquisition();
+            for (int x = sx; x < size_nx; x++)
+            {
+                for (int y = sy; y < size_ny; y++)
+                {
+                    img_collector.reloadImage(start_nx + x, start_ny + y, zoom_lvl, Program.opt.mapType);
+                }
+            }
+            endTileAcquisition();
+        }
 
         #endregion
 
@@ -662,6 +687,10 @@ namespace GMView
 
         #region ISprite Members
 
+        /// <summary>
+        /// Depricated api call
+        /// </summary>
+        /// <param name="gr"></param>
         public override void draw(Graphics gr)
         {
             if (childMode)
@@ -691,11 +720,27 @@ namespace GMView
             base.draw(gr);
         }
 
+        /// <summary>
+        /// Depricated api call
+        /// </summary>
+        /// <param name="gr"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
         public override void draw(Graphics gr, int x, int y)
         {
             draw(gr);
         }
 
+        /// <summary>
+        /// Draw tiles on the screen for the given type
+        /// </summary>
+        /// <param name="centerx"></param>
+        /// <param name="centery"></param>
+        /// <param name="sx"></param>
+        /// <param name="sy"></param>
+        /// <param name="size_nx"></param>
+        /// <param name="size_ny"></param>
+        /// <param name="mType"></param>
         protected void drawTiles(int centerx, int centery, int sx, int sy, int size_nx, int size_ny, MapTileType mType)
         {
             for (int x = sx; x < size_nx; x++)
@@ -711,6 +756,16 @@ namespace GMView
 
         }
 
+        /// <summary>
+        /// Draw tiles using multithreaded mechanism for loading tile images from disk
+        /// </summary>
+        /// <param name="centerx"></param>
+        /// <param name="centery"></param>
+        /// <param name="sx"></param>
+        /// <param name="sy"></param>
+        /// <param name="size_nx"></param>
+        /// <param name="size_ny"></param>
+        /// <param name="mType"></param>
         protected void drawTilesMT(int centerx, int centery, int sx, int sy, int size_nx, int size_ny, MapTileType mType)
         {
             img_collector.startLoadThreaded();
@@ -746,6 +801,11 @@ namespace GMView
                     geoSystem.trafficSystem.trafficTileType);
         }
 
+        /// <summary>
+        /// Main draw routine - draw map from tiles and calls all its children
+        /// </summary>
+        /// <param name="centerx"></param>
+        /// <param name="centery"></param>
         public override void glDraw(int centerx, int centery)
         {
             ncUtils.Glob.lastRefreshTicks = DateTime.Now.Ticks;
@@ -803,16 +863,6 @@ namespace GMView
             if(Program.opt.fog_of_war)
                 ImgCacheManager.singleton.glDrawOnScreenGrid(centerx, centery);
 
-            if(Program.opt.show_wind_rose)
-            { //rose
-                ImageDot imd = TextureFactory.singleton.getImg(TextureFactory.TexAlias.Rose);
-                object tex = TextureFactory.singleton.getTex(imd);
-                GML.device.texDrawBegin();
-                GML.device.texFilter(tex, TexFilter.Pixel);
-                GML.device.texDraw(tex, -imd.delta_x, imd.delta_y, 0, imd.img.Width, imd.img.Height);
-                GML.device.texDrawEnd();
-            }
-
             //test
             //GML.device.rectDraw(0, 0, 100, 100, 0, Color.FromArgb(155, Color.DarkRed));
 
@@ -820,26 +870,5 @@ namespace GMView
         }
         #endregion
 
-        internal void reloadScreen()
-        {
-            int sy = -1, size_ny = size_nh+2;
-            int sx = -1, size_nx = size_nw+2;
-
-            if (rotate_angle > 0.01 || rotate_angle < -0.01)
-            {
-                sy = -2;
-                size_ny += 1;
-            }
-
-            startTileAcquisition();
-            for (int x = sx; x < size_nx; x++)
-            {
-                for (int y = sy; y < size_ny; y++)
-                {
-                    img_collector.reloadImage(start_nx + x, start_ny + y, zoom_lvl, Program.opt.mapType);
-                }
-            }
-            endTileAcquisition();
-        }
-    }
+     }
 }
