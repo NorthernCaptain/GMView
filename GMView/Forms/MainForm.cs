@@ -1609,7 +1609,8 @@ namespace GMView
         /// <param name="e"></param>
         private void GeoTagMI_Click(object sender, EventArgs e)
         {
-            geoTagForm.Visible = true;
+            geoTagForm.show(this.DesktopLocation.X + this.Size.Width - geoTagForm.Size.Width,
+                    this.DesktopLocation.Y + this.Size.Height - geoTagForm.Size.Height);
         }
 
     }

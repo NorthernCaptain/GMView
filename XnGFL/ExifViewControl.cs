@@ -570,5 +570,28 @@ namespace XnGFL
 
             filesGBox.Text = "Files: [Loading ...]";
         }
+
+        private ImagePreview imview = new ImagePreview();
+
+        private void dirView_MouseUp(object sender, MouseEventArgs e)
+        {
+            imview.hideImage();
+        }
+
+        private void dirView_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.X < imgWidth)
+            {
+                Image img = dirView.GetItemAt(e.X, e.Y) as Image;
+                if (img != null)
+                {
+                    
+                    imview.showImage(img.filename);
+                    imview.SetDesktopLocation(this.ParentForm.DesktopLocation.X 
+                        + this.ParentForm.Size.Width - imview.Size.Width,
+                        this.ParentForm.DesktopLocation.Y);
+                }
+            }
+        }
     }
 }

@@ -315,7 +315,7 @@ namespace GMView
         [XmlAttributeAttribute()]
         public string who
         {
-            get { return "GMView v." + Options.program_version; }
+            get { return "Knowhere v." + Options.program_version; }
             set { }
         }
 
@@ -600,10 +600,13 @@ namespace GMView
                 writer.WriteElementString("ele", tp.height.ToString("F3", nf));
                 writer.WriteElementString("hdop", tp.HDOP.ToString("F1", nf));
                 writer.WriteElementString("sat", tp.usedSats.ToString());
-                writer.WriteStartElement("extensions");
-                writer.WriteElementString("vel", tp.speed.ToString("F2", nf));
-                writer.WriteElementString("dir", tp.dir_angle.ToString("F1", nf));
-                writer.WriteEndElement(); //extensions
+                if (tp.speed != 0 || tp.dir_angle != 0)
+                {
+                    writer.WriteStartElement("extensions");
+                    writer.WriteElementString("vel", tp.speed.ToString("F2", nf));
+                    writer.WriteElementString("dir", tp.dir_angle.ToString("F1", nf));
+                    writer.WriteEndElement(); //extensions
+                }
                 writer.WriteEndElement(); //trkpt
 
                 //if we have stay waypoint, then start new track segment
@@ -923,7 +926,7 @@ namespace GMView
         }
 
         /// <summary>
-        /// Loads GPSTrack from Google Erath KML file. Throws an ApplicationException if something goes wrong
+        /// Loads GPSTrack from Google Earth KML file. Throws an ApplicationException if something goes wrong
         /// </summary>
         /// <param name="fname"></param>
         /// <returns></returns>
@@ -931,14 +934,15 @@ namespace GMView
         {
             XmlDocument doc = new XmlDocument();
 
+            XmlNamespaceManager nsm = new XmlNamespaceManager(doc.NameTable);
+            nsm.AddNamespace("xlink", "http://www.w3.org/1999/xlink");
+
             doc.Load(fname);
 
             if (doc.DocumentElement.Name != "kml")
                 throw new ApplicationException("Not a valid KML file! Could not find kml root tag.");
 
-            XmlNamespaceManager nsm = new XmlNamespaceManager(doc.NameTable);
-
-            { //retreive xmlns
+            { //retrieve xmlns
                 XmlNode xnsnode = doc.DocumentElement.Attributes.GetNamedItem("xmlns");
                 if (xnsnode != null)
                     nsm.AddNamespace("kml", xnsnode.Value);
@@ -955,26 +959,24 @@ namespace GMView
             track.name = "Track: " + dirname.Substring(dirname.LastIndexOf(Path.DirectorySeparatorChar) + 1) + Path.DirectorySeparatorChar + Path.GetFileNameWithoutExtension(fname);
             track.way.name = "Route: " + Path.GetFileNameWithoutExtension(fname);
 
+            XmlNode folder = selectKMLFolders(doc, nsm, track);
+            XmlNode titleNode = null;
 
-            XmlNodeList nlist = doc.DocumentElement.SelectNodes("//kml:Placemark", nsm);
+            if(folder == null)
+            {
+                throw new ApplicationException("This file does not have any tracks or routes! Check file content");
+            }
+
+            XmlNodeList nlist = folder.SelectNodes("./kml:Placemark", nsm);
             string nodeval="";
             foreach (XmlNode xnode in nlist)
             {
                 if (track.xmltag(xnode, "./kml:LineString/kml:coordinates", nsm, ref nodeval) ||
                     track.xmltag(xnode, "./*/kml:LineString/kml:coordinates", nsm, ref nodeval))
                 {
-                    if (track.trackData.Count > 0) //we have already had one track, so skip the others
-                        continue;
-
                     track.loadKMLPoints(nodeval);
-                    if (track.xmltag(xnode, "./kml:name", nsm, ref nodeval))
-                    {
-                        if (nodeval.Length>7 && nodeval.Substring(0, 7) == "Track: ")
-                            nodeval = nodeval.Substring(7);
-                        track.name = "Track: " + nodeval;
-                        track.way.name = "Route: " + nodeval;
-                    }
-                    continue;
+                    if (titleNode == null)
+                        titleNode = xnode.SelectSingleNode("./kml:name", nsm);
                 }
 
             }
@@ -982,6 +984,17 @@ namespace GMView
             if (track.trackData.Count == 0)
                 throw new ApplicationException("This file does not have any tracks or routes! Check file content");
 
+            if (titleNode == null)
+                titleNode = folder.SelectSingleNode("./kml:name", nsm);
+
+            if (titleNode != null)
+            {
+                nodeval = titleNode.InnerText;
+                if (nodeval.Length > 7 && nodeval.Substring(0, 7) == "Track: ")
+                    nodeval = nodeval.Substring(7);
+                track.name = "Track: " + nodeval;
+                track.way.name = "Route: " + nodeval;
+            }
 
             BookMarkFactory.singleton.loadTemporaryBookmarks(track.track_name, nlist, nsm);
 
@@ -990,6 +1003,26 @@ namespace GMView
             track.lastSpeedPos = track.lastPos;
 
             return track;
+        }
+
+        /// <summary>
+        /// Searches for Folder tags and return first folder that contains coordinates
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="nsm"></param>
+        /// <param name="track"></param>
+        /// <returns></returns>
+        private static XmlNode selectKMLFolders(XmlDocument doc, XmlNamespaceManager nsm, GPSTrack track)
+        {
+            string nodeval="";
+            XmlNodeList nlist = doc.DocumentElement.SelectNodes("//kml:Folder", nsm);
+            foreach (XmlNode xnode in nlist)
+            {
+                if (track.xmltag(xnode, "./kml:Placemark/kml:LineString/kml:coordinates", nsm, ref nodeval)
+                    || track.xmltag(xnode, "./kml:Placemark/*/kml:LineString/kml:coordinates", nsm, ref nodeval))
+                    return xnode;
+            }
+            return null;
         }
 
         private void loadKMLPoints(string nodeval)
@@ -1050,7 +1083,7 @@ namespace GMView
 
                 XmlNamespaceManager nsm = new XmlNamespaceManager(doc.NameTable);
                 
-                { //retreive xmlns
+                { //retrieve xmlns
                     XmlNode xnsnode = doc.DocumentElement.Attributes.GetNamedItem("xmlns");
                     if (xnsnode != null)
                         nsm.AddNamespace("gpx", xnsnode.Value);

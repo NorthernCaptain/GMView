@@ -12,6 +12,8 @@ namespace GMView.Forms
     {
         private XnGFL.ExifViewControl exifcontrol;
 
+        private bool needPosition = true;
+
         public GeoTagForm(XnGFL.ExifViewControl eview)
         {
             exifcontrol = eview;
@@ -86,5 +88,14 @@ namespace GMView.Forms
             exifcontrol.shutdown();
         }
 
+        public void show(int x, int y)
+        {
+            this.Visible = true;
+            if(needPosition)
+            {
+                this.SetDesktopLocation(x, y);
+                needPosition = false;
+            }
+        }
     }
 }

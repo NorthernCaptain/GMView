@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Northern Captain Software")]
 [assembly: AssemblyProduct("Knowhere")]
-[assembly: AssemblyCopyright("Copyright © 2008 by Leonid Khramov <leo@xnc.jinr.ru>")]
+[assembly: AssemblyCopyright("Copyright © 2008-2009 by Leonid Khramov <leo@xnc.jinr.ru>")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.6.0.4")]
-[assembly: AssemblyFileVersion("1.6.0.4")]
+[assembly: AssemblyVersion("1.6.0.5")]
+[assembly: AssemblyFileVersion("1.6.0.5")]
