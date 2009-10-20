@@ -24,8 +24,12 @@ namespace XnGFL
         {
             Size sz = this.Size;
             img = new Image(fname);
-            //if(!fname.EndsWith("jpg", true, System.Globalization.CultureInfo.CurrentCulture))
-                img.thumbnail = true;
+            //This is a hack for JPG images, they contain only small preview.
+            if (!fname.EndsWith("jpg", true, System.Globalization.CultureInfo.CurrentCulture))
+                img.thumbnail = Image.ThumbnailType.EmbeddedThumbnail;
+            else
+                img.thumbnail = Image.ThumbnailType.ResizedThumbnail;
+
             if (img.Load(sz.Width, sz.Height) != Common.GFL_ERROR.NOERROR)
             {
                 img = null;

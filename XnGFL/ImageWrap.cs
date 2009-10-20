@@ -236,5 +236,8 @@ namespace XnGFL
         [DllImport(Common.GFL_DLL, EntryPoint = "gflFreeBitmap")]
         public static extern Common.GFL_ERROR FreeBitmap(BITMAP bitmap);
 
+        [DllImport(Common.GFL_DLL, EntryPoint = "gflResize")]
+        public static extern Common.GFL_ERROR Resize(BITMAP src, out BITMAP dst, Int32 width, Int32 height, Int32 method, Int32 flags);
+
     }
 }

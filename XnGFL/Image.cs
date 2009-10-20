@@ -9,6 +9,20 @@ namespace XnGFL
 {
     public class Image: ListViewItem, IDisposable
     {
+        public enum ThumbnailType {
+            /// <summary>
+            /// No thumbnail - full image
+            /// </summary>
+            NoThumbnail = 0,
+            /// <summary>
+            /// Use thumbnail embedded into image
+            /// </summary>
+            EmbeddedThumbnail = 1, 
+            /// <summary>
+            /// Build thumbnail, do not use embedded one
+            /// </summary>
+            ResizedThumbnail = 2 
+        };
         /// <summary>
         /// Original filename
         /// </summary>
@@ -18,7 +32,7 @@ namespace XnGFL
         /// </summary>
         ImageWrap.LOAD_PARAMS param;
         ImageWrap.BITMAP ibitmap;
-        bool is_thumbnail = false;
+        ThumbnailType is_thumbnail = ThumbnailType.NoThumbnail;
 
         /// <summary>
         /// Bitmap image for displaying
@@ -47,7 +61,7 @@ namespace XnGFL
         /// <summary>
         /// Gets or sets thumbnail mode. Use before loading image
         /// </summary>
-        public bool thumbnail
+        public ThumbnailType thumbnail
         {
             get { return is_thumbnail; }
             set { is_thumbnail = value; }
@@ -74,10 +88,11 @@ namespace XnGFL
             try
             {
                 Common.GFL_ERROR errcode;
-                if (is_thumbnail)
+                if (is_thumbnail != ThumbnailType.NoThumbnail)
                 {
                     ImageWrap.GetDefaultThumbnailParams(ref param);
-                    param.Flags |= (uint)ImageWrap.LOAD_FLAGS.EMBEDDED_THUMBNAIL;
+                    if(is_thumbnail == ThumbnailType.EmbeddedThumbnail)
+                        param.Flags |= (uint)ImageWrap.LOAD_FLAGS.EMBEDDED_THUMBNAIL;
                     param.Flags |= (uint)ImageWrap.LOAD_FLAGS.ORIENTED_THUMBNAIL;
                     param.Flags |= (uint)ImageWrap.LOAD_FLAGS.METADATA;
                     errcode = ImageWrap.LoadThumbnail(fname, w, h, out ibitmap, ref param, IntPtr.Zero);
@@ -88,6 +103,21 @@ namespace XnGFL
                     param.Flags |= (uint)ImageWrap.LOAD_FLAGS.METADATA;
                     errcode = ImageWrap.LoadBitmap(fname, out ibitmap, ref param, IntPtr.Zero);
                     ///TODO: resize image code if we have w!=h!=0
+                    if (errcode == Common.GFL_ERROR.NOERROR && ( ibitmap.Width != w || ibitmap.Height != h ) )
+                    {
+                        ImageWrap.BITMAP oldbitmap = ibitmap;
+                        ibitmap = null;
+                        if (oldbitmap.Width > oldbitmap.Height)
+                        {
+                            h = oldbitmap.Height * w / oldbitmap.Width;
+                        }
+                        else
+                        {
+                            w = oldbitmap.Width * h / oldbitmap.Height;
+                        }
+                        errcode = ImageWrap.Resize(oldbitmap, out ibitmap, w, h, 1, 0);
+                        ImageWrap.FreeBitmap(oldbitmap);
+                    }
                 }
                 return errcode;
             }

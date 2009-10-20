@@ -80,7 +80,7 @@ namespace XnGFL
         private XnGFL.Image loadImage(string fname)
         {
             XnGFL.Image img = new Image(fname);
-            img.thumbnail = true;
+            img.thumbnail = Image.ThumbnailType.EmbeddedThumbnail;
             if (img.Load(imgWidth, imgHeight) != Common.GFL_ERROR.NOERROR)
                 return null;
             img.ConvertToImage();

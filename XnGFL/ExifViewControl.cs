@@ -168,11 +168,6 @@ namespace XnGFL
                     if (lonTextWidth == 0)
                         lonTextWidth = (int)e.Graphics.MeasureString("Longitude:WW", textFont2, 16384, System.Drawing.StringFormat.GenericTypographic).Width;
 
-                    e.Graphics.DrawString("GPS info: ", textFont2, textBrush3,
-                        (float)x, (float)y);
-                    e.Graphics.DrawString(img.exif.gpsVersion, textFont2, textBrush3,
-                        (float)x + lonTextWidth, (float)y);
-                    y += textFont2.Height;
                     e.Graphics.DrawString("Latitude: ", textFont2, textBrush3,
                         (float)x, (float)y);
                     e.Graphics.DrawString(img.exif.gpsLatString, textFont2, textBrush3,
@@ -188,6 +183,14 @@ namespace XnGFL
                     e.Graphics.DrawString(img.exif.gpsAltString, textFont2, textBrush3,
                         (float)x + lonTextWidth, (float)y);
                     y += textFont2.Height;
+                    if (y + 10 < e.Bounds.Bottom)
+                    {
+                        e.Graphics.DrawString("GPS info: ", textFont2, textBrush3,
+                            (float)x, (float)y);
+                        e.Graphics.DrawString(img.exif.gpsVersion, textFont2, textBrush3,
+                            (float)x + lonTextWidth, (float)y);
+                        y += textFont2.Height;
+                    }
                 }
                 else
                 {
