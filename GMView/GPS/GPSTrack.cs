@@ -34,9 +34,18 @@ namespace GMView
 
 
         protected MapObject mapo;
-        protected NMEA_LL lastPos; //our latest position
-        protected NMEA_LL lastTrackPos; //latest position saved in track
-        protected NMEA_LL lastSpeedPos; //last position with non-zero speed
+        /// <summary>
+        /// our latest position
+        /// </summary>
+        protected NMEA_LL lastPos;
+        /// <summary>
+        /// latest position saved in track
+        /// </summary>
+        protected NMEA_LL lastTrackPos;
+        /// <summary>
+        /// last position with non-zero speed
+        /// </summary>
+        protected NMEA_LL lastSpeedPos;
         protected LinkedList<NMEA_LL> trackData = new LinkedList<NMEA_LL>();
         protected List<LinkedListNode<NMEA_LL> > reducedTrackData = new List<LinkedListNode<NMEA_LL> >(100);
         protected int reduced_running_count;
@@ -57,14 +66,13 @@ namespace GMView
         [XmlAttributeAttribute()]
         public bool need_arrows = true;
 
-        public delegate void OnTrackChangedDelegate();
-        /// <summary>
-        /// Fires when track was changed
-        /// </summary>
         public event OnTrackChangedDelegate onTrackChanged;
 
         private int lastSavedPoint = -1;
 
+        /// <summary>
+        /// Text info about GPS track and its waypoints needed for quick display in dashboard
+        /// </summary>
         public class TextInfo
         {
             public string track_name;
@@ -134,6 +142,10 @@ namespace GMView
             }
         }
 
+        /// <summary>
+        /// Current information about GPS position, speed, direction displaying in dashboard
+        /// during driving a car
+        /// </summary>
         public class GPSInfo
         {
             public int curSpeed;
@@ -181,6 +193,9 @@ namespace GMView
             }
         }
 
+        /// <summary>
+        /// Quick information about any track point that pops up if we hove under the track
+        /// </summary>
         public class PointInfo
         {
             public string point_time;

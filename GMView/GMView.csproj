@@ -126,6 +126,7 @@
     <Compile Include="GML\IDashBoard.cs" />
     <Compile Include="Dash\MiniTilesDash.cs" />
     <Compile Include="GML\WindRose.cs" />
+    <Compile Include="GPS\FollowUpConnector.cs" />
     <Compile Include="GPS\GPSTrackFactory.cs" />
     <Compile Include="GPS\TrackPositionInformer.cs" />
     <Compile Include="ILog.cs" />
