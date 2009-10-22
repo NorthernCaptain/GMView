@@ -5,6 +5,11 @@ using System.Text;
 namespace ncGeo
 {
     /// <summary>
+    /// Delegate for firing event when track changes
+    /// </summary>
+    public delegate void onTrackChangedDelegate();
+
+    /// <summary>
     /// Interface for GPS track
     /// </summary>
     public interface IGPSTrack
@@ -104,5 +109,10 @@ namespace ncGeo
         /// </summary>
         /// <param name="ctx"></param>
         void findNearest(IFindPoint ctx);
+
+        /// <summary>
+        /// Event fires when GPS data in the track changes
+        /// </summary>
+        event onTrackChangedDelegate onTrackChanged;
     }
 }

@@ -29,6 +29,16 @@ namespace GMView.GPS
         private ncGeo.IGPSTrack recordingTrack;
 
         /// <summary>
+        /// Results of searching the nearest point
+        /// </summary>
+        private FindNearestPointByDistance findCtx;
+
+        /// <summary>
+        /// Distance to the nearest point as a string
+        /// </summary>
+        private string distanceS = string.Empty;
+
+        /// <summary>
         /// Setter for followTrack
         /// </summary>
         public ncGeo.IGPSTrack follower
@@ -48,6 +58,8 @@ namespace GMView.GPS
         /// </summary>
         public FollowUpConnector()
         {
+
+            findCtx = new FindNearestPointByDistance();
 
             GPSTrackFactory.singleton.recordingTrack.onTrackChanged += trackDataChanged;
             GPSTrackFactory.singleton.onRecordingTrackChanged += onRecordingTrackChanged;
@@ -75,11 +87,18 @@ namespace GMView.GPS
         private void trackDataChanged()
         {
             NMEA_LL pos = recordingTrack.lastNonZeroPos;
-            if (pos == currentPos)
+            if (followTrack == null || pos == currentPos)
                 return;
             currentPos = pos;
+            findCtx.reset();
+            findCtx.init(currentPos.lon, currentPos.lat);
+            followTrack.findNearest(findCtx);
+            if (findCtx.resultPoint == null)
+                return;
+            distanceS = findCtx.distance.ToString("F2", ncUtils.Glob.numformat);
+            // TODO: angle identification against our position
 
-            
+
         }
 
 

@@ -66,7 +66,7 @@ namespace GMView
         [XmlAttributeAttribute()]
         public bool need_arrows = true;
 
-        public event OnTrackChangedDelegate onTrackChanged;
+        public event onTrackChangedDelegate onTrackChanged;
 
         private int lastSavedPoint = -1;
 
