@@ -70,6 +70,7 @@ namespace GMView
 
         private int lastSavedPoint = -1;
 
+        #region Sub classes with additional information about track
         /// <summary>
         /// Text info about GPS track and its waypoints needed for quick display in dashboard
         /// </summary>
@@ -149,13 +150,13 @@ namespace GMView
         public class GPSInfo
         {
             public int curSpeed;
-            public string curSpeedS="";
-            public string curLon="";
-            public string curLat="";
-            public string curDir="";
+            public string curSpeedS = "";
+            public string curLon = "";
+            public string curLat = "";
+            public string curDir = "";
 
-            public string travelTime="";
-            public string travelDistance="";
+            public string travelTime = "";
+            public string travelDistance = "";
 
             public string satUsed = "";
             public string satHDOP = "";
@@ -169,7 +170,7 @@ namespace GMView
             internal void fill_all_info(GPSTrack gtrack)
             {
                 NMEA_LL pos = gtrack.lastPos;
-                if(pos == null)
+                if (pos == null)
                     return;
 
                 curSpeed = (int)(pos.speed / Program.opt.km_or_miles);
@@ -243,7 +244,7 @@ namespace GMView
                     dist_from_start = (dist_start / Program.opt.km_or_miles).ToString("F2");
                     time_from_lwp = "??:??:??";
 
-                    if(lwp != null)
+                    if (lwp != null)
                     {
                         TimeSpan tt = ctx.resultPoint.Value.utc_time - lwp.utc_time;
                         if (tt.TotalHours > 0.0)
@@ -254,6 +255,8 @@ namespace GMView
         };
 
 
+        #endregion
+        
         [XmlIgnore]
         public TextInfo textInfo = new TextInfo();
 
@@ -1317,7 +1320,7 @@ namespace GMView
             reducedAddLast(trackData.Last);
             travel_avg_speed = distance / trav_time.TotalHours;
             if (mode == TrackMode.ViewSaved)
-                way.mark_way(lastPos, distance_km, NMEA_LL.PointType.ENDTP);
+                way.markWay(lastPos, distance_km, NMEA_LL.PointType.ENDTP);
             textInfo.fill_all_info(this);
         }
 
@@ -1331,8 +1334,8 @@ namespace GMView
         {
             if (lastTrackPos == null || lastTrackPos.ptype != NMEA_LL.PointType.TP)
                 return false;
-            way.mark_way(lastTrackPos, distance_km, NMEA_LL.PointType.MWP);
-            way.recalc_last_waypoint(mapo);
+            way.markWay(lastTrackPos, distance_km, NMEA_LL.PointType.MWP);
+            way.recalc_last_waypoint(mapo.geosystem);
             textInfo.fill_all_info(this);
             return true;
         }
@@ -1349,7 +1352,7 @@ namespace GMView
                 return false;
             lastTrackPos.lon = newlon;
             lastTrackPos.lat = newlat;
-            way.recalc_last_waypoint(mapo);
+            way.recalc_last_waypoint(mapo.geosystem);
             updateOnZoomChangeNoLock(-1, -1);
             return true;
         }
@@ -1405,7 +1408,7 @@ namespace GMView
             lastTrackPos = lastPos = lastSpeedPos = nmea_ll;
             trackData.AddLast(lastTrackPos);
             way.add(nmea_ll, distance_km);
-            way.recalc_last_waypoint(mapo);
+            way.recalc_last_waypoint(mapo.geosystem);
             updateOnZoomChangeNoLock(-1, -1);
             textInfo.fill_all_info(this);
         }
@@ -1446,8 +1449,8 @@ namespace GMView
                             trackData.AddLast(lastTrackPos);
                             if (trackData.Count == 1) //our first point = it's a start
                             {
-                                way.mark_way(nmea_ll, 0.0, NMEA_LL.PointType.STARTP);
-                                way.recalc_last_waypoint(mapo);
+                                way.markWay(nmea_ll, 0.0, NMEA_LL.PointType.STARTP);
+                                way.recalc_last_waypoint(mapo.geosystem);
                             }
                             updateOnZoomChangeNoLock(-1, -1);
                             textInfo.fill_all_info(this);
@@ -1499,7 +1502,7 @@ namespace GMView
                     lastPos = lastTrackPos = nmea_ll;
                     if (trackData.Count == 1) //our first point = it's a start
                     {
-                        way.mark_way(nmea_ll, 0.0, NMEA_LL.PointType.STARTP);
+                        way.markWay(nmea_ll, 0.0, NMEA_LL.PointType.STARTP);
                     }
                 }
                 else
@@ -1568,7 +1571,7 @@ namespace GMView
             mapo.getXYByLonLat(trackData.Last.Value.lon, trackData.Last.Value.lat, out lastP);
             drawPoints.Add(lastP);
 
-            way.updateXY(mapo);
+            way.updateXY(mapo.geosystem);
         }
 
         #region ISprite Members
@@ -1782,5 +1785,15 @@ namespace GMView
 
         #endregion
 
+
+        #region IGPSTrack Members
+
+        [XmlIgnore]
+        public WayBase wayObject
+        {
+            get { return way; }
+        }
+
+        #endregion
     }
 }

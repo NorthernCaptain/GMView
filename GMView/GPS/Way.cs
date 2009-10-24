@@ -7,50 +7,15 @@ using ncGeo;
 
 namespace GMView
 {
-    public class Way
+    /// <summary>
+    /// Real way (route) class with waypoints
+    /// </summary>
+    public class Way: ncGeo.WayBase
     {
-        LinkedList<WayPoint> points = new LinkedList<WayPoint>();
-        double total_distance = 0.0;
-        TimeSpan total_time;
-        int total_points = 0;
         ImageDot[] imds = new ImageDot[(int)NMEA_LL.PointType.MaxPT];
         object[] texs = new object[(int)NMEA_LL.PointType.MaxPT];
-        WayPoint currentWayPoint = null;
-        string way_name = "Route: manual";
 
-        public class WayPoint
-        {
-            public int num = 1;
-            public int x, y;
-            public NMEA_LL point;
-            public NMEA_LL.PointType ptype;
-            public double distance_from_prev;
-            public TimeSpan time_from_prev;
-            public double distance_to_next;
-            public TimeSpan time_to_next;
-            public double distance_from_start;
-            public TimeSpan time_from_start;
-
-            public string typeString
-            {
-                get
-                {
-                    switch (ptype)
-                    {
-                        case NMEA_LL.PointType.STARTP:
-                            return "Start WP";
-                        case NMEA_LL.PointType.ENDTP:
-                            return "Finish WP";
-                        case NMEA_LL.PointType.SWP:
-                            return "Delay WP";
-                        default:
-                            return "Waypoint";
-                    }
-                }
-            }
-        }
-
-        public Way()
+        public Way(): base()
         {
             imds[(int)NMEA_LL.PointType.STARTP] = TextureFactory.singleton.getImg(TextureFactory.TexAlias.StartPos);
             imds[(int)NMEA_LL.PointType.SWP] = TextureFactory.singleton.getImg(TextureFactory.TexAlias.WayDot);
@@ -63,109 +28,6 @@ namespace GMView
             for(int i = 0; i<(int)NMEA_LL.PointType.MaxPT;i++)
                 if(imds[i]!=null)
                     texs[i] = TextureFactory.singleton.getTex(imds[i]);
-        }
-
-        public void recalc_last_waypoint(MapObject mapo)
-        {
-            WayPoint lastwp = points.Last.Value;
-            Point xy;
-            mapo.getXYByLonLat(lastwp.point.lon, lastwp.point.lat, out xy);
-            lastwp.x = xy.X;
-            lastwp.y = xy.Y;
-            if (points.Last.Previous != null)
-            {
-                WayPoint prevwp = points.Last.Previous.Value;
-                lastwp.time_from_prev = lastwp.point.utc_time - prevwp.point.utc_time;
-                prevwp.time_to_next = lastwp.time_from_prev;
-                prevwp.distance_to_next = lastwp.distance_from_prev;
-            }
-        }
-
-        public string name
-        {
-            get { return way_name; }
-            set { way_name = value; }
-        }
-
-        public void add(NMEA_LL point, double distance)
-        {
-            WayPoint wp = new WayPoint();
-            wp.point = point;
-            wp.distance_from_prev = distance;
-            add(wp, point.ptype);
-        }
-
-        public void add(WayPoint wp, NMEA_LL.PointType pt)
-        {
-            wp.distance_from_prev -= total_distance;
-            total_distance += wp.distance_from_prev;
-            wp.ptype = pt;
-            wp.point.ptype = pt;
-
-            if (total_points > 0)
-            {
-                WayPoint lastwp = points.Last.Value;
-                wp.time_from_prev = wp.point.utc_time - lastwp.point.utc_time;
-                if(wp.time_from_prev.TotalHours < 0.0)
-                    wp.time_from_prev = lastwp.point.utc_time - wp.point.utc_time;
-
-                total_time = wp.point.utc_time - points.First.Value.point.utc_time;
-                if(total_time.TotalHours < 0.0)
-                    total_time = points.First.Value.point.utc_time - wp.point.utc_time;
-                wp.time_from_start = total_time;
-                wp.distance_from_start = total_distance;
-                lastwp.time_to_next = wp.time_from_prev;
-                lastwp.distance_to_next = wp.distance_from_prev;
-                wp.num = lastwp.num + 1;
-            }
-            else
-                wp.time_from_prev = new TimeSpan();
-
-            points.AddLast(wp);
-            currentWayPoint = wp;
-            total_points++;
-        }
-
-        public WayPoint delLastFromWay(NMEA_LL point)
-        {
-            if (total_points == 0)
-                return null;
-            WayPoint wp = points.Last.Value;
-            if (wp.point != point)
-                return null;
-            points.RemoveLast();
-            total_points--;
-            total_distance -= wp.distance_from_prev;
-
-            if (total_points > 1)
-                total_time = points.Last.Value.time_from_start;
-            else
-                total_time = new TimeSpan();
-
-            if (currentWayPoint == wp)
-            {
-                stepNextPoint();
-            }
-            return wp;
-        }
-
-        public void clear()
-        {
-            points.Clear();
-            total_distance = 0.0;
-            total_points = 0;
-            currentWayPoint = null;
-        }
-
-        public void updateXY(MapObject mapo)
-        {
-            Point xy;
-            foreach (WayPoint wplnk in points)
-            {
-                mapo.getXYByLonLat(wplnk.point.lon, wplnk.point.lat, out xy);
-                wplnk.x = xy.X;
-                wplnk.y = xy.Y;
-            }
         }
 
         public void glDraw(MapObject mapo, int centerx, int centery)
@@ -192,73 +54,6 @@ namespace GMView
                 GML.device.texDrawEnd();
                 GML.device.popMatrix();
             }
-        }
-
-
-        internal void mark_way(NMEA_LL last_ll, double distance, NMEA_LL.PointType pt)
-        {
-            if (points.Last == null || points.Last.Value.point != last_ll)
-            {
-                add(last_ll, distance);
-            }
-
-            points.Last.Value.ptype = pt;
-            points.Last.Value.point.ptype = pt;
-        }
-
-        internal WayPoint currentWP
-        {
-            get { return currentWayPoint; }
-        }
-
-        /// <summary>
-        /// Go to next waypoint in our way and make it current
-        /// </summary>
-        /// <returns></returns>
-        internal WayPoint stepNextPoint()
-        {
-            LinkedListNode<WayPoint> wplink = points.First;
-            while (wplink != null && wplink.Value != currentWayPoint)
-                wplink = wplink.Next;
-            if (wplink == null)
-            {
-                currentWayPoint = null;
-                return null;
-            }
-            else
-                wplink = wplink.Next;
-            if (wplink == null)
-                wplink = points.First;
-            if (wplink == null)
-                currentWayPoint = null;
-            else
-                currentWayPoint = wplink.Value;
-            return currentWayPoint;
-        }
-
-        /// <summary>
-        /// Go to previous waypoint and make it current
-        /// </summary>
-        /// <returns></returns>
-        internal WayPoint stepPrevPoint()
-        {
-            LinkedListNode<WayPoint> wplink = points.Last;
-            while (wplink != null && wplink.Value != currentWayPoint)
-                wplink = wplink.Previous;
-            if (wplink == null)
-            {
-                currentWayPoint = null;
-                return null;
-            }
-            else
-                wplink = wplink.Previous;
-            if (wplink == null)
-                wplink = points.Last;
-            if (wplink == null)
-                currentWayPoint = null;
-            else
-                currentWayPoint = wplink.Value;
-            return currentWayPoint;
         }
 
         internal void saveGPX(XmlTextWriter writer, System.Globalization.NumberFormatInfo nf)

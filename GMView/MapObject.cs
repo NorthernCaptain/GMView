@@ -27,6 +27,17 @@ namespace GMView
 
         private BaseGeo geoSystem = new GoogleGeo();
 
+        /// <summary>
+        /// Return current geosystem used for the map
+        /// </summary>
+        public BaseGeo geosystem
+        {
+            get
+            {
+                return geoSystem;
+            }
+        }
+
         int _zoom_lvl; //current zooming level
 
         int zoom_lvl

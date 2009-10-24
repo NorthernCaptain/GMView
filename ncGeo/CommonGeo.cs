@@ -10,6 +10,11 @@ namespace ncGeo
     public class CommonGeo
     {
         /// <summary>
+        /// Degrees to radians convertion factor
+        /// </summary>
+        public const double deg2rad = 0.017453292519943295769236907684886;  //Math.PI / 180.0;
+
+        /// <summary>
         /// average radius of the Earth in km.
         /// </summary>
         public const double avgREarth = 6378.137;

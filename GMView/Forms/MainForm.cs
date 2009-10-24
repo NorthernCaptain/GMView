@@ -409,7 +409,7 @@ namespace GMView
             GML.tranEnd();
         }
 
-        void idtrack_onCenterWaypoint(Way.WayPoint wp)
+        void idtrack_onCenterWaypoint(WayBase.WayPoint wp)
         {
             if (wp == null)
                 return;

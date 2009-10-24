@@ -15,7 +15,7 @@ namespace GMView
         GPSTrack.TextInfo info = null;
         Color labelcolor;
 
-        public delegate void OnCenterWaypointDelegate(Way.WayPoint wp);
+        public delegate void OnCenterWaypointDelegate(ncGeo.WayBase.WayPoint wp);
         public event OnCenterWaypointDelegate onCenterWaypoint;
 
         public TrackInfoDash()

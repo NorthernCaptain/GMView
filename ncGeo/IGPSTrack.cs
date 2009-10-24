@@ -10,7 +10,7 @@ namespace ncGeo
     public delegate void onTrackChangedDelegate();
 
     /// <summary>
-    /// Interface for GPS track
+    /// Interface for GPS track class
     /// </summary>
     public interface IGPSTrack
     {
@@ -114,5 +114,13 @@ namespace ncGeo
         /// Event fires when GPS data in the track changes
         /// </summary>
         event onTrackChangedDelegate onTrackChanged;
+
+        /// <summary>
+        /// Return Way (route) of this track
+        /// </summary>
+        WayBase wayObject
+        {
+            get;
+        }
     }
 }
