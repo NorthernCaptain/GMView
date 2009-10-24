@@ -64,7 +64,34 @@ namespace GMView.GPS
         /// <summary>
         /// Distance to the nearest point as a string
         /// </summary>
-        private string distanceS = string.Empty;
+        private string curDistanceS = string.Empty;
+
+        /// <summary>
+        /// Return distance to the current WP as string
+        /// </summary>
+        public string currentDistanceS
+        {
+        		get
+        		{
+                    return curDistanceS;
+        		}
+        }
+
+        /// <summary>
+        /// Distance to the finish WP as a string
+        /// </summary>
+        private string finDistanceS = string.Empty;
+
+        /// <summary>
+        /// Return distance to the finish WP as a string
+        /// </summary>
+        public string finishDistanceS
+        {
+            get
+            {
+                return finDistanceS;
+            }
+        }
 
         /// <summary>
         /// Setter for followTrack
@@ -110,6 +137,31 @@ namespace GMView.GPS
         }
 
         /// <summary>
+        /// Hit distance - 300 meters - if we are near out WP (less than 300 m) then we hit it
+        /// </summary>
+        private const double hitDist = 0.3;
+
+        /// <summary>
+        /// fills in all info about new current WP
+        /// </summary>
+        /// <param name="wpt"></param>
+        /// <param name="dist"></param>
+        private void setCurrentWP(LinkedListNode<WayBase.WayPoint> wpt, double dist)
+        {
+            currentDistance = dist;
+            currentWPNode = wpt;
+            currentAngle = calculateAngle(currentPos, currentWPNode.Value.point);
+
+            finishDistance = currentDistance;
+            while (wpt != null)
+            {
+                finishDistance += wpt.Value.distance_to_next;
+                wpt = wpt.Next;
+            }
+            finishAngle = calculateAngle(currentPos, finishWP.point);
+        }
+
+        /// <summary>
         /// Call in NMEA thread when we have new GPS position in our current track. 
         /// We do all our calculation here having new position and follower.
         /// </summary>
@@ -120,7 +172,27 @@ namespace GMView.GPS
                 return;
             currentPos = pos;
 
-            LinkedListNode <WayBase.WayPoint> wpt = currentWPNode.Next;
+            //first we need to check our current WP - do we hit it or not?
+            //if we hit it then switch to next WP
+            LinkedListNode <WayBase.WayPoint> wpt = currentWPNode;
+            currentDistance = CommonGeo.getDistanceByLonLat2(wpt.Value.point.lon, wpt.Value.point.lat,
+                                                      currentPos.lon, currentPos.lat);
+            //we hit it!
+            if (currentDistance <= hitDist)
+            {
+                wpt = currentWPNode.Next;
+                if (wpt != null)
+                {
+                    setCurrentWP(wpt, CommonGeo.getDistanceByLonLat2(wpt.Value.point.lon,
+                                                                     wpt.Value.point.lat,
+                                                                     currentPos.lon,
+                                                                     currentPos.lat));
+                }
+                else
+                    return;
+            }
+
+            //find nearest WP down the route
             double dist = currentDistance;
             bool found = false;
             while (wpt != null)
@@ -138,17 +210,8 @@ namespace GMView.GPS
 
             if (found)
             {
-                currentAngle = calculateAngle(currentPos, currentWPNode.Value.point);
-                wpt = currentWPNode;
-                finishDistance = currentDistance;
-                while (wpt != null)
-                {
-                    finishDistance += wpt.Value.distance_to_next;
-                    wpt = wpt.Next;
-                }
-                finishAngle = calculateAngle(currentPos, finishWP.point);
+                setCurrentWP(currentWPNode, currentDistance);
             }
-
         }
 
         /// <summary>
