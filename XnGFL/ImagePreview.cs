@@ -35,7 +35,7 @@ namespace XnGFL
                 img = null;
                 return;
             }
-            img.ConvertToImage();
+            var convertToImage = img.ConvertToImage();
 
             this.Visible = true;
         }
@@ -50,10 +50,10 @@ namespace XnGFL
 
         private void ImagePreview_Paint(object sender, PaintEventArgs e)
         {
-            if(img != null)
+            if (img != null)
             {
                 e.Graphics.DrawImage(img.image, 0, 0, img.image.Width, img.image.Height);
-                e.Graphics.DrawRectangle(Pens.Black, 0, 0, img.image.Width -1, img.image.Height -1);
+                e.Graphics.DrawRectangle(Pens.Black, 0, 0, img.image.Width - 1, img.image.Height - 1);
             }
         }
     }

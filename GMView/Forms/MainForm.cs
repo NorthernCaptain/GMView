@@ -338,6 +338,8 @@ namespace GMView
             mapo.addSub(wind_rose);
             if (opt.show_wind_rose)
                 wind_rose.show();
+
+            initFollowUP();
         }
 
         /// <summary>
@@ -1612,6 +1614,5 @@ namespace GMView
             geoTagForm.show(this.DesktopLocation.X + this.Size.Width - geoTagForm.Size.Width,
                     this.DesktopLocation.Y + this.Size.Height - geoTagForm.Size.Height);
         }
-
     }
 }

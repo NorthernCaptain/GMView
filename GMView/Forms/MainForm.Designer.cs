@@ -117,6 +117,8 @@
             this.saveTrackSB = new System.Windows.Forms.ToolStripButton();
             this.removeTracksSB = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
+            this.followTrackList = new System.Windows.Forms.ToolStripComboBox();
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.miniMapTimer = new System.Windows.Forms.Timer(this.components);
             this.trackSaveFileDialog = new System.Windows.Forms.SaveFileDialog();
@@ -127,8 +129,6 @@
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.mouseOverTimer = new System.Windows.Forms.Timer(this.components);
             this.deltaCenterTimer = new System.Windows.Forms.Timer(this.components);
-            this.followTrackList = new System.Windows.Forms.ToolStripComboBox();
-            this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -858,6 +858,19 @@
             this.toolStripSeparator11.Name = "toolStripSeparator11";
             resources.ApplyResources(this.toolStripSeparator11, "toolStripSeparator11");
             // 
+            // toolStripLabel3
+            // 
+            this.toolStripLabel3.Name = "toolStripLabel3";
+            resources.ApplyResources(this.toolStripLabel3, "toolStripLabel3");
+            // 
+            // followTrackList
+            // 
+            this.followTrackList.Items.AddRange(new object[] {
+            resources.GetString("followTrackList.Items")});
+            this.followTrackList.Name = "followTrackList";
+            resources.ApplyResources(this.followTrackList, "followTrackList");
+            this.followTrackList.SelectedIndexChanged += new System.EventHandler(this.followTrackList_SelectedIndexChanged);
+            // 
             // toolStripSeparator9
             // 
             this.toolStripSeparator9.Name = "toolStripSeparator9";
@@ -910,18 +923,6 @@
             // deltaCenterTimer
             // 
             this.deltaCenterTimer.Interval = 75;
-            // 
-            // followTrackList
-            // 
-            this.followTrackList.Items.AddRange(new object[] {
-            resources.GetString("followTrackList.Items")});
-            this.followTrackList.Name = "followTrackList";
-            resources.ApplyResources(this.followTrackList, "followTrackList");
-            // 
-            // toolStripLabel3
-            // 
-            this.toolStripLabel3.Name = "toolStripLabel3";
-            resources.ApplyResources(this.toolStripLabel3, "toolStripLabel3");
             // 
             // GMViewForm
             // 

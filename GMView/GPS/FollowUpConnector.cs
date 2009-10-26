@@ -15,6 +15,11 @@ namespace GMView.GPS
     public class FollowUpConnector
     {
         /// <summary>
+        /// The flag indicates the need of displaying information
+        /// </summary>
+        private bool shown = false;
+
+        /// <summary>
         /// The track we follow
         /// </summary>
         private ncGeo.IGPSTrack      followTrack;
@@ -105,9 +110,24 @@ namespace GMView.GPS
             set
             {
                 followTrack = value;
-                followWay = followTrack.wayObject;
-                currentWPNode = followWay.wayPoints.First;
-                finishWP = followWay.wayPoints.Last.Value;
+                if (followTrack == null)
+                {
+                    shown = false;
+                    followWay = null;
+                    currentWPNode = null;
+                    finishWP = null;
+                }
+                else
+                {
+                    followWay = followTrack.wayObject;
+                    currentWPNode = followWay.wayPoints.First;
+                    if (currentWPNode == null)
+                    {
+                        throw new ArgumentNullException("Waypoint", "Selected empty route. There is no waypoints to follow.\nPlease, choose another track.");
+                    }
+                    finishWP = followWay.wayPoints.Last.Value;
+                    shown = true;
+                }
             }
         }
 
@@ -116,10 +136,9 @@ namespace GMView.GPS
         /// </summary>
         public FollowUpConnector()
         {
-
             GPSTrackFactory.singleton.recordingTrack.onTrackChanged += trackDataChanged;
             GPSTrackFactory.singleton.onRecordingTrackChanged += onRecordingTrackChanged;
-
+            onRecordingTrackChanged(GPSTrackFactory.singleton.recordingTrack);
         }
 
         /// <summary>
@@ -159,6 +178,9 @@ namespace GMView.GPS
                 wpt = wpt.Next;
             }
             finishAngle = calculateAngle(currentPos, finishWP.point);
+
+            curDistanceS = currentDistance.ToString("F2", ncUtils.Glob.numformat);
+            finDistanceS = finishDistance.ToString("F2", ncUtils.Glob.numformat);
         }
 
         /// <summary>
@@ -170,6 +192,7 @@ namespace GMView.GPS
             NMEA_LL pos = recordingTrack.lastNonZeroPos;
             if (currentWPNode == null || pos == currentPos)
                 return;
+
             currentPos = pos;
 
             //first we need to check our current WP - do we hit it or not?
