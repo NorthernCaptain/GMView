@@ -10,7 +10,8 @@ namespace GMView
     /// </summary>
     public class FontFactory: IDisposable
     {
-        public enum FontAlias { Big22B, Mid14B, Small8R, Sans18R, Sans12R, Sans8R, Sans10B, Big48I, Big20I };
+        public enum FontAlias { Big22B, Mid14B, Small8R, 
+                    Sans18R, Sans12R, Sans8R, Sans10B, Big48I, Big20I, Big24R };
 
         Dictionary<Font, IGLFont> fonts = new Dictionary<Font, IGLFont>();
         Dictionary<FontAlias, Font> gdiFonts = new Dictionary<FontAlias, Font>();
@@ -22,6 +23,7 @@ namespace GMView
         {
             bTmp = new Bitmap(2, 2, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             gfx = Graphics.FromImage(bTmp);
+            gdiFonts.Add(FontAlias.Big24R, initGDIMesuredFont("Arial", 20, FontStyle.Italic | FontStyle.Bold));
             gdiFonts.Add(FontAlias.Big22B, initGDIMesuredFont("Arial", 20, FontStyle.Bold));
             gdiFonts.Add(FontAlias.Big20I, initGDIMesuredFont("Arial", 21, FontStyle.Italic));
             gdiFonts.Add(FontAlias.Mid14B, initGDIMesuredFont("Arial", 12, FontStyle.Bold));

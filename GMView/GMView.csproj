@@ -311,6 +311,7 @@
   <ItemGroup>
     <Content Include="gmview_icon.ICO" />
     <Content Include="icon_main.ico" />
+    <None Include="Resources\followInfo.png" />
     <None Include="Resources\dotred.png" />
     <None Include="Resources\dotgreen.png" />
     <None Include="Resources\dotyellow.png" />

@@ -16,6 +16,8 @@ namespace GMView
         {
             followConnect = new GMView.GPS.FollowUpConnector();
 
+            mapo.addSub(followConnect);
+
             initFollowTrackList(GPSTrackFactory.singleton);
             GPSTrackFactory.singleton.onTrackListChanged += initFollowTrackList;
         }

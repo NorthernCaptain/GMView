@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Drawing;
 using ncGeo;
 
 namespace GMView.GPS
@@ -12,12 +13,20 @@ namespace GMView.GPS
     /// Distance to the current following waypoint calculated as direct line distance.
     /// Distance to the finish waypoint calculated according to the track we follow.
     /// </summary>
-    public class FollowUpConnector
+    public class FollowUpConnector: ISprite
     {
         /// <summary>
         /// The flag indicates the need of displaying information
         /// </summary>
         private bool shown = false;
+
+        /// <summary>
+        /// Is our widget shown
+        /// </summary>
+        public bool isShown
+        {
+            get { return shown; }
+        }
 
         /// <summary>
         /// The track we follow
@@ -62,9 +71,31 @@ namespace GMView.GPS
         private double finishAngle = 0;
 
         /// <summary>
+        /// Return angle of the finish point against our position
+        /// </summary>
+        public double finishAng
+        {
+            get
+            {
+                return finishAngle;
+            }
+        }
+
+        /// <summary>
         /// Angle that directs our current position to the current waypoint we follow to.
         /// </summary>
         private double currentAngle = 0;
+
+        /// <summary>
+        /// Angle between our position and next waypoint
+        /// </summary>
+        public double currentAng
+        {
+            get
+            {
+                return currentAngle;
+            }
+        }
 
         /// <summary>
         /// Distance to the nearest point as a string
@@ -139,6 +170,10 @@ namespace GMView.GPS
             GPSTrackFactory.singleton.recordingTrack.onTrackChanged += trackDataChanged;
             GPSTrackFactory.singleton.onRecordingTrackChanged += onRecordingTrackChanged;
             onRecordingTrackChanged(GPSTrackFactory.singleton.recordingTrack);
+
+            bgdot = TextureFactory.singleton.getImg(TextureFactory.TexAlias.FollowInfo);
+            bgtex = TextureFactory.singleton.getTex(bgdot);
+            fnt = FontFactory.singleton.getGLFont(FontFactory.FontAlias.Big24R);
         }
 
         /// <summary>
@@ -158,7 +193,7 @@ namespace GMView.GPS
         /// <summary>
         /// Hit distance - 300 meters - if we are near out WP (less than 300 m) then we hit it
         /// </summary>
-        private const double hitDist = 0.3;
+        private const double hitDist = 0.1;
 
         /// <summary>
         /// fills in all info about new current WP
@@ -198,6 +233,7 @@ namespace GMView.GPS
             //first we need to check our current WP - do we hit it or not?
             //if we hit it then switch to next WP
             LinkedListNode <WayBase.WayPoint> wpt = currentWPNode;
+
             currentDistance = CommonGeo.getDistanceByLonLat2(wpt.Value.point.lon, wpt.Value.point.lat,
                                                       currentPos.lon, currentPos.lat);
             //we hit it!
@@ -231,10 +267,7 @@ namespace GMView.GPS
                 wpt = wpt.Next;
             }
 
-            if (found)
-            {
-                setCurrentWP(currentWPNode, currentDistance);
-            }
+            setCurrentWP(currentWPNode, currentDistance);
         }
 
         /// <summary>
@@ -245,20 +278,105 @@ namespace GMView.GPS
         /// <returns></returns>
         private double calculateAngle(NMEA_LL from, NMEA_LL to)
         {
-            double dx = from.lon - to.lon;
-            double dy = from.lat - to.lat;
+            double dx = to.lon - from.lon;
+            double dy = to.lat - from.lat;
 
-            double angle = Math.Atan(Math.Abs(dx) / Math.Abs(dy));
+            double angle = Math.Atan(Math.Abs(dx) / Math.Abs(dy)) / CommonGeo.deg2rad;
             if (dy < 0 && dx < 0)
-                angle += 180.0 * CommonGeo.deg2rad;
+                angle += 180.0;
             else
                 if (dy < 0)
-                    angle += 90.0 * CommonGeo.deg2rad;
+                    angle += 90.0;
                 else
                     if (dx < 0)
-                        angle += 270.0 * CommonGeo.deg2rad;
+                        angle += 270.0;
 
             return angle;
         }
+
+        #region ISprite Members
+
+        /// <summary>
+        /// Image info about our background
+        /// </summary>
+        private ImageDot bgdot;
+
+        /// <summary>
+        /// Background image loaded as texture
+        /// </summary>
+        private object bgtex;
+
+        private Color cOrange = Color.FromArgb(252, 165, 27);
+
+        /// <summary>
+        /// Font for drawing distance
+        /// </summary>
+        private IGLFont fnt;
+
+        public void glDraw(int centerx, int centery)
+        {
+           if (!shown)
+               return;
+
+            int sx, sy;
+            if (Program.opt.dash_right_side)
+            {
+                sx = -centerx;
+                sy = centery;
+            }
+            else
+            {
+                sx = centerx - bgdot.delta_x;
+                sy = centery;
+            }
+
+            GML.device.pushMatrix();
+            GML.device.identity();
+            GML.device.texDrawBegin();
+
+            GML.device.texDraw(bgtex, sx, sy, 5, bgdot.img.Width, bgdot.img.Height);
+
+            GML.device.texDrawEnd();
+
+            GML.device.color(cOrange);
+
+            fnt.drawright(curDistanceS, sx + 102, sy - 11, 5);
+            fnt.drawright(finDistanceS, sx + 102, sy - 52, 5);
+
+            GML.device.color(Color.White);
+            GML.device.popMatrix();
+        }
+
+        public int dLevel
+        {
+            get
+            {
+                return 3;
+            }
+            set
+            {
+            }
+        }
+
+        public void show()
+        {
+        }
+
+        public void hide()
+        {
+        }
+
+        public void draw(System.Drawing.Graphics gr)
+        {
+
+        }
+
+        public void draw(System.Drawing.Graphics gr, int x, int y)
+        {
+
+        }
+
+
+        #endregion
     }
 }

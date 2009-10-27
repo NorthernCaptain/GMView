@@ -340,6 +340,7 @@ namespace GMView
                 wind_rose.show();
 
             initFollowUP();
+            wind_rose.follower = followConnect;
         }
 
         /// <summary>

@@ -71,7 +71,8 @@ namespace GMView
             PointBG,
             DotRed,
             DotGreen,
-            DotYellow
+            DotYellow,
+            FollowInfo
         };
 
         private static TextureFactory instance = new TextureFactory();
@@ -143,9 +144,10 @@ namespace GMView
             images.Add(TexAlias.CrossHair1, new ImageDot(global::GMView.Properties.Resources.crosshair1, 12, 12));
             images.Add(TexAlias.ArrowPoint, new ImageDot(global::GMView.Properties.Resources.arrow_point, 15, 48));
             images.Add(TexAlias.PointBG, new ImageDot(global::GMView.Properties.Resources.pointBG, 223, 148));
-            images.Add(TexAlias.DotRed, new ImageDot(global::GMView.Properties.Resources.dotred, 10, 10));
-            images.Add(TexAlias.DotGreen, new ImageDot(global::GMView.Properties.Resources.dotgreen, 10, 10));
-            images.Add(TexAlias.DotYellow, new ImageDot(global::GMView.Properties.Resources.dotyellow, 10, 10));
+            images.Add(TexAlias.DotRed, new ImageDot(global::GMView.Properties.Resources.dotred, 11, 10));
+            images.Add(TexAlias.DotGreen, new ImageDot(global::GMView.Properties.Resources.dotgreen, 11, 10));
+            images.Add(TexAlias.DotYellow, new ImageDot(global::GMView.Properties.Resources.dotyellow, 11, 10));
+            images.Add(TexAlias.FollowInfo, new ImageDot(global::GMView.Properties.Resources.followInfo, 128, 82));
         }
 
         public void initGLData()

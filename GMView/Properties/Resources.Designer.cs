@@ -249,6 +249,13 @@ namespace GMView.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap followInfo {
+            get {
+                object obj = ResourceManager.GetObject("followInfo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap forw_but {
             get {
                 object obj = ResourceManager.GetObject("forw_but", resourceCulture);
