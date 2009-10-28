@@ -195,6 +195,8 @@ namespace GMView.GPS
         /// </summary>
         private const double hitDist = 0.1;
 
+        private NMEA_LL.PointType oldwayType = NMEA_LL.PointType.TP;
+
         /// <summary>
         /// fills in all info about new current WP
         /// </summary>
@@ -205,6 +207,12 @@ namespace GMView.GPS
             currentDistance = dist;
             currentWPNode = wpt;
             currentAngle = calculateAngle(currentPos, currentWPNode.Value.point);
+
+            if (currentWPNode.Value.ptype != NMEA_LL.PointType.MARKWP)
+            {
+                oldwayType = currentWPNode.Value.ptype;
+                currentWPNode.Value.ptype = NMEA_LL.PointType.MARKWP;
+            }
 
             finishDistance = currentDistance;
             while (wpt != null)
@@ -239,6 +247,11 @@ namespace GMView.GPS
             //we hit it!
             if (currentDistance <= hitDist)
             {
+                if (currentWPNode.Value.ptype == NMEA_LL.PointType.MARKWP)
+                {
+                    currentWPNode.Value.ptype = oldwayType;
+                }
+
                 wpt = currentWPNode.Next;
                 if (wpt != null)
                 {
@@ -260,6 +273,10 @@ namespace GMView.GPS
                                                       currentPos.lon, currentPos.lat);
                 if (dist < currentDistance)
                 {
+                    if (currentWPNode.Value.ptype == NMEA_LL.PointType.MARKWP)
+                    {
+                        currentWPNode.Value.ptype = oldwayType;
+                    }
                     currentWPNode = wpt;
                     currentDistance = dist;
                     found = true;
@@ -282,15 +299,17 @@ namespace GMView.GPS
             double dy = to.lat - from.lat;
 
             double angle = Math.Atan(Math.Abs(dx) / Math.Abs(dy)) / CommonGeo.deg2rad;
+//            double angle = Math.Asin(Math.Abs(dx) / Math.Sqrt(dx * dx + dy * dy)) / CommonGeo.deg2rad;
+            
             if (dy < 0 && dx < 0)
                 angle += 180.0;
             else
                 if (dy < 0)
-                    angle += 90.0;
+                    angle = 180 - angle;
                 else
                     if (dx < 0)
-                        angle += 270.0;
-
+                        angle = 360.0 - angle;
+            
             return angle;
         }
 

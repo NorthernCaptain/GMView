@@ -72,7 +72,8 @@ namespace GMView
             DotRed,
             DotGreen,
             DotYellow,
-            FollowInfo
+            FollowInfo,
+            WayDotGreen
         };
 
         private static TextureFactory instance = new TextureFactory();
@@ -128,6 +129,7 @@ namespace GMView
             images.Add(TexAlias.PinBlue, new ImageDot(global::GMView.Properties.Resources.markwp_blue, 11, 24));
             images.Add(TexAlias.WayDot, new ImageDot(global::GMView.Properties.Resources.dot1, 8, 8));
             images.Add(TexAlias.WayDotSmall, new ImageDot(global::GMView.Properties.Resources.dot_small, 8, 7));
+            images.Add(TexAlias.WayDotGreen, new ImageDot(global::GMView.Properties.Resources.dotgr, 8, 8));
             images.Add(TexAlias.DashTrackBg, new ImageDot(global::GMView.Properties.Resources.dashTrackBg, 273, 320));
             images.Add(TexAlias.DashTrackWrapped, new ImageDot(global::GMView.Properties.Resources.dashTrackWrapped, 273, 20));
             images.Add(TexAlias.DashTextBg, new ImageDot(global::GMView.Properties.Resources.dashTextBg, 90, 16));

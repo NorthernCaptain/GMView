@@ -79,12 +79,12 @@ namespace GMView
                 GML.device.pushMatrix();
                 GML.device.color(Color.White);
                 GML.device.zeroPosition();
-                GML.device.rotateZ(fang);
+                GML.device.rotateZ(-fang);
                 GML.device.texDrawBegin();
                 GML.device.texFilter(reddotex, TexFilter.Smooth);
                 GML.device.texDraw(reddotex, -reddotimd.delta_x, reddotimd.delta_y + 95, 0,
                                     reddotimd.img.Width, reddotimd.img.Height);
-                GML.device.rotateZ(-fang + followCon.currentAng);
+                GML.device.rotateZ(fang - followCon.currentAng);
                 GML.device.texFilter(greendotex, TexFilter.Smooth);
                 GML.device.texDraw(greendotex, -greendotimd.delta_x, greendotimd.delta_y + 95, 0,
                                     greendotimd.img.Width, greendotimd.img.Height);

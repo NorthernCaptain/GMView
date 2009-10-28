@@ -20,6 +20,7 @@ namespace ncGeo
             SWP, //Stop waypoint
             STARTP, //Start point
             ENDTP,
+            MARKWP, //Marked waypoint
             MaxPT
         }
 

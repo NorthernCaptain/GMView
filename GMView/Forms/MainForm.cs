@@ -246,6 +246,8 @@ namespace GMView
             uzoomarea = opt.newUserSelectionArea(mapo);
             uzoomarea.setColor(Color.DarkOrange);
 
+            wind_rose = new WindRose();
+            mapo.addSub(wind_rose);
             mapo.addSub(upos);
             mapo.addSub(uselection);
             mapo.addSub(uzoomarea);
@@ -332,10 +334,8 @@ namespace GMView
             FrameTimer.singleton.Start();
             gpsdash.start();
 
-            wind_rose = new WindRose();
             wind_rose.initGLData();
 
-            mapo.addSub(wind_rose);
             if (opt.show_wind_rose)
                 wind_rose.show();
 
