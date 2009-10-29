@@ -45,7 +45,7 @@ namespace GMView.GPS
         /// <summary>
         /// The way we follow by
         /// </summary>
-        private ncGeo.WayBase followWay;
+        private LinkedList<WayBase.WayPoint> followWay = new LinkedList<WayBase.WayPoint>();
         /// <summary>
         /// Current waypoint that we follow to
         /// </summary>
@@ -129,6 +129,22 @@ namespace GMView.GPS
             }
         }
 
+        private bool reverse = false;
+
+        /// <summary>
+        /// Setter for reverse direction of the follower
+        /// </summary>
+        public bool reverseDir
+        {
+            get
+            {
+                return reverse;
+            }
+            set
+            {
+            	reverse = value;
+            }
+        }
         /// <summary>
         /// Setter for followTrack
         /// </summary>
@@ -144,19 +160,41 @@ namespace GMView.GPS
                 if (followTrack == null)
                 {
                     shown = false;
-                    followWay = null;
+                    followWay.Clear();
                     currentWPNode = null;
                     finishWP = null;
                 }
                 else
                 {
-                    followWay = followTrack.wayObject;
-                    currentWPNode = followWay.wayPoints.First;
+                    followWay.Clear();
+                    if (followTrack.wayObject.wayPoints.Count < 4)
+                        followTrack.sliceTrackIntoWay();
+
+                    if (!reverse)
+                    {
+                        LinkedListNode<WayBase.WayPoint> wpt = followTrack.wayObject.wayPoints.First;
+                        while (wpt != null)
+                        {
+                            followWay.AddLast(wpt.Value);
+                            wpt = wpt.Next;
+                        }
+                    }
+                    else
+                    {
+                        LinkedListNode<WayBase.WayPoint> wpt = followTrack.wayObject.wayPoints.Last;
+                        while (wpt != null)
+                        {
+                            followWay.AddLast(wpt.Value);
+                            wpt = wpt.Previous;
+                        }
+                    }
+
+                    currentWPNode = followWay.First;
                     if (currentWPNode == null)
                     {
                         throw new ArgumentNullException("Waypoint", "Selected empty route. There is no waypoints to follow.\nPlease, choose another track.");
                     }
-                    finishWP = followWay.wayPoints.Last.Value;
+                    finishWP = followWay.Last.Value;
                     shown = true;
                 }
             }
@@ -191,9 +229,9 @@ namespace GMView.GPS
         }
 
         /// <summary>
-        /// Hit distance - 300 meters - if we are near out WP (less than 300 m) then we hit it
+        /// Hit distance - 200 meters - if we are near out WP (less than 200 m) then we hit it
         /// </summary>
-        private const double hitDist = 0.1;
+        private const double hitDist = 0.2;
 
         private NMEA_LL.PointType oldwayType = NMEA_LL.PointType.TP;
 
@@ -202,7 +240,7 @@ namespace GMView.GPS
         /// </summary>
         /// <param name="wpt"></param>
         /// <param name="dist"></param>
-        private void setCurrentWP(LinkedListNode<WayBase.WayPoint> wpt, double dist)
+        private void setCurrentWP(LinkedListNode<WayBase.WayPoint> wpt, double dist, double totalDist)
         {
             currentDistance = dist;
             currentWPNode = wpt;
@@ -214,17 +252,30 @@ namespace GMView.GPS
                 currentWPNode.Value.ptype = NMEA_LL.PointType.MARKWP;
             }
 
-            finishDistance = currentDistance;
-            while (wpt != null)
+            if (totalDist >= 0)
             {
-                finishDistance += wpt.Value.distance_to_next;
-                wpt = wpt.Next;
+                finishDistance = totalDist;
             }
+            else
+            {
+                finishDistance = currentDistance;
+                while (wpt != null)
+                {
+                    finishDistance += wpt.Value.distance_to_next;
+                    wpt = wpt.Next;
+                }
+            }
+
             finishAngle = calculateAngle(currentPos, finishWP.point);
 
             curDistanceS = currentDistance.ToString("F2", ncUtils.Glob.numformat);
             finDistanceS = finishDistance.ToString("F2", ncUtils.Glob.numformat);
         }
+
+        /// <summary>
+        /// Distance to the current waypoint from our previous GPS position
+        /// </summary>
+        private double previousDistance = 100.0;
 
         /// <summary>
         /// Call in NMEA thread when we have new GPS position in our current track. 
@@ -245,7 +296,7 @@ namespace GMView.GPS
             currentDistance = CommonGeo.getDistanceByLonLat2(wpt.Value.point.lon, wpt.Value.point.lat,
                                                       currentPos.lon, currentPos.lat);
             //we hit it!
-            if (currentDistance <= hitDist)
+            if (currentDistance <= hitDist && currentDistance > previousDistance + 0.01)
             {
                 if (currentWPNode.Value.ptype == NMEA_LL.PointType.MARKWP)
                 {
@@ -258,15 +309,18 @@ namespace GMView.GPS
                     setCurrentWP(wpt, CommonGeo.getDistanceByLonLat2(wpt.Value.point.lon,
                                                                      wpt.Value.point.lat,
                                                                      currentPos.lon,
-                                                                     currentPos.lat));
+                                                                     currentPos.lat), -1);
                 }
                 else
                     return;
             }
 
+            previousDistance = currentDistance;
+
             //find nearest WP down the route
             double dist = currentDistance;
-            bool found = false;
+            double totalDist = dist;
+
             while (wpt != null)
             {
                 dist = CommonGeo.getDistanceByLonLat2(wpt.Value.point.lon, wpt.Value.point.lat, 
@@ -279,12 +333,13 @@ namespace GMView.GPS
                     }
                     currentWPNode = wpt;
                     currentDistance = dist;
-                    found = true;
                 }
+                totalDist += wpt.Value.distance_to_next;
+
                 wpt = wpt.Next;
             }
 
-            setCurrentWP(currentWPNode, currentDistance);
+            setCurrentWP(currentWPNode, currentDistance, totalDist);
         }
 
         /// <summary>

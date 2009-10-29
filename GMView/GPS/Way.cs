@@ -20,6 +20,7 @@ namespace GMView
             imds[(int)NMEA_LL.PointType.STARTP] = TextureFactory.singleton.getImg(TextureFactory.TexAlias.StartPos);
             imds[(int)NMEA_LL.PointType.SWP] = TextureFactory.singleton.getImg(TextureFactory.TexAlias.WayDot);
             imds[(int)NMEA_LL.PointType.MWP] = TextureFactory.singleton.getImg(TextureFactory.TexAlias.WayDotSmall);
+            imds[(int)NMEA_LL.PointType.AWP] = TextureFactory.singleton.getImg(TextureFactory.TexAlias.SatOK);
             imds[(int)NMEA_LL.PointType.MARKWP] = TextureFactory.singleton.getImg(TextureFactory.TexAlias.WayDotGreen);
             imds[(int)NMEA_LL.PointType.ENDTP] = TextureFactory.singleton.getImg(TextureFactory.TexAlias.FinishPos);
         }

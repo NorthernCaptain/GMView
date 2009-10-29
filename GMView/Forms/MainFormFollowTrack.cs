@@ -58,6 +58,7 @@ namespace GMView
 
             try
             {
+                followConnect.reverseDir = reverseTBut.Checked;
                 followConnect.follower = track;
                 infoMessage("Set follower to " + ((track == null) ? "None" : track.ToString()));
             }
@@ -68,5 +69,6 @@ namespace GMView
                 followTrackList.SelectedIndex = 0;
             }
         }
+
     }
 }

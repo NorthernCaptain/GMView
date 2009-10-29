@@ -1341,6 +1341,56 @@ namespace GMView
         }
 
         /// <summary>
+        /// Slices track into segments and fills Way (route)
+        /// </summary>
+        public void sliceTrackIntoWay()
+        {
+            if (countPoints == 0)
+                return;
+
+            Way nway = new Way();
+
+            double step = distance_km / 50;
+            if (step < 1)
+                step = 1;
+            else
+                if (step > 50)
+                    step = 50;
+
+            double dist = 0;
+            double totaldist = 0;
+
+            LinkedListNode<NMEA_LL> ppt = trackData.First;
+            LinkedListNode<NMEA_LL> oldppt = trackData.First;
+
+            nway.markWay(ppt.Value, dist, NMEA_LL.PointType.STARTP);
+            nway.recalc_last_waypoint(mapo.geosystem);
+
+            ppt = ppt.Next;
+            while (ppt != null)
+            {
+                dist += ncGeo.CommonGeo.getDistanceByLonLat2(ppt.Value.lon, ppt.Value.lat,
+                                       oldppt.Value.lon, oldppt.Value.lat);
+
+                if (dist > step)
+                {
+                    totaldist += dist;
+                    ppt.Value.ptype = NMEA_LL.PointType.AWP;
+                    nway.markWay(ppt.Value, totaldist, NMEA_LL.PointType.AWP);
+                    nway.recalc_last_waypoint(mapo.geosystem);
+                    dist = 0;
+                }
+                oldppt = ppt;
+                ppt = ppt.Next;
+            }
+            nway.markWay(trackData.Last.Value, totaldist + dist, NMEA_LL.PointType.ENDTP);
+            nway.recalc_last_waypoint(mapo.geosystem);
+
+            nway.initGLData();
+            way = nway;
+        }
+
+        /// <summary>
         /// Updates last point to a new lon/lat coords
         /// </summary>
         /// <param name="newlon"></param>

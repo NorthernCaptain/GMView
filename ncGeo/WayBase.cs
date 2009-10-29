@@ -271,5 +271,6 @@ namespace ncGeo
                 currentWayPoint = wplink.Value;
             return currentWayPoint;
         }
+
     }
 }

@@ -122,5 +122,10 @@ namespace ncGeo
         {
             get;
         }
+
+        /// <summary>
+        /// Slices track into segments and fills Way (route)
+        /// </summary>
+        void sliceTrackIntoWay();
     }
 }

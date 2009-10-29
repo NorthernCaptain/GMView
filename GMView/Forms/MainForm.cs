@@ -1615,5 +1615,6 @@ namespace GMView
             geoTagForm.show(this.DesktopLocation.X + this.Size.Width - geoTagForm.Size.Width,
                     this.DesktopLocation.Y + this.Size.Height - geoTagForm.Size.Height);
         }
+
     }
 }

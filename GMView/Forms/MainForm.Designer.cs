@@ -119,6 +119,7 @@
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
             this.followTrackList = new System.Windows.Forms.ToolStripComboBox();
+            this.reverseTBut = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.miniMapTimer = new System.Windows.Forms.Timer(this.components);
             this.trackSaveFileDialog = new System.Windows.Forms.SaveFileDialog();
@@ -656,7 +657,8 @@
             this.removeTracksSB,
             this.toolStripSeparator11,
             this.toolStripLabel3,
-            this.followTrackList});
+            this.followTrackList,
+            this.reverseTBut});
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             // 
@@ -871,6 +873,15 @@
             resources.ApplyResources(this.followTrackList, "followTrackList");
             this.followTrackList.SelectedIndexChanged += new System.EventHandler(this.followTrackList_SelectedIndexChanged);
             // 
+            // reverseTBut
+            // 
+            this.reverseTBut.CheckOnClick = true;
+            this.reverseTBut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.reverseTBut.Image = global::GMView.Properties.Resources.reverse;
+            resources.ApplyResources(this.reverseTBut, "reverseTBut");
+            this.reverseTBut.Name = "reverseTBut";
+            this.reverseTBut.Click += new System.EventHandler(this.followTrackList_SelectedIndexChanged);
+            // 
             // toolStripSeparator9
             // 
             this.toolStripSeparator9.Name = "toolStripSeparator9";
@@ -1054,6 +1065,7 @@
         private System.Windows.Forms.ToolStripMenuItem GeoTagMI;
         private System.Windows.Forms.ToolStripComboBox followTrackList;
         private System.Windows.Forms.ToolStripLabel toolStripLabel3;
+        private System.Windows.Forms.ToolStripButton reverseTBut;
     }
 }
 

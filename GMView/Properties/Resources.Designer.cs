@@ -207,6 +207,13 @@ namespace GMView.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap dot_small_auto {
+            get {
+                object obj = ResourceManager.GetObject("dot_small_auto", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap dot1 {
             get {
                 object obj = ResourceManager.GetObject("dot1", resourceCulture);
@@ -365,6 +372,13 @@ namespace GMView.Properties {
             get {
                 object obj = ResourceManager.GetObject("intro", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Icon knowhere_ico {
+            get {
+                object obj = ResourceManager.GetObject("knowhere_ico", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
         
@@ -532,6 +546,13 @@ namespace GMView.Properties {
         internal static System.Drawing.Bitmap reload {
             get {
                 object obj = ResourceManager.GetObject("reload", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap reverse {
+            get {
+                object obj = ResourceManager.GetObject("reverse", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
