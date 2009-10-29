@@ -518,7 +518,10 @@ namespace XnGFL
                 track.findNearest(ctx);
                 if (ctx.timeSpan.TotalMinutes > 1 || ctx.resultPoint == null)
                     continue;
-
+                /// TODO: More accurate calculation if we have very rare points on the track
+                /// Use the formula for x and y (the same)
+                /// Xres = (x2 + x1 * (1 / deltaTime - 1)) / 1 / deltaTime
+                /// where deltaTime in percent [0-1] of total travel tie between x1 and x2.
                 img.exif.setGPS(ctx.resultPoint.Value.lon, ctx.resultPoint.Value.lat, ctx.resultPoint.Value.height);
 
                 if (needDateCorrection)
