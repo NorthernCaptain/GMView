@@ -1,0 +1,51 @@
+This is the TODO file for Knowhere project by Leonid Khramov, design by Igor Khramov.
+
+TODO list:
+
+* 30.10.09 *
+- Problem with GPS/COM connection indicators, its show incorrect status. Also after fixes, move 
+  them to the GPS info dashboard (top left corner) and make it flash a little if in a proper status.
+  
+- GPSTrack - add average speed calculation from previous waypoint, not only from start. Add this 
+  information to the GPS info dashboard + distance from last WP. May be move this info to the Track
+  dashboard?? So we need info about last waypoint: Time till WP, distance from WP, average speed 
+  from WP. It's better to organize in the WayBase class and calculate for each WP recently added.
+  
+- Follow track mode. Add estimated time calculation to the nearest point and to the finish point.
+  Take average speed from the recording track.
+  
+- Reassing F1 hotkey and implement Keys Help page for display hotkeys and actions, also there could
+  be second page with description of the toolbar buttons and menus.
+  We need help system :)
+  
+- Import track from clipboard buffer. Add Paste function that will paste data from clipboard and 
+  loads it as a track, show on the map.
+
+- Save track redesign. When we hit Record track, display dialog with From and Destination 
+  text fields. Create and auto save this track into file 'From-Destination-YY-MM-DD.gpõ' into
+  tracks directory.
+  Think about continuing of autosaved track if we crashed and restarted.
+  
+- Load track dialog redesign. Merge file choosing dialog with track color assign dialog and add 
+  new tab about track loading options. Options include - loading POI or not, merge multiple tracks
+  if they are in the file and more.
+  
+- Points of interest (bookmarks). Complete refactoring and redesing.
+  * Add more fields to the POI: POI type, short name, descriprion, comments, tags, group, show_in_menu
+  * Look for standart list of POI types, maybe from Google KML of GPX standards.
+  * Different icons for different types - need library of icons.... + multiPOI type and icon.
+  * Put POIs into database SQLite with indexing and RTree spatial search.
+  * Quick Add POI for current position. Display dialog with most common types of POIs. User choose
+    just type, then we create POI on the current position with this type, generaged name and mark it as
+    "Partially defined". Later user can edit it and define the rest of the data. +Mark this point on
+    the track as we already did.
+  * Refactor "display POIs on the screen" method. Do it in separate thread, load from database by
+    a region, merge nearest into one multiPOI, then display prepared data on the screen in main
+    thread.
+  * Quick POI search toolbar. Type name or type of the POI (just first letters) and see dropdown
+    list of the POIs nearest to current location. Quickly change range of searching.
+    Range of searching calculates according user preferences and current zoom level.
+  * Edit POIs dialog with grid, search header by different fields and region. Tree view for groups
+    hierarchy. Edit or delete POIs with multiselection mode. Managing groups (add, delete, edit).
+  * Importing POIs from external files (KML, GPX), dialog for matching POI fields from file to our
+    internal fields, choosing or changing types and more.
