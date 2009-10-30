@@ -36,6 +36,7 @@ namespace GMView
                 return false;
             }
 
+            error_ex = null;
             return true;
         }
 
@@ -60,6 +61,7 @@ namespace GMView
                 error_ex = ex;
                 return null;
             }
+            error_ex = null;
             return line;
         }
 

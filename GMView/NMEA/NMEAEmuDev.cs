@@ -28,6 +28,7 @@ namespace GMView
                 error_ex = gex;
                 return false;
             }
+            error_ex = null;
             return true;
         }
 
@@ -45,6 +46,7 @@ namespace GMView
                     line = reader.ReadLine();
                 } while (line.Substring(0, 3) != "$GP");
                 System.Threading.Thread.Sleep(150);
+                error_ex = null;
                 return line;
             }
             catch (Exception ex)

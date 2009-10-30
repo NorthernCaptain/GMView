@@ -312,7 +312,14 @@ namespace GMView.GPS
                                                                      currentPos.lat), -1);
                 }
                 else
+                {
+                    currentWPNode = null;
+                    curDistanceS = "---";
+                    finDistanceS = "---";
+                    currentAngle = 0;
+                    finishAngle = 0;
                     return;
+                }
             }
 
             previousDistance = currentDistance;
@@ -350,8 +357,14 @@ namespace GMView.GPS
         /// <returns></returns>
         private double calculateAngle(NMEA_LL from, NMEA_LL to)
         {
-            double dx = to.lon - from.lon;
-            double dy = to.lat - from.lat;
+            ncGeo.BaseGeo geo = followTrack.geosystem;
+
+            Point xy1, xy2;
+
+            geo.getXYByLonLat(from.lon, from.lat, out xy1);
+            geo.getXYByLonLat(to.lon, to.lat, out xy2);
+            double dx = xy1.X - xy2.X;
+            double dy = xy1.Y - xy2.Y;
 
             double angle = Math.Atan(Math.Abs(dx) / Math.Abs(dy)) / CommonGeo.deg2rad;
 //            double angle = Math.Asin(Math.Abs(dx) / Math.Sqrt(dx * dx + dy * dy)) / CommonGeo.deg2rad;

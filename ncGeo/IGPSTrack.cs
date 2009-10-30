@@ -127,5 +127,13 @@ namespace ncGeo
         /// Slices track into segments and fills Way (route)
         /// </summary>
         void sliceTrackIntoWay();
+
+        /// <summary>
+        /// Return the geosystem that is in use on the map this track is assigned to.
+        /// </summary>
+        BaseGeo geosystem
+        {
+            get;
+        }
     }
 }

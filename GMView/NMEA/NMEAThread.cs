@@ -8,6 +8,26 @@ namespace GMView
 {
     public class NMEAThread
     {
+        public enum GPDevState { Disabled, CommError, NoData, DataOK1, DataOK2 };
+
+        /// <summary>
+        /// State of the device and data transmition
+        /// </summary>
+        private GPDevState state = GPDevState.Disabled;
+
+        public GPDevState dstate
+        {
+            get
+            {
+                return state;
+            }
+            set
+            {
+                
+                state = value;
+            }
+        }
+
         private NMEAVirtualDev nmeadev;
         private Thread ourThread = new Thread(new ParameterizedThreadStart(devReadStub));
 
@@ -38,6 +58,7 @@ namespace GMView
 
         public void start()
         {
+            ourThread.IsBackground = true;
             ourThread.Start(this);
             Program.onShutdown += new Program.ShutdownDelegate(Program_onShutdown);
             Program.opt.onChanged += new Options.OnChangedDelegate(opt_onChanged);

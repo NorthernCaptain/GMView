@@ -1844,6 +1844,14 @@ namespace GMView
             get { return way; }
         }
 
+        [XmlIgnore]
+        public BaseGeo geosystem
+        {
+            get
+            {
+                return mapo.geosystem;
+            }
+        }
         #endregion
     }
 }
