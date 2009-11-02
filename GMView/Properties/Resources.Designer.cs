@@ -361,6 +361,31 @@ namespace GMView.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
+        ///&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; &gt;
+        ///&lt;head&gt;
+        ///    &lt;title&gt;Knowhere Help&lt;/title&gt;
+        ///&lt;/head&gt;
+        ///&lt;body&gt;
+        ///&lt;h2&gt;Knowhere Hot Keys&lt;/h2&gt;
+        ///    &lt;p&gt;Hot keys:&lt;/p&gt;
+        ///    &lt;dl&gt;
+        ///    &lt;li&gt;F1 - this help&lt;/li&gt;
+        ///    &lt;li&gt;F2 - save recording track into a file&lt;/li&gt;
+        ///    &lt;li&gt;F3 - load track from file&lt;/li&gt;
+        ///    &lt;/dl&gt;
+        ///
+        ///&lt;/body&gt;
+        ///&lt;/html&gt;
+        ///.
+        /// </summary>
+        internal static string helpKeys {
+            get {
+                return ResourceManager.GetString("helpKeys", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Icon icon_main {
             get {
                 object obj = ResourceManager.GetObject("icon_main", resourceCulture);

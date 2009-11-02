@@ -11,8 +11,10 @@ TODO list:
   dashboard?? So we need info about last waypoint: Time till WP, distance from WP, average speed 
   from WP. It's better to organize in the WayBase class and calculate for each WP recently added.
   
+- Add altitute to the GPS dashboard.
+
 - Follow track mode. Add estimated time calculation to the nearest point and to the finish point.
-  Take average speed from the recording track.
+  Take average speed from the recording track. [DONE 02.11.09]
   
 - Reassing F1 hotkey and implement Keys Help page for display hotkeys and actions, also there could
   be second page with description of the toolbar buttons and menus.

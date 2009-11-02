@@ -44,7 +44,8 @@ namespace GMView
             onKeyDownDict.Add(Keys.Oemtilde, new onKeyEvent(miniMapMI_Click));
             onKeyDownDict.Add(Keys.Tab, new onKeyEvent(miniMapMI_Click));
 
-            onKeyDownDict.Add(Keys.F1, new onKeyEvent(changeMapType_Key));
+            onKeyDownDict.Add(Keys.F1, new onKeyEvent(showHelp_Key));
+            onKeyDownDict.Add(Keys.F7, new onKeyEvent(changeMapType_Key));
             onKeyDownDict.Add(Keys.F2, new onKeyEvent(saveTrackSB_Click));
             onKeyDownDict.Add(Keys.F3, new onKeyEvent(loadTrackSB_Click));
 
@@ -61,6 +62,13 @@ namespace GMView
             onKeyDownDict.Add(Keys.T, new onKeyEvent(showTracks_Key));
             onKeyDownDict.Add(Keys.V, new onKeyEvent(showView_Key));
             onKeyDownDict.Add(Keys.N, new onKeyEvent(markWaypoint_Key));
+        }
+
+        void showHelp_Key(object sender, KeyEventArgs e)
+        {
+            Forms.HelpForm hlp = new Forms.HelpForm();
+            hlp.Owner = this;
+            hlp.Visible = true;
         }
 
         void markWaypoint_Key(object sender, KeyEventArgs e)
