@@ -45,7 +45,6 @@ namespace GMView
             onKeyDownDict.Add(Keys.Tab, new onKeyEvent(miniMapMI_Click));
 
             onKeyDownDict.Add(Keys.F1, new onKeyEvent(showHelp_Key));
-            onKeyDownDict.Add(Keys.F7, new onKeyEvent(changeMapType_Key));
             onKeyDownDict.Add(Keys.F2, new onKeyEvent(saveTrackSB_Click));
             onKeyDownDict.Add(Keys.F3, new onKeyEvent(loadTrackSB_Click));
 
@@ -53,6 +52,7 @@ namespace GMView
             onKeyDownDict.Add(Keys.F4, new onKeyEvent(gpsInfoView_Key));
             onKeyDownDict.Add(Keys.F5, new onKeyEvent(trackInfo_Key));
             onKeyDownDict.Add(Keys.F6, new onKeyEvent(zoomInfo_Key));
+            onKeyDownDict.Add(Keys.F7, new onKeyEvent(changeMapType_Key));
 
             onKeyDownDict.Add(Keys.F8, new onKeyEvent(gpsTrackOnAir_CheckedChanged));
             onKeyDownDict.Add(Keys.F9, new onKeyEvent(showGPSTrack_Key));
