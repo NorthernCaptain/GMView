@@ -151,7 +151,7 @@
     <value>100, 21</value>
   </data>
   <data name="bgStatusLb.Size" type="System.Drawing.Size, System.Drawing">
-    <value>74, 22</value>
+    <value>56, 22</value>
   </data>
   <data name="bgStatusLb.Text" xml:space="preserve">
     <value>Bg status</value>
@@ -166,7 +166,7 @@
     <value>No</value>
   </data>
   <data name="comStateSLb.Size" type="System.Drawing.Size, System.Drawing">
-    <value>60, 22</value>
+    <value>49, 22</value>
   </data>
   <data name="comStateSLb.Text" xml:space="preserve">
     <value>Com:</value>
@@ -181,7 +181,7 @@
     <value>No</value>
   </data>
   <data name="gpsLampSLb.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 22</value>
+    <value>47, 22</value>
   </data>
   <data name="gpsLampSLb.Text" xml:space="preserve">
     <value>GPS:</value>
@@ -190,7 +190,7 @@
     <value>TextBeforeImage</value>
   </data>
   <data name="gpsStatSLb.Size" type="System.Drawing.Size, System.Drawing">
-    <value>38, 22</value>
+    <value>30, 22</value>
   </data>
   <data name="gpsStatSLb.Text" xml:space="preserve">
     <value>GPS</value>
@@ -199,13 +199,13 @@
     <value>No</value>
   </data>
   <data name="satInfoSLb.Size" type="System.Drawing.Size, System.Drawing">
-    <value>38, 22</value>
+    <value>31, 22</value>
   </data>
   <data name="satInfoSLb.Text" xml:space="preserve">
     <value>Sat:</value>
   </data>
   <data name="modeSLbl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>82, 22</value>
+    <value>61, 22</value>
   </data>
   <data name="modeSLbl.Text" xml:space="preserve">
     <value>Navi mode</value>
@@ -217,7 +217,7 @@
     <value>No</value>
   </data>
   <data name="statusStrip.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1477, 27</value>
+    <value>1082, 27</value>
   </data>
   <data name="statusStrip.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -258,14 +258,11 @@
   <data name="mainPanel.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="mainPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
   <data name="mainPanel.RowCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="mainPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1477, 594</value>
+    <value>1082, 470</value>
   </data>
   <data name="mainPanel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -285,11 +282,8 @@
   <data name="mainPanel.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls /&gt;&lt;Columns Styles="Percent,50" /&gt;&lt;Rows Styles="Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
-  <data name="toolStripContainer1.ContentPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
   <data name="toolStripContainer1.ContentPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1477, 594</value>
+    <value>1082, 470</value>
   </data>
   <data name="&gt;&gt;toolStripContainer1.ContentPanel.Name" xml:space="preserve">
     <value>toolStripContainer1.ContentPanel</value>
@@ -321,9 +315,6 @@
   <data name="toolStripContainer1.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="toolStripContainer1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
   <data name="&gt;&gt;toolStripContainer1.RightToolStripPanel.Name" xml:space="preserve">
     <value>toolStripContainer1.RightToolStripPanel</value>
   </data>
@@ -337,7 +328,7 @@
     <value>2</value>
   </data>
   <data name="toolStripContainer1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1477, 673</value>
+    <value>1082, 547</value>
   </data>
   <data name="toolStripContainer1.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -345,290 +336,8 @@
   <data name="toolStripContainer1.Text" xml:space="preserve">
     <value>toolStripContainer1</value>
   </data>
-  <metadata name="menuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>0, 0</value>
-  </metadata>
-  <data name="menuStrip.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>None</value>
-  </data>
-  <data name="OptionsMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>140, 22</value>
-  </data>
-  <data name="OptionsMenuItem.Text" xml:space="preserve">
-    <value>Options</value>
-  </data>
-  <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>137, 6</value>
-  </data>
-  <data name="ExitItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>140, 22</value>
-  </data>
-  <data name="ExitItem.Text" xml:space="preserve">
-    <value>Exit</value>
-  </data>
-  <data name="fileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 22</value>
-  </data>
-  <data name="fileToolStripMenuItem.Text" xml:space="preserve">
-    <value>File</value>
-  </data>
-  <data name="aboutToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>129, 22</value>
-  </data>
-  <data name="aboutToolStripMenuItem.Text" xml:space="preserve">
-    <value>About</value>
-  </data>
-  <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 22</value>
-  </data>
-  <data name="toolStripMenuItem1.Text" xml:space="preserve">
-    <value>Help</value>
-  </data>
-  <data name="gpsInfoViewMI.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 22</value>
-  </data>
-  <data name="gpsInfoViewMI.Text" xml:space="preserve">
-    <value>Show GPS information panel</value>
-  </data>
-  <data name="satInfoMI.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 22</value>
-  </data>
-  <data name="satInfoMI.Text" xml:space="preserve">
-    <value>Show track information panel</value>
-  </data>
-  <data name="miniMapMI.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 22</value>
-  </data>
-  <data name="miniMapMI.Text" xml:space="preserve">
-    <value>Show Mini map</value>
-  </data>
-  <data name="showZoomMI.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 22</value>
-  </data>
-  <data name="showZoomMI.Text" xml:space="preserve">
-    <value>Show zoom panel</value>
-  </data>
-  <data name="windRoseMI.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 22</value>
-  </data>
-  <data name="windRoseMI.Text" xml:space="preserve">
-    <value>Show wind rose</value>
-  </data>
-  <data name="toolStripSeparator6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>275, 6</value>
-  </data>
-  <data name="openLogMI.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 22</value>
-  </data>
-  <data name="openLogMI.Text" xml:space="preserve">
-    <value>Open Log window</value>
-  </data>
-  <data name="showBlockFNameMI.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 22</value>
-  </data>
-  <data name="showBlockFNameMI.Text" xml:space="preserve">
-    <value>Show filenames in blocks</value>
-  </data>
-  <data name="toolStripSeparator8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>275, 6</value>
-  </data>
-  <data name="fullScreenMI.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 22</value>
-  </data>
-  <data name="fullScreenMI.Text" xml:space="preserve">
-    <value>Full screen mode</value>
-  </data>
-  <data name="ViewMI.Size" type="System.Drawing.Size, System.Drawing">
-    <value>49, 22</value>
-  </data>
-  <data name="ViewMI.Text" xml:space="preserve">
-    <value>View</value>
-  </data>
-  <data name="recordTrackMI.Size" type="System.Drawing.Size, System.Drawing">
-    <value>314, 24</value>
-  </data>
-  <data name="recordTrackMI.Text" xml:space="preserve">
-    <value>Record track into memory</value>
-  </data>
-  <data name="toolStripSeparator12.Size" type="System.Drawing.Size, System.Drawing">
-    <value>311, 6</value>
-  </data>
-  <data name="loadTrackMI.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
-    <value>None</value>
-  </data>
-  <data name="loadTrackMI.Size" type="System.Drawing.Size, System.Drawing">
-    <value>314, 24</value>
-  </data>
-  <data name="loadTrackMI.Text" xml:space="preserve">
-    <value>Load Track from disk</value>
-  </data>
-  <data name="saveTrackMI.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
-    <value>None</value>
-  </data>
-  <data name="saveTrackMI.Size" type="System.Drawing.Size, System.Drawing">
-    <value>314, 24</value>
-  </data>
-  <data name="saveTrackMI.Text" xml:space="preserve">
-    <value>Save Track to disk (GPX format)</value>
-  </data>
-  <data name="saveKMLMI.Size" type="System.Drawing.Size, System.Drawing">
-    <value>314, 24</value>
-  </data>
-  <data name="saveKMLMI.Text" xml:space="preserve">
-    <value>Save Track to disk (KML format)</value>
-  </data>
-  <data name="toolStripSeparator13.Size" type="System.Drawing.Size, System.Drawing">
-    <value>311, 6</value>
-  </data>
-  <data name="removeTracksMI.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
-    <value>None</value>
-  </data>
-  <data name="removeTracksMI.Size" type="System.Drawing.Size, System.Drawing">
-    <value>314, 24</value>
-  </data>
-  <data name="removeTracksMI.Text" xml:space="preserve">
-    <value>Remove all tracks from map</value>
-  </data>
-  <data name="toolStripSeparator14.Size" type="System.Drawing.Size, System.Drawing">
-    <value>311, 6</value>
-  </data>
-  <data name="trackStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 22</value>
-  </data>
-  <data name="trackStripMenuItem.Text" xml:space="preserve">
-    <value>Tracks</value>
-  </data>
-  <data name="addPOIMI.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
-    <value>None</value>
-  </data>
-  <data name="addPOIMI.Size" type="System.Drawing.Size, System.Drawing">
-    <value>256, 22</value>
-  </data>
-  <data name="addPOIMI.Text" xml:space="preserve">
-    <value>Add new place</value>
-  </data>
-  <data name="editPOIMI.Size" type="System.Drawing.Size, System.Drawing">
-    <value>256, 22</value>
-  </data>
-  <data name="editPOIMI.Text" xml:space="preserve">
-    <value>Edit places of interest</value>
-  </data>
-  <data name="toolStripSeparator7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>253, 6</value>
-  </data>
-  <data name="exportPOIMI.Size" type="System.Drawing.Size, System.Drawing">
-    <value>256, 22</value>
-  </data>
-  <data name="exportPOIMI.Text" xml:space="preserve">
-    <value>Export POI into GPX file</value>
-  </data>
-  <data name="importPOIMI.Size" type="System.Drawing.Size, System.Drawing">
-    <value>256, 22</value>
-  </data>
-  <data name="importPOIMI.Text" xml:space="preserve">
-    <value>Import POI from GPX file</value>
-  </data>
-  <data name="toolStripSeparator19.Size" type="System.Drawing.Size, System.Drawing">
-    <value>253, 6</value>
-  </data>
-  <data name="hideAllPOIMI.Size" type="System.Drawing.Size, System.Drawing">
-    <value>256, 22</value>
-  </data>
-  <data name="hideAllPOIMI.Text" xml:space="preserve">
-    <value>Hide all places</value>
-  </data>
-  <data name="toolStripSeparator20.Size" type="System.Drawing.Size, System.Drawing">
-    <value>253, 6</value>
-  </data>
-  <data name="poiMI.Size" type="System.Drawing.Size, System.Drawing">
-    <value>131, 22</value>
-  </data>
-  <data name="poiMI.Text" xml:space="preserve">
-    <value>Places of interest</value>
-  </data>
-  <data name="rebuildAllMI.Size" type="System.Drawing.Size, System.Drawing">
-    <value>350, 22</value>
-  </data>
-  <data name="rebuildAllMI.Text" xml:space="preserve">
-    <value>Rebuild disk cache for all</value>
-  </data>
-  <data name="rebuildMapTypeMI.Size" type="System.Drawing.Size, System.Drawing">
-    <value>350, 22</value>
-  </data>
-  <data name="rebuildMapTypeMI.Text" xml:space="preserve">
-    <value>Rebuild disk cache for current map type</value>
-  </data>
-  <data name="rebuildMapOnlyMI.Size" type="System.Drawing.Size, System.Drawing">
-    <value>350, 22</value>
-  </data>
-  <data name="rebuildMapOnlyMI.Text" xml:space="preserve">
-    <value>Rebuild disk cache for current map only</value>
-  </data>
-  <data name="toolStripSeparator16.Size" type="System.Drawing.Size, System.Drawing">
-    <value>347, 6</value>
-  </data>
-  <data name="reloadScrFromSiteMI.Size" type="System.Drawing.Size, System.Drawing">
-    <value>350, 22</value>
-  </data>
-  <data name="reloadScrFromSiteMI.Text" xml:space="preserve">
-    <value>Reload screen blocks from site</value>
-  </data>
-  <data name="toolStripSeparator17.Size" type="System.Drawing.Size, System.Drawing">
-    <value>347, 6</value>
-  </data>
-  <data name="cleanCacheMI.Size" type="System.Drawing.Size, System.Drawing">
-    <value>350, 22</value>
-  </data>
-  <data name="cleanCacheMI.Text" xml:space="preserve">
-    <value>Clean memory cache</value>
-  </data>
-  <data name="toolStripSeparator18.Size" type="System.Drawing.Size, System.Drawing">
-    <value>347, 6</value>
-  </data>
-  <data name="reinitGPSMI.Size" type="System.Drawing.Size, System.Drawing">
-    <value>350, 22</value>
-  </data>
-  <data name="reinitGPSMI.Text" xml:space="preserve">
-    <value>Reinitialize GPS communication</value>
-  </data>
-  <data name="toolsMI.Size" type="System.Drawing.Size, System.Drawing">
-    <value>55, 22</value>
-  </data>
-  <data name="toolsMI.Text" xml:space="preserve">
-    <value>Tools</value>
-  </data>
-  <data name="GeoTagMI.Size" type="System.Drawing.Size, System.Drawing">
-    <value>72, 22</value>
-  </data>
-  <data name="GeoTagMI.Text" xml:space="preserve">
-    <value>GeoTag</value>
-  </data>
-  <data name="menuStrip.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="menuStrip.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1477, 26</value>
-  </data>
-  <data name="menuStrip.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="menuStrip.Text" xml:space="preserve">
-    <value>menuStrip1</value>
-  </data>
-  <data name="&gt;&gt;menuStrip.Name" xml:space="preserve">
-    <value>menuStrip</value>
-  </data>
-  <data name="&gt;&gt;menuStrip.Type" xml:space="preserve">
-    <value>System.Windows.Forms.MenuStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuStrip.Parent" xml:space="preserve">
-    <value>toolStripContainer1.TopToolStripPanel</value>
-  </data>
-  <data name="&gt;&gt;menuStrip.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <metadata name="toolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>3, 24</value>
+    <value>3, 26</value>
   </metadata>
   <data name="toolStrip.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>None</value>
@@ -709,7 +418,7 @@
     <value>6, 26</value>
   </data>
   <data name="toolStripLabel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>41, 23</value>
+    <value>34, 23</value>
   </data>
   <data name="toolStripLabel2.Text" xml:space="preserve">
     <value>Lat:</value>
@@ -721,7 +430,7 @@
     <value>80, 26</value>
   </data>
   <data name="toolStripLabel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 23</value>
+    <value>36, 23</value>
   </data>
   <data name="toolStripLabel1.Text" xml:space="preserve">
     <value>Lon:</value>
@@ -910,7 +619,7 @@
     <value>6, 26</value>
   </data>
   <data name="toolStripLabel3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>51, 23</value>
+    <value>41, 23</value>
   </data>
   <data name="toolStripLabel3.Text" xml:space="preserve">
     <value>Follow:</value>
@@ -937,10 +646,10 @@
     <value>Reverse track following direction</value>
   </data>
   <data name="toolStrip.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 26</value>
+    <value>3, 24</value>
   </data>
   <data name="toolStrip.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1092, 26</value>
+    <value>1067, 26</value>
   </data>
   <data name="toolStrip.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -955,6 +664,288 @@
     <value>toolStripContainer1.TopToolStripPanel</value>
   </data>
   <data name="&gt;&gt;toolStrip.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <metadata name="menuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>0, 0</value>
+  </metadata>
+  <data name="menuStrip.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="OptionsMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>111, 22</value>
+  </data>
+  <data name="OptionsMenuItem.Text" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>108, 6</value>
+  </data>
+  <data name="ExitItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>111, 22</value>
+  </data>
+  <data name="ExitItem.Text" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="fileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>35, 20</value>
+  </data>
+  <data name="fileToolStripMenuItem.Text" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="aboutToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>103, 22</value>
+  </data>
+  <data name="aboutToolStripMenuItem.Text" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>56, 20</value>
+  </data>
+  <data name="toolStripMenuItem1.Text" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="gpsInfoViewMI.Size" type="System.Drawing.Size, System.Drawing">
+    <value>213, 22</value>
+  </data>
+  <data name="gpsInfoViewMI.Text" xml:space="preserve">
+    <value>Show GPS information panel</value>
+  </data>
+  <data name="satInfoMI.Size" type="System.Drawing.Size, System.Drawing">
+    <value>213, 22</value>
+  </data>
+  <data name="satInfoMI.Text" xml:space="preserve">
+    <value>Show track information panel</value>
+  </data>
+  <data name="miniMapMI.Size" type="System.Drawing.Size, System.Drawing">
+    <value>213, 22</value>
+  </data>
+  <data name="miniMapMI.Text" xml:space="preserve">
+    <value>Show Mini map</value>
+  </data>
+  <data name="showZoomMI.Size" type="System.Drawing.Size, System.Drawing">
+    <value>213, 22</value>
+  </data>
+  <data name="showZoomMI.Text" xml:space="preserve">
+    <value>Show zoom panel</value>
+  </data>
+  <data name="windRoseMI.Size" type="System.Drawing.Size, System.Drawing">
+    <value>213, 22</value>
+  </data>
+  <data name="windRoseMI.Text" xml:space="preserve">
+    <value>Show wind rose</value>
+  </data>
+  <data name="toolStripSeparator6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>210, 6</value>
+  </data>
+  <data name="openLogMI.Size" type="System.Drawing.Size, System.Drawing">
+    <value>213, 22</value>
+  </data>
+  <data name="openLogMI.Text" xml:space="preserve">
+    <value>Open Log window</value>
+  </data>
+  <data name="showBlockFNameMI.Size" type="System.Drawing.Size, System.Drawing">
+    <value>213, 22</value>
+  </data>
+  <data name="showBlockFNameMI.Text" xml:space="preserve">
+    <value>Show filenames in blocks</value>
+  </data>
+  <data name="toolStripSeparator8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>210, 6</value>
+  </data>
+  <data name="fullScreenMI.Size" type="System.Drawing.Size, System.Drawing">
+    <value>213, 22</value>
+  </data>
+  <data name="fullScreenMI.Text" xml:space="preserve">
+    <value>Full screen mode</value>
+  </data>
+  <data name="ViewMI.Size" type="System.Drawing.Size, System.Drawing">
+    <value>41, 20</value>
+  </data>
+  <data name="ViewMI.Text" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="recordTrackMI.Size" type="System.Drawing.Size, System.Drawing">
+    <value>234, 24</value>
+  </data>
+  <data name="recordTrackMI.Text" xml:space="preserve">
+    <value>Record track into memory</value>
+  </data>
+  <data name="toolStripSeparator12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>231, 6</value>
+  </data>
+  <data name="loadTrackMI.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="loadTrackMI.Size" type="System.Drawing.Size, System.Drawing">
+    <value>234, 24</value>
+  </data>
+  <data name="loadTrackMI.Text" xml:space="preserve">
+    <value>Load Track from disk</value>
+  </data>
+  <data name="saveTrackMI.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="saveTrackMI.Size" type="System.Drawing.Size, System.Drawing">
+    <value>234, 24</value>
+  </data>
+  <data name="saveTrackMI.Text" xml:space="preserve">
+    <value>Save Track to disk (GPX format)</value>
+  </data>
+  <data name="saveKMLMI.Size" type="System.Drawing.Size, System.Drawing">
+    <value>234, 24</value>
+  </data>
+  <data name="saveKMLMI.Text" xml:space="preserve">
+    <value>Save Track to disk (KML format)</value>
+  </data>
+  <data name="toolStripSeparator13.Size" type="System.Drawing.Size, System.Drawing">
+    <value>231, 6</value>
+  </data>
+  <data name="removeTracksMI.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="removeTracksMI.Size" type="System.Drawing.Size, System.Drawing">
+    <value>234, 24</value>
+  </data>
+  <data name="removeTracksMI.Text" xml:space="preserve">
+    <value>Remove all tracks from map</value>
+  </data>
+  <data name="toolStripSeparator14.Size" type="System.Drawing.Size, System.Drawing">
+    <value>231, 6</value>
+  </data>
+  <data name="trackStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>50, 20</value>
+  </data>
+  <data name="trackStripMenuItem.Text" xml:space="preserve">
+    <value>Tracks</value>
+  </data>
+  <data name="addPOIMI.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="addPOIMI.Size" type="System.Drawing.Size, System.Drawing">
+    <value>191, 22</value>
+  </data>
+  <data name="addPOIMI.Text" xml:space="preserve">
+    <value>Add new place</value>
+  </data>
+  <data name="editPOIMI.Size" type="System.Drawing.Size, System.Drawing">
+    <value>191, 22</value>
+  </data>
+  <data name="editPOIMI.Text" xml:space="preserve">
+    <value>Edit places of interest</value>
+  </data>
+  <data name="toolStripSeparator7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>188, 6</value>
+  </data>
+  <data name="exportPOIMI.Size" type="System.Drawing.Size, System.Drawing">
+    <value>191, 22</value>
+  </data>
+  <data name="exportPOIMI.Text" xml:space="preserve">
+    <value>Export POI into GPX file</value>
+  </data>
+  <data name="importPOIMI.Size" type="System.Drawing.Size, System.Drawing">
+    <value>191, 22</value>
+  </data>
+  <data name="importPOIMI.Text" xml:space="preserve">
+    <value>Import POI from GPX file</value>
+  </data>
+  <data name="toolStripSeparator19.Size" type="System.Drawing.Size, System.Drawing">
+    <value>188, 6</value>
+  </data>
+  <data name="hideAllPOIMI.Size" type="System.Drawing.Size, System.Drawing">
+    <value>191, 22</value>
+  </data>
+  <data name="hideAllPOIMI.Text" xml:space="preserve">
+    <value>Hide all places</value>
+  </data>
+  <data name="toolStripSeparator20.Size" type="System.Drawing.Size, System.Drawing">
+    <value>188, 6</value>
+  </data>
+  <data name="poiMI.Size" type="System.Drawing.Size, System.Drawing">
+    <value>102, 20</value>
+  </data>
+  <data name="poiMI.Text" xml:space="preserve">
+    <value>Places of interest</value>
+  </data>
+  <data name="rebuildAllMI.Size" type="System.Drawing.Size, System.Drawing">
+    <value>264, 22</value>
+  </data>
+  <data name="rebuildAllMI.Text" xml:space="preserve">
+    <value>Rebuild disk cache for all</value>
+  </data>
+  <data name="rebuildMapTypeMI.Size" type="System.Drawing.Size, System.Drawing">
+    <value>264, 22</value>
+  </data>
+  <data name="rebuildMapTypeMI.Text" xml:space="preserve">
+    <value>Rebuild disk cache for current map type</value>
+  </data>
+  <data name="rebuildMapOnlyMI.Size" type="System.Drawing.Size, System.Drawing">
+    <value>264, 22</value>
+  </data>
+  <data name="rebuildMapOnlyMI.Text" xml:space="preserve">
+    <value>Rebuild disk cache for current map only</value>
+  </data>
+  <data name="toolStripSeparator16.Size" type="System.Drawing.Size, System.Drawing">
+    <value>261, 6</value>
+  </data>
+  <data name="reloadScrFromSiteMI.Size" type="System.Drawing.Size, System.Drawing">
+    <value>264, 22</value>
+  </data>
+  <data name="reloadScrFromSiteMI.Text" xml:space="preserve">
+    <value>Reload screen blocks from site</value>
+  </data>
+  <data name="toolStripSeparator17.Size" type="System.Drawing.Size, System.Drawing">
+    <value>261, 6</value>
+  </data>
+  <data name="cleanCacheMI.Size" type="System.Drawing.Size, System.Drawing">
+    <value>264, 22</value>
+  </data>
+  <data name="cleanCacheMI.Text" xml:space="preserve">
+    <value>Clean memory cache</value>
+  </data>
+  <data name="toolStripSeparator18.Size" type="System.Drawing.Size, System.Drawing">
+    <value>261, 6</value>
+  </data>
+  <data name="reinitGPSMI.Size" type="System.Drawing.Size, System.Drawing">
+    <value>264, 22</value>
+  </data>
+  <data name="reinitGPSMI.Text" xml:space="preserve">
+    <value>Reinitialize GPS communication</value>
+  </data>
+  <data name="toolsMI.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 20</value>
+  </data>
+  <data name="toolsMI.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="GeoTagMI.Size" type="System.Drawing.Size, System.Drawing">
+    <value>56, 20</value>
+  </data>
+  <data name="GeoTagMI.Text" xml:space="preserve">
+    <value>GeoTag</value>
+  </data>
+  <data name="menuStrip.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="menuStrip.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1082, 24</value>
+  </data>
+  <data name="menuStrip.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="menuStrip.Text" xml:space="preserve">
+    <value>menuStrip1</value>
+  </data>
+  <data name="&gt;&gt;menuStrip.Name" xml:space="preserve">
+    <value>menuStrip</value>
+  </data>
+  <data name="&gt;&gt;menuStrip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.MenuStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuStrip.Parent" xml:space="preserve">
+    <value>toolStripContainer1.TopToolStripPanel</value>
+  </data>
+  <data name="&gt;&gt;menuStrip.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="&gt;&gt;toolStripContainer1.TopToolStripPanel.Name" xml:space="preserve">
@@ -1030,10 +1021,10 @@
     <value>58</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>8, 16</value>
+    <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>1477, 673</value>
+    <value>1082, 547</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -1100,9 +1091,6 @@
         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
 </value>
   </data>
-  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
   <data name="$this.Text" xml:space="preserve">
     <value>GooMap viewer</value>
   </data>
@@ -1165,180 +1153,6 @@
   </data>
   <data name="&gt;&gt;modeSLbl.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;backwardSBut.Name" xml:space="preserve">
-    <value>backwardSBut</value>
-  </data>
-  <data name="&gt;&gt;backwardSBut.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;forwardSBut.Name" xml:space="preserve">
-    <value>forwardSBut</value>
-  </data>
-  <data name="&gt;&gt;forwardSBut.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator15.Name" xml:space="preserve">
-    <value>toolStripSeparator15</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator15.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;viewSBut.Name" xml:space="preserve">
-    <value>viewSBut</value>
-  </data>
-  <data name="&gt;&gt;viewSBut.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;zoomSBut.Name" xml:space="preserve">
-    <value>zoomSBut</value>
-  </data>
-  <data name="&gt;&gt;zoomSBut.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;selectRectDownSBut.Name" xml:space="preserve">
-    <value>selectRectDownSBut</value>
-  </data>
-  <data name="&gt;&gt;selectRectDownSBut.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pinMarkSBut.Name" xml:space="preserve">
-    <value>pinMarkSBut</value>
-  </data>
-  <data name="&gt;&gt;pinMarkSBut.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator2.Name" xml:space="preserve">
-    <value>toolStripSeparator2</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripLabel2.Name" xml:space="preserve">
-    <value>toolStripLabel2</value>
-  </data>
-  <data name="&gt;&gt;toolStripLabel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;latSTb.Name" xml:space="preserve">
-    <value>latSTb</value>
-  </data>
-  <data name="&gt;&gt;latSTb.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripTextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripLabel1.Name" xml:space="preserve">
-    <value>toolStripLabel1</value>
-  </data>
-  <data name="&gt;&gt;toolStripLabel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lonSTb.Name" xml:space="preserve">
-    <value>lonSTb</value>
-  </data>
-  <data name="&gt;&gt;lonSTb.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripTextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;setLLBut.Name" xml:space="preserve">
-    <value>setLLBut</value>
-  </data>
-  <data name="&gt;&gt;setLLBut.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;mapTypeSCombo.Name" xml:space="preserve">
-    <value>mapTypeSCombo</value>
-  </data>
-  <data name="&gt;&gt;mapTypeSCombo.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;trafficTbut.Name" xml:space="preserve">
-    <value>trafficTbut</value>
-  </data>
-  <data name="&gt;&gt;trafficTbut.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator3.Name" xml:space="preserve">
-    <value>toolStripSeparator3</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;addPOISB.Name" xml:space="preserve">
-    <value>addPOISB</value>
-  </data>
-  <data name="&gt;&gt;addPOISB.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator4.Name" xml:space="preserve">
-    <value>toolStripSeparator4</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;gpsTrackTBut.Name" xml:space="preserve">
-    <value>gpsTrackTBut</value>
-  </data>
-  <data name="&gt;&gt;gpsTrackTBut.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;gpsFollowMapTBut.Name" xml:space="preserve">
-    <value>gpsFollowMapTBut</value>
-  </data>
-  <data name="&gt;&gt;gpsFollowMapTBut.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator10.Name" xml:space="preserve">
-    <value>toolStripSeparator10</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator10.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;gpsTrackOnAir.Name" xml:space="preserve">
-    <value>gpsTrackOnAir</value>
-  </data>
-  <data name="&gt;&gt;gpsTrackOnAir.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;loadTrackSB.Name" xml:space="preserve">
-    <value>loadTrackSB</value>
-  </data>
-  <data name="&gt;&gt;loadTrackSB.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;saveTrackSB.Name" xml:space="preserve">
-    <value>saveTrackSB</value>
-  </data>
-  <data name="&gt;&gt;saveTrackSB.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;removeTracksSB.Name" xml:space="preserve">
-    <value>removeTracksSB</value>
-  </data>
-  <data name="&gt;&gt;removeTracksSB.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator11.Name" xml:space="preserve">
-    <value>toolStripSeparator11</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator11.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripLabel3.Name" xml:space="preserve">
-    <value>toolStripLabel3</value>
-  </data>
-  <data name="&gt;&gt;toolStripLabel3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;followTrackList.Name" xml:space="preserve">
-    <value>followTrackList</value>
-  </data>
-  <data name="&gt;&gt;followTrackList.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;reverseTBut.Name" xml:space="preserve">
-    <value>reverseTBut</value>
-  </data>
-  <data name="&gt;&gt;reverseTBut.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;fileToolStripMenuItem.Name" xml:space="preserve">
     <value>fileToolStripMenuItem</value>
@@ -1615,6 +1429,180 @@
   </data>
   <data name="&gt;&gt;GeoTagMI.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;backwardSBut.Name" xml:space="preserve">
+    <value>backwardSBut</value>
+  </data>
+  <data name="&gt;&gt;backwardSBut.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;forwardSBut.Name" xml:space="preserve">
+    <value>forwardSBut</value>
+  </data>
+  <data name="&gt;&gt;forwardSBut.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator15.Name" xml:space="preserve">
+    <value>toolStripSeparator15</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator15.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;viewSBut.Name" xml:space="preserve">
+    <value>viewSBut</value>
+  </data>
+  <data name="&gt;&gt;viewSBut.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;zoomSBut.Name" xml:space="preserve">
+    <value>zoomSBut</value>
+  </data>
+  <data name="&gt;&gt;zoomSBut.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;selectRectDownSBut.Name" xml:space="preserve">
+    <value>selectRectDownSBut</value>
+  </data>
+  <data name="&gt;&gt;selectRectDownSBut.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pinMarkSBut.Name" xml:space="preserve">
+    <value>pinMarkSBut</value>
+  </data>
+  <data name="&gt;&gt;pinMarkSBut.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator2.Name" xml:space="preserve">
+    <value>toolStripSeparator2</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripLabel2.Name" xml:space="preserve">
+    <value>toolStripLabel2</value>
+  </data>
+  <data name="&gt;&gt;toolStripLabel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;latSTb.Name" xml:space="preserve">
+    <value>latSTb</value>
+  </data>
+  <data name="&gt;&gt;latSTb.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripTextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripLabel1.Name" xml:space="preserve">
+    <value>toolStripLabel1</value>
+  </data>
+  <data name="&gt;&gt;toolStripLabel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lonSTb.Name" xml:space="preserve">
+    <value>lonSTb</value>
+  </data>
+  <data name="&gt;&gt;lonSTb.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripTextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;setLLBut.Name" xml:space="preserve">
+    <value>setLLBut</value>
+  </data>
+  <data name="&gt;&gt;setLLBut.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;mapTypeSCombo.Name" xml:space="preserve">
+    <value>mapTypeSCombo</value>
+  </data>
+  <data name="&gt;&gt;mapTypeSCombo.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;trafficTbut.Name" xml:space="preserve">
+    <value>trafficTbut</value>
+  </data>
+  <data name="&gt;&gt;trafficTbut.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator3.Name" xml:space="preserve">
+    <value>toolStripSeparator3</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;addPOISB.Name" xml:space="preserve">
+    <value>addPOISB</value>
+  </data>
+  <data name="&gt;&gt;addPOISB.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator4.Name" xml:space="preserve">
+    <value>toolStripSeparator4</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;gpsTrackTBut.Name" xml:space="preserve">
+    <value>gpsTrackTBut</value>
+  </data>
+  <data name="&gt;&gt;gpsTrackTBut.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;gpsFollowMapTBut.Name" xml:space="preserve">
+    <value>gpsFollowMapTBut</value>
+  </data>
+  <data name="&gt;&gt;gpsFollowMapTBut.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator10.Name" xml:space="preserve">
+    <value>toolStripSeparator10</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator10.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;gpsTrackOnAir.Name" xml:space="preserve">
+    <value>gpsTrackOnAir</value>
+  </data>
+  <data name="&gt;&gt;gpsTrackOnAir.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;loadTrackSB.Name" xml:space="preserve">
+    <value>loadTrackSB</value>
+  </data>
+  <data name="&gt;&gt;loadTrackSB.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;saveTrackSB.Name" xml:space="preserve">
+    <value>saveTrackSB</value>
+  </data>
+  <data name="&gt;&gt;saveTrackSB.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;removeTracksSB.Name" xml:space="preserve">
+    <value>removeTracksSB</value>
+  </data>
+  <data name="&gt;&gt;removeTracksSB.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator11.Name" xml:space="preserve">
+    <value>toolStripSeparator11</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator11.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripLabel3.Name" xml:space="preserve">
+    <value>toolStripLabel3</value>
+  </data>
+  <data name="&gt;&gt;toolStripLabel3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;followTrackList.Name" xml:space="preserve">
+    <value>followTrackList</value>
+  </data>
+  <data name="&gt;&gt;followTrackList.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;reverseTBut.Name" xml:space="preserve">
+    <value>reverseTBut</value>
+  </data>
+  <data name="&gt;&gt;reverseTBut.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripSeparator9.Name" xml:space="preserve">
     <value>toolStripSeparator9</value>

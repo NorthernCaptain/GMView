@@ -73,6 +73,22 @@ namespace ncGeo
         }
 
         /// <summary>
+        /// Average speed from last waypoint (lwp)
+        /// </summary>
+        double lwp_avg_speed
+        {
+            get;
+        }
+
+        /// <summary>
+        /// distance from last waypoint
+        /// </summary>
+        double lwp_distance
+        {
+            get;
+        }
+
+        /// <summary>
         /// Last point on the track
         /// </summary>
         NMEA_LL lastData

@@ -25,7 +25,7 @@ namespace GMView
             gfx = Graphics.FromImage(bTmp);
             gdiFonts.Add(FontAlias.Big24R, initGDIMesuredFont("Arial", 20, FontStyle.Italic | FontStyle.Bold));
             gdiFonts.Add(FontAlias.Big22B, initGDIMesuredFont("Arial", 20, FontStyle.Bold));
-            gdiFonts.Add(FontAlias.Big20I, initGDIMesuredFont("Arial", 21, FontStyle.Italic));
+            gdiFonts.Add(FontAlias.Big20I, initGDIMesuredFont("Arial", 14, FontStyle.Italic | FontStyle.Bold));
             gdiFonts.Add(FontAlias.Mid14B, initGDIMesuredFont("Arial", 12, FontStyle.Bold));
             gdiFonts.Add(FontAlias.Small8R, initGDIMesuredFont("Arial", 8, FontStyle.Regular));
             gdiFonts.Add(FontAlias.Sans18R, initGDIMesuredFont(FontFamily.GenericSansSerif.Name, 18, FontStyle.Regular));

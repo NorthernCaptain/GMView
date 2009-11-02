@@ -1440,7 +1440,7 @@ namespace GMView
         }
 
         /// <summary>
-        /// Adds monual point in the end of the track
+        /// Adds manual point in the end of the track
         /// </summary>
         /// <param name="nmea_ll"></param>
         public void addManualPoint(NMEA_LL nmea_ll)
@@ -1852,6 +1852,34 @@ namespace GMView
                 return mapo.geosystem;
             }
         }
+        
+        public double lwp_avg_speed
+        {
+            get
+            {
+                LinkedListNode<WayBase.WayPoint> point = way.wayPoints.Last;
+                if (point == null)
+                    return 0;
+                TimeSpan dtime = lastPos.utc_time - point.Value.point.utc_time;
+                if(dtime.TotalHours > 0)
+                    return (distance_km - point.Value.distance_from_start)/ dtime.TotalHours;
+                return 0;
+            }
+        }
+
+
+        public double lwp_distance
+        {
+            get 
+            {
+                LinkedListNode<WayBase.WayPoint> point = way.wayPoints.Last;
+                if (point == null)
+                    return 0;
+                return distance_km - point.Value.distance_from_start;
+            }
+        }
         #endregion
+
+
     }
 }

@@ -149,7 +149,7 @@ namespace GMView
             images.Add(TexAlias.DotRed, new ImageDot(global::GMView.Properties.Resources.dotred, 11, 10));
             images.Add(TexAlias.DotGreen, new ImageDot(global::GMView.Properties.Resources.dotgreen, 11, 10));
             images.Add(TexAlias.DotYellow, new ImageDot(global::GMView.Properties.Resources.dotyellow, 11, 10));
-            images.Add(TexAlias.FollowInfo, new ImageDot(global::GMView.Properties.Resources.followInfo, 128, 82));
+            images.Add(TexAlias.FollowInfo, new ImageDot(global::GMView.Properties.Resources.followInfo, 128, 128));
         }
 
         public void initGLData()

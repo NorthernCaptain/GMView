@@ -129,6 +129,38 @@ namespace GMView.GPS
             }
         }
 
+        /// <summary>
+        /// Estimated travel time to finish waypoint
+        /// </summary>
+        private string finTravelTimeS = string.Empty;
+
+        /// <summary>
+        /// Estimated travel time to finish waypoint as string
+        /// </summary>
+        public string finishEstimTimeS
+        {
+            get
+            {
+                return finTravelTimeS;
+            }
+        }
+
+        /// <summary>
+        /// Estimated travel time to the next waypoint
+        /// </summary>
+        private string curTravelTimeS = string.Empty;
+
+        /// <summary>
+        /// Estimated travel time to the next waypoint
+        /// </summary>
+        public string currentEstimTimeS
+        {
+            get
+            {
+                return curTravelTimeS;
+            }
+        }
+
         private bool reverse = false;
 
         /// <summary>
@@ -212,6 +244,7 @@ namespace GMView.GPS
             bgdot = TextureFactory.singleton.getImg(TextureFactory.TexAlias.FollowInfo);
             bgtex = TextureFactory.singleton.getTex(bgdot);
             fnt = FontFactory.singleton.getGLFont(FontFactory.FontAlias.Big24R);
+            sfnt = FontFactory.singleton.getGLFont(FontFactory.FontAlias.Big20I);
         }
 
         /// <summary>
@@ -270,6 +303,20 @@ namespace GMView.GPS
 
             curDistanceS = currentDistance.ToString("F2", ncUtils.Glob.numformat);
             finDistanceS = finishDistance.ToString("F2", ncUtils.Glob.numformat);
+
+            double speed = recordingTrack.avg_speed;
+            if (speed > 0.5)
+            {
+                DateTime dat = DateTime.MinValue.Add(TimeSpan.FromHours(finishDistance / speed));
+                finTravelTimeS = dat.ToString("HH:mm:ss");
+            }
+
+            speed = recordingTrack.lwp_avg_speed;
+            if(speed > 0.5)
+            {
+                DateTime dat = DateTime.MinValue.Add(TimeSpan.FromHours(currentDistance / speed));
+                curTravelTimeS = dat.ToString("HH:mm:ss");
+            }
         }
 
         /// <summary>
@@ -316,6 +363,8 @@ namespace GMView.GPS
                     currentWPNode = null;
                     curDistanceS = "---";
                     finDistanceS = "---";
+                    curTravelTimeS = "xx:xx";
+                    finTravelTimeS = "xx:xx";
                     currentAngle = 0;
                     finishAngle = 0;
                     return;
@@ -399,6 +448,7 @@ namespace GMView.GPS
         /// Font for drawing distance
         /// </summary>
         private IGLFont fnt;
+        private IGLFont sfnt;
 
         public void glDraw(int centerx, int centery)
         {
@@ -427,8 +477,10 @@ namespace GMView.GPS
 
             GML.device.color(cOrange);
 
-            fnt.drawright(curDistanceS, sx + 102, sy - 11, 5);
-            fnt.drawright(finDistanceS, sx + 102, sy - 52, 5);
+            fnt.drawright(curDistanceS, sx + 100, sy - 11, 5);
+            sfnt.drawright(curTravelTimeS, sx + 100, sy - 39, 5);
+            fnt.drawright(finDistanceS, sx + 100, sy - 78, 5);
+            sfnt.drawright(finTravelTimeS, sx + 100, sy -104, 5);
 
             GML.device.color(Color.White);
             GML.device.popMatrix();
