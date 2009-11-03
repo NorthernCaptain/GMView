@@ -36,18 +36,20 @@
             this.webBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
             this.webBrowser.IsWebBrowserContextMenuEnabled = false;
             this.webBrowser.Location = new System.Drawing.Point(0, 0);
-            this.webBrowser.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowser.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.webBrowser.MinimumSize = new System.Drawing.Size(15, 16);
             this.webBrowser.Name = "webBrowser";
-            this.webBrowser.Size = new System.Drawing.Size(837, 615);
+            this.webBrowser.Size = new System.Drawing.Size(896, 500);
             this.webBrowser.TabIndex = 0;
             // 
             // HelpForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(837, 615);
+            this.ClientSize = new System.Drawing.Size(896, 500);
             this.Controls.Add(this.webBrowser);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "HelpForm";
             this.Text = "Knowhere Help";
             this.ResumeLayout(false);

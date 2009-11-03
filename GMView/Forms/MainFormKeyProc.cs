@@ -18,6 +18,7 @@ namespace GMView
         void initKeyboardHandlers()
         {
             onKeyDownDict.Add(Keys.F11, new onKeyEvent(fullScreenMI_Click));
+            onKeyDownDict.Add(Keys.F12, new onKeyEvent(minimizeWindow_Key));
 
             //zoom In/Out
             onKeyDownDict.Add(Keys.PageUp, new onKeyEvent(zoomInBut_Click));
@@ -62,6 +63,11 @@ namespace GMView
             onKeyDownDict.Add(Keys.T, new onKeyEvent(showTracks_Key));
             onKeyDownDict.Add(Keys.V, new onKeyEvent(showView_Key));
             onKeyDownDict.Add(Keys.N, new onKeyEvent(markWaypoint_Key));
+        }
+
+        void minimizeWindow_Key(object sender, KeyEventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
         }
 
         void showHelp_Key(object sender, KeyEventArgs e)
