@@ -9,6 +9,9 @@ using System.IO;
 
 namespace GMView.Forms
 {
+    /// <summary>
+    /// Simple web browser based form for displaying html help
+    /// </summary>
     public partial class HelpForm : Form
     {
         public HelpForm()
@@ -16,6 +19,11 @@ namespace GMView.Forms
             InitializeComponent();
 
             webBrowser.DocumentText = global::GMView.Properties.Resources.helpKeys;
+        }
+
+        private void HelpForm_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            this.Visible = false;
         }
     }
 }

@@ -448,7 +448,10 @@ namespace GMView
                 return;
             int rx, ry;
             int lastrx = 0, lastry = 0;
-            int addedrx=0, addedry=0;
+            bool lastVis = true;
+            bool curVis = true;
+            int len = halfWidth * 2;
+            int hei = halfHeight * 2;
 
             Gl.glBindTexture(Gl.GL_TEXTURE_2D, 0);
             Gl.glBegin(Gl.GL_LINE_STRIP);
@@ -458,23 +461,37 @@ namespace GMView
             {
                 rx = p.X - correct.X;
                 ry = correct.Y - p.Y;
-                if( (rx < -halfWidth || rx > halfWidth || ry < -halfHeight || ry > halfHeight) &&
-                    (lastrx < -halfWidth || lastrx > halfWidth || lastry < -halfHeight || lastry > halfHeight))
+
+                curVis = rx >= -len && rx <= len && ry >= -hei && ry <= hei;
+
+                if (!curVis && !lastVis)
                 {
                     lastrx = rx;
                     lastry = ry;
+                    lastVis = curVis;
                     continue;
                 }
 
-                if( (addedrx != lastrx || addedry != lastry) &&
-                    (lastrx < -halfWidth || lastrx > halfWidth || lastry < -halfHeight || lastry > halfHeight))
+                if (!curVis && lastVis) //we moved from visible area to hidden
+                {
+                    Gl.glVertex3f((float)rx, (float)ry, (float)iz);
+                    Gl.glEnd();
+                    Gl.glBegin(Gl.GL_LINE_STRIP);
+                    lastrx = rx;
+                    lastry = ry;
+                    lastVis = curVis;
+                    continue;
+                }
+
+                if (curVis && !lastVis) //we moved back from hidden area to visible one
+                {
                     Gl.glVertex3f((float)lastrx, (float)lastry, (float)iz);
+                }
 
                 Gl.glVertex3f((float)rx, (float)ry, (float)iz);
                 lastrx = rx;
                 lastry = ry;
-                addedrx = rx;
-                addedry = ry;
+                lastVis = curVis;                
             }
 
             Gl.glEnd();

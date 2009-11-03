@@ -225,6 +225,11 @@ namespace GMView
                             string str = reader.ReadLine();
                             gootrafhttp[i] = str.Length == 0 ? gootrafhttp[i] : str;
                         }
+                        {
+                            string str = reader.ReadLine();
+                            if (str.Length > 0)
+                                nightColor = Color.FromArgb(int.Parse(str));
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -348,6 +353,7 @@ namespace GMView
                 {
                     writer.WriteLine(gootrafhttp[i]);
                 }
+                writer.WriteLine(nightColor.ToArgb().ToString());
             }
             catch (Exception ex)
             {
@@ -369,6 +375,15 @@ namespace GMView
                 onChanged();
         }
 
+        /// <summary>
+        /// Color for night view mode
+        /// </summary>
+        public Color nightColor = Color.FromArgb(0x5087cefa);
+
+        /// <summary>
+        /// Is in night view mode
+        /// </summary>
+        public bool isNightView = false;
 
         // Maximum zooming level
         public int max_zoom_lvl = 18;

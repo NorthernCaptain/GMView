@@ -10,6 +10,12 @@ TODO list:
   information to the GPS info dashboard + distance from last WP. May be move this info to the Track
   dashboard?? So we need info about last waypoint: Time till WP, distance from WP, average speed 
   from WP. It's better to organize in the WayBase class and calculate for each WP recently added.
+  Add menu for quick switch of analizing time for average speed calculation:
+    * 10 min
+    * 20 min
+    * 30 min
+    * Last WP
+    * Whole track
   
 - Add altitute to the GPS dashboard.
 
@@ -18,7 +24,7 @@ TODO list:
   
 - Reassing F1 hotkey and implement Keys Help page for display hotkeys and actions, also there could
   be second page with description of the toolbar buttons and menus.
-  We need help system :)
+  We need help system :) [DONE 03.11.09]
   
 - Import track from clipboard buffer. Add Paste function that will paste data from clipboard and 
   loads it as a track, show on the map.
@@ -51,3 +57,11 @@ TODO list:
     hierarchy. Edit or delete POIs with multiselection mode. Managing groups (add, delete, edit).
   * Importing POIs from external files (KML, GPX), dialog for matching POI fields from file to our
     internal fields, choosing or changing types and more.
+
+- Night view mode. In a simple way we need just shade the map a little (draw semitransparent
+  rectangle). In more complicated way - load map as 256 color pallete, change pallete colours and
+  convert into 32 bit image for displaying. [DONE simple 03.11.09]
+  
+- Bug in drawing tracks. If point of the track goes off screen the we could see garbage lines.
+  And lines do not see shifted center, as the result track could disappear on the part of the
+  screen. [DONE 03.11.09]

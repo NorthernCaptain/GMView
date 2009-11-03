@@ -876,6 +876,14 @@ namespace GMView
 
             //test
             //GML.device.rectDraw(0, 0, 100, 100, 0, Color.FromArgb(155, Color.DarkRed));
+            if (Program.opt.isNightView)
+            {
+                GML.device.pushMatrix();
+                GML.device.identity();
+                GML.device.quadDraw(-centerx, centery,
+                    GML.device.halfScreen.X * 2, GML.device.halfScreen.Y * 2, 0, Program.opt.nightColor);
+                GML.device.popMatrix();
+            }
 
             base.glDraw(centerx, centery);
         }

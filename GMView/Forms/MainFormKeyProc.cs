@@ -63,6 +63,15 @@ namespace GMView
             onKeyDownDict.Add(Keys.T, new onKeyEvent(showTracks_Key));
             onKeyDownDict.Add(Keys.V, new onKeyEvent(showView_Key));
             onKeyDownDict.Add(Keys.N, new onKeyEvent(markWaypoint_Key));
+
+            onKeyDownDict.Add(Keys.M, new onKeyEvent(nightViewToggle_Key));
+        }
+
+
+        void nightViewToggle_Key(object sender, KeyEventArgs e)
+        {
+            Program.opt.isNightView = Program.opt.isNightView ? false : true;
+            GML.device.repaint();
         }
 
         void minimizeWindow_Key(object sender, KeyEventArgs e)

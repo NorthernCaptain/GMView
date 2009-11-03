@@ -151,6 +151,19 @@
             this.yasatTb3 = new System.Windows.Forms.TextBox();
             this.yasatTb2 = new System.Windows.Forms.TextBox();
             this.yasatTb1 = new System.Windows.Forms.TextBox();
+            this.tabPage19 = new System.Windows.Forms.TabPage();
+            this.groupBox27 = new System.Windows.Forms.GroupBox();
+            this.label58 = new System.Windows.Forms.Label();
+            this.yatimeTb = new System.Windows.Forms.TextBox();
+            this.label67 = new System.Windows.Forms.Label();
+            this.label68 = new System.Windows.Forms.Label();
+            this.gootrfTb3 = new System.Windows.Forms.TextBox();
+            this.gootrfTb2 = new System.Windows.Forms.TextBox();
+            this.gootrfTb1 = new System.Windows.Forms.TextBox();
+            this.label69 = new System.Windows.Forms.Label();
+            this.yatrfTb3 = new System.Windows.Forms.TextBox();
+            this.yatrfTb2 = new System.Windows.Forms.TextBox();
+            this.yatrfTb1 = new System.Windows.Forms.TextBox();
             this.CancelBut = new System.Windows.Forms.Button();
             this.OKBut = new System.Windows.Forms.Button();
             this.folderBrowserDlg = new System.Windows.Forms.FolderBrowserDialog();
@@ -269,19 +282,12 @@
             this.label63 = new System.Windows.Forms.Label();
             this.label66 = new System.Windows.Forms.Label();
             this.textBox34 = new System.Windows.Forms.TextBox();
-            this.tabPage19 = new System.Windows.Forms.TabPage();
-            this.groupBox27 = new System.Windows.Forms.GroupBox();
-            this.label67 = new System.Windows.Forms.Label();
-            this.label68 = new System.Windows.Forms.Label();
-            this.gootrfTb3 = new System.Windows.Forms.TextBox();
-            this.gootrfTb2 = new System.Windows.Forms.TextBox();
-            this.gootrfTb1 = new System.Windows.Forms.TextBox();
-            this.label69 = new System.Windows.Forms.Label();
-            this.yatrfTb3 = new System.Windows.Forms.TextBox();
-            this.yatrfTb2 = new System.Windows.Forms.TextBox();
-            this.yatrfTb1 = new System.Windows.Forms.TextBox();
-            this.label58 = new System.Windows.Forms.Label();
-            this.yatimeTb = new System.Windows.Forms.TextBox();
+            this.label70 = new System.Windows.Forms.Label();
+            this.opacitySpin = new System.Windows.Forms.NumericUpDown();
+            this.nightColorTB = new System.Windows.Forms.TextBox();
+            this.label71 = new System.Windows.Forms.Label();
+            this.pickColorBut = new System.Windows.Forms.Button();
+            this.colorDlg = new System.Windows.Forms.ColorDialog();
             this.tabControl.SuspendLayout();
             this.tabPage6.SuspendLayout();
             this.groupBox10.SuspendLayout();
@@ -313,6 +319,8 @@
             this.groupBox25.SuspendLayout();
             this.tabPage18.SuspendLayout();
             this.groupBox26.SuspendLayout();
+            this.tabPage19.SuspendLayout();
+            this.groupBox27.SuspendLayout();
             this.tabPage8.SuspendLayout();
             this.groupBox12.SuspendLayout();
             this.groupBox13.SuspendLayout();
@@ -339,8 +347,7 @@
             this.groupBox23.SuspendLayout();
             this.tabPage16.SuspendLayout();
             this.groupBox24.SuspendLayout();
-            this.tabPage19.SuspendLayout();
-            this.groupBox27.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.opacitySpin)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl
@@ -571,6 +578,11 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.pickColorBut);
+            this.tabPage2.Controls.Add(this.nightColorTB);
+            this.tabPage2.Controls.Add(this.opacitySpin);
+            this.tabPage2.Controls.Add(this.label71);
+            this.tabPage2.Controls.Add(this.label70);
             this.tabPage2.Controls.Add(this.label28);
             this.tabPage2.Controls.Add(this.dynCenterCB);
             this.tabPage2.Controls.Add(this.dashRightCB);
@@ -604,10 +616,10 @@
             "3/4 Forward view",
             "2/3 Forward view",
             "Speed driven"});
-            this.dynCenterCB.Location = new System.Drawing.Point(255, 343);
+            this.dynCenterCB.Location = new System.Drawing.Point(206, 343);
             this.dynCenterCB.Margin = new System.Windows.Forms.Padding(4);
             this.dynCenterCB.Name = "dynCenterCB";
-            this.dynCenterCB.Size = new System.Drawing.Size(199, 24);
+            this.dynCenterCB.Size = new System.Drawing.Size(248, 24);
             this.dynCenterCB.TabIndex = 7;
             // 
             // dashRightCB
@@ -1742,6 +1754,137 @@
             this.yasatTb1.Name = "yasatTb1";
             this.yasatTb1.Size = new System.Drawing.Size(425, 22);
             this.yasatTb1.TabIndex = 9;
+            // 
+            // tabPage19
+            // 
+            this.tabPage19.Controls.Add(this.groupBox27);
+            this.tabPage19.Location = new System.Drawing.Point(4, 25);
+            this.tabPage19.Name = "tabPage19";
+            this.tabPage19.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage19.Size = new System.Drawing.Size(465, 415);
+            this.tabPage19.TabIndex = 11;
+            this.tabPage19.Text = "Traffic info";
+            this.tabPage19.UseVisualStyleBackColor = true;
+            // 
+            // groupBox27
+            // 
+            this.groupBox27.Controls.Add(this.label58);
+            this.groupBox27.Controls.Add(this.yatimeTb);
+            this.groupBox27.Controls.Add(this.label67);
+            this.groupBox27.Controls.Add(this.label68);
+            this.groupBox27.Controls.Add(this.gootrfTb3);
+            this.groupBox27.Controls.Add(this.gootrfTb2);
+            this.groupBox27.Controls.Add(this.gootrfTb1);
+            this.groupBox27.Controls.Add(this.label69);
+            this.groupBox27.Controls.Add(this.yatrfTb3);
+            this.groupBox27.Controls.Add(this.yatrfTb2);
+            this.groupBox27.Controls.Add(this.yatrfTb1);
+            this.groupBox27.Location = new System.Drawing.Point(9, 8);
+            this.groupBox27.Margin = new System.Windows.Forms.Padding(4);
+            this.groupBox27.Name = "groupBox27";
+            this.groupBox27.Padding = new System.Windows.Forms.Padding(4);
+            this.groupBox27.Size = new System.Drawing.Size(447, 398);
+            this.groupBox27.TabIndex = 3;
+            this.groupBox27.TabStop = false;
+            this.groupBox27.Text = "Traffic information";
+            // 
+            // label58
+            // 
+            this.label58.AutoSize = true;
+            this.label58.Location = new System.Drawing.Point(7, 128);
+            this.label58.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label58.Name = "label58";
+            this.label58.Size = new System.Drawing.Size(129, 17);
+            this.label58.TabIndex = 19;
+            this.label58.Text = "Ya timestamp URL:";
+            // 
+            // yatimeTb
+            // 
+            this.yatimeTb.Location = new System.Drawing.Point(15, 147);
+            this.yatimeTb.Margin = new System.Windows.Forms.Padding(4);
+            this.yatimeTb.Name = "yatimeTb";
+            this.yatimeTb.Size = new System.Drawing.Size(425, 22);
+            this.yatimeTb.TabIndex = 18;
+            // 
+            // label67
+            // 
+            this.label67.AutoSize = true;
+            this.label67.ForeColor = System.Drawing.SystemColors.Highlight;
+            this.label67.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.label67.Location = new System.Drawing.Point(9, 292);
+            this.label67.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label67.Name = "label67";
+            this.label67.Size = new System.Drawing.Size(349, 102);
+            this.label67.TabIndex = 17;
+            this.label67.Text = resources.GetString("label67.Text");
+            // 
+            // label68
+            // 
+            this.label68.AutoSize = true;
+            this.label68.Location = new System.Drawing.Point(7, 183);
+            this.label68.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label68.Name = "label68";
+            this.label68.Size = new System.Drawing.Size(110, 17);
+            this.label68.TabIndex = 16;
+            this.label68.Text = "Goo traffic URL:";
+            // 
+            // gootrfTb3
+            // 
+            this.gootrfTb3.Location = new System.Drawing.Point(15, 267);
+            this.gootrfTb3.Margin = new System.Windows.Forms.Padding(4);
+            this.gootrfTb3.Name = "gootrfTb3";
+            this.gootrfTb3.Size = new System.Drawing.Size(425, 22);
+            this.gootrfTb3.TabIndex = 15;
+            // 
+            // gootrfTb2
+            // 
+            this.gootrfTb2.Location = new System.Drawing.Point(15, 235);
+            this.gootrfTb2.Margin = new System.Windows.Forms.Padding(4);
+            this.gootrfTb2.Name = "gootrfTb2";
+            this.gootrfTb2.Size = new System.Drawing.Size(425, 22);
+            this.gootrfTb2.TabIndex = 14;
+            // 
+            // gootrfTb1
+            // 
+            this.gootrfTb1.Location = new System.Drawing.Point(15, 203);
+            this.gootrfTb1.Margin = new System.Windows.Forms.Padding(4);
+            this.gootrfTb1.Name = "gootrfTb1";
+            this.gootrfTb1.Size = new System.Drawing.Size(425, 22);
+            this.gootrfTb1.TabIndex = 13;
+            // 
+            // label69
+            // 
+            this.label69.AutoSize = true;
+            this.label69.Location = new System.Drawing.Point(7, 20);
+            this.label69.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label69.Name = "label69";
+            this.label69.Size = new System.Drawing.Size(100, 17);
+            this.label69.TabIndex = 12;
+            this.label69.Text = "Ya traffic URL:";
+            // 
+            // yatrfTb3
+            // 
+            this.yatrfTb3.Location = new System.Drawing.Point(15, 103);
+            this.yatrfTb3.Margin = new System.Windows.Forms.Padding(4);
+            this.yatrfTb3.Name = "yatrfTb3";
+            this.yatrfTb3.Size = new System.Drawing.Size(425, 22);
+            this.yatrfTb3.TabIndex = 11;
+            // 
+            // yatrfTb2
+            // 
+            this.yatrfTb2.Location = new System.Drawing.Point(15, 71);
+            this.yatrfTb2.Margin = new System.Windows.Forms.Padding(4);
+            this.yatrfTb2.Name = "yatrfTb2";
+            this.yatrfTb2.Size = new System.Drawing.Size(425, 22);
+            this.yatrfTb2.TabIndex = 10;
+            // 
+            // yatrfTb1
+            // 
+            this.yatrfTb1.Location = new System.Drawing.Point(15, 39);
+            this.yatrfTb1.Margin = new System.Windows.Forms.Padding(4);
+            this.yatrfTb1.Name = "yatrfTb1";
+            this.yatrfTb1.Size = new System.Drawing.Size(425, 22);
+            this.yatrfTb1.TabIndex = 9;
             // 
             // CancelBut
             // 
@@ -3053,136 +3196,68 @@
             this.textBox34.Size = new System.Drawing.Size(425, 22);
             this.textBox34.TabIndex = 19;
             // 
-            // tabPage19
+            // label70
             // 
-            this.tabPage19.Controls.Add(this.groupBox27);
-            this.tabPage19.Location = new System.Drawing.Point(4, 25);
-            this.tabPage19.Name = "tabPage19";
-            this.tabPage19.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage19.Size = new System.Drawing.Size(465, 415);
-            this.tabPage19.TabIndex = 11;
-            this.tabPage19.Text = "Traffic info";
-            this.tabPage19.UseVisualStyleBackColor = true;
+            this.label70.AutoSize = true;
+            this.label70.Location = new System.Drawing.Point(16, 379);
+            this.label70.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label70.Name = "label70";
+            this.label70.Size = new System.Drawing.Size(111, 17);
+            this.label70.TabIndex = 8;
+            this.label70.Text = "Night view color:";
             // 
-            // groupBox27
+            // opacitySpin
             // 
-            this.groupBox27.Controls.Add(this.label58);
-            this.groupBox27.Controls.Add(this.yatimeTb);
-            this.groupBox27.Controls.Add(this.label67);
-            this.groupBox27.Controls.Add(this.label68);
-            this.groupBox27.Controls.Add(this.gootrfTb3);
-            this.groupBox27.Controls.Add(this.gootrfTb2);
-            this.groupBox27.Controls.Add(this.gootrfTb1);
-            this.groupBox27.Controls.Add(this.label69);
-            this.groupBox27.Controls.Add(this.yatrfTb3);
-            this.groupBox27.Controls.Add(this.yatrfTb2);
-            this.groupBox27.Controls.Add(this.yatrfTb1);
-            this.groupBox27.Location = new System.Drawing.Point(9, 8);
-            this.groupBox27.Margin = new System.Windows.Forms.Padding(4);
-            this.groupBox27.Name = "groupBox27";
-            this.groupBox27.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox27.Size = new System.Drawing.Size(447, 398);
-            this.groupBox27.TabIndex = 3;
-            this.groupBox27.TabStop = false;
-            this.groupBox27.Text = "Traffic information";
+            this.opacitySpin.Location = new System.Drawing.Point(403, 377);
+            this.opacitySpin.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.opacitySpin.Name = "opacitySpin";
+            this.opacitySpin.Size = new System.Drawing.Size(51, 22);
+            this.opacitySpin.TabIndex = 9;
+            this.opacitySpin.Value = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            this.opacitySpin.ValueChanged += new System.EventHandler(this.opacitySpin_ValueChanged);
             // 
-            // label67
+            // nightColorTB
             // 
-            this.label67.AutoSize = true;
-            this.label67.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.label67.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.label67.Location = new System.Drawing.Point(9, 292);
-            this.label67.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label67.Name = "label67";
-            this.label67.Size = new System.Drawing.Size(349, 102);
-            this.label67.TabIndex = 17;
-            this.label67.Text = resources.GetString("label67.Text");
+            this.nightColorTB.Location = new System.Drawing.Point(206, 376);
+            this.nightColorTB.Name = "nightColorTB";
+            this.nightColorTB.Size = new System.Drawing.Size(84, 22);
+            this.nightColorTB.TabIndex = 10;
             // 
-            // label68
+            // label71
             // 
-            this.label68.AutoSize = true;
-            this.label68.Location = new System.Drawing.Point(7, 183);
-            this.label68.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label68.Name = "label68";
-            this.label68.Size = new System.Drawing.Size(110, 17);
-            this.label68.TabIndex = 16;
-            this.label68.Text = "Goo traffic URL:";
+            this.label71.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label71.AutoSize = true;
+            this.label71.Location = new System.Drawing.Point(351, 379);
+            this.label71.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label71.Name = "label71";
+            this.label71.Size = new System.Drawing.Size(45, 17);
+            this.label71.TabIndex = 8;
+            this.label71.Text = "Fill %:";
             // 
-            // gootrfTb3
+            // pickColorBut
             // 
-            this.gootrfTb3.Location = new System.Drawing.Point(15, 267);
-            this.gootrfTb3.Margin = new System.Windows.Forms.Padding(4);
-            this.gootrfTb3.Name = "gootrfTb3";
-            this.gootrfTb3.Size = new System.Drawing.Size(425, 22);
-            this.gootrfTb3.TabIndex = 15;
+            this.pickColorBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pickColorBut.Location = new System.Drawing.Point(296, 376);
+            this.pickColorBut.Name = "pickColorBut";
+            this.pickColorBut.Size = new System.Drawing.Size(33, 23);
+            this.pickColorBut.TabIndex = 11;
+            this.pickColorBut.Text = "...";
+            this.pickColorBut.UseVisualStyleBackColor = true;
+            this.pickColorBut.Click += new System.EventHandler(this.pickColorBut_Click);
             // 
-            // gootrfTb2
+            // colorDlg
             // 
-            this.gootrfTb2.Location = new System.Drawing.Point(15, 235);
-            this.gootrfTb2.Margin = new System.Windows.Forms.Padding(4);
-            this.gootrfTb2.Name = "gootrfTb2";
-            this.gootrfTb2.Size = new System.Drawing.Size(425, 22);
-            this.gootrfTb2.TabIndex = 14;
-            // 
-            // gootrfTb1
-            // 
-            this.gootrfTb1.Location = new System.Drawing.Point(15, 203);
-            this.gootrfTb1.Margin = new System.Windows.Forms.Padding(4);
-            this.gootrfTb1.Name = "gootrfTb1";
-            this.gootrfTb1.Size = new System.Drawing.Size(425, 22);
-            this.gootrfTb1.TabIndex = 13;
-            // 
-            // label69
-            // 
-            this.label69.AutoSize = true;
-            this.label69.Location = new System.Drawing.Point(7, 20);
-            this.label69.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label69.Name = "label69";
-            this.label69.Size = new System.Drawing.Size(100, 17);
-            this.label69.TabIndex = 12;
-            this.label69.Text = "Ya traffic URL:";
-            // 
-            // yatrfTb3
-            // 
-            this.yatrfTb3.Location = new System.Drawing.Point(15, 103);
-            this.yatrfTb3.Margin = new System.Windows.Forms.Padding(4);
-            this.yatrfTb3.Name = "yatrfTb3";
-            this.yatrfTb3.Size = new System.Drawing.Size(425, 22);
-            this.yatrfTb3.TabIndex = 11;
-            // 
-            // yatrfTb2
-            // 
-            this.yatrfTb2.Location = new System.Drawing.Point(15, 71);
-            this.yatrfTb2.Margin = new System.Windows.Forms.Padding(4);
-            this.yatrfTb2.Name = "yatrfTb2";
-            this.yatrfTb2.Size = new System.Drawing.Size(425, 22);
-            this.yatrfTb2.TabIndex = 10;
-            // 
-            // yatrfTb1
-            // 
-            this.yatrfTb1.Location = new System.Drawing.Point(15, 39);
-            this.yatrfTb1.Margin = new System.Windows.Forms.Padding(4);
-            this.yatrfTb1.Name = "yatrfTb1";
-            this.yatrfTb1.Size = new System.Drawing.Size(425, 22);
-            this.yatrfTb1.TabIndex = 9;
-            // 
-            // label58
-            // 
-            this.label58.AutoSize = true;
-            this.label58.Location = new System.Drawing.Point(7, 128);
-            this.label58.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label58.Name = "label58";
-            this.label58.Size = new System.Drawing.Size(129, 17);
-            this.label58.TabIndex = 19;
-            this.label58.Text = "Ya timestamp URL:";
-            // 
-            // yatimeTb
-            // 
-            this.yatimeTb.Location = new System.Drawing.Point(15, 147);
-            this.yatimeTb.Margin = new System.Windows.Forms.Padding(4);
-            this.yatimeTb.Name = "yatimeTb";
-            this.yatimeTb.Size = new System.Drawing.Size(425, 22);
-            this.yatimeTb.TabIndex = 18;
+            this.colorDlg.AnyColor = true;
+            this.colorDlg.Color = System.Drawing.Color.LightSkyBlue;
+            this.colorDlg.FullOpen = true;
             // 
             // OptionsDlg
             // 
@@ -3249,6 +3324,9 @@
             this.tabPage18.ResumeLayout(false);
             this.groupBox26.ResumeLayout(false);
             this.groupBox26.PerformLayout();
+            this.tabPage19.ResumeLayout(false);
+            this.groupBox27.ResumeLayout(false);
+            this.groupBox27.PerformLayout();
             this.tabPage8.ResumeLayout(false);
             this.groupBox12.ResumeLayout(false);
             this.groupBox12.PerformLayout();
@@ -3291,9 +3369,7 @@
             this.tabPage16.ResumeLayout(false);
             this.groupBox24.ResumeLayout(false);
             this.groupBox24.PerformLayout();
-            this.tabPage19.ResumeLayout(false);
-            this.groupBox27.ResumeLayout(false);
-            this.groupBox27.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.opacitySpin)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -3553,5 +3629,11 @@
         private System.Windows.Forms.Label label63;
         private System.Windows.Forms.Label label66;
         private System.Windows.Forms.TextBox textBox34;
+        private System.Windows.Forms.Label label70;
+        private System.Windows.Forms.Button pickColorBut;
+        private System.Windows.Forms.TextBox nightColorTB;
+        private System.Windows.Forms.NumericUpDown opacitySpin;
+        private System.Windows.Forms.Label label71;
+        private System.Windows.Forms.ColorDialog colorDlg;
     }
 }

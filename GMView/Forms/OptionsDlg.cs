@@ -89,6 +89,10 @@ namespace GMView
             emulateGPSCb.Checked = Program.opt.emulate_gps;
             emuFileTB.Text = Program.opt.emu_nmea_file;
             dynCenterCB.SelectedIndex = (int)Program.opt.dynamic_center;
+            nightColor = Program.opt.nightColor;
+            colorDlg.Color = nightColor;
+            nightColorTB.Text = (nightColor.ToArgb() & 0xfffff).ToString("X6");
+            opacitySpin.Value = (nightColor.ToArgb() >> 24) * 100 / 255;
         }
 
         private void CancelBut_Click(object sender, EventArgs e)
@@ -162,6 +166,7 @@ namespace GMView
             Program.opt.emu_nmea_file = emuFileTB.Text;
             Program.opt.emulate_gps = emulateGPSCb.Checked;
             Program.opt.dynamic_center = (Options.DynCenterType)dynCenterCB.SelectedIndex;
+            Program.opt.nightColor = nightColor;
 
             DialogResult dr = DialogResult.No;
             GML.GMLType gtype = GML.GMLType.simpleGDI;
@@ -227,6 +232,26 @@ namespace GMView
             nmeaGroupBox.Enabled = !emulateGPSCb.Checked;
             emuFileTB.Enabled = emulateGPSCb.Checked;
             emuFileChooserBut.Enabled = emulateGPSCb.Checked;
+        }
+
+        private void pickColorBut_Click(object sender, EventArgs e)
+        {
+            if (colorDlg.ShowDialog() == DialogResult.OK)
+            {
+                int alpha = (Decimal.ToInt32(opacitySpin.Value) * 255 / 100) << 24;
+                nightColor = Color.FromArgb((colorDlg.Color.ToArgb() & 0xffffff) | alpha);
+                nightColorTB.Text = (nightColor.ToArgb() & 0xfffff).ToString("X6");
+            }
+
+        }
+
+        private Color nightColor = Color.FromArgb(0x4087cefa);
+
+        private void opacitySpin_ValueChanged(object sender, EventArgs e)
+        {
+            int alpha = (Decimal.ToInt32(opacitySpin.Value) * 255 / 100) << 24;
+            nightColor = Color.FromArgb((colorDlg.Color.ToArgb() & 0xffffff) | alpha);
+            nightColorTB.Text = (nightColor.ToArgb() & 0xfffff).ToString("X6");
         }
     }
 }

@@ -304,17 +304,12 @@ namespace GMView.GPS
             curDistanceS = currentDistance.ToString("F2", ncUtils.Glob.numformat);
             finDistanceS = finishDistance.ToString("F2", ncUtils.Glob.numformat);
 
-            double speed = recordingTrack.avg_speed;
+            double speed = recordingTrack.lwp_avg_speed;
             if (speed > 0.5)
             {
                 DateTime dat = DateTime.MinValue.Add(TimeSpan.FromHours(finishDistance / speed));
                 finTravelTimeS = dat.ToString("HH:mm:ss");
-            }
-
-            speed = recordingTrack.lwp_avg_speed;
-            if(speed > 0.5)
-            {
-                DateTime dat = DateTime.MinValue.Add(TimeSpan.FromHours(currentDistance / speed));
+                dat = DateTime.MinValue.Add(TimeSpan.FromHours(currentDistance / speed));
                 curTravelTimeS = dat.ToString("HH:mm:ss");
             }
         }
