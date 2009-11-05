@@ -915,15 +915,32 @@ namespace GMView
         /// <param name="e"></param>
         private void gpsTrackOnAir_CheckedChanged(object sender, EventArgs e)
         {
+            bool newTrack = true;
             if (!gtrack.on_air)
             {
                 gtrack.on_air = true;
                 if (gtrack.on_air
-                    && gtrack.countPoints > 0
-                    && MessageBox.Show("Continue recording current track?\n\nYes - will continue current track\nNo - clear previous track and start new one", "Record track",
+                    && gtrack.countPoints > 0)
+                {
+                    if (MessageBox.Show("Continue recording current track?\n\nYes - will continue current track\nNo - clear previous track and start new one", "Record track",
                                         MessageBoxButtons.YesNo,
                                         MessageBoxIcon.Question) == DialogResult.No)
-                    gtrack.resetTrackData();
+                        gtrack.resetTrackData();
+                    else
+                        newTrack = false;
+                }
+
+                if (newTrack)
+                {
+                    Forms.TrackDestFrom destForm = new Forms.TrackDestFrom();
+                    destForm.Owner = this;
+                    if (destForm.ShowDialog() == DialogResult.OK)
+                    {
+                    }
+                    else
+
+                    destForm.Dispose();
+                }
                 infoMessage("'Record track' is ON");
                 gpsdash.mode = DashMode.Normal;
                 trackdash.mode = DashMode.Normal;

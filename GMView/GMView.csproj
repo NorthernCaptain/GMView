@@ -126,6 +126,12 @@
     <Compile Include="Forms\MainFormKeyProc.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\TrackDestFrom.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TrackDestFrom.Designer.cs">
+      <DependentUpon>TrackDestFrom.cs</DependentUpon>
+    </Compile>
     <Compile Include="Geo\GoogleGeo.cs" />
     <Compile Include="Geo\YandexGeo.cs" />
     <Compile Include="Dash\DashBoardContainer.cs" />
@@ -250,6 +256,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TrackDestFrom.resx">
+      <DependentUpon>TrackDestFrom.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="GML\MapDrawControl.resx">
