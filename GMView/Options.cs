@@ -41,6 +41,7 @@ namespace GMView
             geoSystem[(int)MapTileType.YandexTraffic] = new YandexGeo();
             geoSystem[(int)MapTileType.GooTraffic] = new GoogleGeo();
             Load();
+            ncUtils.DBConnPool.singleton.dbName = getDBName();
         }
 
         /// <summary>
@@ -98,6 +99,16 @@ namespace GMView
         {
             string path = getConfigDir();
             return Path.Combine(path, "gmvOptions.cfg");
+        }
+
+        /// <summary>
+        /// Return SQLite db filename (absolute)
+        /// </summary>
+        /// <returns></returns>
+        private static string getDBName()
+        {
+            string path = getConfigDir();
+            return Path.Combine(path, "knowhere.sq3");
         }
 
         /// <summary>

@@ -43,36 +43,6 @@
             this.satInfoSLb = new System.Windows.Forms.ToolStripStatusLabel();
             this.modeSLbl = new System.Windows.Forms.ToolStripStatusLabel();
             this.mainPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.toolStrip = new System.Windows.Forms.ToolStrip();
-            this.backwardSBut = new System.Windows.Forms.ToolStripButton();
-            this.forwardSBut = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
-            this.viewSBut = new System.Windows.Forms.ToolStripButton();
-            this.zoomSBut = new System.Windows.Forms.ToolStripButton();
-            this.selectRectDownSBut = new System.Windows.Forms.ToolStripButton();
-            this.pinMarkSBut = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
-            this.latSTb = new System.Windows.Forms.ToolStripTextBox();
-            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
-            this.lonSTb = new System.Windows.Forms.ToolStripTextBox();
-            this.setLLBut = new System.Windows.Forms.ToolStripButton();
-            this.mapTypeSCombo = new System.Windows.Forms.ToolStripComboBox();
-            this.trafficTbut = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.addPOISB = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.gpsTrackTBut = new System.Windows.Forms.ToolStripButton();
-            this.gpsFollowMapTBut = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
-            this.gpsTrackOnAir = new System.Windows.Forms.ToolStripButton();
-            this.loadTrackSB = new System.Windows.Forms.ToolStripButton();
-            this.saveTrackSB = new System.Windows.Forms.ToolStripButton();
-            this.removeTracksSB = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
-            this.followTrackList = new System.Windows.Forms.ToolStripComboBox();
-            this.reverseTBut = new System.Windows.Forms.ToolStripButton();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OptionsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -120,6 +90,36 @@
             this.toolStripSeparator18 = new System.Windows.Forms.ToolStripSeparator();
             this.reinitGPSMI = new System.Windows.Forms.ToolStripMenuItem();
             this.GeoTagMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStrip = new System.Windows.Forms.ToolStrip();
+            this.backwardSBut = new System.Windows.Forms.ToolStripButton();
+            this.forwardSBut = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
+            this.viewSBut = new System.Windows.Forms.ToolStripButton();
+            this.zoomSBut = new System.Windows.Forms.ToolStripButton();
+            this.selectRectDownSBut = new System.Windows.Forms.ToolStripButton();
+            this.pinMarkSBut = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
+            this.latSTb = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.lonSTb = new System.Windows.Forms.ToolStripTextBox();
+            this.setLLBut = new System.Windows.Forms.ToolStripButton();
+            this.mapTypeSCombo = new System.Windows.Forms.ToolStripComboBox();
+            this.trafficTbut = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.addPOISB = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.gpsTrackTBut = new System.Windows.Forms.ToolStripButton();
+            this.gpsFollowMapTBut = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
+            this.gpsTrackOnAir = new System.Windows.Forms.ToolStripButton();
+            this.loadTrackSB = new System.Windows.Forms.ToolStripButton();
+            this.saveTrackSB = new System.Windows.Forms.ToolStripButton();
+            this.removeTracksSB = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
+            this.followTrackList = new System.Windows.Forms.ToolStripComboBox();
+            this.reverseTBut = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.miniMapTimer = new System.Windows.Forms.Timer(this.components);
             this.trackSaveFileDialog = new System.Windows.Forms.SaveFileDialog();
@@ -135,8 +135,8 @@
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
             this.toolStripContainer1.SuspendLayout();
             this.statusStrip.SuspendLayout();
-            this.toolStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
+            this.toolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStripContainer1
@@ -165,8 +165,8 @@
             // toolStripContainer1.TopToolStripPanel
             // 
             this.toolStripContainer1.TopToolStripPanel.BackColor = System.Drawing.SystemColors.Control;
-            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.menuStrip);
             this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolStrip);
+            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.menuStrip);
             this.toolStripContainer1.TopToolStripPanel.ForeColor = System.Drawing.SystemColors.ControlText;
             this.toolStripContainer1.TopToolStripPanel.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             // 
@@ -286,262 +286,6 @@
             // 
             resources.ApplyResources(this.mainPanel, "mainPanel");
             this.mainPanel.Name = "mainPanel";
-            // 
-            // toolStrip
-            // 
-            resources.ApplyResources(this.toolStrip, "toolStrip");
-            this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.backwardSBut,
-            this.forwardSBut,
-            this.toolStripSeparator15,
-            this.viewSBut,
-            this.zoomSBut,
-            this.selectRectDownSBut,
-            this.pinMarkSBut,
-            this.toolStripSeparator2,
-            this.toolStripLabel2,
-            this.latSTb,
-            this.toolStripLabel1,
-            this.lonSTb,
-            this.setLLBut,
-            this.mapTypeSCombo,
-            this.trafficTbut,
-            this.toolStripSeparator3,
-            this.addPOISB,
-            this.toolStripSeparator4,
-            this.gpsTrackTBut,
-            this.gpsFollowMapTBut,
-            this.toolStripSeparator10,
-            this.gpsTrackOnAir,
-            this.loadTrackSB,
-            this.saveTrackSB,
-            this.removeTracksSB,
-            this.toolStripSeparator11,
-            this.toolStripLabel3,
-            this.followTrackList,
-            this.reverseTBut});
-            this.toolStrip.Name = "toolStrip";
-            this.toolStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            // 
-            // backwardSBut
-            // 
-            this.backwardSBut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.backwardSBut.Image = global::GMView.Properties.Resources.back_but;
-            resources.ApplyResources(this.backwardSBut, "backwardSBut");
-            this.backwardSBut.Name = "backwardSBut";
-            this.backwardSBut.Click += new System.EventHandler(this.backwardSBut_Click);
-            // 
-            // forwardSBut
-            // 
-            this.forwardSBut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.forwardSBut.Image = global::GMView.Properties.Resources.forw_but;
-            resources.ApplyResources(this.forwardSBut, "forwardSBut");
-            this.forwardSBut.Name = "forwardSBut";
-            this.forwardSBut.Click += new System.EventHandler(this.forwardSBut_Click);
-            // 
-            // toolStripSeparator15
-            // 
-            this.toolStripSeparator15.Name = "toolStripSeparator15";
-            resources.ApplyResources(this.toolStripSeparator15, "toolStripSeparator15");
-            // 
-            // viewSBut
-            // 
-            this.viewSBut.CheckOnClick = true;
-            this.viewSBut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.viewSBut.Image = global::GMView.Properties.Resources.contexthelp;
-            resources.ApplyResources(this.viewSBut, "viewSBut");
-            this.viewSBut.Name = "viewSBut";
-            this.viewSBut.CheckedChanged += new System.EventHandler(this.viewSBut_CheckedChanged);
-            // 
-            // zoomSBut
-            // 
-            this.zoomSBut.CheckOnClick = true;
-            this.zoomSBut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.zoomSBut.Image = global::GMView.Properties.Resources.viewmagfit;
-            resources.ApplyResources(this.zoomSBut, "zoomSBut");
-            this.zoomSBut.Name = "zoomSBut";
-            this.zoomSBut.CheckedChanged += new System.EventHandler(this.zoomSBut_CheckedChanged);
-            // 
-            // selectRectDownSBut
-            // 
-            this.selectRectDownSBut.CheckOnClick = true;
-            this.selectRectDownSBut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.selectRectDownSBut.Image = global::GMView.Properties.Resources.wp;
-            resources.ApplyResources(this.selectRectDownSBut, "selectRectDownSBut");
-            this.selectRectDownSBut.Name = "selectRectDownSBut";
-            this.selectRectDownSBut.CheckedChanged += new System.EventHandler(this.selectRectDownSBut_CheckedChanged);
-            // 
-            // pinMarkSBut
-            // 
-            this.pinMarkSBut.CheckOnClick = true;
-            this.pinMarkSBut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.pinMarkSBut.Image = global::GMView.Properties.Resources.route;
-            resources.ApplyResources(this.pinMarkSBut, "pinMarkSBut");
-            this.pinMarkSBut.Name = "pinMarkSBut";
-            this.pinMarkSBut.Click += new System.EventHandler(this.pinMarkSBut_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            resources.ApplyResources(this.toolStripSeparator2, "toolStripSeparator2");
-            // 
-            // toolStripLabel2
-            // 
-            this.toolStripLabel2.Name = "toolStripLabel2";
-            this.toolStripLabel2.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
-            resources.ApplyResources(this.toolStripLabel2, "toolStripLabel2");
-            // 
-            // latSTb
-            // 
-            this.latSTb.Name = "latSTb";
-            resources.ApplyResources(this.latSTb, "latSTb");
-            // 
-            // toolStripLabel1
-            // 
-            this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
-            resources.ApplyResources(this.toolStripLabel1, "toolStripLabel1");
-            // 
-            // lonSTb
-            // 
-            this.lonSTb.Name = "lonSTb";
-            resources.ApplyResources(this.lonSTb, "lonSTb");
-            this.lonSTb.TextChanged += new System.EventHandler(this.lonSTb_TextChanged);
-            // 
-            // setLLBut
-            // 
-            this.setLLBut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.setLLBut.Image = global::GMView.Properties.Resources.reload;
-            resources.ApplyResources(this.setLLBut, "setLLBut");
-            this.setLLBut.Name = "setLLBut";
-            this.setLLBut.Click += new System.EventHandler(this.setLLBut_Click);
-            // 
-            // mapTypeSCombo
-            // 
-            this.mapTypeSCombo.Items.AddRange(new object[] {
-            resources.GetString("mapTypeSCombo.Items"),
-            resources.GetString("mapTypeSCombo.Items1"),
-            resources.GetString("mapTypeSCombo.Items2"),
-            resources.GetString("mapTypeSCombo.Items3"),
-            resources.GetString("mapTypeSCombo.Items4"),
-            resources.GetString("mapTypeSCombo.Items5"),
-            resources.GetString("mapTypeSCombo.Items6"),
-            resources.GetString("mapTypeSCombo.Items7"),
-            resources.GetString("mapTypeSCombo.Items8")});
-            resources.ApplyResources(this.mapTypeSCombo, "mapTypeSCombo");
-            this.mapTypeSCombo.Name = "mapTypeSCombo";
-            this.mapTypeSCombo.SelectedIndexChanged += new System.EventHandler(this.mapTypeSCombo_SelectedIndexChanged);
-            // 
-            // trafficTbut
-            // 
-            this.trafficTbut.CheckOnClick = true;
-            this.trafficTbut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.trafficTbut.Image = global::GMView.Properties.Resources.trafOff;
-            resources.ApplyResources(this.trafficTbut, "trafficTbut");
-            this.trafficTbut.Name = "trafficTbut";
-            this.trafficTbut.Click += new System.EventHandler(this.trafficTbut_CheckedChanged);
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Margin = new System.Windows.Forms.Padding(8, 0, 0, 0);
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            resources.ApplyResources(this.toolStripSeparator3, "toolStripSeparator3");
-            // 
-            // addPOISB
-            // 
-            this.addPOISB.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.addPOISB.Image = global::GMView.Properties.Resources.mark_new;
-            resources.ApplyResources(this.addPOISB, "addPOISB");
-            this.addPOISB.Name = "addPOISB";
-            this.addPOISB.Click += new System.EventHandler(this.addBookMI_Click);
-            // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            resources.ApplyResources(this.toolStripSeparator4, "toolStripSeparator4");
-            // 
-            // gpsTrackTBut
-            // 
-            this.gpsTrackTBut.CheckOnClick = true;
-            this.gpsTrackTBut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.gpsTrackTBut.Image = global::GMView.Properties.Resources.show_track;
-            resources.ApplyResources(this.gpsTrackTBut, "gpsTrackTBut");
-            this.gpsTrackTBut.Name = "gpsTrackTBut";
-            this.gpsTrackTBut.CheckedChanged += new System.EventHandler(this.gpsTrackTBut_CheckedChanged);
-            // 
-            // gpsFollowMapTBut
-            // 
-            this.gpsFollowMapTBut.CheckOnClick = true;
-            this.gpsFollowMapTBut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.gpsFollowMapTBut.Image = global::GMView.Properties.Resources.move_map;
-            resources.ApplyResources(this.gpsFollowMapTBut, "gpsFollowMapTBut");
-            this.gpsFollowMapTBut.Name = "gpsFollowMapTBut";
-            this.gpsFollowMapTBut.CheckedChanged += new System.EventHandler(this.gpsFollowMapTBut_CheckedChanged);
-            // 
-            // toolStripSeparator10
-            // 
-            this.toolStripSeparator10.Name = "toolStripSeparator10";
-            resources.ApplyResources(this.toolStripSeparator10, "toolStripSeparator10");
-            // 
-            // gpsTrackOnAir
-            // 
-            this.gpsTrackOnAir.CheckOnClick = true;
-            this.gpsTrackOnAir.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.gpsTrackOnAir.Image = global::GMView.Properties.Resources.record_track;
-            resources.ApplyResources(this.gpsTrackOnAir, "gpsTrackOnAir");
-            this.gpsTrackOnAir.Name = "gpsTrackOnAir";
-            this.gpsTrackOnAir.Click += new System.EventHandler(this.gpsTrackOnAir_CheckedChanged);
-            // 
-            // loadTrackSB
-            // 
-            this.loadTrackSB.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.loadTrackSB.Image = global::GMView.Properties.Resources.track_load;
-            resources.ApplyResources(this.loadTrackSB, "loadTrackSB");
-            this.loadTrackSB.Name = "loadTrackSB";
-            this.loadTrackSB.Click += new System.EventHandler(this.loadTrackSB_Click);
-            // 
-            // saveTrackSB
-            // 
-            this.saveTrackSB.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.saveTrackSB.Image = global::GMView.Properties.Resources.track_save;
-            resources.ApplyResources(this.saveTrackSB, "saveTrackSB");
-            this.saveTrackSB.Name = "saveTrackSB";
-            this.saveTrackSB.Click += new System.EventHandler(this.saveTrackSB_Click);
-            // 
-            // removeTracksSB
-            // 
-            this.removeTracksSB.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.removeTracksSB.Image = global::GMView.Properties.Resources.track_remove;
-            resources.ApplyResources(this.removeTracksSB, "removeTracksSB");
-            this.removeTracksSB.Name = "removeTracksSB";
-            this.removeTracksSB.Click += new System.EventHandler(this.removeTracksSB_Click);
-            // 
-            // toolStripSeparator11
-            // 
-            this.toolStripSeparator11.Name = "toolStripSeparator11";
-            resources.ApplyResources(this.toolStripSeparator11, "toolStripSeparator11");
-            // 
-            // toolStripLabel3
-            // 
-            this.toolStripLabel3.Name = "toolStripLabel3";
-            resources.ApplyResources(this.toolStripLabel3, "toolStripLabel3");
-            // 
-            // followTrackList
-            // 
-            this.followTrackList.Items.AddRange(new object[] {
-            resources.GetString("followTrackList.Items")});
-            this.followTrackList.Name = "followTrackList";
-            resources.ApplyResources(this.followTrackList, "followTrackList");
-            this.followTrackList.SelectedIndexChanged += new System.EventHandler(this.followTrackList_SelectedIndexChanged);
-            // 
-            // reverseTBut
-            // 
-            this.reverseTBut.CheckOnClick = true;
-            this.reverseTBut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.reverseTBut.Image = global::GMView.Properties.Resources.reverse;
-            resources.ApplyResources(this.reverseTBut, "reverseTBut");
-            this.reverseTBut.Name = "reverseTBut";
-            this.reverseTBut.Click += new System.EventHandler(this.followTrackList_SelectedIndexChanged);
             // 
             // menuStrip
             // 
@@ -882,6 +626,262 @@
             resources.ApplyResources(this.GeoTagMI, "GeoTagMI");
             this.GeoTagMI.Click += new System.EventHandler(this.GeoTagMI_Click);
             // 
+            // toolStrip
+            // 
+            resources.ApplyResources(this.toolStrip, "toolStrip");
+            this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.backwardSBut,
+            this.forwardSBut,
+            this.toolStripSeparator15,
+            this.viewSBut,
+            this.zoomSBut,
+            this.selectRectDownSBut,
+            this.pinMarkSBut,
+            this.toolStripSeparator2,
+            this.toolStripLabel2,
+            this.latSTb,
+            this.toolStripLabel1,
+            this.lonSTb,
+            this.setLLBut,
+            this.mapTypeSCombo,
+            this.trafficTbut,
+            this.toolStripSeparator3,
+            this.addPOISB,
+            this.toolStripSeparator4,
+            this.gpsTrackTBut,
+            this.gpsFollowMapTBut,
+            this.toolStripSeparator10,
+            this.gpsTrackOnAir,
+            this.loadTrackSB,
+            this.saveTrackSB,
+            this.removeTracksSB,
+            this.toolStripSeparator11,
+            this.toolStripLabel3,
+            this.followTrackList,
+            this.reverseTBut});
+            this.toolStrip.Name = "toolStrip";
+            this.toolStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            // 
+            // backwardSBut
+            // 
+            this.backwardSBut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.backwardSBut.Image = global::GMView.Properties.Resources.back_but;
+            resources.ApplyResources(this.backwardSBut, "backwardSBut");
+            this.backwardSBut.Name = "backwardSBut";
+            this.backwardSBut.Click += new System.EventHandler(this.backwardSBut_Click);
+            // 
+            // forwardSBut
+            // 
+            this.forwardSBut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.forwardSBut.Image = global::GMView.Properties.Resources.forw_but;
+            resources.ApplyResources(this.forwardSBut, "forwardSBut");
+            this.forwardSBut.Name = "forwardSBut";
+            this.forwardSBut.Click += new System.EventHandler(this.forwardSBut_Click);
+            // 
+            // toolStripSeparator15
+            // 
+            this.toolStripSeparator15.Name = "toolStripSeparator15";
+            resources.ApplyResources(this.toolStripSeparator15, "toolStripSeparator15");
+            // 
+            // viewSBut
+            // 
+            this.viewSBut.CheckOnClick = true;
+            this.viewSBut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.viewSBut.Image = global::GMView.Properties.Resources.contexthelp;
+            resources.ApplyResources(this.viewSBut, "viewSBut");
+            this.viewSBut.Name = "viewSBut";
+            this.viewSBut.CheckedChanged += new System.EventHandler(this.viewSBut_CheckedChanged);
+            // 
+            // zoomSBut
+            // 
+            this.zoomSBut.CheckOnClick = true;
+            this.zoomSBut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.zoomSBut.Image = global::GMView.Properties.Resources.viewmagfit;
+            resources.ApplyResources(this.zoomSBut, "zoomSBut");
+            this.zoomSBut.Name = "zoomSBut";
+            this.zoomSBut.CheckedChanged += new System.EventHandler(this.zoomSBut_CheckedChanged);
+            // 
+            // selectRectDownSBut
+            // 
+            this.selectRectDownSBut.CheckOnClick = true;
+            this.selectRectDownSBut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.selectRectDownSBut.Image = global::GMView.Properties.Resources.wp;
+            resources.ApplyResources(this.selectRectDownSBut, "selectRectDownSBut");
+            this.selectRectDownSBut.Name = "selectRectDownSBut";
+            this.selectRectDownSBut.CheckedChanged += new System.EventHandler(this.selectRectDownSBut_CheckedChanged);
+            // 
+            // pinMarkSBut
+            // 
+            this.pinMarkSBut.CheckOnClick = true;
+            this.pinMarkSBut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.pinMarkSBut.Image = global::GMView.Properties.Resources.route;
+            resources.ApplyResources(this.pinMarkSBut, "pinMarkSBut");
+            this.pinMarkSBut.Name = "pinMarkSBut";
+            this.pinMarkSBut.Click += new System.EventHandler(this.pinMarkSBut_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            resources.ApplyResources(this.toolStripSeparator2, "toolStripSeparator2");
+            // 
+            // toolStripLabel2
+            // 
+            this.toolStripLabel2.Name = "toolStripLabel2";
+            this.toolStripLabel2.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
+            resources.ApplyResources(this.toolStripLabel2, "toolStripLabel2");
+            // 
+            // latSTb
+            // 
+            this.latSTb.Name = "latSTb";
+            resources.ApplyResources(this.latSTb, "latSTb");
+            // 
+            // toolStripLabel1
+            // 
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
+            resources.ApplyResources(this.toolStripLabel1, "toolStripLabel1");
+            // 
+            // lonSTb
+            // 
+            this.lonSTb.Name = "lonSTb";
+            resources.ApplyResources(this.lonSTb, "lonSTb");
+            this.lonSTb.TextChanged += new System.EventHandler(this.lonSTb_TextChanged);
+            // 
+            // setLLBut
+            // 
+            this.setLLBut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.setLLBut.Image = global::GMView.Properties.Resources.reload;
+            resources.ApplyResources(this.setLLBut, "setLLBut");
+            this.setLLBut.Name = "setLLBut";
+            this.setLLBut.Click += new System.EventHandler(this.setLLBut_Click);
+            // 
+            // mapTypeSCombo
+            // 
+            this.mapTypeSCombo.Items.AddRange(new object[] {
+            resources.GetString("mapTypeSCombo.Items"),
+            resources.GetString("mapTypeSCombo.Items1"),
+            resources.GetString("mapTypeSCombo.Items2"),
+            resources.GetString("mapTypeSCombo.Items3"),
+            resources.GetString("mapTypeSCombo.Items4"),
+            resources.GetString("mapTypeSCombo.Items5"),
+            resources.GetString("mapTypeSCombo.Items6"),
+            resources.GetString("mapTypeSCombo.Items7"),
+            resources.GetString("mapTypeSCombo.Items8")});
+            resources.ApplyResources(this.mapTypeSCombo, "mapTypeSCombo");
+            this.mapTypeSCombo.Name = "mapTypeSCombo";
+            this.mapTypeSCombo.SelectedIndexChanged += new System.EventHandler(this.mapTypeSCombo_SelectedIndexChanged);
+            // 
+            // trafficTbut
+            // 
+            this.trafficTbut.CheckOnClick = true;
+            this.trafficTbut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.trafficTbut.Image = global::GMView.Properties.Resources.trafOff;
+            resources.ApplyResources(this.trafficTbut, "trafficTbut");
+            this.trafficTbut.Name = "trafficTbut";
+            this.trafficTbut.Click += new System.EventHandler(this.trafficTbut_CheckedChanged);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Margin = new System.Windows.Forms.Padding(8, 0, 0, 0);
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            resources.ApplyResources(this.toolStripSeparator3, "toolStripSeparator3");
+            // 
+            // addPOISB
+            // 
+            this.addPOISB.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.addPOISB.Image = global::GMView.Properties.Resources.mark_new;
+            resources.ApplyResources(this.addPOISB, "addPOISB");
+            this.addPOISB.Name = "addPOISB";
+            this.addPOISB.Click += new System.EventHandler(this.addBookMI_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            resources.ApplyResources(this.toolStripSeparator4, "toolStripSeparator4");
+            // 
+            // gpsTrackTBut
+            // 
+            this.gpsTrackTBut.CheckOnClick = true;
+            this.gpsTrackTBut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.gpsTrackTBut.Image = global::GMView.Properties.Resources.show_track;
+            resources.ApplyResources(this.gpsTrackTBut, "gpsTrackTBut");
+            this.gpsTrackTBut.Name = "gpsTrackTBut";
+            this.gpsTrackTBut.CheckedChanged += new System.EventHandler(this.gpsTrackTBut_CheckedChanged);
+            // 
+            // gpsFollowMapTBut
+            // 
+            this.gpsFollowMapTBut.CheckOnClick = true;
+            this.gpsFollowMapTBut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.gpsFollowMapTBut.Image = global::GMView.Properties.Resources.move_map;
+            resources.ApplyResources(this.gpsFollowMapTBut, "gpsFollowMapTBut");
+            this.gpsFollowMapTBut.Name = "gpsFollowMapTBut";
+            this.gpsFollowMapTBut.CheckedChanged += new System.EventHandler(this.gpsFollowMapTBut_CheckedChanged);
+            // 
+            // toolStripSeparator10
+            // 
+            this.toolStripSeparator10.Name = "toolStripSeparator10";
+            resources.ApplyResources(this.toolStripSeparator10, "toolStripSeparator10");
+            // 
+            // gpsTrackOnAir
+            // 
+            this.gpsTrackOnAir.CheckOnClick = true;
+            this.gpsTrackOnAir.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.gpsTrackOnAir.Image = global::GMView.Properties.Resources.record_track;
+            resources.ApplyResources(this.gpsTrackOnAir, "gpsTrackOnAir");
+            this.gpsTrackOnAir.Name = "gpsTrackOnAir";
+            this.gpsTrackOnAir.Click += new System.EventHandler(this.gpsTrackOnAir_CheckedChanged);
+            // 
+            // loadTrackSB
+            // 
+            this.loadTrackSB.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.loadTrackSB.Image = global::GMView.Properties.Resources.track_load;
+            resources.ApplyResources(this.loadTrackSB, "loadTrackSB");
+            this.loadTrackSB.Name = "loadTrackSB";
+            this.loadTrackSB.Click += new System.EventHandler(this.loadTrackSB_Click);
+            // 
+            // saveTrackSB
+            // 
+            this.saveTrackSB.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.saveTrackSB.Image = global::GMView.Properties.Resources.track_save;
+            resources.ApplyResources(this.saveTrackSB, "saveTrackSB");
+            this.saveTrackSB.Name = "saveTrackSB";
+            this.saveTrackSB.Click += new System.EventHandler(this.saveTrackSB_Click);
+            // 
+            // removeTracksSB
+            // 
+            this.removeTracksSB.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.removeTracksSB.Image = global::GMView.Properties.Resources.track_remove;
+            resources.ApplyResources(this.removeTracksSB, "removeTracksSB");
+            this.removeTracksSB.Name = "removeTracksSB";
+            this.removeTracksSB.Click += new System.EventHandler(this.removeTracksSB_Click);
+            // 
+            // toolStripSeparator11
+            // 
+            this.toolStripSeparator11.Name = "toolStripSeparator11";
+            resources.ApplyResources(this.toolStripSeparator11, "toolStripSeparator11");
+            // 
+            // toolStripLabel3
+            // 
+            this.toolStripLabel3.Name = "toolStripLabel3";
+            resources.ApplyResources(this.toolStripLabel3, "toolStripLabel3");
+            // 
+            // followTrackList
+            // 
+            this.followTrackList.Items.AddRange(new object[] {
+            resources.GetString("followTrackList.Items")});
+            this.followTrackList.Name = "followTrackList";
+            resources.ApplyResources(this.followTrackList, "followTrackList");
+            this.followTrackList.SelectedIndexChanged += new System.EventHandler(this.followTrackList_SelectedIndexChanged);
+            // 
+            // reverseTBut
+            // 
+            this.reverseTBut.CheckOnClick = true;
+            this.reverseTBut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.reverseTBut.Image = global::GMView.Properties.Resources.reverse;
+            resources.ApplyResources(this.reverseTBut, "reverseTBut");
+            this.reverseTBut.Name = "reverseTBut";
+            this.reverseTBut.Click += new System.EventHandler(this.followTrackList_SelectedIndexChanged);
+            // 
             // toolStripSeparator9
             // 
             this.toolStripSeparator9.Name = "toolStripSeparator9";
@@ -956,10 +956,10 @@
             this.toolStripContainer1.PerformLayout();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
-            this.toolStrip.ResumeLayout(false);
-            this.toolStrip.PerformLayout();
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
+            this.toolStrip.ResumeLayout(false);
+            this.toolStrip.PerformLayout();
             this.ResumeLayout(false);
 
         }

@@ -13,10 +13,15 @@ namespace GMView.Forms
         protected ncUtils.HistoryList historyStartLoc;
         public TrackDestFrom()
         {
-            historyStartLoc = new ncUtils.HistoryList("trackLocationName");
+            historyStartLoc = new ncUtils.HistoryList("trackLocation");
             InitializeComponent();
             startLocCB.Items.Clear();
             startLocCB.Items.AddRange(historyStartLoc.items.ToArray());
+        }
+
+        private void startLocCB_TextUpdate(object sender, EventArgs e)
+        {
+            historyStartLoc.add(startLocCB.Text);
         }
     }
 }
