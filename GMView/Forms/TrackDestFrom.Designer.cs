@@ -45,11 +45,12 @@
             this.startLocCB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.startLocCB.FormattingEnabled = true;
             this.startLocCB.Location = new System.Drawing.Point(85, 10);
-            this.startLocCB.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.startLocCB.Margin = new System.Windows.Forms.Padding(2);
             this.startLocCB.Name = "startLocCB";
             this.startLocCB.Size = new System.Drawing.Size(166, 21);
             this.startLocCB.TabIndex = 1;
-            this.startLocCB.TextUpdate += new System.EventHandler(this.startLocCB_TextUpdate);
+            this.startLocCB.SelectionChangeCommitted += new System.EventHandler(this.startLocCB_TextUpdate);
+            this.startLocCB.KeyUp += new System.Windows.Forms.KeyEventHandler(this.startLocCB_KeyUp);
             // 
             // label1
             // 
@@ -79,52 +80,59 @@
             this.destLocCB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.destLocCB.FormattingEnabled = true;
             this.destLocCB.Location = new System.Drawing.Point(85, 34);
-            this.destLocCB.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.destLocCB.Margin = new System.Windows.Forms.Padding(2);
             this.destLocCB.Name = "destLocCB";
             this.destLocCB.Size = new System.Drawing.Size(166, 21);
             this.destLocCB.TabIndex = 3;
+            this.destLocCB.SelectionChangeCommitted += new System.EventHandler(this.destLocCB_SelectionChangeCommitted);
+            this.destLocCB.KeyUp += new System.Windows.Forms.KeyEventHandler(this.destLocCB_KeyUp);
             // 
             // cancelBut
             // 
             this.cancelBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cancelBut.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelBut.Location = new System.Drawing.Point(194, 63);
-            this.cancelBut.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cancelBut.Image = global::GMView.Properties.Resources.lamp_off;
+            this.cancelBut.Location = new System.Drawing.Point(184, 63);
+            this.cancelBut.Margin = new System.Windows.Forms.Padding(2);
             this.cancelBut.Name = "cancelBut";
-            this.cancelBut.Size = new System.Drawing.Size(56, 21);
+            this.cancelBut.Size = new System.Drawing.Size(66, 29);
             this.cancelBut.TabIndex = 5;
             this.cancelBut.Text = "Cancel";
+            this.cancelBut.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.cancelBut.UseVisualStyleBackColor = true;
             // 
             // okBut
             // 
             this.okBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.okBut.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.okBut.Location = new System.Drawing.Point(133, 63);
-            this.okBut.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.okBut.Image = global::GMView.Properties.Resources.lamp_on;
+            this.okBut.Location = new System.Drawing.Point(122, 63);
+            this.okBut.Margin = new System.Windows.Forms.Padding(2);
             this.okBut.Name = "okBut";
-            this.okBut.Size = new System.Drawing.Size(56, 21);
+            this.okBut.Size = new System.Drawing.Size(58, 29);
             this.okBut.TabIndex = 4;
             this.okBut.Text = "OK";
+            this.okBut.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.okBut.UseVisualStyleBackColor = true;
             // 
             // autoBut
             // 
             this.autoBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.autoBut.Location = new System.Drawing.Point(9, 63);
-            this.autoBut.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.autoBut.Margin = new System.Windows.Forms.Padding(2);
             this.autoBut.Name = "autoBut";
-            this.autoBut.Size = new System.Drawing.Size(56, 21);
+            this.autoBut.Size = new System.Drawing.Size(56, 29);
             this.autoBut.TabIndex = 6;
             this.autoBut.Text = "Auto";
             this.autoBut.UseVisualStyleBackColor = true;
+            this.autoBut.Click += new System.EventHandler(this.autoBut_Click);
             // 
             // TrackDestFrom
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelBut;
-            this.ClientSize = new System.Drawing.Size(259, 93);
+            this.ClientSize = new System.Drawing.Size(259, 101);
             this.Controls.Add(this.autoBut);
             this.Controls.Add(this.okBut);
             this.Controls.Add(this.cancelBut);
@@ -133,7 +141,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.startLocCB);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "TrackDestFrom";

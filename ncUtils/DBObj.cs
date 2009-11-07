@@ -68,9 +68,10 @@ namespace ncUtils
         /// </summary>
         /// <param name="name"></param>
         /// <param name="val"></param>
-        public void addStringPar(string name, string val)
+        public DBObj addStringPar(string name, string val)
         {
             cmd.Parameters.Add(DBConnPool.singleton.newPar(name, DbType.String, val));
+            return this;
         }
 
         /// <summary>
@@ -78,9 +79,42 @@ namespace ncUtils
         /// </summary>
         /// <param name="name"></param>
         /// <param name="val"></param>
-        public void addIntPar(string name, int val)
+        public DBObj addIntPar(string name, int val)
         {
             cmd.Parameters.Add(DBConnPool.singleton.newPar(name, DbType.Int32, val));
+            return this;
+        }
+
+        /// <summary>
+        /// Adds new parameter to the command. Can be used to pass any type of param
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="dtype"></param>
+        /// <param name="val"></param>
+        /// <returns></returns>
+        public DBObj addPar(string name, DbType dtype, object val)
+        {
+            cmd.Parameters.Add(DBConnPool.singleton.newPar(name, dtype, val));
+            return this;
+        }
+
+        /// <summary>
+        /// Execute query and return single scalar int value as the result;
+        /// </summary>
+        /// <returns></returns>
+        public int executeIntValue()
+        {
+            long val = (long)cmd.ExecuteScalar();
+            return (int)val;
+        }
+
+        /// <summary>
+        /// Execute query and return single scalar string
+        /// </summary>
+        /// <returns></returns>
+        public string executeStringValue()
+        {
+            return (string)cmd.ExecuteScalar();
         }
 
         #region IDisposable Members

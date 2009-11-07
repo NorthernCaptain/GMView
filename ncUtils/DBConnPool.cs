@@ -37,6 +37,7 @@ namespace ncUtils
             set
             {
                 conString = "Data Source=" + value + ";New=False;Version=3";
+                checkDBschema(value);
             }
         }
         /// <summary>
@@ -106,6 +107,80 @@ namespace ncUtils
             {
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Check and initialized database schema if we don't have one
+        /// Return true if schema exists
+        /// </summary>
+        /// <returns></returns>
+        private bool checkDBschema(string fname)
+        {
+            if (System.IO.File.Exists(fname))
+                return true;
+
+            string constr = @"Data Source=" + fname + ";New=True;Version=3";
+            SQLiteConnection con = null;
+            try
+            {
+                con = new SQLiteConnection(constr);
+                con.Open();
+                DbCommand cmd = con.CreateCommand();
+                cmd.CommandType = CommandType.Text;
+
+                System.IO.StringReader reader = 
+                        new System.IO.StringReader(ncUtils.Properties.Resources.createDB);
+
+                try
+                {
+                    string stmt = string.Empty;
+                    string buf;
+                    while((buf = reader.ReadLine()) != null)
+                    {
+                        if(buf.Trim().Length == 0)
+                            continue;
+                        if (buf.StartsWith("--"))
+                        {
+                            stmt = stmt.Trim();
+                            if (stmt.Length == 0)
+                                continue;
+                            if (stmt.EndsWith(";"))
+                                stmt.Remove(stmt.Length - 1);
+
+                            try
+                            {
+                                cmd.CommandText = stmt;
+                                stmt = string.Empty;
+                                cmd.ExecuteNonQuery();
+                            }
+                            catch (System.Exception e)
+                            {
+
+                            }
+                        }
+                        else
+                            stmt += buf;                       
+                    }
+                }
+                finally
+                {
+                    reader.Close();
+                }
+            }
+            catch (System.Exception e)
+            {
+            	
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                    con.Dispose();
+                }
+            }
+
+            return false;
         }
     }
 }

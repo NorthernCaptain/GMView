@@ -918,9 +918,7 @@ namespace GMView
             bool newTrack = true;
             if (!gtrack.on_air)
             {
-                gtrack.on_air = true;
-                if (gtrack.on_air
-                    && gtrack.countPoints > 0)
+                if (gtrack.countPoints > 0)
                 {
                     if (MessageBox.Show("Continue recording current track?\n\nYes - will continue current track\nNo - clear previous track and start new one", "Record track",
                                         MessageBoxButtons.YesNo,
@@ -934,13 +932,20 @@ namespace GMView
                 {
                     Forms.TrackDestFrom destForm = new Forms.TrackDestFrom();
                     destForm.Owner = this;
+                    destForm.StartPosition = this.StartPosition;
                     if (destForm.ShowDialog() == DialogResult.OK)
                     {
+                        opt.autosavefile = destForm.trackName;
+                        gtrack.fileName = opt.autosavefile;
                     }
                     else
-
+                    {
+                        opt.autosavefile = "auto-" + DateTime.Now.ToString("yyyy-MM-dd_HHmm");
+                        gtrack.fileName = opt.autosavefile;
+                    }
                     destForm.Dispose();
                 }
+                gtrack.on_air = true;
                 infoMessage("'Record track' is ON");
                 gpsdash.mode = DashMode.Normal;
                 trackdash.mode = DashMode.Normal;

@@ -766,10 +766,24 @@ namespace GMView
         }
 
         public string default_track_dir = @"C:\GMView\Tracks_and_Waypoints";
+
+        /// <summary>
+        /// Name of autosave file without directory.
+        /// </summary>
+        private string autosavefileS = "autosave.gpx";
+
+        /// <summary>
+        /// Gets full path and name of autosave track file
+        /// </summary>
         public string autosavefile
         {
-            get { return default_track_dir + Path.DirectorySeparatorChar + "autosave.gpx"; }
+            get { return default_track_dir + Path.DirectorySeparatorChar + autosavefileS; }
+            set
+            {
+            	autosavefileS = value + ".gpx";
+            }
         }
+
         public bool do_autosave = false;
         public double km_or_miles = 1.0; // need data in km or miles. 1.6093
         public double split_by_distance = 4.0; // divide track into separate ones when distance between points is greater than this (4.0 km)

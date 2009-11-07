@@ -362,6 +362,10 @@ namespace GMView
         public string fileName
         {
             get { return filename; }
+            set
+            {
+            	filename = value;
+            }
         }
 
         [XmlAttribute("travel_time")]
@@ -468,7 +472,9 @@ namespace GMView
             get { return name; }
             set { name = "Track: " + value; textInfo.fill_all_info(this); }
         }
+        #endregion
 
+        #region Track points processing methods
 
         private void reducedReset()
         {
@@ -531,6 +537,363 @@ namespace GMView
             ctx.findFinish();
         }
 
+        const double stopMinutes = 2.0; //Number of minutes between two points that we consider as stop point
+        /// <summary>
+        /// Goes through all track points and calculate parameters of the track
+        /// </summary>
+        public void calculateParameters()
+        {
+            if (trackData.Count == 0)
+                return;
+
+            way.clear();
+
+            trav_time = endTime - startTime;
+            if (trav_time.TotalHours < 0.0)
+                trav_time = startTime - endTime;
+
+            distance = 0.0;
+            travel_max_speed = 0.0;
+            NMEA_LL first_nm = trackData.First.Value;
+            first_nm.ptype = NMEA_LL.PointType.STARTP;
+            way.add(first_nm, 0.0);
+            reducedReset();
+            LinkedListNode<NMEA_LL> linked_nm = trackData.First;
+            while(linked_nm != null && linked_nm.Value != null)
+            {
+                NMEA_LL nm = linked_nm.Value;
+                if (nm != first_nm)
+                {
+                    distance_km += CommonGeo.getDistanceByLonLat2(first_nm.lon, first_nm.lat,
+                                                            nm.lon, nm.lat);
+                    if (nm.speed > travel_max_speed)
+                        travel_max_speed = nm.speed;
+
+                    if ((nm.utc_time - first_nm.utc_time).TotalMinutes >= stopMinutes)
+                    {
+                        nm.ptype = NMEA_LL.PointType.SWP;
+                    }
+
+                    if (nm.ptype != NMEA_LL.PointType.TP)
+                    {
+                        way.add(nm, distance_km);
+                    }
+
+                    first_nm = nm;
+                }
+                reducedAdd(linked_nm);
+                linked_nm = linked_nm.Next;
+            }
+            reducedAddLast(trackData.Last);
+            travel_avg_speed = distance / trav_time.TotalHours;
+            if (mode == TrackMode.ViewSaved)
+                way.markWay(lastPos, distance_km, NMEA_LL.PointType.ENDTP);
+            textInfo.fill_all_info(this);
+        }
+
+        /// <summary>
+        /// Process new data from GPS receiver. Do it in the receiver thread, not in the main one.
+        /// </summary>
+        /// <param name="nmea_ll"></param>
+        public void newGPSData(NMEA_LL nmea_ll)
+        {
+            //currently we use only RMC command, not GGA...
+            //and only valid commands are accepted
+            if (nmea_ll.type == "RMC" && nmea_ll.state == NMEACommand.Status.DataOK)
+            {
+                lock (this)
+                {
+                    lastPos = nmea_ll;
+
+                    if (lastSpeedPos == null || nmea_ll.speed > Program.opt.zero_speed)
+                        lastSpeedPos = nmea_ll;
+
+                    if (on_air)
+                    {
+                        if (!(lastTrackPos != null && (System.Math.Abs(lastTrackPos.lon - nmea_ll.lon) <= Program.opt.gps_same_pos_delta &&
+                            System.Math.Abs(lastTrackPos.lat - nmea_ll.lat) <= Program.opt.gps_same_pos_delta)))
+                        {
+                            if (lastTrackPos != null)
+                            {
+                                distance_km += CommonGeo.getDistanceByLonLat2(lastTrackPos.lon, lastTrackPos.lat,
+                                                                            nmea_ll.lon, nmea_ll.lat);
+                                trav_time = nmea_ll.utc_time - trackData.First.Value.utc_time;
+                                travel_avg_speed = distance_km / trav_time.TotalHours;
+                            }
+
+                            lastTrackPos = nmea_ll;
+                            trackData.AddLast(lastTrackPos);
+                            if (trackData.Count == 1) //our first point = it's a start
+                            {
+                                way.markWay(nmea_ll, 0.0, NMEA_LL.PointType.STARTP);
+                                way.recalc_last_waypoint(mapo.geosystem);
+                            }
+                            updateOnZoomChangeNoLock(-1, -1);
+                            textInfo.fill_all_info(this);
+                        }
+                        else
+                        {
+                            if (trackData.Count > 0)
+                            {
+                                trav_time = nmea_ll.utc_time - trackData.First.Value.utc_time;
+                                travel_avg_speed = distance_km / trav_time.TotalHours;
+                            }
+                        }
+                    }
+                    gpsinfo.fill_all_info(this);
+                }
+                if (onTrackChanged != null)
+                    onTrackChanged();
+
+                if (Program.opt.do_autosave && trackData.Count > lastSavedPoint + 20)
+                {
+                    saveGPX(filename.Length > 0 ? filename : Program.opt.autosavefile);
+                    lastSavedPoint = trackData.Count;
+                }
+            }
+        }
+
+
+        internal void addGPSDataInternal(NMEA_LL nmea_ll)
+        {
+            lastPos = nmea_ll;
+
+            if (lastSpeedPos == null || nmea_ll.speed > Program.opt.zero_speed)
+                lastSpeedPos = nmea_ll;
+
+//            if (on_air)
+            {
+                if (!(lastTrackPos != null && (System.Math.Abs(lastTrackPos.lon - nmea_ll.lon) <= Program.opt.gps_same_pos_delta &&
+                    System.Math.Abs(lastTrackPos.lat - nmea_ll.lat) <= Program.opt.gps_same_pos_delta)))
+                {
+                    if (lastTrackPos != null)
+                    {
+                        distance_km += CommonGeo.getDistanceByLonLat2(lastTrackPos.lon, lastTrackPos.lat,
+                                                                    nmea_ll.lon, nmea_ll.lat);
+                        trav_time = nmea_ll.utc_time - trackData.First.Value.utc_time;
+                        travel_avg_speed = distance_km / trav_time.TotalHours;
+                    }
+
+                    trackData.AddLast(nmea_ll);
+                    lastPos = lastTrackPos = nmea_ll;
+                    if (trackData.Count == 1) //our first point = it's a start
+                    {
+                        way.markWay(nmea_ll, 0.0, NMEA_LL.PointType.STARTP);
+                    }
+                }
+                else
+                {
+                    if (trackData.Count > 0)
+                    {
+                        trav_time = nmea_ll.utc_time - trackData.First.Value.utc_time;
+                        travel_avg_speed = distance_km / trav_time.TotalHours;
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// Clear all track data
+        /// </summary>
+        public void resetTrackData()
+        {
+            //lastPos = null;
+            trackData.Clear();
+            drawPoints.Clear();
+            way.clear();
+            distance_km = 0.0;
+            travel_avg_speed = Program.opt.manual_avg_speed;
+            travel_time = TimeSpan.FromHours(distance_km / travel_avg_speed);
+            textInfo.fill_all_info(this);
+        }
+
+        const int delta_inv = 10;
+
+        public void updateOnZoomChange(int old_zoom, int new_zoom)
+        {
+            lock (this)
+            {
+                updateOnZoomChangeNoLock(old_zoom, new_zoom);
+            }
+        }
+
+        /// <summary>
+        /// Calls when our zoom level has been changed. Here we recalculate all our point coordinates in
+        /// screen positions, later we use this coords for quick drawing of our track
+        /// </summary>
+        /// <param name="old_zoom"></param>
+        /// <param name="new_zoom"></param>
+        private void updateOnZoomChangeNoLock(int old_zoom, int new_zoom)
+        {
+            if(trackData.Count == 0)
+                return;
+
+            Point lastP;
+            Point curP;
+
+            drawPoints.Clear();
+
+            mapo.getXYByLonLat(trackData.First.Value.lon, trackData.First.Value.lat, out lastP);
+            drawPoints.Add(lastP);
+
+            foreach (NMEA_LL point in trackData)
+            {
+                mapo.getXYByLonLat(point.lon, point.lat, out curP);
+                if ((Math.Abs(curP.X - lastP.X) < delta_inv  && Math.Abs(curP.Y - lastP.Y) < delta_inv))
+                    continue;
+
+                drawPoints.Add(curP);
+                lastP = curP;
+            }
+            mapo.getXYByLonLat(trackData.Last.Value.lon, trackData.Last.Value.lat, out lastP);
+            drawPoints.Add(lastP);
+
+            way.updateXY(mapo.geosystem);
+        }
+
+        #endregion
+
+        #region Manual track operations
+        /// <summary>
+        /// Marks last track point with the given type
+        /// </summary>
+        /// <param name="pt"></param>
+        /// <returns></returns>
+        public bool markLastPoint(NMEA_LL.PointType pt)
+        {
+            if (lastTrackPos == null || lastTrackPos.ptype != NMEA_LL.PointType.TP)
+                return false;
+            way.markWay(lastTrackPos, distance_km, NMEA_LL.PointType.MWP);
+            way.recalc_last_waypoint(mapo.geosystem);
+            textInfo.fill_all_info(this);
+            return true;
+        }
+
+        /// <summary>
+        /// Slices track into segments and fills Way (route)
+        /// </summary>
+        public void sliceTrackIntoWay()
+        {
+            if (countPoints == 0)
+                return;
+
+            Way nway = new Way();
+
+            double step = distance_km / 50;
+            if (step < 1)
+                step = 1;
+            else
+                if (step > 50)
+                    step = 50;
+
+            double dist = 0;
+            double totaldist = 0;
+
+            LinkedListNode<NMEA_LL> ppt = trackData.First;
+            LinkedListNode<NMEA_LL> oldppt = trackData.First;
+
+            nway.markWay(ppt.Value, dist, NMEA_LL.PointType.STARTP);
+            nway.recalc_last_waypoint(mapo.geosystem);
+
+            ppt = ppt.Next;
+            while (ppt != null)
+            {
+                dist += ncGeo.CommonGeo.getDistanceByLonLat2(ppt.Value.lon, ppt.Value.lat,
+                                       oldppt.Value.lon, oldppt.Value.lat);
+
+                if (dist > step)
+                {
+                    totaldist += dist;
+                    ppt.Value.ptype = NMEA_LL.PointType.AWP;
+                    nway.markWay(ppt.Value, totaldist, NMEA_LL.PointType.AWP);
+                    nway.recalc_last_waypoint(mapo.geosystem);
+                    dist = 0;
+                }
+                oldppt = ppt;
+                ppt = ppt.Next;
+            }
+            nway.markWay(trackData.Last.Value, totaldist + dist, NMEA_LL.PointType.ENDTP);
+            nway.recalc_last_waypoint(mapo.geosystem);
+
+            nway.initGLData();
+            way = nway;
+        }
+
+        /// <summary>
+        /// Updates last point to a new lon/lat coords
+        /// </summary>
+        /// <param name="newlon"></param>
+        /// <param name="newlat"></param>
+        /// <returns></returns>
+        public bool updateManualPoint(double newlon, double newlat)
+        {
+            if (lastTrackPos == null)
+                return false;
+            lastTrackPos.lon = newlon;
+            lastTrackPos.lat = newlat;
+            way.recalc_last_waypoint(mapo.geosystem);
+            updateOnZoomChangeNoLock(-1, -1);
+            return true;
+        }
+
+        /// <summary>
+        /// Deletes last point in the track (in manual edit mode)
+        /// </summary>
+        internal void delLastPoint()
+        {
+            if (trackData.Count == 0)
+                return;
+            NMEA_LL point = trackData.Last.Value;
+            trackData.Remove(point);
+            if (trackData.Count == 0)
+            {
+                lastTrackPos = lastPos = lastSpeedPos = null;
+                distance_km = 0.0;
+                travel_avg_speed = Program.opt.manual_avg_speed;
+                travel_time = TimeSpan.FromHours(distance_km / travel_avg_speed);
+                way.clear();
+            }
+            else
+            {
+                lastTrackPos = lastPos = lastSpeedPos = trackData.Last.Value;
+                Way.WayPoint wp = way.delLastFromWay(point);
+                if (wp != null)
+                {
+                    distance_km -= wp.distance_from_prev;
+                    travel_avg_speed = Program.opt.manual_avg_speed;
+                    travel_time = TimeSpan.FromHours(distance_km / travel_avg_speed);
+                }
+            }
+            updateOnZoomChangeNoLock(-1, -1);
+            textInfo.fill_all_info(this);
+        }
+
+        /// <summary>
+        /// Adds manual point in the end of the track
+        /// </summary>
+        /// <param name="nmea_ll"></param>
+        public void addManualPoint(NMEA_LL nmea_ll)
+        {
+            if (trackData.Count > 0 && lastTrackPos != null)
+            {
+                distance_km += CommonGeo.getDistanceByLonLat2(lastTrackPos.lon,
+                                                              lastTrackPos.lat,
+                                                              nmea_ll.lon, nmea_ll.lat);
+                travel_avg_speed = Program.opt.manual_avg_speed;
+                travel_time = TimeSpan.FromHours(distance_km / travel_avg_speed);
+            }
+            else
+                nmea_ll.ptype = NMEA_LL.PointType.STARTP;
+            lastTrackPos = lastPos = lastSpeedPos = nmea_ll;
+            trackData.AddLast(lastTrackPos);
+            way.add(nmea_ll, distance_km);
+            way.recalc_last_waypoint(mapo.geosystem);
+            updateOnZoomChangeNoLock(-1, -1);
+            textInfo.fill_all_info(this);
+        }
+
+        #endregion
+
+        #region Save and Load tracks from different formats (GPX, KML, NMEA)
         /// <summary>
         /// Saves track data into xml file using xml serialization
         /// </summary>
@@ -750,7 +1113,7 @@ namespace GMView
                             writer.WriteElementString("name", book.name);
                             writer.WriteElementString("description", book.comment);
                             writer.WriteStartElement("Point");
-                            writer.WriteElementString("coordinates", book.lon.ToString("F8", nf)+","+book.lat.ToString("F8", nf)+",0.0");
+                            writer.WriteElementString("coordinates", book.lon.ToString("F8", nf) + "," + book.lat.ToString("F8", nf) + ",0.0");
                             writer.WriteEndElement();
                             writer.WriteEndElement();
                         }
@@ -762,7 +1125,7 @@ namespace GMView
 
                 writer.WriteStartElement("LookAt");
 
-                writer.WriteElementString("latitude", ((minlat + maxlat)/2.0).ToString("F8", nf));
+                writer.WriteElementString("latitude", ((minlat + maxlat) / 2.0).ToString("F8", nf));
                 writer.WriteElementString("longitude", ((minlon + maxlon) / 2.0).ToString("F8", nf));
                 writer.WriteElementString("altitude", "0");
                 writer.WriteElementString("range", "10000");
@@ -779,7 +1142,7 @@ namespace GMView
             writer.Flush();
             writer.Close();
         }
-        
+
         /// <summary>
         /// Check all out track points and return lat-lon bounding box
         /// </summary>
@@ -858,7 +1221,7 @@ namespace GMView
             NMEA_LL lastll = track.trackData.First.Value;
             GPSTrack curtrack = new GPSTrack();
             curtrack.clone_header(track);
-            curtrack.name += "-" + track.startTime.ToShortDateString() + "-" + idx.ToString();;
+            curtrack.name += "-" + track.startTime.ToShortDateString() + "-" + idx.ToString(); ;
             curtrack.filename += "-" + idx.ToString();
             foreach (NMEA_LL ll in track.trackData)
             {
@@ -980,13 +1343,13 @@ namespace GMView
             XmlNode folder = selectKMLFolders(doc, nsm, track);
             XmlNode titleNode = null;
 
-            if(folder == null)
+            if (folder == null)
             {
                 throw new ApplicationException("This file does not have any tracks or routes! Check file content");
             }
 
             XmlNodeList nlist = folder.SelectNodes("./kml:Placemark", nsm);
-            string nodeval="";
+            string nodeval = "";
             foreach (XmlNode xnode in nlist)
             {
                 if (track.xmltag(xnode, "./kml:LineString/kml:coordinates", nsm, ref nodeval) ||
@@ -1032,7 +1395,7 @@ namespace GMView
         /// <returns></returns>
         private static XmlNode selectKMLFolders(XmlDocument doc, XmlNamespaceManager nsm, GPSTrack track)
         {
-            string nodeval="";
+            string nodeval = "";
             XmlNodeList nlist = doc.DocumentElement.SelectNodes("//kml:Folder", nsm);
             foreach (XmlNode xnode in nlist)
             {
@@ -1100,7 +1463,7 @@ namespace GMView
                     throw new ApplicationException("Not a valid GPX file! Could not find gpx root tag.");
 
                 XmlNamespaceManager nsm = new XmlNamespaceManager(doc.NameTable);
-                
+
                 { //retrieve xmlns
                     XmlNode xnsnode = doc.DocumentElement.Attributes.GetNamedItem("xmlns");
                     if (xnsnode != null)
@@ -1118,7 +1481,7 @@ namespace GMView
                 if (node != null)
                 {
                     string nodeval = node.InnerText;
-                    if (nodeval.Length>7 && nodeval.Substring(0, 7) == "Track: ")
+                    if (nodeval.Length > 7 && nodeval.Substring(0, 7) == "Track: ")
                         nodeval = nodeval.Substring(7);
 
                     track.name = "Track: " + nodeval;
@@ -1128,11 +1491,11 @@ namespace GMView
                 {
                     string dirname = Path.GetDirectoryName(fname);
                     track.name = "Track: " + dirname.Substring(dirname.LastIndexOf(Path.DirectorySeparatorChar) + 1) + Path.DirectorySeparatorChar + Path.GetFileNameWithoutExtension(fname);
-                    track.way.name = "Route: " + Path.GetFileNameWithoutExtension(fname); 
+                    track.way.name = "Route: " + Path.GetFileNameWithoutExtension(fname);
                 }
 
                 XmlNodeList nlist = doc.DocumentElement.SelectNodes("/gpx:gpx/gpx:trk/gpx:trkseg/gpx:trkpt", nsm);
-                foreach(XmlNode xnode in nlist)
+                foreach (XmlNode xnode in nlist)
                 {
                     track.loadPoint(xnode, nsm);
                 }
@@ -1140,7 +1503,7 @@ namespace GMView
                 if (nlist.Count == 0) //we don't have track in file, lets try route
                 {
                     nlist = doc.DocumentElement.SelectNodes("/gpx:gpx/gpx:rte/gpx:rtept", nsm);
-                    foreach(XmlNode xnode in nlist)
+                    foreach (XmlNode xnode in nlist)
                     {
                         track.loadPoint(xnode, nsm);
                     }
@@ -1191,10 +1554,11 @@ namespace GMView
                     rmc.utc_time = DateTime.MinValue.AddYears(2000).ToUniversalTime();
                 }
 
-            } else
+            }
+            else
                 rmc.utc_time = DateTime.MinValue.AddYears(2000).ToUniversalTime();
 
-            if(xmltag(xnode, "./gpx:ele", nsm, ref sval))
+            if (xmltag(xnode, "./gpx:ele", nsm, ref sval))
                 rmc.height = NMEACommand.getDouble(sval);
             if (xmltag(xnode, "./gpx:sat", nsm, ref sval))
                 rmc.usedSats = int.Parse(sval);
@@ -1252,8 +1616,8 @@ namespace GMView
                 XmlSerializer xser = new XmlSerializer(typeof(GPSTrack));
                 GPSTrack track = (GPSTrack)xser.Deserialize(fs);
                 string dirname = Path.GetDirectoryName(fname);
-                track.name = "Track: " + dirname.Substring(dirname.LastIndexOf(Path.DirectorySeparatorChar)+1) + Path.DirectorySeparatorChar + Path.GetFileNameWithoutExtension(fname);
-                track.way.name = "Route: " + Path.GetFileNameWithoutExtension(fname); 
+                track.name = "Track: " + dirname.Substring(dirname.LastIndexOf(Path.DirectorySeparatorChar) + 1) + Path.DirectorySeparatorChar + Path.GetFileNameWithoutExtension(fname);
+                track.way.name = "Route: " + Path.GetFileNameWithoutExtension(fname);
                 track.filename = fname;
                 track.calculateParameters();
                 track.lastSpeedPos = track.lastPos;
@@ -1269,360 +1633,6 @@ namespace GMView
             }
         }
         #endregion
-
-        const double stopMinutes = 2.0; //Number of minutes between two points that we consider as stop point
-        /// <summary>
-        /// Goes through all track points and calculate parameters of the track
-        /// </summary>
-        public void calculateParameters()
-        {
-            if (trackData.Count == 0)
-                return;
-
-            way.clear();
-
-            trav_time = endTime - startTime;
-            if (trav_time.TotalHours < 0.0)
-                trav_time = startTime - endTime;
-
-            distance = 0.0;
-            travel_max_speed = 0.0;
-            NMEA_LL first_nm = trackData.First.Value;
-            first_nm.ptype = NMEA_LL.PointType.STARTP;
-            way.add(first_nm, 0.0);
-            reducedReset();
-            LinkedListNode<NMEA_LL> linked_nm = trackData.First;
-            while(linked_nm != null && linked_nm.Value != null)
-            {
-                NMEA_LL nm = linked_nm.Value;
-                if (nm != first_nm)
-                {
-                    distance_km += CommonGeo.getDistanceByLonLat2(first_nm.lon, first_nm.lat,
-                                                            nm.lon, nm.lat);
-                    if (nm.speed > travel_max_speed)
-                        travel_max_speed = nm.speed;
-
-                    if ((nm.utc_time - first_nm.utc_time).TotalMinutes >= stopMinutes)
-                    {
-                        nm.ptype = NMEA_LL.PointType.SWP;
-                    }
-
-                    if (nm.ptype != NMEA_LL.PointType.TP)
-                    {
-                        way.add(nm, distance_km);
-                    }
-
-                    first_nm = nm;
-                }
-                reducedAdd(linked_nm);
-                linked_nm = linked_nm.Next;
-            }
-            reducedAddLast(trackData.Last);
-            travel_avg_speed = distance / trav_time.TotalHours;
-            if (mode == TrackMode.ViewSaved)
-                way.markWay(lastPos, distance_km, NMEA_LL.PointType.ENDTP);
-            textInfo.fill_all_info(this);
-        }
-
-        #region Manual track operations
-        /// <summary>
-        /// Marks last track point with the given type
-        /// </summary>
-        /// <param name="pt"></param>
-        /// <returns></returns>
-        public bool markLastPoint(NMEA_LL.PointType pt)
-        {
-            if (lastTrackPos == null || lastTrackPos.ptype != NMEA_LL.PointType.TP)
-                return false;
-            way.markWay(lastTrackPos, distance_km, NMEA_LL.PointType.MWP);
-            way.recalc_last_waypoint(mapo.geosystem);
-            textInfo.fill_all_info(this);
-            return true;
-        }
-
-        /// <summary>
-        /// Slices track into segments and fills Way (route)
-        /// </summary>
-        public void sliceTrackIntoWay()
-        {
-            if (countPoints == 0)
-                return;
-
-            Way nway = new Way();
-
-            double step = distance_km / 50;
-            if (step < 1)
-                step = 1;
-            else
-                if (step > 50)
-                    step = 50;
-
-            double dist = 0;
-            double totaldist = 0;
-
-            LinkedListNode<NMEA_LL> ppt = trackData.First;
-            LinkedListNode<NMEA_LL> oldppt = trackData.First;
-
-            nway.markWay(ppt.Value, dist, NMEA_LL.PointType.STARTP);
-            nway.recalc_last_waypoint(mapo.geosystem);
-
-            ppt = ppt.Next;
-            while (ppt != null)
-            {
-                dist += ncGeo.CommonGeo.getDistanceByLonLat2(ppt.Value.lon, ppt.Value.lat,
-                                       oldppt.Value.lon, oldppt.Value.lat);
-
-                if (dist > step)
-                {
-                    totaldist += dist;
-                    ppt.Value.ptype = NMEA_LL.PointType.AWP;
-                    nway.markWay(ppt.Value, totaldist, NMEA_LL.PointType.AWP);
-                    nway.recalc_last_waypoint(mapo.geosystem);
-                    dist = 0;
-                }
-                oldppt = ppt;
-                ppt = ppt.Next;
-            }
-            nway.markWay(trackData.Last.Value, totaldist + dist, NMEA_LL.PointType.ENDTP);
-            nway.recalc_last_waypoint(mapo.geosystem);
-
-            nway.initGLData();
-            way = nway;
-        }
-
-        /// <summary>
-        /// Updates last point to a new lon/lat coords
-        /// </summary>
-        /// <param name="newlon"></param>
-        /// <param name="newlat"></param>
-        /// <returns></returns>
-        public bool updateManualPoint(double newlon, double newlat)
-        {
-            if (lastTrackPos == null)
-                return false;
-            lastTrackPos.lon = newlon;
-            lastTrackPos.lat = newlat;
-            way.recalc_last_waypoint(mapo.geosystem);
-            updateOnZoomChangeNoLock(-1, -1);
-            return true;
-        }
-
-        /// <summary>
-        /// Deletes last point in the track (in manual edit mode)
-        /// </summary>
-        internal void delLastPoint()
-        {
-            if (trackData.Count == 0)
-                return;
-            NMEA_LL point = trackData.Last.Value;
-            trackData.Remove(point);
-            if (trackData.Count == 0)
-            {
-                lastTrackPos = lastPos = lastSpeedPos = null;
-                distance_km = 0.0;
-                travel_avg_speed = Program.opt.manual_avg_speed;
-                travel_time = TimeSpan.FromHours(distance_km / travel_avg_speed);
-                way.clear();
-            }
-            else
-            {
-                lastTrackPos = lastPos = lastSpeedPos = trackData.Last.Value;
-                Way.WayPoint wp = way.delLastFromWay(point);
-                if (wp != null)
-                {
-                    distance_km -= wp.distance_from_prev;
-                    travel_avg_speed = Program.opt.manual_avg_speed;
-                    travel_time = TimeSpan.FromHours(distance_km / travel_avg_speed);
-                }
-            }
-            updateOnZoomChangeNoLock(-1, -1);
-            textInfo.fill_all_info(this);
-        }
-
-        /// <summary>
-        /// Adds manual point in the end of the track
-        /// </summary>
-        /// <param name="nmea_ll"></param>
-        public void addManualPoint(NMEA_LL nmea_ll)
-        {
-            if (trackData.Count > 0 && lastTrackPos != null)
-            {
-                distance_km += CommonGeo.getDistanceByLonLat2(lastTrackPos.lon,
-                                                              lastTrackPos.lat,
-                                                              nmea_ll.lon, nmea_ll.lat);
-                travel_avg_speed = Program.opt.manual_avg_speed;
-                travel_time = TimeSpan.FromHours(distance_km / travel_avg_speed);
-            }
-            else
-                nmea_ll.ptype = NMEA_LL.PointType.STARTP;
-            lastTrackPos = lastPos = lastSpeedPos = nmea_ll;
-            trackData.AddLast(lastTrackPos);
-            way.add(nmea_ll, distance_km);
-            way.recalc_last_waypoint(mapo.geosystem);
-            updateOnZoomChangeNoLock(-1, -1);
-            textInfo.fill_all_info(this);
-        }
-
-        #endregion
-
-        /// <summary>
-        /// Process new data from GPS receiver. Do it in the receiver thread, not in the main one.
-        /// </summary>
-        /// <param name="nmea_ll"></param>
-        public void newGPSData(NMEA_LL nmea_ll)
-        {
-            //currently we use only RMC command, not GGA...
-            //and only valid commands are accepted
-            if (nmea_ll.type == "RMC" && nmea_ll.state == NMEACommand.Status.DataOK)
-            {
-                lock (this)
-                {
-                    lastPos = nmea_ll;
-
-                    if (lastSpeedPos == null || nmea_ll.speed > Program.opt.zero_speed)
-                        lastSpeedPos = nmea_ll;
-
-                    if (on_air)
-                    {
-                        if (!(lastTrackPos != null && (System.Math.Abs(lastTrackPos.lon - nmea_ll.lon) <= Program.opt.gps_same_pos_delta &&
-                            System.Math.Abs(lastTrackPos.lat - nmea_ll.lat) <= Program.opt.gps_same_pos_delta)))
-                        {
-                            if (lastTrackPos != null)
-                            {
-                                distance_km += CommonGeo.getDistanceByLonLat2(lastTrackPos.lon, lastTrackPos.lat,
-                                                                            nmea_ll.lon, nmea_ll.lat);
-                                trav_time = nmea_ll.utc_time - trackData.First.Value.utc_time;
-                                travel_avg_speed = distance_km / trav_time.TotalHours;
-                            }
-
-                            lastTrackPos = nmea_ll;
-                            trackData.AddLast(lastTrackPos);
-                            if (trackData.Count == 1) //our first point = it's a start
-                            {
-                                way.markWay(nmea_ll, 0.0, NMEA_LL.PointType.STARTP);
-                                way.recalc_last_waypoint(mapo.geosystem);
-                            }
-                            updateOnZoomChangeNoLock(-1, -1);
-                            textInfo.fill_all_info(this);
-                        }
-                        else
-                        {
-                            if (trackData.Count > 0)
-                            {
-                                trav_time = nmea_ll.utc_time - trackData.First.Value.utc_time;
-                                travel_avg_speed = distance_km / trav_time.TotalHours;
-                            }
-                        }
-                    }
-                    gpsinfo.fill_all_info(this);
-                }
-                if (onTrackChanged != null)
-                    onTrackChanged();
-
-                if (Program.opt.do_autosave && trackData.Count > lastSavedPoint + 20)
-                {
-                    saveGPX(Program.opt.autosavefile);
-                    lastSavedPoint = trackData.Count;
-                }
-            }
-        }
-
-
-        internal void addGPSDataInternal(NMEA_LL nmea_ll)
-        {
-            lastPos = nmea_ll;
-
-            if (lastSpeedPos == null || nmea_ll.speed > Program.opt.zero_speed)
-                lastSpeedPos = nmea_ll;
-
-//            if (on_air)
-            {
-                if (!(lastTrackPos != null && (System.Math.Abs(lastTrackPos.lon - nmea_ll.lon) <= Program.opt.gps_same_pos_delta &&
-                    System.Math.Abs(lastTrackPos.lat - nmea_ll.lat) <= Program.opt.gps_same_pos_delta)))
-                {
-                    if (lastTrackPos != null)
-                    {
-                        distance_km += CommonGeo.getDistanceByLonLat2(lastTrackPos.lon, lastTrackPos.lat,
-                                                                    nmea_ll.lon, nmea_ll.lat);
-                        trav_time = nmea_ll.utc_time - trackData.First.Value.utc_time;
-                        travel_avg_speed = distance_km / trav_time.TotalHours;
-                    }
-
-                    trackData.AddLast(nmea_ll);
-                    lastPos = lastTrackPos = nmea_ll;
-                    if (trackData.Count == 1) //our first point = it's a start
-                    {
-                        way.markWay(nmea_ll, 0.0, NMEA_LL.PointType.STARTP);
-                    }
-                }
-                else
-                {
-                    if (trackData.Count > 0)
-                    {
-                        trav_time = nmea_ll.utc_time - trackData.First.Value.utc_time;
-                        travel_avg_speed = distance_km / trav_time.TotalHours;
-                    }
-                }
-            }
-        }
-        /// <summary>
-        /// Clear all track data
-        /// </summary>
-        public void resetTrackData()
-        {
-            //lastPos = null;
-            trackData.Clear();
-            drawPoints.Clear();
-            way.clear();
-            distance_km = 0.0;
-            travel_avg_speed = Program.opt.manual_avg_speed;
-            travel_time = TimeSpan.FromHours(distance_km / travel_avg_speed);
-            textInfo.fill_all_info(this);
-        }
-
-        const int delta_inv = 10;
-
-        public void updateOnZoomChange(int old_zoom, int new_zoom)
-        {
-            lock (this)
-            {
-                updateOnZoomChangeNoLock(old_zoom, new_zoom);
-            }
-        }
-
-        /// <summary>
-        /// Calls when our zoom level has been changed. Here we recalculate all our point coordinates in
-        /// screen positions, later we use this coords for quick drawing of our track
-        /// </summary>
-        /// <param name="old_zoom"></param>
-        /// <param name="new_zoom"></param>
-        private void updateOnZoomChangeNoLock(int old_zoom, int new_zoom)
-        {
-            if(trackData.Count == 0)
-                return;
-
-            Point lastP;
-            Point curP;
-
-            drawPoints.Clear();
-
-            mapo.getXYByLonLat(trackData.First.Value.lon, trackData.First.Value.lat, out lastP);
-            drawPoints.Add(lastP);
-
-            foreach (NMEA_LL point in trackData)
-            {
-                mapo.getXYByLonLat(point.lon, point.lat, out curP);
-                if ((Math.Abs(curP.X - lastP.X) < delta_inv  && Math.Abs(curP.Y - lastP.Y) < delta_inv))
-                    continue;
-
-                drawPoints.Add(curP);
-                lastP = curP;
-            }
-            mapo.getXYByLonLat(trackData.Last.Value.lon, trackData.Last.Value.lat, out lastP);
-            drawPoints.Add(lastP);
-
-            way.updateXY(mapo.geosystem);
-        }
 
         #region ISprite Members
 

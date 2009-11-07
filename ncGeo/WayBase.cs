@@ -22,12 +22,12 @@ namespace ncGeo
             public int num = 1;
             public int x, y;
             public NMEA_LL point;
-            public NMEA_LL.PointType ptype;
-            public double distance_from_prev;
+            public NMEA_LL.PointType ptype = NMEA_LL.PointType.TP;
+            public double distance_from_prev = 0;
             public TimeSpan time_from_prev;
-            public double distance_to_next;
+            public double distance_to_next = 0;
             public TimeSpan time_to_next;
-            public double distance_from_start;
+            public double distance_from_start = 0;
             public TimeSpan time_from_start;
 
             public string typeString

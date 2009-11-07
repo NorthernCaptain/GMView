@@ -13,6 +13,16 @@ namespace ncUtils
     public class HistoryList
     {
         /// <summary>
+        /// Delegate for events on changing history items
+        /// </summary>
+        /// <param name="hist"></param>
+        public delegate void historyChangedDelegate(HistoryList hist);
+
+        /// <summary>
+        /// Event fires when history was changed
+        /// </summary>
+        public event historyChangedDelegate historyChanged;
+        /// <summary>
         /// Name of this history list
         /// </summary>
         protected string name;
@@ -84,6 +94,8 @@ namespace ncUtils
                     HistoryItem hi = new HistoryItem(reader.GetInt32(0), reader.GetString(1));
                     itemList.Add(hi);
                 }
+                if (historyChanged != null)
+                    historyChanged(this);
             }
             catch (System.Exception e)
             {
@@ -102,16 +114,19 @@ namespace ncUtils
         /// <param name="valueS"></param>
         public void add(string valueS)
         {
+            if (valueS.Trim().Length == 0)
+                return;
             foreach (HistoryItem hi in itemList)
             {
                 if (hi.value.Equals(valueS))
                 {
                     delete(hi);
-                    insert(valueS);
-                    return;
+                    break;
                 }
             }
             insert(valueS);
+            if (historyChanged != null)
+                historyChanged(this);
         }
 
         /// <summary>
@@ -127,14 +142,12 @@ namespace ncUtils
             try
             {
                 dbo = new DBObj(@"insert into history_items(typename, value) values(@TYPENAME,@VALUE)");
-                dbo.addStringPar("@TYPENAME", name);
-                dbo.addStringPar("@VALUE", valueS);
+                dbo.addStringPar("@TYPENAME", name).addStringPar("@VALUE", valueS);
                 dbo.cmd.ExecuteNonQuery();
 
                 dbo.commandText = @"select seq from sqlite_sequence where name=@NAME";
                 dbo.addStringPar("@NAME", "history_items");
-                long lid = (long)dbo.cmd.ExecuteScalar();
-                hi.id = (int)lid;
+                hi.id = dbo.executeIntValue();
             }
             catch (System.Exception e)
             {
@@ -154,6 +167,24 @@ namespace ncUtils
         protected void delete(HistoryItem hi)
         {
             itemList.Remove(hi);
+            if (hi.id <= 0)
+                return;
+            DBObj dbo = null;
+            try
+            {
+                dbo = new DBObj("delete from history_items where id = @ID");
+                dbo.addIntPar("@ID", hi.id);
+                dbo.cmd.ExecuteNonQuery();
+            }
+            catch (System.Exception e)
+            {
+            	
+            }
+            finally
+            {
+                if (dbo != null)
+                    dbo.Dispose();
+            }
         }
     }
 }
