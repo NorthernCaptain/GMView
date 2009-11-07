@@ -16,6 +16,8 @@ namespace ncUtils
         private string conString = @"Data Source=knowhere.sq3;New=False;Version=3";
         private static DBConnPool instance = null;
 
+        private List<SQLiteConnection> allConnections = new List<SQLiteConnection>(50);
+
         /// <summary>
         /// Gets a single instance of DBConnPool
         /// </summary>
@@ -101,6 +103,7 @@ namespace ncUtils
             {
                 SQLiteConnection con = new SQLiteConnection(conString);
                 con.Open();
+                allConnections.Add(con);
                 return con;
             }
             catch (System.Exception e)
@@ -109,6 +112,17 @@ namespace ncUtils
             }
         }
 
+        /// <summary>
+        /// Close all opened connections
+        /// </summary>
+        public void closeAll()
+        {
+            foreach (SQLiteConnection conn in allConnections)
+            {
+                conn.Close();
+                conn.Dispose();
+            }
+        }
         /// <summary>
         /// Check and initialized database schema if we don't have one
         /// Return true if schema exists
@@ -144,8 +158,8 @@ namespace ncUtils
                             stmt = stmt.Trim();
                             if (stmt.Length == 0)
                                 continue;
-                            if (stmt.EndsWith(";"))
-                                stmt.Remove(stmt.Length - 1);
+                            if (stmt[stmt.Length -1] == ';')
+                                stmt = stmt.Remove(stmt.Length - 1, 1);
 
                             try
                             {

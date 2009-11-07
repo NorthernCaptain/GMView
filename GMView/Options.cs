@@ -41,6 +41,7 @@ namespace GMView
             geoSystem[(int)MapTileType.YandexTraffic] = new YandexGeo();
             geoSystem[(int)MapTileType.GooTraffic] = new GoogleGeo();
             Load();
+            Program.onShutdown += ncUtils.DBConnPool.singleton.closeAll;
             ncUtils.DBConnPool.singleton.dbName = getDBName();
         }
 

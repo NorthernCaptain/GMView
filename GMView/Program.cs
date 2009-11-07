@@ -18,7 +18,12 @@ namespace GMView
             opt.onChanged +=new Options.OnChangedDelegate(OptionsOnChanged);
             opt.command_line_args = args;
             frm = new GMViewForm();
+            Application.ApplicationExit += new EventHandler(Application_ApplicationExit);
             Application.Run(frm);
+        }
+
+        static void Application_ApplicationExit(object sender, EventArgs e)
+        {
             if (onShutdown != null)
                 onShutdown();
         }

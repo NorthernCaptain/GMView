@@ -909,7 +909,7 @@ namespace GMView
         }
 
         /// <summary>
-        /// Start recording of the track or not
+        /// Turn on or off recording of the track
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -918,6 +918,7 @@ namespace GMView
             bool newTrack = true;
             if (!gtrack.on_air)
             {
+                // Continue previous track?
                 if (gtrack.countPoints > 0)
                 {
                     if (MessageBox.Show("Continue recording current track?\n\nYes - will continue current track\nNo - clear previous track and start new one", "Record track",
@@ -930,9 +931,10 @@ namespace GMView
 
                 if (newTrack)
                 {
+                    //Ask start and dest location name and form filename
                     Forms.TrackDestFrom destForm = new Forms.TrackDestFrom();
                     destForm.Owner = this;
-                    destForm.StartPosition = this.StartPosition;
+                    destForm.StartPosition = FormStartPosition.CenterScreen;
                     if (destForm.ShowDialog() == DialogResult.OK)
                     {
                         opt.autosavefile = destForm.trackName;

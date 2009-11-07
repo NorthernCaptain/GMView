@@ -38,25 +38,23 @@ namespace GMView.Forms
         private void startLocCB_TextUpdate(object sender, EventArgs e)
         {
             startLocCB.Text = startLocCB.SelectedItem.ToString();
-            historyStartLoc.add(startLocCB.Text);
             destLocCB.Focus();
         }
 
         private void startLocCB_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
+            if (e.KeyCode == Keys.Enter && startLocCB.Text.Length > 0)
             {
-                historyStartLoc.add(startLocCB.Text);
                 destLocCB.Focus();
             }
         }
 
         private void destLocCB_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
+            if (e.KeyCode == Keys.Enter && destLocCB.Text.Length > 0)
             {
-                historyStartLoc.add(destLocCB.Text);
                 makeName();
+                historyStartLoc.add(destLocCB.Text);
                 this.DialogResult = DialogResult.OK;
             }
         }
@@ -102,6 +100,34 @@ namespace GMView.Forms
             {
                 return trackNameS;
             }
+        }
+
+        private void okBut_Click(object sender, EventArgs e)
+        {
+            if (startLocCB.Text.Length == 0)
+            {
+                startLocCB.Focus();
+                return;
+            }
+            if (destLocCB.Text.Length == 0)
+            {
+                destLocCB.Focus();
+                return;
+            }
+            makeName();
+            DialogResult = DialogResult.OK;
+        }
+
+        private void startLocCB_Leave(object sender, EventArgs e)
+        {
+            historyStartLoc.add(startLocCB.Text);
+            destLocCB.Focus();
+        }
+
+        private void destLocCB_Leave(object sender, EventArgs e)
+        {
+            historyStartLoc.add(destLocCB.Text);
+            okBut.Focus();
         }
     }
 }
