@@ -65,3 +65,51 @@ TODO list:
 - Bug in drawing tracks. If point of the track goes off screen the we could see garbage lines.
   And lines do not see shifted center, as the result track could disappear on the part of the
   screen. [DONE 03.11.09]
+  
+- Starting list of POI type for encode into DB:
+Airport, Aerodrome, Airdrome
+Ambulance
+Attraction
+Bank
+Bicycle, Bicycling
+Border Crossing, Customs
+Bus Station
+Car Rental Service
+Car Repair
+Castle
+Church, Temple
+Cinema, Movie Theatre, Movie House
+College, University
+Consulate, Embassy
+Disneyland
+Drug Store
+Exhibition Center, Show
+Factory, Plant, Manufacturer
+Fire Station, Fire Department, Fire Engine House
+Gas Station, Filling Station, Gasoline Station, Petrol Station
+Golf Club
+Government
+Hospital
+Hotel, Hostel, Inn, Motel
+Library
+McDonalds, Fast Food
+Memorial
+Military, Range, Ground, Ordnance Yard
+Museum
+Pagoda
+Park
+Pharmacy
+Picnic Ground
+Police Station
+Pool, Swimming Pool
+Port, Sea Port
+Railway Station
+Restaurant
+School
+Shop, Store
+Stadium
+Tent
+Theater
+Walk, Walking
+Zoo
+More to be found...

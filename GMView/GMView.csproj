@@ -13,7 +13,7 @@
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <StartupObject>GMView.Program</StartupObject>
-    <ApplicationIcon>Resources\knowhere_ico.ico</ApplicationIcon>
+    <ApplicationIcon>Satellite.ico</ApplicationIcon>
     <ManifestCertificateThumbprint>936BFDF6C03C86917023A9810A7D2487869B106C</ManifestCertificateThumbprint>
     <ManifestKeyFile>GMView_TemporaryKey.pfx</ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
@@ -331,6 +331,7 @@
   <ItemGroup>
     <Content Include="gmview_icon.ICO" />
     <Content Include="icon_main.ico" />
+    <Content Include="Satellite.ico" />
     <None Include="Resources\helpKeys.htm" />
     <None Include="Resources\dot_small_auto.png" />
     <None Include="Resources\knowhere_ico.ico" />
