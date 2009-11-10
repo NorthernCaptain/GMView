@@ -67,49 +67,95 @@ TODO list:
   screen. [DONE 03.11.09]
   
 - Starting list of POI type for encode into DB:
-Airport, Aerodrome, Airdrome
+Airport
+Aerodrome
+Airdrome
+
 Ambulance
 Attraction
 Bank
-Bicycle, Bicycling
-Border Crossing, Customs
+Bicycle
+Bicycling
+
+Border Crossing
+Customs
+
 Bus Station
 Car Rental Service
 Car Repair
 Castle
-Church, Temple
-Cinema, Movie Theatre, Movie House
-College, University
-Consulate, Embassy
+Church
+Temple
+
+Cinema
+Movie Theatre
+Movie House
+
+College
+University
+
+Consulate
+Embassy
+
 Disneyland
 Drug Store
-Exhibition Center, Show
-Factory, Plant, Manufacturer
-Fire Station, Fire Department, Fire Engine House
-Gas Station, Filling Station, Gasoline Station, Petrol Station
+Exhibition Center
+Show
+
+Factory
+Plant
+Manufacturer
+
+Fire Station
+Fire Department
+Fire Engine House
+
+Gas Station
+Filling Station
+Gasoline Station
+Petrol Station
+
 Golf Club
 Government
 Hospital
-Hotel, Hostel, Inn, Motel
+Hotel
+Hostel
+Inn
+Motel
+Camping
+
 Library
-McDonalds, Fast Food
+McDonalds
+Fast Food
+
 Memorial
-Military, Range, Ground, Ordnance Yard
+Military
+Range
+Ground
+Ordnance Yard
+
 Museum
 Pagoda
 Park
 Pharmacy
 Picnic Ground
 Police Station
-Pool, Swimming Pool
-Port, Sea Port
+Pool
+Swimming Pool
+
+Port
+Sea Port
 Railway Station
 Restaurant
 School
-Shop, Store
+Shop
+Store
+
 Stadium
 Tent
-Theater
-Walk, Walking
+Theatre
+Walk
+Walking
+
 Zoo
 More to be found...
