@@ -87,6 +87,9 @@ namespace ncUtils
         /// <param name="con"></param>
         public void releaseCon(DbConnection con)
         {
+            if (con == null)
+                return;
+
             lock (conPool)
             {
                 conPool.AddLast(con as SQLiteConnection);

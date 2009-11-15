@@ -19,13 +19,13 @@ insert into poi_type (id, name, description, icon, icon_cx, icon_cy)
             values(0, 'group', 'type for groups of POIs', 'group.png', 15, 34);
 ---
 insert into poi_type (id, name, description, icon, icon_cx, icon_cy) 
-            values(1, 'unknown', 'unknown POI type', 'unknown.png', 15, 34);
+            values(1, 'unknown', 'Unknown POI type', 'unknown.png', 15, 34);
 ---
 insert into poi_type (name, description, icon, icon_cx, icon_cy) values('airport', 'Airport', 'airport.png', 15, 34);
 ---
-insert into poi_type (name, description, icon, icon_cx, icon_cy) values('aerodrome', 'Aerodrome', 'airport.png', 15, 34);
+insert into poi_type (name, description, icon, icon_cx, icon_cy) values('aerodrome', 'Aerodrome', 'airplane-sport.png', 15, 34);
 ---
-insert into poi_type (name, description, icon, icon_cx, icon_cy) values('airdrome', 'Airdrome','airport.png', 15, 34);
+insert into poi_type (name, description, icon, icon_cx, icon_cy) values('airdrome', 'Airdrome','airplane-sport.png', 15, 34);
 ---
 ---
 insert into poi_type (name, description, icon, icon_cx, icon_cy) values('ambulance', 'Ambulance', 'firstaid.png', 15, 34);
@@ -75,9 +75,9 @@ insert into poi_type (name, description, icon, icon_cx, icon_cy) values('college
 insert into poi_type (name, description, icon, icon_cx, icon_cy) values('university', 'University', 'university.png', 15, 34);
 ---
 ---
-insert into poi_type (name, description, icon, icon_cx, icon_cy) values('consulate', 'Consulate', 'Consulate.png', 15, 34);
+insert into poi_type (name, description, icon, icon_cx, icon_cy) values('consulate', 'Consulate', 'country.png', 15, 34);
 ---
-insert into poi_type (name, description, icon, icon_cx, icon_cy) values('embassy', 'Embassy', 'Embassy.png', 15, 34);
+insert into poi_type (name, description, icon, icon_cx, icon_cy) values('embassy', 'Embassy', 'country.png', 15, 34);
 ---
 ---
 insert into poi_type (name, description, icon, icon_cx, icon_cy) values('disneyland', 'Disneyland', 'party.png', 15, 34);
@@ -87,9 +87,9 @@ insert into poi_type (name, description, icon, icon_cx, icon_cy) values('drug st
 insert into poi_type (name, description, icon, icon_cx, icon_cy) values('pharmacy', 'Pharmacy', 'firstaid.png', 15, 34);
 ---
 ---
-insert into poi_type (name, description, icon, icon_cx, icon_cy) values('exhibition center', 'Exhibition Center', 'Exhibition Center.png', 15, 34);
+insert into poi_type (name, description, icon, icon_cx, icon_cy) values('exhibition center', 'Exhibition Center', 'music-live.png', 15, 34);
 ---
-insert into poi_type (name, description, icon, icon_cx, icon_cy) values('show', 'Show', 'Show.png', 15, 34);
+insert into poi_type (name, description, icon, icon_cx, icon_cy) values('show', 'Show', 'music-live.png', 15, 34);
 ---
 ---
 insert into poi_type (name, description, icon, icon_cx, icon_cy) values('factory', 'Factory', 'factory.png', 15, 34);
@@ -115,7 +115,7 @@ insert into poi_type (name, description, icon, icon_cx, icon_cy) values('gasolin
 insert into poi_type (name, description, icon, icon_cx, icon_cy) values('petrol station', 'Petrol Station', 'gazstation.png', 15, 34);
 ---
 ---
-insert into poi_type (name, description, icon, icon_cx, icon_cy) values('golf club', 'Golf Club', 'Golf Club.png', 15, 34);
+insert into poi_type (name, description, icon, icon_cx, icon_cy) values('golf club', 'Golf Club', 'golf.png', 15, 34);
 ---
 insert into poi_type (name, description, icon, icon_cx, icon_cy) values('government', 'Government', 'administration.png', 15, 34);
 ---
@@ -140,18 +140,18 @@ insert into poi_type (name, description, icon, icon_cx, icon_cy) values('mcdonal
 ---
 insert into poi_type (name, description, icon, icon_cx, icon_cy) values('fast food', 'Fast Food', 'fastfood.png', 15, 34);
 ---
-insert into poi_type (name, description, icon, icon_cx, icon_cy) values('cafe', 'Cafe', 'cafe.png', 15, 34);
+insert into poi_type (name, description, icon, icon_cx, icon_cy) values('cafe', 'Cafe', 'coffee.png', 15, 34);
 ---
 insert into poi_type (name, description, icon, icon_cx, icon_cy) values('bar', 'Bar', 'bar.png', 15, 34);
 ---
 insert into poi_type (name, description, icon, icon_cx, icon_cy) values('restaurant', 'Restaurant', 'restaurant.png', 15, 34);
 ---
 ---
-insert into poi_type (name, description, icon, icon_cx, icon_cy) values('memorial', 'Memorial', 'Memorial.png', 15, 34);
+insert into poi_type (name, description, icon, icon_cx, icon_cy) values('memorial', 'Memorial', 'modernmonument.png', 15, 34);
 ---
-insert into poi_type (name, description, icon, icon_cx, icon_cy) values('military', 'Military', 'Military.png', 15, 34);
+insert into poi_type (name, description, icon, icon_cx, icon_cy) values('military', 'Military', 'museum-war.png', 15, 34);
 ---
-insert into poi_type (name, description, icon, icon_cx, icon_cy) values('range', 'Range', 'Range.png', 15, 34);
+---insert into poi_type (name, description, icon, icon_cx, icon_cy) values('range', 'Range', 'Range.png', 15, 34);
 ---
 insert into poi_type (name, description, icon, icon_cx, icon_cy) values('ground', 'Ground', 'agriculture.png', 15, 34);
 ---
@@ -159,16 +159,16 @@ insert into poi_type (name, description, icon, icon_cx, icon_cy) values('bridge'
 ---
 insert into poi_type (name, description, icon, icon_cx, icon_cy) values('building', 'Building', 'bigcity.png', 15, 34);
 ---
-insert into poi_type (name, description, icon, icon_cx, icon_cy) values('ordnance yard', 'Ordnance Yard', 'Ordnance Yard.png', 15, 34);
+---insert into poi_type (name, description, icon, icon_cx, icon_cy) values('ordnance yard', 'Ordnance Yard', 'Ordnance Yard.png', 15, 34);
 ---
 insert into poi_type (name, description, icon, icon_cx, icon_cy) values('mountains', 'Mountains', 'cyclingmountain1.png', 15, 34);
 ---
 ---
 insert into poi_type (name, description, icon, icon_cx, icon_cy) values('museum', 'Museum', 'museum-historical.png', 15, 34);
 ---
-insert into poi_type (name, description, icon, icon_cx, icon_cy) values('pagoda', 'pagoda', 'park.png', 15, 34);
+insert into poi_type (name, description, icon, icon_cx, icon_cy) values('pagoda', 'Pagoda', 'park.png', 15, 34);
 ---
-insert into poi_type (name, description, icon, icon_cx, icon_cy) values('park', 'park', 'park.png', 15, 34);
+insert into poi_type (name, description, icon, icon_cx, icon_cy) values('park', 'Park', 'park.png', 15, 34);
 ---
 insert into poi_type (name, description, icon, icon_cx, icon_cy) values('picnic ground', 'Picnic Ground', 'picnic.png', 15, 34);
 ---
@@ -192,7 +192,7 @@ insert into poi_type (name, description, icon, icon_cx, icon_cy) values('shop', 
 insert into poi_type (name, description, icon, icon_cx, icon_cy) values('store', 'Store', 'supermarket.png', 15, 34);
 ---
 ---
-insert into poi_type (name, description, icon, icon_cx, icon_cy) values('stadium', 'Stadium', 'Stadium.png', 15, 34);
+insert into poi_type (name, description, icon, icon_cx, icon_cy) values('stadium', 'Stadium', 'stadium.png', 15, 34);
 ---
 insert into poi_type (name, description, icon, icon_cx, icon_cy) values('tent', 'Tent', 'tent.png', 15, 34);
 ---
@@ -215,13 +215,15 @@ insert into poi_type (name, description, icon, icon_cx, icon_cy) values('wc', 'W
 ---
 insert into poi_type (name, description, icon, icon_cx, icon_cy) values('skiing', 'Skiing', 'skiing.png', 15, 34);
 ---
-insert into poi_type (name, description, icon, icon_cx, icon_cy) values('Pizza', 'pizza', 'pizza.png', 15, 34);
+insert into poi_type (name, description, icon, icon_cx, icon_cy) values('Pizza', 'Pizza', 'pizza.png', 15, 34);
 ---
 insert into poi_type (name, description, icon, icon_cx, icon_cy) values('subway', 'Subway', 'subway.png', 15, 34);
 ---
 insert into poi_type (name, description, icon, icon_cx, icon_cy) values('metro', 'Metro station', 'subway.png', 15, 34);
 ---
 insert into poi_type (name, description, icon, icon_cx, icon_cy) values('phone', 'Telephone', 'telephone.png', 15, 34);
+---
+insert into poi_type (name, description, icon, icon_cx, icon_cy) values('home', 'Home', 'home.png', 15, 34);
 ---
             
 ---   POI and their groups

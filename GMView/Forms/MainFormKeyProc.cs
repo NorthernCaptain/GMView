@@ -65,8 +65,16 @@ namespace GMView
             onKeyDownDict.Add(Keys.N, new onKeyEvent(markWaypoint_Key));
 
             onKeyDownDict.Add(Keys.M, new onKeyEvent(nightViewToggle_Key));
+            onKeyDownDict.Add(Keys.C, new onKeyEvent(quickPOI_Key));
         }
 
+
+        void quickPOI_Key(object sender, KeyEventArgs e)
+        {
+            Forms.QuickPOIForm qpoi = new Forms.QuickPOIForm();
+            qpoi.Owner = this;
+            qpoi.ShowDialog();
+        }
 
         void nightViewToggle_Key(object sender, KeyEventArgs e)
         {

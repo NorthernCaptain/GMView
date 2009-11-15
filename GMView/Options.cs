@@ -17,12 +17,14 @@ namespace GMView
 
         public static readonly string progname = "GMView";
         private static string progdataDir;
+        private static string startupDir;
 
         public BaseGeo[] geoSystem = new BaseGeo[(int)MapTileType.MaxValue];
         static Options()
         {
             progdataDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                     progname);
+            startupDir = Environment.CurrentDirectory;
         }
 
         public Options()
@@ -43,6 +45,17 @@ namespace GMView
             Load();
             Program.onShutdown += ncUtils.DBConnPool.singleton.closeAll;
             ncUtils.DBConnPool.singleton.dbName = getDBName();
+        }
+
+        /// <summary>
+        /// Return full path to the current iconset
+        /// </summary>
+        public string iconSetPath
+        {
+            get
+            {
+                return Path.Combine(Path.Combine(startupDir, "data"), "icons-google");
+            }
         }
 
         /// <summary>
