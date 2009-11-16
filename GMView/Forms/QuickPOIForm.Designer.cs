@@ -38,9 +38,10 @@
             this.okBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.okBut.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.okBut.Image = global::GMView.Properties.Resources.lamp_on;
-            this.okBut.Location = new System.Drawing.Point(124, 462);
+            this.okBut.Location = new System.Drawing.Point(62, 390);
+            this.okBut.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.okBut.Name = "okBut";
-            this.okBut.Size = new System.Drawing.Size(75, 33);
+            this.okBut.Size = new System.Drawing.Size(70, 27);
             this.okBut.TabIndex = 1;
             this.okBut.Text = "OK";
             this.okBut.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -52,9 +53,10 @@
             this.cancelBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cancelBut.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cancelBut.Image = global::GMView.Properties.Resources.lamp_off;
-            this.cancelBut.Location = new System.Drawing.Point(205, 462);
+            this.cancelBut.Location = new System.Drawing.Point(136, 390);
+            this.cancelBut.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cancelBut.Name = "cancelBut";
-            this.cancelBut.Size = new System.Drawing.Size(75, 33);
+            this.cancelBut.Size = new System.Drawing.Size(74, 27);
             this.cancelBut.TabIndex = 2;
             this.cancelBut.Text = "Cancel";
             this.cancelBut.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -69,22 +71,24 @@
             this.poiTypeList.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.poiTypeList.FormattingEnabled = true;
             this.poiTypeList.ItemHeight = 40;
-            this.poiTypeList.Location = new System.Drawing.Point(12, 12);
+            this.poiTypeList.Location = new System.Drawing.Point(9, 10);
+            this.poiTypeList.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.poiTypeList.Name = "poiTypeList";
-            this.poiTypeList.Size = new System.Drawing.Size(268, 444);
+            this.poiTypeList.Size = new System.Drawing.Size(202, 364);
             this.poiTypeList.TabIndex = 0;
             // 
             // QuickPOIForm
             // 
             this.AcceptButton = this.okBut;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelBut;
-            this.ClientSize = new System.Drawing.Size(292, 507);
+            this.ClientSize = new System.Drawing.Size(219, 427);
             this.Controls.Add(this.cancelBut);
             this.Controls.Add(this.okBut);
             this.Controls.Add(this.poiTypeList);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "QuickPOIForm";
