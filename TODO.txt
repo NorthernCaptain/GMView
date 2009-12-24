@@ -32,11 +32,13 @@ TODO list:
 - Save track redesign. When we hit Record track, display dialog with From and Destination 
   text fields. Create and auto save this track into file 'From-Destination-YY-MM-DD.gpõ' into
   tracks directory.
-  Think about continuing of autosaved track if we crashed and restarted.
+  Think about continuing of autosaved track if we crashed and restarted. [PARTLY DONE]
   
 - Load track dialog redesign. Merge file choosing dialog with track color assign dialog and add 
   new tab about track loading options. Options include - loading POI or not, merge multiple tracks
   if they are in the file and more.
+  As alternative way - dialog that display only files in directory set in setup. Display additional 
+  information + a key to open standard file choosing dialog.
   
 - Points of interest (bookmarks). Complete refactoring and redesing.
   * Add more fields to the POI: POI type, short name, descriprion, comments, tags, group, show_in_menu
@@ -66,6 +68,16 @@ TODO list:
   And lines do not see shifted center, as the result track could disappear on the part of the
   screen. [DONE 03.11.09]
   
+- Download mode: downloading tiles along the given path + some range in km around the track.
+
+- Save/load track in PLT (OziExplorer) format.
+
+- Map generation for OziExplorer. Select region of the map, display result picture size (what is the max size?).
+  Generate one large image with selected rectangle and zoom level + generate calibration map (ozi .map file)
+  for this image with embeded POI (checkbox for that).
+
+- Mode for downloading terrain maps with street maps on top of it. New layer for streets.
+
 - Starting list of POI type for encode into DB:
 Airport
 Aerodrome
