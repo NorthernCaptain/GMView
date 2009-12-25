@@ -17,7 +17,7 @@ TODO list:
     * Last WP
     * Whole track
   
-- Add altitute to the GPS dashboard.
+- Add altitute to the GPS dashboard. [DONE 25.12.09]
 
 - Follow track mode. Add estimated time calculation to the nearest point and to the finish point.
   Take average speed from the recording track. [DONE 02.11.09]

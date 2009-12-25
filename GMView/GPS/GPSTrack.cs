@@ -154,6 +154,7 @@ namespace GMView
             public string curLon = "";
             public string curLat = "";
             public string curDir = "";
+            public string curAlt = "";
 
             public string travelTime = "";
             public string travelDistance = "";
@@ -178,6 +179,7 @@ namespace GMView
                 curLat = ncUtils.Glob.latString(pos.lat);
                 curLon = ncUtils.Glob.lonString(pos.lon);
                 curDir = ncUtils.Glob.courseString(pos.dir_angle);
+                curAlt = pos.height.ToString("F1");
 
                 travelDistance = (gtrack.distance / Program.opt.km_or_miles).ToString("F2");
                 TimeSpan tt = pos.utc_time - gtrack.startTime.ToUniversalTime();

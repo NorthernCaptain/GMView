@@ -36,7 +36,7 @@ namespace GMView
             geoSystem[(int)MapTileType.SatStreet] = new GoogleGeo();
             geoSystem[(int)MapTileType.OSMMapnik] = new GoogleGeo();
             geoSystem[(int)MapTileType.OSMRenderer] = new GoogleGeo();
-            geoSystem[(int)MapTileType.TerMap] = new YandexGeo();
+            geoSystem[(int)MapTileType.TerMap] = new GoogleGeo();
             geoSystem[(int)MapTileType.YandexMap] = new YandexGeo();
             geoSystem[(int)MapTileType.YandexSat] = new YandexGeo();
             geoSystem[(int)MapTileType.YandexSatSteet] = new YandexGeo();

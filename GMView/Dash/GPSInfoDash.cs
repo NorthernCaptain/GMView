@@ -154,9 +154,10 @@ namespace GMView
 
                     GML.device.color(textcolor);
 
-                    fnt.drawright(info.curLat, ix + 134, iy - 175, 0);
+                    fnt.drawright(info.curLat, ix + 134, iy - 174, 0);
                     fnt.drawright(info.curLon, ix + 134, iy - 192, 0);
-                    fnt.drawright(info.curDir, ix + 258, iy - 175, 0);
+                    fnt.drawright(info.curDir, ix + 258, iy - 174, 0);
+                    fnt.drawright(info.curAlt, ix + 258, iy - 192, 0);
                     fnt.drawright(info.travelDistance, ix + 258, iy - 231, 0);
                     fnt.drawright(info.travelTime, ix + 134, iy - 231, 0);
 
