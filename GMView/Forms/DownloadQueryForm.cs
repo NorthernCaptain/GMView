@@ -13,12 +13,15 @@ namespace GMView
     {
         private MapObject mapo;
         private ImgCollector.LoadTask loadqueue;
+        private IGPSTrack track = null;
+        private bool force = false;
 
         public DownloadQueryForm(MapObject imapo)
         {
             mapo = imapo;
             loadqueue = new ImgCollector.LoadTask(mapo);
             InitializeComponent();
+            nearbyNT.Value = (mapo.size_nw + 3) / 2;
         }
 
         private void cancelBut_Click(object sender, EventArgs e)
@@ -26,12 +29,61 @@ namespace GMView
             this.Dispose();
         }
 
+
+        /// <summary>
+        /// Init square area for downloading tiles in background
+        /// </summary>
+        /// <param name="lon1"></param>
+        /// <param name="lat1"></param>
+        /// <param name="lon2"></param>
+        /// <param name="lat2"></param>
         public void init(double lon1, double lat1, double lon2, double lat2)
         {
+            track = null;
+            followTrackCB.Checked = false;
+            followTrackCB.Enabled = false;
+            nearbyNT.Enabled = false;
+
             fromLonNT.Value = (decimal)lon1;
             fromLatNT.Value = (decimal)lat1;
             toLonNT.Value = (decimal)lon2;
             toLatNT.Value = (decimal)lat2;
+
+            int zlvl = Program.opt.cur_zoom_lvl + 1;
+            if (zlvl >= Program.opt.max_zoom_lvl)
+                return;
+
+            common_init();
+        }
+
+        /// <summary>
+        /// Initializes download dialog for downloading along the path from the given track
+        /// </summary>
+        /// <param name="itrack"></param>
+        public void init(IGPSTrack itrack)
+        {
+            track = itrack;
+            followTrackCB.Checked = true;
+
+            fromLonNT.Enabled = false;
+            fromLatNT.Enabled = false;
+            toLatNT.Enabled = false;
+            toLonNT.Enabled = false;
+
+            modeLbl.Text = track.ToString();
+
+            int zlvl = Program.opt.cur_zoom_lvl + 1;
+            if (zlvl >= Program.opt.max_zoom_lvl)
+                return;
+
+            common_init();
+        }
+
+        /// <summary>
+        /// Common initialization routine
+        /// </summary>
+        private void common_init()
+        {
             int zlvl = Program.opt.cur_zoom_lvl + 1;
             if (zlvl >= Program.opt.max_zoom_lvl)
                 return;
@@ -39,7 +91,7 @@ namespace GMView
             if (zlvl < 5)
                 zlvl = 5;
 
-            for (int z = 5; z <= Program.opt.max_zoom_lvl; z++)
+            for (int z = 6; z <= Program.opt.max_zoom_lvl; z++)
                 zoomCheckList.SetItemChecked(Program.opt.max_zoom_lvl - z, z >= zlvl);
 
             switch (Program.opt.mapType)
@@ -57,6 +109,12 @@ namespace GMView
                 case MapTileType.TerMap:
                     needTerrainCb.Checked = true;
                     break;
+                case MapTileType.YandexMap:
+                    needYamapCB.Checked = true;
+                    break;
+                case MapTileType.OSMMapnik:
+                    needOSMCB.Checked = true;
+                    break;
                 default:
                     break;
             }
@@ -64,6 +122,9 @@ namespace GMView
             recalcParams();
         }
 
+        /// <summary>
+        /// Recalculate tiles that we need to download according to the paramaters set in dialog
+        /// </summary>
         private void recalcParams()
         {
             double lon1, lat1, lon2, lat2;
@@ -77,51 +138,42 @@ namespace GMView
 
             loadqueue.tiles.Clear();
 
-            BaseGeo geo = Program.opt.getGeoSystem();
+            List<ncGeo.MapTileType> checkedTypes = new List<ncGeo.MapTileType>();
+
+            if (needMapCb.Checked)
+                checkedTypes.Add(ncGeo.MapTileType.MapOnly);
+            if (needStreetCb.Checked)
+                checkedTypes.Add(ncGeo.MapTileType.SatStreet);
+            if (needSatCb.Checked)
+                checkedTypes.Add(ncGeo.MapTileType.SatMap);
+            if (needTerrainCb.Checked)
+                checkedTypes.Add(ncGeo.MapTileType.TerMap);
+            if (needYamapCB.Checked)
+                checkedTypes.Add(ncGeo.MapTileType.YandexMap);
+            if (needOSMCB.Checked)
+                checkedTypes.Add(ncGeo.MapTileType.OSMMapnik);
+
+            force = forceDownloadCB.Checked;
+
             foreach (int zoom_idx in zoomCheckList.CheckedIndices)
             {
                 int zlvl = Program.opt.max_zoom_lvl - zoom_idx;
-                Point nxny1, nxny2;
 
-                geo.getNXNYByLonLat(lon1, lat1, zlvl, out nxny1);
-                geo.getNXNYByLonLat(lon2, lat2, zlvl, out nxny2);
-
-                if ((nxny2.X - nxny1.X) * (nxny2.Y - nxny1.Y) > 40000)
+                if (loadqueue.tiles.Count > 50000)
                 {
                     zoomCheckList.SetItemChecked(zoom_idx, false);
                     was_limited = true;
                     continue;
                 }
 
-                if (needMapCb.Checked)
+                foreach(ncGeo.MapTileType mtype in checkedTypes)
                 {
-                    BaseGeo lgeo = Program.opt.getGeoSystem(MapTileType.MapOnly);
-                    lgeo.getNXNYByLonLat(lon1, lat1, zlvl, out nxny1);
-                    lgeo.getNXNYByLonLat(lon2, lat2, zlvl, out nxny2);
-                    fillOneLevel(nxny1, nxny2, zlvl, MapTileType.MapOnly);
+                    if (track != null)
+                        fillNearByTrackOnOneLevel(track, mtype, zlvl);
+                    else
+                        fillSquareOnOneLevel(lon1, lat1, lon2, lat2, mtype, zlvl);
                 }
-                if (needStreetCb.Checked)
-                {
-                    BaseGeo lgeo = Program.opt.getGeoSystem(MapTileType.SatStreet);
-                    lgeo.getNXNYByLonLat(lon1, lat1, zlvl, out nxny1);
-                    lgeo.getNXNYByLonLat(lon2, lat2, zlvl, out nxny2);
-                    fillOneLevel(nxny1, nxny2, zlvl, MapTileType.SatStreet);
-                    needSatCb.Checked = true;
-                }
-                if (needSatCb.Checked)
-                {
-                    BaseGeo lgeo = Program.opt.getGeoSystem(MapTileType.SatMap);
-                    lgeo.getNXNYByLonLat(lon1, lat1, zlvl, out nxny1);
-                    lgeo.getNXNYByLonLat(lon2, lat2, zlvl, out nxny2);
-                    fillOneLevel(nxny1, nxny2, zlvl, MapTileType.SatMap);
-                }
-                if (needTerrainCb.Checked)
-                {
-                    BaseGeo lgeo = Program.opt.getGeoSystem(MapTileType.TerMap);
-                    lgeo.getNXNYByLonLat(lon1, lat1, zlvl, out nxny1);
-                    lgeo.getNXNYByLonLat(lon2, lat2, zlvl, out nxny2);
-                    fillOneLevel(nxny1, nxny2, zlvl, MapTileType.TerMap);
-                }
+
             }
 
             numTilesLb.Text = loadqueue.tiles.Count.ToString();
@@ -133,15 +185,33 @@ namespace GMView
             }
         }
 
-        private void fillOneLevel(Point nxny1, Point nxny2, int zlvl, ncGeo.MapTileType type)
+        /// <summary>
+        /// Fills one level of the map with tiles by given square area defines by lon, lat pairs
+        /// </summary>
+        /// <param name="lon1"></param>
+        /// <param name="lat1"></param>
+        /// <param name="lon2"></param>
+        /// <param name="lat2"></param>
+        /// <param name="type"></param>
+        /// <param name="zlvl"></param>
+        private void fillSquareOnOneLevel(double lon1, double lat1, double lon2, double lat2, 
+                    ncGeo.MapTileType mtype, int zlvl)
         {
+            Point nxny1, nxny2;
+            BaseGeo lgeo = Program.opt.getGeoSystem(mtype);
+            lgeo.getNXNYByLonLat(lon1, lat1, zlvl, out nxny1);
+            lgeo.getNXNYByLonLat(lon2, lat2, zlvl, out nxny2);
+
             for (int x = nxny1.X; x <= nxny2.X; x++)
             {
                 for (int y = nxny1.Y; y <= nxny2.Y; y++)
                 {
-                    ImgTile tile = Program.opt.newImgTile(x, y, zlvl, type);
+                    ImgTile tile = Program.opt.newImgTile(x, y, zlvl, mtype);
+                    if (force)
+                        tile.status = ImgStatus.ForceDownload;
+
                     //if (!tile.haveOnDisk())
-                        loadqueue.tiles.Enqueue(tile);
+                    loadqueue.tiles.Enqueue(tile);
                 }
             }
         }
@@ -200,5 +270,134 @@ namespace GMView
                 }
             }
         }
+
+
+        /// <summary>
+        /// Check the cache if point was already added and if not then adds it to the load queue
+        /// </summary>
+        /// <param name="rx"></param>
+        /// <param name="ry"></param>
+        /// <param name="mtype"></param>
+        /// <param name="zlvl"></param>
+        /// <param name="cacheSet"></param>
+        /// <returns></returns>
+        private bool addPoint(int rx, int ry, ncGeo.MapTileType mtype, int zlvl, 
+            Dictionary<ulong, int> cacheSet)
+        {
+            ulong hash = ImgTile.getHash(rx, ry, zlvl, mtype);
+            if (cacheSet.ContainsKey(hash))
+                return false;
+            cacheSet.Add(hash, 1);
+
+            ImgTile tile = Program.opt.newImgTile(rx, ry, zlvl, mtype);
+            if (force)
+                tile.status = ImgStatus.ForceDownload;
+
+            loadqueue.tiles.Enqueue(tile);
+            return true;
+        }
+
+        /// <summary>
+        /// Fills square area around the given point
+        /// </summary>
+        /// <param name="xy"></param>
+        /// <param name="mtype"></param>
+        /// <param name="zlvl"></param>
+        /// <param name="cachedSet"></param>
+        /// <param name="nearByTiles"></param>
+        private void fillEdgePoint(Point xy, ncGeo.MapTileType mtype, int zlvl, 
+                Dictionary<ulong, int> cachedSet, int nearByTiles)
+        {
+            int nearByTiles2 = nearByTiles * 2 + 1;
+            for (int y = 0; y < nearByTiles2; y++)
+            {
+                for (int x = 0; x < nearByTiles2; x++)
+                {
+                    addPoint(xy.X + x - nearByTiles, xy.Y + y - nearByTiles, mtype, zlvl, cachedSet);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Follow track path, calculate tiles and fills downloading queue for one level of the map
+        /// </summary>
+        /// <param name="track"></param>
+        /// <param name="mtype"></param>
+        /// <param name="zlvl"></param>
+        private void fillNearByTrackOnOneLevel(IGPSTrack track, ncGeo.MapTileType mtype, int zlvl )
+        {
+            LinkedList<NMEA_LL> points = track.trackPointData;
+            BaseGeo lgeo = Program.opt.getGeoSystem(mtype);
+
+            if(track.countPoints < 2)
+                return;
+
+            int nearByTiles = (int)nearbyNT.Value;
+            int nearByTiles2 = nearByTiles * 2 + 1;
+
+            Dictionary<ulong, int> cachedSet = new Dictionary<ulong, int>();
+
+            Point oldxy;
+            LinkedListNode<NMEA_LL> oldnode, curnode;
+            oldnode = points.First;
+
+            lgeo.getNXNYByLonLat(oldnode.Value.lon, oldnode.Value.lat, zlvl, out oldxy);
+            curnode = oldnode.Next;
+            fillEdgePoint(oldxy, mtype, zlvl, cachedSet, nearByTiles);
+
+            while(curnode != null)
+            {
+                Point curxy;
+                lgeo.getNXNYByLonLat(curnode.Value.lon, curnode.Value.lat, zlvl, out curxy);
+
+                //Skip points with the same tile coordinates as old one
+                if(curxy.Equals(oldxy))
+                {
+                    curnode = curnode.Next;
+                    continue;
+                }
+
+                int dx = curxy.X - oldxy.X;
+                int dy = curxy.Y - oldxy.Y;
+                int adx = Math.Abs(dx);
+                int ady = Math.Abs(dy);
+                int stepx = dx < 0 ? -1 : 1;
+                int stepy = dy < 0 ? -1 : 1;
+                int adx2 = adx / 2;
+                int ady2 = ady / 2;
+
+                if(adx > ady)
+                { //Horizontal line
+                    for(int x = 1; x < adx; x++)
+                    {
+                        int rx = oldxy.X + stepx * x;
+                        int ry = oldxy.Y + stepy * (ady * x + adx2) / adx;
+
+                        for(int y = 0; y < nearByTiles2; y++)
+                        {
+                            addPoint(rx, ry - nearByTiles + y, mtype, zlvl, cachedSet);
+                        }
+                    }
+                } else
+                { //Vertical line
+                    for(int y = 1; y < ady; y++)
+                    {
+                        int ry = oldxy.Y + stepy * y;
+                        int rx = oldxy.X + stepx * (adx * y + ady2) / ady;
+
+                        for (int x = 0; x < nearByTiles2; x++)
+                        {
+                            addPoint(rx - nearByTiles + x, ry, mtype, zlvl, cachedSet);
+                        }
+                    }
+                }
+
+                fillEdgePoint(curxy, mtype, zlvl, cachedSet, nearByTiles);
+
+                oldxy = curxy;
+                curnode = curnode.Next;
+            }
+        }
+
     }
 }

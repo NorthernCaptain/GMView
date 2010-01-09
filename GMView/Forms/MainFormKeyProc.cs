@@ -71,9 +71,42 @@ namespace GMView
 
         void quickPOI_Key(object sender, KeyEventArgs e)
         {
+            double lon, lat, alt;
+            if (mode != UserAction.Navigate)
+                return;
+
+            if(gtrack.on_air && gtrack.lastData != null)
+            {
+                lon = gtrack.lastData.lon;
+                lat = gtrack.lastData.lat;
+                alt = gtrack.lastData.height;
+            } else
+            {
+                lon = upos.Lon;
+                lat = upos.Lat;
+                alt = 0;
+                centerMapLonLat(lon, lat);
+            }
+
+            Bookmark mypoi = new Bookmark(lon, lat, alt);
+            mypoi.Mapo = mapo;
+            mapo.addSub(mypoi);
+            mypoi.show();
+            repaintMap();
+
             Forms.QuickPOIForm qpoi = new Forms.QuickPOIForm();
             qpoi.Owner = this;
-            qpoi.ShowDialog();
+            if(qpoi.ShowDialog() == DialogResult.OK)
+            {
+                mypoi.qchangeType(qpoi.poiType);
+                mypoi.updateDB();
+            }
+            else
+            {
+                mypoi.hide();
+                mapo.delSub(mypoi);
+            }
+            repaintMap();
         }
 
         void nightViewToggle_Key(object sender, KeyEventArgs e)

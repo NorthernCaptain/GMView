@@ -326,6 +326,11 @@ namespace GMView
             return GLHelpers.toTexture(ref img);
         }
 
+        public object texFromBitmapUnchanged(System.Drawing.Bitmap img)
+        {
+            return GLHelpers.toTexture2(img);
+        }
+
         public object texFromBitmapNoCheck(Bitmap img)
         {
             return GLHelpers.toTextureNoCheck(img, 0);

@@ -69,6 +69,7 @@ TODO list:
   screen. [DONE 03.11.09]
   
 - Download mode: downloading tiles along the given path + some range in km around the track.
+  [DONE 06.01.10]
 
 - Save/load track in PLT (OziExplorer) format.
 

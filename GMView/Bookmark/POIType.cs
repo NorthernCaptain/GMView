@@ -13,6 +13,11 @@ namespace GMView.Bookmarks
         /// ID of this type in DB
         /// </summary>
         int id = 0;
+
+        public int Id
+        {
+            get { return id; }
+        }
         /// <summary>
         /// Full type name, shown to the user
         /// </summary>
@@ -44,6 +49,11 @@ namespace GMView.Bookmarks
             {
                 textName = value;
             }
+        }
+
+        public string Name
+        {
+            get { return shortName; }
         }
 
         public POIType() { textName = string.Empty; }

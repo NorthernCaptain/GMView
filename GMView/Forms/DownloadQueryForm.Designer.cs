@@ -51,13 +51,15 @@
             this.label5 = new System.Windows.Forms.Label();
             this.cancelBut = new System.Windows.Forms.Button();
             this.okBut = new System.Windows.Forms.Button();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.antiBanSecNT = new System.Windows.Forms.NumericUpDown();
-            this.antiBanTilesNT = new System.Windows.Forms.NumericUpDown();
             this.copyToBut = new System.Windows.Forms.Button();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.forceDownloadCB = new System.Windows.Forms.CheckBox();
+            this.followTrackCB = new System.Windows.Forms.CheckBox();
+            this.needYamapCB = new System.Windows.Forms.CheckBox();
+            this.nearbyNT = new System.Windows.Forms.NumericUpDown();
+            this.label7 = new System.Windows.Forms.Label();
+            this.needOSMCB = new System.Windows.Forms.CheckBox();
+            this.modeLbl = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -66,20 +68,20 @@
             ((System.ComponentModel.ISupportInitialize)(this.fromLatNT)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fromLonNT)).BeginInit();
             this.groupBox4.SuspendLayout();
-            this.groupBox5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.antiBanSecNT)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.antiBanTilesNT)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nearbyNT)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.needOSMCB);
+            this.groupBox1.Controls.Add(this.needYamapCB);
             this.groupBox1.Controls.Add(this.needTerrainCb);
             this.groupBox1.Controls.Add(this.needStreetCb);
             this.groupBox1.Controls.Add(this.needSatCb);
             this.groupBox1.Controls.Add(this.needMapCb);
-            this.groupBox1.Location = new System.Drawing.Point(160, 3);
+            this.groupBox1.Location = new System.Drawing.Point(160, 25);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(103, 123);
+            this.groupBox1.Size = new System.Drawing.Size(103, 171);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Map Type:";
@@ -144,36 +146,38 @@
             "9",
             "8",
             "7",
-            "6",
-            "5 (smalest)"});
+            "6 (smalest)"});
             this.zoomCheckList.Location = new System.Drawing.Point(6, 13);
             this.zoomCheckList.Name = "zoomCheckList";
-            this.zoomCheckList.Size = new System.Drawing.Size(90, 214);
+            this.zoomCheckList.Size = new System.Drawing.Size(90, 199);
             this.zoomCheckList.TabIndex = 1;
             // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.zoomCheckList);
-            this.groupBox2.Location = new System.Drawing.Point(160, 132);
+            this.groupBox2.Location = new System.Drawing.Point(160, 201);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(103, 233);
+            this.groupBox2.Size = new System.Drawing.Size(103, 216);
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Zoom levels:";
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.followTrackCB);
+            this.groupBox3.Controls.Add(this.label7);
             this.groupBox3.Controls.Add(this.label4);
             this.groupBox3.Controls.Add(this.label3);
+            this.groupBox3.Controls.Add(this.nearbyNT);
             this.groupBox3.Controls.Add(this.toLatNT);
             this.groupBox3.Controls.Add(this.toLonNT);
             this.groupBox3.Controls.Add(this.fromLatNT);
             this.groupBox3.Controls.Add(this.fromLonNT);
             this.groupBox3.Controls.Add(this.label2);
             this.groupBox3.Controls.Add(this.label1);
-            this.groupBox3.Location = new System.Drawing.Point(3, 3);
+            this.groupBox3.Location = new System.Drawing.Point(3, 25);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(151, 123);
+            this.groupBox3.Size = new System.Drawing.Size(151, 171);
             this.groupBox3.TabIndex = 3;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Area:";
@@ -312,7 +316,7 @@
             this.groupBox4.Controls.Add(this.sizeLb);
             this.groupBox4.Controls.Add(this.label6);
             this.groupBox4.Controls.Add(this.label5);
-            this.groupBox4.Location = new System.Drawing.Point(3, 214);
+            this.groupBox4.Location = new System.Drawing.Point(3, 201);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(151, 76);
             this.groupBox4.TabIndex = 2;
@@ -357,7 +361,7 @@
             // 
             // cancelBut
             // 
-            this.cancelBut.Location = new System.Drawing.Point(12, 364);
+            this.cancelBut.Location = new System.Drawing.Point(12, 391);
             this.cancelBut.Name = "cancelBut";
             this.cancelBut.Size = new System.Drawing.Size(135, 28);
             this.cancelBut.TabIndex = 4;
@@ -367,7 +371,7 @@
             // 
             // okBut
             // 
-            this.okBut.Location = new System.Drawing.Point(12, 296);
+            this.okBut.Location = new System.Drawing.Point(12, 323);
             this.okBut.Name = "okBut";
             this.okBut.Size = new System.Drawing.Size(135, 28);
             this.okBut.TabIndex = 5;
@@ -375,74 +379,9 @@
             this.okBut.UseVisualStyleBackColor = true;
             this.okBut.Click += new System.EventHandler(this.okBut_Click);
             // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.label8);
-            this.groupBox5.Controls.Add(this.label7);
-            this.groupBox5.Controls.Add(this.antiBanSecNT);
-            this.groupBox5.Controls.Add(this.antiBanTilesNT);
-            this.groupBox5.Location = new System.Drawing.Point(3, 132);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(151, 76);
-            this.groupBox5.TabIndex = 2;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "AntiBan:";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(9, 42);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(52, 13);
-            this.label8.TabIndex = 12;
-            this.label8.Text = "Wait sec:";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(9, 21);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(53, 13);
-            this.label7.TabIndex = 11;
-            this.label7.Text = "Num tiles:";
-            // 
-            // antiBanSecNT
-            // 
-            this.antiBanSecNT.Location = new System.Drawing.Point(66, 40);
-            this.antiBanSecNT.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.antiBanSecNT.Name = "antiBanSecNT";
-            this.antiBanSecNT.Size = new System.Drawing.Size(78, 20);
-            this.antiBanSecNT.TabIndex = 3;
-            this.antiBanSecNT.Value = new decimal(new int[] {
-            300,
-            0,
-            0,
-            0});
-            // 
-            // antiBanTilesNT
-            // 
-            this.antiBanTilesNT.Location = new System.Drawing.Point(66, 19);
-            this.antiBanTilesNT.Maximum = new decimal(new int[] {
-            5000,
-            0,
-            0,
-            0});
-            this.antiBanTilesNT.Name = "antiBanTilesNT";
-            this.antiBanTilesNT.Size = new System.Drawing.Size(78, 20);
-            this.antiBanTilesNT.TabIndex = 2;
-            this.antiBanTilesNT.Value = new decimal(new int[] {
-            1500,
-            0,
-            0,
-            0});
-            // 
             // copyToBut
             // 
-            this.copyToBut.Location = new System.Drawing.Point(12, 330);
+            this.copyToBut.Location = new System.Drawing.Point(12, 357);
             this.copyToBut.Name = "copyToBut";
             this.copyToBut.Size = new System.Drawing.Size(135, 28);
             this.copyToBut.TabIndex = 5;
@@ -455,12 +394,96 @@
             this.folderBrowserDialog.Description = "Choose a folder to copy map images to.";
             this.folderBrowserDialog.RootFolder = System.Environment.SpecialFolder.MyComputer;
             // 
+            // forceDownloadCB
+            // 
+            this.forceDownloadCB.AutoSize = true;
+            this.forceDownloadCB.Location = new System.Drawing.Point(12, 300);
+            this.forceDownloadCB.Name = "forceDownloadCB";
+            this.forceDownloadCB.Size = new System.Drawing.Size(102, 17);
+            this.forceDownloadCB.TabIndex = 6;
+            this.forceDownloadCB.Text = "Force download";
+            this.forceDownloadCB.UseVisualStyleBackColor = true;
+            // 
+            // followTrackCB
+            // 
+            this.followTrackCB.AutoSize = true;
+            this.followTrackCB.Enabled = false;
+            this.followTrackCB.Location = new System.Drawing.Point(9, 117);
+            this.followTrackCB.Name = "followTrackCB";
+            this.followTrackCB.Size = new System.Drawing.Size(83, 17);
+            this.followTrackCB.TabIndex = 11;
+            this.followTrackCB.Text = "Follow track";
+            this.followTrackCB.UseVisualStyleBackColor = true;
+            // 
+            // needYamapCB
+            // 
+            this.needYamapCB.AutoSize = true;
+            this.needYamapCB.Location = new System.Drawing.Point(6, 111);
+            this.needYamapCB.Name = "needYamapCB";
+            this.needYamapCB.Size = new System.Drawing.Size(62, 17);
+            this.needYamapCB.TabIndex = 4;
+            this.needYamapCB.Text = "Yandex";
+            this.needYamapCB.UseVisualStyleBackColor = true;
+            this.needYamapCB.CheckedChanged += new System.EventHandler(this.needTerrainCb_CheckedChanged);
+            // 
+            // nearbyNT
+            // 
+            this.nearbyNT.Location = new System.Drawing.Point(98, 140);
+            this.nearbyNT.Maximum = new decimal(new int[] {
+            180,
+            0,
+            0,
+            0});
+            this.nearbyNT.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nearbyNT.Name = "nearbyNT";
+            this.nearbyNT.Size = new System.Drawing.Size(47, 20);
+            this.nearbyNT.TabIndex = 8;
+            this.nearbyNT.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(6, 142);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(88, 13);
+            this.label7.TabIndex = 10;
+            this.label7.Text = "Nearby area, km:";
+            // 
+            // needOSMCB
+            // 
+            this.needOSMCB.AutoSize = true;
+            this.needOSMCB.Location = new System.Drawing.Point(6, 134);
+            this.needOSMCB.Name = "needOSMCB";
+            this.needOSMCB.Size = new System.Drawing.Size(50, 17);
+            this.needOSMCB.TabIndex = 4;
+            this.needOSMCB.Text = "OSM";
+            this.needOSMCB.UseVisualStyleBackColor = true;
+            this.needOSMCB.CheckedChanged += new System.EventHandler(this.needTerrainCb_CheckedChanged);
+            // 
+            // modeLbl
+            // 
+            this.modeLbl.AutoSize = true;
+            this.modeLbl.Location = new System.Drawing.Point(9, 8);
+            this.modeLbl.Name = "modeLbl";
+            this.modeLbl.Size = new System.Drawing.Size(114, 13);
+            this.modeLbl.TabIndex = 7;
+            this.modeLbl.Text = "Square area download";
+            // 
             // DownloadQueryForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(270, 403);
-            this.Controls.Add(this.groupBox5);
+            this.ClientSize = new System.Drawing.Size(270, 429);
+            this.Controls.Add(this.modeLbl);
+            this.Controls.Add(this.forceDownloadCB);
             this.Controls.Add(this.copyToBut);
             this.Controls.Add(this.okBut);
             this.Controls.Add(this.cancelBut);
@@ -484,11 +507,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.fromLonNT)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.antiBanSecNT)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.antiBanTilesNT)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nearbyNT)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -517,12 +538,14 @@
         private System.Windows.Forms.Button okBut;
         private System.Windows.Forms.Label sizeLb;
         private System.Windows.Forms.Label numTilesLb;
-        private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.NumericUpDown antiBanTilesNT;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.NumericUpDown antiBanSecNT;
         private System.Windows.Forms.Button copyToBut;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
+        private System.Windows.Forms.CheckBox forceDownloadCB;
+        private System.Windows.Forms.CheckBox followTrackCB;
+        private System.Windows.Forms.CheckBox needYamapCB;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.NumericUpDown nearbyNT;
+        private System.Windows.Forms.CheckBox needOSMCB;
+        private System.Windows.Forms.Label modeLbl;
     }
 }

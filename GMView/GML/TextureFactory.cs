@@ -172,12 +172,20 @@ namespace GMView
 
         public object getTex(TexAlias tas)
         {
-            return textures[images[tas]];
+            return getTex(images[tas]);
         }
 
         public object getTex(ImageDot imd)
         {
-            return textures[imd];
+            object tex;
+            if(textures.TryGetValue(imd, out tex))
+                return tex;
+
+            imd.real_len = imd.img.Width;
+            imd.real_hei = imd.img.Height;
+            tex = GML.device.texFromBitmapUnchanged(imd.img);
+            textures.Add(imd, tex);
+            return tex;
         }
 
         public static TextureFactory singleton

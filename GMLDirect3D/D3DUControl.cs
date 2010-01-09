@@ -337,6 +337,25 @@ namespace GMView
             return texFromBitmapNoCheck(img);
         }
 
+        public object texFromBitmapUnchanged(System.Drawing.Bitmap img)
+        {
+            int width = getTextureAlignedLen(img.Width);
+            int height = getTextureAlignedLen(img.Height);
+
+            System.Drawing.Bitmap timg = img;
+            if (width != img.Width || height != img.Height)
+            { //We need to convert our image to texture recommended sizes
+                Bitmap nbmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+                Graphics gr = Graphics.FromImage(nbmp);
+                gr.DrawImageUnscaled(img, 0, 0);
+                timg = nbmp;
+            }
+            object tex = texFromBitmapNoCheck(img);
+            if (img != timg)
+                timg.Dispose();
+            return tex;
+        }
+
         public object texFromBitmapNoCheck(Bitmap img)
         {
             try

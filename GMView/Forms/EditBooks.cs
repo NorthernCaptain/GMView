@@ -24,7 +24,7 @@ namespace GMView.Forms
             foreach (Bookmark book in bmarks)
             {
                 dataGV.Rows.Add(new object[] {ncUtils.Glob.latString(book.lat), ncUtils.Glob.lonString(book.lon),
-                    book.name, book.comment, book.group, book.name, null});
+                    book.Name, book.Comment, book.group, book.Name, null});
             }
         }
     }

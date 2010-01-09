@@ -144,10 +144,7 @@ namespace ncUtils
                 dbo = new DBObj(@"insert into history_items(typename, value) values(@TYPENAME,@VALUE)");
                 dbo.addStringPar("@TYPENAME", name).addStringPar("@VALUE", valueS);
                 dbo.cmd.ExecuteNonQuery();
-
-                dbo.commandText = @"select seq from sqlite_sequence where name=@NAME";
-                dbo.addStringPar("@NAME", "history_items");
-                hi.id = dbo.executeIntValue();
+                hi.id = dbo.seqCurval("history_items");
             }
             catch (System.Exception e)
             {

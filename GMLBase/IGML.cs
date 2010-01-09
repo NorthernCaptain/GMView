@@ -138,6 +138,14 @@ namespace GMView
         object texFromBitmap(ref System.Drawing.Bitmap img);
 
         /// <summary>
+        /// Loads texture from Bitmap image. Can create new image inside the method for matching
+        /// texture requirements. Do not change original image.
+        /// </summary>
+        /// <param name="img"></param>
+        /// <returns></returns>
+        object texFromBitmapUnchanged(System.Drawing.Bitmap img);
+
+        /// <summary>
         /// Loads texture from bitmap without any checks for proper image sizes
         /// </summary>
         /// <param name="img"></param>

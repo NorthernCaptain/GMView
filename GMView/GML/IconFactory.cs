@@ -72,7 +72,7 @@ namespace GMView
             }
             catch (System.Exception ex)
             {
-            	
+                Program.Log("GetIcon error: " + ex.ToString());
             }
             return null;
         }

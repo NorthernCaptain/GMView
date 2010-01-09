@@ -34,11 +34,11 @@ namespace GMView.Forms
             Bookmark bmark = new Bookmark();
             bmark.lon = ncUtils.Glob.parseLonLat(lonBox.Text);
             bmark.lat = ncUtils.Glob.parseLonLat(latBox.Text);
-            bmark.name = nameTb.Text;
-            bmark.comment = commentTb.Text;
+            bmark.Name = nameTb.Text;
+            bmark.Comment = commentTb.Text;
             bmark.image_idx = pinCombo.SelectedIndex;
             bmark.original_map_type = Program.opt.mapType;
-            bmark.original_zoom = Program.opt.cur_zoom_lvl;
+            bmark.Original_zoom = Program.opt.cur_zoom_lvl;
             bmark.group = groupCB.Text;
 
             if (!BookMarkFactory.singleton.addBookmark(bmark))

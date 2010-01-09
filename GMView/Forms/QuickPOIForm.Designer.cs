@@ -30,7 +30,7 @@
         {
             this.okBut = new System.Windows.Forms.Button();
             this.cancelBut = new System.Windows.Forms.Button();
-            this.poiTypeList = new GMView.Forms.POITypeList();
+            this.poiTypeList = new GMView.Forms.POITypeListBox();
             this.SuspendLayout();
             // 
             // okBut
@@ -100,7 +100,7 @@
 
         #endregion
 
-        private POITypeList poiTypeList;
+        private POITypeListBox poiTypeList;
         private System.Windows.Forms.Button okBut;
         private System.Windows.Forms.Button cancelBut;
     }

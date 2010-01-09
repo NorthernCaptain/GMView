@@ -123,6 +123,11 @@ namespace GMView
             throw new NotImplementedException();
         }
 
+        public object texFromBitmapUnchanged(Bitmap img)
+        {
+            throw new NotImplementedException();
+        }
+
         public object texFromBitmapNoCheck(Bitmap img)
         {
             throw new NotImplementedException();

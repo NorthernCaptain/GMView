@@ -224,7 +224,7 @@ namespace GMView.GPS
                     currentWPNode = followWay.First;
                     if (currentWPNode == null)
                     {
-                        throw new ArgumentNullException("Waypoint", "Selected empty route. There is no waypoints to follow.\nPlease, choose another track.");
+                        throw new ArgumentNullException("Waypoint", "Selected empty route. There are no waypoints to follow.\nPlease, choose another track.");
                     }
                     finishWP = followWay.Last.Value;
                     shown = true;

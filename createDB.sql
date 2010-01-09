@@ -5,3 +5,4 @@
 create table history_items ( id integer primary key autoincrement, typename varchar(128) not null,
    value varchar(512), flags integer default 0, created datetime default (datetime('now')) );
    
+file moved to ncUtils/Resources/createDB.sql

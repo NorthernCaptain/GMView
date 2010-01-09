@@ -69,7 +69,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bookmark\BookMarkFactory.cs" />
+    <Compile Include="Bookmark\POIGroup.cs" />
+    <Compile Include="Bookmark\POIGroupFactory.cs" />
     <Compile Include="Bookmark\POIType.cs" />
+    <Compile Include="Bookmark\POITypeFactory.cs" />
     <Compile Include="CenterPositioning.cs" />
     <Compile Include="Dash\DashBoardBase.cs" />
     <Compile Include="Dash\GPSInfoDash.cs" />
@@ -127,7 +130,10 @@
     <Compile Include="Forms\MainFormKeyProc.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\POITypeList.cs">
+    <Compile Include="Forms\MainFormTrackMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\POITypeListBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\QuickPOIForm.cs">
@@ -347,6 +353,7 @@
   <ItemGroup>
     <Content Include="gmview_icon.ICO" />
     <Content Include="icon_main.ico" />
+    <None Include="Resources\trackmenu.png" />
     <Content Include="Satellite.ico" />
     <None Include="Resources\helpKeys.htm" />
     <None Include="Resources\dot_small_auto.png" />

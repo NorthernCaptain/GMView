@@ -85,6 +85,12 @@ namespace ncUtils
             return this;
         }
 
+        public DBObj addFloatPar(string name, double val)
+        {
+            cmd.Parameters.Add(DBConnPool.singleton.newPar(name, DbType.Double, val));
+            return this;
+        }
+
         /// <summary>
         /// Adds new parameter to the command. Can be used to pass any type of param
         /// </summary>
@@ -115,6 +121,28 @@ namespace ncUtils
         public string executeStringValue()
         {
             return (string)cmd.ExecuteScalar();
+        }
+
+        /// <summary>
+        /// Executes non-Select statement, i.e DML statement
+        /// </summary>
+        /// <returns></returns>
+        public int executeNonQuery()
+        {
+            return cmd.ExecuteNonQuery();
+        }
+
+        /// <summary>
+        /// Select and return curval of the sequence by the table name.
+        /// Execute only after insert operation
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public int seqCurval(string name)
+        {
+            this.commandText = @"select seq from sqlite_sequence where name=@NAME";
+            this.addStringPar("@NAME", name);
+            return this.executeIntValue();
         }
 
         #region IDisposable Members

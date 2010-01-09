@@ -92,9 +92,30 @@ namespace GMView
                 Bitmap nbmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
                 Graphics gr = Graphics.FromImage(nbmp);
                 gr.DrawImageUnscaled(img, 0, 0);
+                img.Dispose();
                 img = nbmp;
             }
             return toTextureNoCheck(img, filter);
+        }
+
+        public static Texture toTexture2(Bitmap img)
+        {
+            uint filter = Gl.GL_NEAREST;
+            int width = getTextureAlignedLen(img.Width);
+            int height = getTextureAlignedLen(img.Height);
+
+            Bitmap timg = img;
+            if (width != img.Width || height != img.Height)
+            { //We need to convert our image to texture recommended sizes
+                Bitmap nbmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+                Graphics gr = Graphics.FromImage(nbmp);
+                gr.DrawImageUnscaled(img, 0, 0);
+                timg = nbmp;
+            }
+            Texture tex = toTextureNoCheck(timg, filter);
+            if (img != timg)
+                timg.Dispose();
+            return tex;
         }
 
         public static Texture toTextureNoCheck(Bitmap img, uint filter)

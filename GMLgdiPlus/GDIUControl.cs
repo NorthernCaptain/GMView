@@ -225,6 +225,11 @@ namespace GMView
             return img;
         }
 
+        public object texFromBitmapUnchanged(Bitmap img)
+        {
+            return img;
+        }
+
         public object texFromBitmapNoCheck(Bitmap img)
         {
             return img;

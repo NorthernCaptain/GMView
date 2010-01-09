@@ -4,7 +4,6 @@ using System.Text;
 using System.Windows.Forms;
 using System.Data.Common;
 using System.Drawing;
-using ncUtils;
 using GMView.Bookmarks;
 
 namespace GMView.Forms
@@ -12,12 +11,12 @@ namespace GMView.Forms
     /// <summary>
     /// Class loads and shows listbox with poi types.
     /// </summary>
-    public class POITypeList: ListBox
+    public class POITypeListBox: ListBox
     {
         /// <summary>
         /// Constructor sets owner mode for drawing items
         /// </summary>
-        public POITypeList()
+        public POITypeListBox()
         {
             this.DrawMode = DrawMode.OwnerDrawFixed;
             this.ItemHeight = heightItem;
@@ -28,31 +27,11 @@ namespace GMView.Forms
         /// </summary>
         public void loadList()
         {
-            DBObj dbo = null;
-
-            try
-            {
-                dbo = new DBObj("select id, name, description, icon, icon_cx, icon_cy "
-                                + "from poi_type where id > 0 order by sort_order desc, description");
-
-                DbDataReader reader = dbo.cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    POIType pi = new POIType(reader);
-                    this.Items.Add(pi);
-                }
-                if (this.Items.Count > 0)
-                    this.SelectedIndex = 0;
-            }
-            catch (System.Exception ex)
-            {
-
-            }
-            finally
-            {
-                if(dbo != null)
-                    dbo.Dispose();
-            }
+            POIType[] arr = new POIType[POITypeFactory.singleton().count];
+            POITypeFactory.singleton().items.CopyTo(arr);
+            this.Items.AddRange(arr);
+            if (this.Items.Count > 0)
+                this.SelectedIndex = 0;
         }
 
         protected int delta_x = 32;

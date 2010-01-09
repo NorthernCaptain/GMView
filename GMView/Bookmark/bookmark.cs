@@ -5,32 +5,106 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.Drawing;
 using ncGeo;
+using ncUtils;
 
 namespace GMView
 {
     public class Bookmark: ISprite, ncGeo.IGeoCoord
     {
         [XmlIgnore]
-        public string id;
-        [XmlAttribute]
-        public double lon, lat;
-        [XmlAttribute]
-        public string name;
-        [XmlElement]
-        public string comment;
+        public string sid;
         [XmlAttribute]
         public int image_idx = 0;
+        [XmlAttribute]
+        public MapTileType original_map_type = MapTileType.MapOnly;
+        [XmlAttribute("group_name")]
+        public string group = "";
+
+        /// <summary>
+        /// Unique id for this POI, from DB
+        /// </summary>
+        private int id = 0;
+
+        [XmlIgnore]
+        public int Id
+        {
+            get { return id; }
+        }
+
+        [XmlAttribute]
+        public double lon, lat;
+        [XmlIgnore]
+        public double alt = 0.0;
+        private string name;
+
+        [XmlAttribute("name")]
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+
+        private string description;
+        [XmlIgnore]
+        public string Description
+        {
+            get { return description; }
+            set { description = value; }
+        }
+
+        private string comment;
+
+        [XmlElement("comment")]
+        public string Comment
+        {
+            get { return comment; }
+            set { comment = value; }
+        }
+
+        private int original_zoom = 10;
+
+        [XmlAttribute("original_zoom")]
+        public int Original_zoom
+        {
+            get { return original_zoom; }
+            set { original_zoom = value; }
+        }
+
+        private DateTime created = DateTime.Now;
+
+        [XmlAttribute("created")]
+        public DateTime Created
+        {
+            get { return created; }
+            set { created = value; }
+        }
+        /// <summary>
+        /// Type of the POI
+        /// </summary>
+        private Bookmarks.POIType ptype = null;
+
+        [XmlIgnore]
+        public Bookmarks.POIType Ptype
+        {
+            get { return ptype; }
+            set { ptype = value; }
+        }
+
+        /// <summary>
+        /// Icon information for this POI
+        /// </summary>
+        private IIconInfo iconfo;
+
+        [XmlIgnore]
+        public IIconInfo Iconfo
+        {
+            get { return iconfo; }
+            set { iconfo = value; }
+        }
+
 
         [XmlIgnore]
         public bool shown = false;
-        [XmlAttribute]
-        public MapTileType original_map_type = MapTileType.MapOnly;
-        [XmlAttribute]
-        public int original_zoom = 10;
-        [XmlAttribute]
-        public DateTime created = DateTime.Now;
-        [XmlAttribute("group_name")]
-        public string group = "";
 
         [XmlIgnore]
         public bool is_temporary = false; 
@@ -40,16 +114,210 @@ namespace GMView
         object tex = null;
         IGLFont fnt = null;
 
+        private BookMarkFactory owner = null;
+
         [XmlIgnore]
-        public BookMarkFactory owner = null;
+        public BookMarkFactory Owner
+        {
+            get { return owner; }
+            set { owner = value; Mapo = owner.map; }
+        }
+
+        private MapObject mapo;
+
+        /// <summary>
+        /// Map object that POI assigned to. We need it for drawing
+        /// </summary>
+        [XmlIgnore]
+        public MapObject Mapo
+        {
+            get { return mapo; }
+            set { mapo = value; }
+        }
+
+        /// <summary>
+        /// Bitmask for POI flags (options)
+        /// </summary>
+        private int flags = 0;
+
+        [XmlIgnore]
+        public int Flags
+        {
+            get { return flags; }
+            set { flags = value; }
+        }
+
 
         public Bookmark()
         {
+            ptype = Bookmarks.POITypeFactory.singleton().typeByName("home");
+            iconfo = ptype;
+        }
+
+        /// <summary>
+        /// Constructor for quick creation of the POI, only by given coordinates and type
+        /// </summary>
+        /// <param name="ilon"></param>
+        /// <param name="ilat"></param>
+        /// <param name="ialt"></param>
+        /// <param name="itype"></param>
+        public Bookmark(double ilon, double ilat, double ialt, Bookmarks.POIType itype)
+        {
+            lon = ilon;
+            lat = ilat;
+            alt = ialt;
+
+            name = "??";
+            qchangeType(itype);
+        }
+
+        /// <summary>
+        /// Quick POI constructor only with coordinates. Type will be set to unknown. Use qchangeType method later
+        /// </summary>
+        /// <param name="ilon"></param>
+        /// <param name="ilat"></param>
+        /// <param name="ialt"></param>
+        public Bookmark(double ilon, double ilat, double ialt)
+        {
+            iconfo = ptype;
+            lon = ilon;
+            lat = ilat;
+            alt = ialt;
+            name = "??";
+            qchangeType(Bookmarks.POITypeFactory.singleton().typeByName("unknown"));
+        }
+
+
+        /// <summary>
+        /// Quick change type of POI. Also changes the name of the POI and description
+        /// </summary>
+        /// <param name="newType"></param>
+        public void qchangeType(Bookmarks.POIType newType)
+        {
+            ptype = newType;
+            iconfo = ptype;
+            if (tex != null)
+                initGLData();
+            if(name[0] == '?')
+            {
+                name = "??" + ptype.Name + "??";
+                description = ptype.Text + "??";
+                comment = "quickly added, no name supplied";
+                is_temporary = true;
+            }
+        }
+
+        /// <summary>
+        /// Updates or inserts POI in the DB poi and poi_spartial tables
+        /// </summary>
+        public void updateDB()
+        {
+            if(id == 0)
+            {
+                //Do insert statement (new record)
+                DBObj dbo = null;
+
+                try
+                {
+                    dbo = new DBObj("insert into poi (name, description, type, comments, "
+                                    + "lon, lat, alt, flags, icon, icon_cx, icon_cy, type) "
+                                    + "values (@NAME, @DESCRIPTION, @TYPE, @COMMENTS, "
+                                    + "@LON, @LAT, @ALT, @FLAGS, @ICON, @ICON_CX, @ICON_CY, @PTYPE)");
+
+                    dbo.addStringPar("@NAME", name);
+                    dbo.addStringPar("@DESCRIPTION", description);
+                    dbo.addIntPar("@TYPE", ptype.Id);
+                    dbo.addStringPar("@COMMENTS", comment);
+                    dbo.addFloatPar("@LON", lon);
+                    dbo.addFloatPar("@LAT", lat);
+                    dbo.addFloatPar("@ALT", alt);
+                    dbo.addIntPar("@FLAGS", flags);
+                    dbo.addStringPar("@ICON", iconfo.iconName);
+                    dbo.addIntPar("@ICON_CX", iconfo.iconDeltaX);
+                    dbo.addIntPar("@ICON_CY", iconfo.iconDeltaY);
+                    dbo.addIntPar("@PTYPE", ptype.Id);
+
+                    dbo.executeNonQuery();
+
+                    id = dbo.seqCurval("poi");
+
+                    dbo.commandText = "insert into poi_spatial (id, minLon, maxLon, minLat, maxLat) "
+                        + "values (@ID, @MINLON, @MAXLON, @MINLAT, @MAXLAT)";
+                    dbo.addIntPar("@ID", id);
+                    dbo.addFloatPar("@MINLON", lon);
+                    dbo.addFloatPar("@MAXLON", lon);
+                    dbo.addFloatPar("@MINLAT", lat);
+                    dbo.addFloatPar("@MAXLAT", lat);
+                    dbo.executeNonQuery();
+                    is_temporary = false;
+                }
+                catch (System.Exception ex)
+                {
+                    Program.Log("SQLError: " + ex.ToString());
+                }
+                finally
+                {
+                    if (dbo != null)
+                        dbo.Dispose();
+                }
+            } else
+            {
+                //Do real update statement.
+                DBObj dbo = null;
+
+                try
+                {
+                    dbo = new DBObj("update poi set name=@NAME, description=@DESCRIPTION,"
+                                    + "type=@TYPE, comments=@COMMENTS, "
+                                    + "lon=@LON, lat=@LAT, alt=@ALT, flags=@FLAGS, "
+                                    + "icon=@ICON, icon_cx=@ICON_CX, icon_cy=@ICON_CY "
+                                    + "where id=@ID");
+
+                    dbo.addStringPar("@NAME", name);
+                    dbo.addStringPar("@DESCRIPTION", description);
+                    dbo.addIntPar("@TYPE", ptype.Id);
+                    dbo.addStringPar("@COMMENTS", comment);
+                    dbo.addFloatPar("@LON", lon);
+                    dbo.addFloatPar("@LAT", lat);
+                    dbo.addFloatPar("@ALT", alt);
+                    dbo.addIntPar("@FLAGS", flags);
+                    dbo.addStringPar("@ICON", iconfo.iconName);
+                    dbo.addIntPar("@ICON_CX", iconfo.iconDeltaX);
+                    dbo.addIntPar("@ICON_CY", iconfo.iconDeltaY);
+
+                    dbo.addIntPar("@ID", id);
+
+                    dbo.executeNonQuery();
+
+                    dbo.commandText = "update poi_spatial set minLon=@MINLON, maxLon=@MAXLON, "
+                            + "minLat=@MINLAT, maxLat=@MAXLAT where id=@ID";
+                    dbo.addIntPar("@ID", id);
+                    dbo.addFloatPar("@MINLON", lon);
+                    dbo.addFloatPar("@MAXLON", lon);
+                    dbo.addFloatPar("@MINLAT", lat);
+                    dbo.addFloatPar("@MAXLAT", lat);
+                    dbo.executeNonQuery();
+                    is_temporary = false;
+                }
+                catch (System.Exception ex)
+                {
+                    Program.Log("SQLError: " + ex.ToString());
+                }
+                finally
+                {
+                    if (dbo != null)
+                        dbo.Dispose();
+                }
+            }
+
         }
 
         public void initGLData()
         {
-            imd = TextureFactory.singleton.getImg((TextureFactory.TexAlias)((int)TextureFactory.TexAlias.PinYellow + image_idx));
+            if(iconfo != null)
+                imd = IconFactory.singleton.getIcon(iconfo);
+            else
+                imd = TextureFactory.singleton.getImg((TextureFactory.TexAlias)((int)TextureFactory.TexAlias.PinYellow + image_idx));
             tex = TextureFactory.singleton.getTex(imd);
             fnt = FontFactory.singleton.getGLFont(FontFactory.FontAlias.Sans10B);
         }
@@ -57,9 +325,9 @@ namespace GMView
         public void makeId()
         {
             if (group.Length == 0)
-                id = name;
+                sid = name;
             else
-                id = "___/" + group + "/" + name;
+                sid = "___/" + group + "/" + name;
         }
 
         #region ISprite Members
@@ -78,9 +346,12 @@ namespace GMView
         {
             if (!shown)
                 return;
-            Point xy = owner.map.start_real_xy;
+            Point xy = mapo.start_real_xy;
             xy.X = x - xy.X;
             xy.Y = y - xy.Y;
+
+            if (xy.Y < 0 || xy.X < 0)
+                return;
 
             xy.X -= centerx;
             xy.Y = centery - xy.Y;
@@ -88,7 +359,7 @@ namespace GMView
             GML.device.pushMatrix();
             GML.device.color(Color.White);
             GML.device.translate(xy.X, xy.Y, 0);
-            GML.device.rotateZ(-owner.map.angle);
+            GML.device.rotateZ(-mapo.angle);
             GML.device.texDrawBegin();
             GML.device.texFilter(tex, TexFilter.Pixel);
             GML.device.texDraw(tex, -imd.delta_x,
@@ -119,7 +390,7 @@ namespace GMView
             shown = true;
             if (tex == null)
                 initGLData();
-            calculateXY(owner.map);
+            calculateXY(mapo);
         }
 
         public void hide()
@@ -173,10 +444,11 @@ namespace GMView
         {
             get
             {
-                return 0;
+                return alt;
             }
             set
             {
+                alt = value;
             }
         }
 
@@ -184,7 +456,7 @@ namespace GMView
 
         public override string ToString()
         {
-            return id;
+            return sid;
         }
     }
 }

@@ -1195,23 +1195,7 @@ namespace GMView
             if (mode == UserAction.ManualTrack)
                 track = manual_track;
 
-            if (track.countPoints == 0)
-            {
-                MessageBox.Show("Current track has no points. There is nothing to be saved.\nUse 'start recording track' button first.\n\nOperation cancelled.",
-                    "Empty track", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-            else
-            {
-                string fname = track.fileName;
-                fname = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(fname),
-                    System.IO.Path.GetFileNameWithoutExtension(fname) + ".gpx");
-                trackSaveFileDialog.FileName = fname;
-                trackSaveFileDialog.DefaultExt = "gpx";
-                trackSaveFileDialog.Title = "Save track to GPX file";
-                trackSaveFileDialog.Filter = "GPX unified files|*.gpx|All files|*.*";
-                if (trackSaveFileDialog.ShowDialog() == DialogResult.OK)
-                    track.saveGPX(trackSaveFileDialog.FileName);
-            }
+            saveTrackWithDialog(track);
         }
 
         /// <summary>

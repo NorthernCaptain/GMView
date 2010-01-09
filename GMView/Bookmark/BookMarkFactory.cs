@@ -74,8 +74,8 @@ namespace GMView
                 for (int i = 0; i < value.Length; i++)
                 {
                     value[i].makeId();
-                    marks.Add(value[i].id, value[i]);
-                    value[i].owner = this;
+                    marks.Add(value[i].sid, value[i]);
+                    value[i].Owner = this;
                 }
             }
         }
@@ -162,7 +162,7 @@ namespace GMView
             internal TStripBookItem(Bookmark imark)
             {
                 bmark = imark;
-                this.Text = bmark.name;
+                this.Text = bmark.Name;
                 this.CheckOnClick = true;
                 this.Checked = false;
             }
@@ -218,6 +218,7 @@ namespace GMView
 
             if (tstrip.Checked)
             {
+                tstrip.bmark.Owner = this;
                 tstrip.bmark.show();
                 mapo.addSub(tstrip.bmark);
                 mapo.CenterMapLonLat(tstrip.bmark.lon, tstrip.bmark.lat);
@@ -234,12 +235,12 @@ namespace GMView
             Bookmark bmark = new Bookmark();
             bmark.lat = 30.0;
             bmark.lon = 60.0;
-            bmark.name = "Just for test 1";
-            bmark.comment = "This is a comment";
+            bmark.Name = "Just for test 1";
+            bmark.Comment = "This is a comment";
             try
             {
-                marks.Add(bmark.name, bmark);
-                bmark.owner = this;
+                marks.Add(bmark.Name, bmark);
+                bmark.Owner = this;
             }
             catch
             {
@@ -275,10 +276,10 @@ namespace GMView
         {
             newone.makeId();
 
-            if (marks.ContainsKey(newone.id))
+            if (marks.ContainsKey(newone.sid))
                 return false;
-            marks.Add(newone.id, newone);
-            newone.owner = this;
+            marks.Add(newone.sid, newone);
+            newone.Owner = this;
 
             TStripBookGroup grp = findGroup(newone.group);
             TStripBookItem tstrip = new TStripBookItem(newone);
@@ -397,14 +398,14 @@ namespace GMView
                 writer.WriteStartElement("wpt");
                 writer.WriteAttributeString("lon", book.lon.ToString("F6", nf));
                 writer.WriteAttributeString("lat", book.lat.ToString("F6", nf));
-                writer.WriteElementString("name", book.name);
-                writer.WriteElementString("desc", book.comment);
-                writer.WriteElementString("time", book.created.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"));
+                writer.WriteElementString("name", book.Name);
+                writer.WriteElementString("desc", book.Comment);
+                writer.WriteElementString("time", book.Created.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"));
                 {
                     writer.WriteStartElement("extensions");
                     writer.WriteElementString("group", book.group);
                     writer.WriteElementString("color", book.image_idx.ToString());
-                    writer.WriteElementString("zoom", book.original_zoom.ToString());
+                    writer.WriteElementString("zoom", book.Original_zoom.ToString());
                     writer.WriteEndElement();
                 }
                 writer.WriteEndElement();
@@ -475,16 +476,16 @@ namespace GMView
                 }
                 else
                     rmc.utc_time = DateTime.MinValue.AddYears(2000).ToUniversalTime();
-                bmark.created = rmc.utc_time.ToLocalTime();
+                bmark.Created = rmc.utc_time.ToLocalTime();
 
                 xnode = node.SelectSingleNode("./gpx:name", nsm);
                 if (xnode == null)
                     continue;
-                bmark.name = xnode.InnerText.Trim();
+                bmark.Name = xnode.InnerText.Trim();
 
                 xnode = node.SelectSingleNode("./gpx:desc", nsm);
                 if (xnode != null)
-                    bmark.comment = xnode.InnerText.Trim();
+                    bmark.Comment = xnode.InnerText.Trim();
                 if (groupname == null)
                 {
                     bmark.group = "Imported";
@@ -505,7 +506,7 @@ namespace GMView
 
                 xnode = node.SelectSingleNode("./gpx:extensions/gpx:zoom", nsm);
                 if (xnode != null)
-                    bmark.original_zoom = int.Parse(xnode.InnerText);
+                    bmark.Original_zoom = int.Parse(xnode.InnerText);
 
                 if (addBookmarkSilently(bmark))
                     count++;
@@ -535,10 +536,10 @@ namespace GMView
                     xnode = node.SelectSingleNode("./kml:name", nsm);
                     if (xnode == null)
                         continue;
-                    bmark.name = xnode.InnerText;
+                    bmark.Name = xnode.InnerText;
                     xnode = node.SelectSingleNode("./kml:description", nsm);
                     if (xnode != null)
-                        bmark.comment = xnode.InnerText;
+                        bmark.Comment = xnode.InnerText;
 
                     if (groupname == null)
                     {

@@ -47,26 +47,26 @@ namespace GMView
         {
             logWin.Log("Selected index of follow track: " + followTrackList.SelectedItem);
             ncGeo.IGPSTrack track = followTrackList.SelectedItem as ncGeo.IGPSTrack;
-            if (track == GPSTrackFactory.singleton.recordingTrack)
+            if (track == GPSTrackFactory.singleton.recordingTrack && followTrackToolStripMenuItem.Checked)
             {
                 MessageBox.Show("You can not follow track that is in recording mode.\nChoose another one, please.",
                                 "Wrong track selected", 
                                 MessageBoxButtons.OK, MessageBoxIcon.Information);
-                followTrackList.SelectedIndex = 0;
+                followTrackToolStripMenuItem.Checked = false;
                 return;
             }
 
             try
             {
-                followConnect.reverseDir = reverseTBut.Checked;
-                followConnect.follower = track;
-                infoMessage("Set follower to " + ((track == null) ? "None" : track.ToString()));
+                followConnect.reverseDir = reverseFollowerToolStripMenuItem.Checked;
+                followConnect.follower = (followTrackToolStripMenuItem.Checked ? track : null);
+                infoMessage("Set follower to " + ((followTrackToolStripMenuItem.Checked == false || track == null) ? "None" : track.ToString()));
             }
             catch (System.Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error setting follower", 
                                 MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                followTrackList.SelectedIndex = 0;
+                followTrackToolStripMenuItem.Checked = false;
             }
         }
 
