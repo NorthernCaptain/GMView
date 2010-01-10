@@ -15,7 +15,7 @@ namespace GMView
         /// <summary>
         /// Instance of bookmark factory
         /// </summary>
-        private static BookMarkFactory instance = null;
+        private static volatile BookMarkFactory instance = null;
 
         /// <summary>
         /// Bookmark list stored by name
@@ -508,7 +508,16 @@ namespace GMView
                 if (xnode != null)
                     bmark.Original_zoom = int.Parse(xnode.InnerText);
 
-                if (addBookmarkSilently(bmark))
+                bmark.updateDB();
+
+                Bookmarks.POIGroup pgroup = Bookmarks.POIGroupFactory.singleton().findByName(bmark.group);
+                if(pgroup == null)
+                {
+                    pgroup = Bookmarks.POIGroupFactory.singleton().createSimpleGroup(bmark.group);
+                }
+                bmark.addLinkDB(pgroup);
+
+                //if (addBookmarkSilently(bmark))
                     count++;
             }
 

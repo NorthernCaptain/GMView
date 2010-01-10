@@ -45,6 +45,12 @@ namespace GMView.Bookmarks
 
         }
 
+        public POIGroup(string iname)
+        {
+            name = iname;
+            description = iname;
+        }
+
         /// <summary>
         /// Constructor reads group data from opened DB cursor.
         /// Fields must be in the following order:
@@ -130,8 +136,49 @@ namespace GMView.Bookmarks
         /// <param name="child"></param>
         public void addChild(POIGroup child)
         {
+            if (children == null)
+                children = new LinkedList<POIGroup>();
             children.AddLast(child);
             child.parent = this;
+        }
+
+        /// <summary>
+        /// Deletes all group member links where this group is parent, then insert all
+        /// its children.
+        /// </summary>
+        public void updateChildrenLinksDB()
+        {
+            if (children == null)
+                return;
+
+            DBObj dbo = null;
+            try
+            {
+                dbo = new DBObj(@"delete from poi_group_member where parent_id=@ID and member_is_group=1");
+                dbo.addIntPar("@ID", id);
+                dbo.executeNonQuery();
+
+                dbo.commandText = "insert into poi_group_member (parent_id, member_id, member_is_group) "
+                                + "values(@PARENT_ID, @MEMBER_ID, 1)";
+
+                foreach (POIGroup childnode in children)
+                {
+                    dbo.cmd.Parameters.Clear();
+                    dbo.addIntPar("@PARENT_ID", id);
+                    dbo.addIntPar("@MEMBER_ID", childnode.Id);
+                    dbo.executeNonQuery();
+                }
+            }
+            catch (System.Exception e)
+            {
+            	Program.Log("SQLError: " + e.ToString());
+            
+            }
+            finally
+            {
+                if (dbo != null)
+                    dbo.Dispose();
+            }
         }
     }
 }

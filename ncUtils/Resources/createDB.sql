@@ -252,7 +252,8 @@ insert into poi (name, description, type, is_group) values ('unsorted', 'unsorte
 
 --- POI group nested hierarchy
 create table poi_group_member (id integer primary key autoincrement, 
-	parent_id integer default 0, member_id integer default 0, created datetime default (datetime('now')),
+	parent_id integer default 0, member_id integer default 0, member_is_group integer default 0,
+	created datetime default (datetime('now')),
 	foreign key (parent_id) references poi (id) on delete set default,
 	foreign key (member_id) references poi (id) on delete set default);
 ---
@@ -260,8 +261,8 @@ create index poi_grp_mem_idx on poi_group_member (member_id);
 ---
 create index poi_grp_par_idx on poi_group_member (parent_id);
 --- for quick add
-insert into poi_group_member (parent_id, member_id) values (0, 1);
+insert into poi_group_member (parent_id, member_id, member_is_group) values (0, 1, 1);
 --- for unsorted
-insert into poi_group_member (parent_id, member_id) values (0, 2);
+insert into poi_group_member (parent_id, member_id, member_is_group) values (0, 2, 1);
 
 --- End of file ---

@@ -19,7 +19,7 @@ namespace GMView
         /// <summary>
         /// Single instance of the factory
         /// </summary>
-        private static IconFactory instance;
+        private static volatile IconFactory instance;
 
         /// <summary>
         /// Cached icons, that were loaded from disk into bitmap

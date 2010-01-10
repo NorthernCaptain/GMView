@@ -14,7 +14,7 @@ namespace ncUtils
     {
         private LinkedList<SQLiteConnection> conPool = new LinkedList<SQLiteConnection>();
         private string conString = @"Data Source=knowhere.sq3;New=False;Version=3";
-        private static DBConnPool instance = null;
+        private static volatile DBConnPool instance = null;
 
         private List<SQLiteConnection> allConnections = new List<SQLiteConnection>(50);
 

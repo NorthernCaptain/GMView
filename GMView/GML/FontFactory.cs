@@ -15,7 +15,7 @@ namespace GMView
 
         Dictionary<Font, IGLFont> fonts = new Dictionary<Font, IGLFont>();
         Dictionary<FontAlias, Font> gdiFonts = new Dictionary<FontAlias, Font>();
-        private static FontFactory instance = new FontFactory();
+        private static volatile FontFactory instance = new FontFactory();
         Bitmap bTmp;
         Graphics gfx;
 

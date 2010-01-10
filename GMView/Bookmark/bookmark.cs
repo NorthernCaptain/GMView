@@ -4,8 +4,10 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Drawing;
+using System.Data.Common;
 using ncGeo;
 using ncUtils;
+using System.Data;
 
 namespace GMView
 {
@@ -187,6 +189,27 @@ namespace GMView
             qchangeType(Bookmarks.POITypeFactory.singleton().typeByName("unknown"));
         }
 
+        /// <summary>
+        /// Create a bookmark by reading data from opened DB cursor.
+        /// Cursor must provide the following fields:
+        ///    id, name, description, type, comments,
+        ///    lon, lat, alt, flags
+        /// </summary>
+        /// <param name="reader"></param>
+        public Bookmark(DbDataReader reader)
+        {
+            id = reader.GetInt32(reader.GetOrdinal("ID"));
+            name = reader.GetString(reader.GetOrdinal("NAME"));
+            description = reader.GetString(reader.GetOrdinal("DESCRIPTION"));
+            comment = reader.GetString(reader.GetOrdinal("COMMENTS"));
+            int type_id = reader.GetInt32(reader.GetOrdinal("TYPE"));
+            ptype = Bookmarks.POITypeFactory.singleton().typeById(type_id);
+            iconfo = ptype;
+            lon = reader.GetDouble(reader.GetOrdinal("LON"));
+            lat = reader.GetDouble(reader.GetOrdinal("LAT"));
+            alt = reader.GetDouble(reader.GetOrdinal("ALT"));
+            flags = reader.GetInt32(reader.GetOrdinal("FLAGS"));
+        }
 
         /// <summary>
         /// Quick change type of POI. Also changes the name of the POI and description
@@ -220,9 +243,9 @@ namespace GMView
                 try
                 {
                     dbo = new DBObj("insert into poi (name, description, type, comments, "
-                                    + "lon, lat, alt, flags, icon, icon_cx, icon_cy, type) "
+                                    + "lon, lat, alt, flags, icon, icon_cx, icon_cy, created) "
                                     + "values (@NAME, @DESCRIPTION, @TYPE, @COMMENTS, "
-                                    + "@LON, @LAT, @ALT, @FLAGS, @ICON, @ICON_CX, @ICON_CY, @PTYPE)");
+                                    + "@LON, @LAT, @ALT, @FLAGS, @ICON, @ICON_CX, @ICON_CY, @CREATED)");
 
                     dbo.addStringPar("@NAME", name);
                     dbo.addStringPar("@DESCRIPTION", description);
@@ -235,7 +258,7 @@ namespace GMView
                     dbo.addStringPar("@ICON", iconfo.iconName);
                     dbo.addIntPar("@ICON_CX", iconfo.iconDeltaX);
                     dbo.addIntPar("@ICON_CY", iconfo.iconDeltaY);
-                    dbo.addIntPar("@PTYPE", ptype.Id);
+                    dbo.addPar("@CREATED", DbType.DateTime, created);
 
                     dbo.executeNonQuery();
 
@@ -310,6 +333,32 @@ namespace GMView
                 }
             }
 
+        }
+
+        /// <summary>
+        /// Insert group member link for this poi into the given group
+        /// </summary>
+        /// <param name="parentGroup"></param>
+        public void addLinkDB(Bookmarks.POIGroup parentGroup)
+        {
+            DBObj dbo = null;
+            try
+            {
+                dbo = new DBObj(@"insert into poi_group_member (parent_id, member_id) values (@PARENT_ID, @MEMBER_ID)");
+                dbo.addIntPar("@PARENT_ID", parentGroup.Id);
+                dbo.addIntPar("@MEMBER_ID", id);
+                dbo.executeNonQuery();
+            }
+            catch (System.Exception e)
+            {
+            	Program.Log("SQLError: " + e.ToString());
+            
+            }
+            finally
+            {
+                if (dbo != null)
+                    dbo.Dispose();
+            }
         }
 
         public void initGLData()

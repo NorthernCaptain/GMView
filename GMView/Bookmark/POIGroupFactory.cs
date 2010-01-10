@@ -11,6 +11,19 @@ namespace GMView.Bookmarks
     /// </summary>
     public class POIGroupFactory
     {
+        private static volatile POIGroupFactory instance = null;
+
+        /// <summary>
+        /// Return single instance of the factory
+        /// </summary>
+        /// <returns></returns>
+        public static POIGroupFactory singleton()
+        {
+            if (instance == null)
+                instance = new POIGroupFactory();
+            return instance;
+        }
+
         private List<POIGroup> allGroups = new List<POIGroup>();
         private Dictionary<int, POIGroup> idGroups = new Dictionary<int, POIGroup>();
 
@@ -24,7 +37,7 @@ namespace GMView.Bookmarks
         }
 
 
-        public POIGroupFactory()
+        private POIGroupFactory()
         {
             loadGroups();
         }
@@ -34,6 +47,7 @@ namespace GMView.Bookmarks
         /// </summary>
         private void loadGroups()
         {
+            Program.Log("Loading POI groups");
             DBObj dbo = null;
             try
             {
@@ -42,10 +56,10 @@ namespace GMView.Bookmarks
                 while (reader.Read())
                 {
             		//DO each item processing
-                    POIGroup grp = new POIGroup(reader);
-                    allGroups.Add(grp);
-                    idGroups.Add(grp.Id, grp);
+                    addGroup(new POIGroup(reader));
                 }
+
+                reader.Close();
 
                 dbo.commandText = @"select pgm.parent_id, pgm.member_id from poi_group_member pgm, "
                                  + "poi where poi.id = pgm.member_id and poi.is_group=1 order by 1,2";
@@ -78,6 +92,52 @@ namespace GMView.Bookmarks
                 if (dbo != null)
                     dbo.Dispose();
             }
+        }
+
+        /// <summary>
+        /// Find first group with the given name and return it. If group is not found then
+        /// return null.
+        /// </summary>
+        /// <param name="groupName"></param>
+        /// <returns></returns>
+        public POIGroup findByName(string groupName)
+        {
+            foreach (POIGroup pg in allGroups)
+            {
+                if (pg.Name.Equals(groupName))
+                    return pg;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Create a simple group by a given name nested directly into 'root' group
+        /// </summary>
+        /// <param name="groupName"></param>
+        /// <returns></returns>
+        public POIGroup createSimpleGroup(string groupName)
+        {
+            POIGroup pgroup = new POIGroup(groupName);
+            pgroup.updateDB();
+
+            addGroup(pgroup);
+
+            POIGroup root = findByName("root");
+            root.addChild(pgroup);
+            root.updateChildrenLinksDB();
+            return pgroup;
+        }
+
+        /// <summary>
+        /// Register new group in the factory
+        /// </summary>
+        /// <param name="newGroup"></param>
+        /// <returns></returns>
+        public POIGroup addGroup(POIGroup newGroup)
+        {
+            allGroups.Add(newGroup);
+            idGroups.Add(newGroup.Id, newGroup);
+            return newGroup;
         }
     }
 }

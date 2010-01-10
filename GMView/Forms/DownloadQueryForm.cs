@@ -88,10 +88,10 @@ namespace GMView
             if (zlvl >= Program.opt.max_zoom_lvl)
                 return;
 
-            if (zlvl < 5)
-                zlvl = 5;
+            if (zlvl < 8)
+                zlvl = 8;
 
-            for (int z = 6; z <= Program.opt.max_zoom_lvl; z++)
+            for (int z = 8; z <= Program.opt.max_zoom_lvl; z++)
                 zoomCheckList.SetItemChecked(Program.opt.max_zoom_lvl - z, z >= zlvl);
 
             switch (Program.opt.mapType)
@@ -155,8 +155,9 @@ namespace GMView
 
             force = forceDownloadCB.Checked;
 
-            foreach (int zoom_idx in zoomCheckList.CheckedIndices)
+            for(int idx = zoomCheckList.CheckedIndices.Count -1; idx>=0;idx--)
             {
+                int zoom_idx = zoomCheckList.CheckedIndices[idx];
                 int zlvl = Program.opt.max_zoom_lvl - zoom_idx;
 
                 if (loadqueue.tiles.Count > 50000)
@@ -397,6 +398,20 @@ namespace GMView
                 oldxy = curxy;
                 curnode = curnode.Next;
             }
+        }
+
+        private void allNoneCB_CheckedChanged(object sender, EventArgs e)
+        {
+            int zlvl = Program.opt.cur_zoom_lvl + 1;
+            if (zlvl >= Program.opt.max_zoom_lvl)
+                return;
+
+            if (zlvl < 8)
+                zlvl = 8;
+
+            for (int z = zlvl; z <= Program.opt.max_zoom_lvl; z++)
+                zoomCheckList.SetItemChecked(Program.opt.max_zoom_lvl - z, allNoneCB.Checked);
+            recalcParams();
         }
 
     }

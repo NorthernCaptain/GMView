@@ -8,7 +8,7 @@ namespace GMView
 {
     public class GPSTrackFactory
     {
-        private static GPSTrackFactory instance = new GPSTrackFactory();
+        private static volatile GPSTrackFactory instance = new GPSTrackFactory();
 
         /// <summary>
         /// Return sigleton of the track factory

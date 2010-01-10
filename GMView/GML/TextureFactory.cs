@@ -76,7 +76,7 @@ namespace GMView
             WayDotGreen
         };
 
-        private static TextureFactory instance = new TextureFactory();
+        private static volatile TextureFactory instance = new TextureFactory();
         private Dictionary<ImageDot, object> textures = new Dictionary<ImageDot, object>();
         private Dictionary<TexAlias, ImageDot> images = new Dictionary<TexAlias, ImageDot>();
 

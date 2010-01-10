@@ -10,7 +10,7 @@ namespace GMView
 {
     public class ImgCacheManager
     {
-        private static ImgCacheManager instance = new ImgCacheManager();
+        private static volatile ImgCacheManager instance = new ImgCacheManager();
 
         ImgDirInfo[,] info;
         private MapObject mapo = null;

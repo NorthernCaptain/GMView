@@ -29,6 +29,8 @@ namespace GMView.Forms
                 ImgCacheManager.singleton.reorganizeAll();
                 Application.DoEvents();
                 ImgCacheManager.singleton.loadAll();
+                Bookmarks.POITypeFactory.singleton();
+                Bookmarks.POIGroupFactory.singleton();
             }
             catch (Exception e)
             {

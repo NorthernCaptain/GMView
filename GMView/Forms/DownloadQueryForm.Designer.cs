@@ -60,6 +60,7 @@
             this.label7 = new System.Windows.Forms.Label();
             this.needOSMCB = new System.Windows.Forms.CheckBox();
             this.modeLbl = new System.Windows.Forms.Label();
+            this.allNoneCB = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -144,20 +145,19 @@
             "11",
             "10",
             "9",
-            "8",
-            "7",
-            "6 (smalest)"});
+            "8 (least)"});
             this.zoomCheckList.Location = new System.Drawing.Point(6, 13);
             this.zoomCheckList.Name = "zoomCheckList";
-            this.zoomCheckList.Size = new System.Drawing.Size(90, 199);
+            this.zoomCheckList.Size = new System.Drawing.Size(90, 169);
             this.zoomCheckList.TabIndex = 1;
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.allNoneCB);
             this.groupBox2.Controls.Add(this.zoomCheckList);
             this.groupBox2.Location = new System.Drawing.Point(160, 201);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(103, 216);
+            this.groupBox2.Size = new System.Drawing.Size(103, 218);
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Zoom levels:";
@@ -477,6 +477,19 @@
             this.modeLbl.TabIndex = 7;
             this.modeLbl.Text = "Square area download";
             // 
+            // allNoneCB
+            // 
+            this.allNoneCB.AutoSize = true;
+            this.allNoneCB.Checked = true;
+            this.allNoneCB.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.allNoneCB.Location = new System.Drawing.Point(7, 190);
+            this.allNoneCB.Name = "allNoneCB";
+            this.allNoneCB.Size = new System.Drawing.Size(68, 17);
+            this.allNoneCB.TabIndex = 2;
+            this.allNoneCB.Text = "All/None";
+            this.allNoneCB.UseVisualStyleBackColor = true;
+            this.allNoneCB.CheckedChanged += new System.EventHandler(this.allNoneCB_CheckedChanged);
+            // 
             // DownloadQueryForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -499,6 +512,7 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.toLatNT)).EndInit();
@@ -547,5 +561,6 @@
         private System.Windows.Forms.NumericUpDown nearbyNT;
         private System.Windows.Forms.CheckBox needOSMCB;
         private System.Windows.Forms.Label modeLbl;
+        private System.Windows.Forms.CheckBox allNoneCB;
     }
 }

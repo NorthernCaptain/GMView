@@ -15,7 +15,7 @@ namespace GMView.Bookmarks
         /// <summary>
         /// Single instance of the factory
         /// </summary>
-        private static POITypeFactory instance = null;
+        private static volatile POITypeFactory instance = null;
 
         /// <summary>
         /// Method for accessing instance of the factory
@@ -30,6 +30,7 @@ namespace GMView.Bookmarks
 
         private List<POIType> allTypes = new List<POIType>();
         private Dictionary<string, POIType> nameTypes = new Dictionary<string, POIType>();
+        private Dictionary<int, POIType> idTypes = new Dictionary<int, POIType>();
 
         /// <summary>
         /// Return the list of all POI types
@@ -58,6 +59,15 @@ namespace GMView.Bookmarks
         }
 
         /// <summary>
+        /// Return POIType by its ID.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public POIType typeById(int id)
+        {
+            return idTypes[id];
+        }
+        /// <summary>
         /// Private constructor, that loads POI types from DB
         /// </summary>
         private POITypeFactory()
@@ -71,7 +81,7 @@ namespace GMView.Bookmarks
         private void loadList()
         {
             DBObj dbo = null;
-
+            Program.Log("Loading POI types");
             try
             {
                 dbo = new DBObj("select id, name, description, icon, icon_cx, icon_cy "
@@ -83,6 +93,7 @@ namespace GMView.Bookmarks
                     POIType pi = new POIType(reader);
                     allTypes.Add(pi);
                     nameTypes.Add(pi.Name, pi);
+                    idTypes.Add(pi.Id, pi);
                 }
             }
             catch (System.Exception ex)
