@@ -29,25 +29,24 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.dataGV = new System.Windows.Forms.DataGridView();
             this.okBut = new System.Windows.Forms.Button();
-            this.latCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.lonCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.descr = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.group = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.idname = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.pinColor = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.treeView = new Aga.Controls.Tree.TreeViewAdv();
+            this.treeColumn1 = new Aga.Controls.Tree.TreeColumn();
+            this.descrText = new Aga.Controls.Tree.TreeColumn();
+            this.lonCol = new Aga.Controls.Tree.TreeColumn();
+            this.latCol = new Aga.Controls.Tree.TreeColumn();
+            this.nodeName = new Aga.Controls.Tree.NodeControls.NodeTextBox();
+            this.nodeDescr = new Aga.Controls.Tree.NodeControls.NodeTextBox();
+            this.nodeStateIcon1 = new Aga.Controls.Tree.NodeControls.NodeStateIcon();
             this.tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGV)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.dataGV, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.okBut, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.treeView, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -56,24 +55,6 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(686, 271);
             this.tableLayoutPanel1.TabIndex = 0;
-            // 
-            // dataGV
-            // 
-            this.dataGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.latCol,
-            this.lonCol,
-            this.name,
-            this.descr,
-            this.group,
-            this.idname,
-            this.pinColor});
-            this.dataGV.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGV.Location = new System.Drawing.Point(3, 3);
-            this.dataGV.Name = "dataGV";
-            this.dataGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGV.Size = new System.Drawing.Size(680, 235);
-            this.dataGV.TabIndex = 0;
             // 
             // okBut
             // 
@@ -86,57 +67,90 @@
             this.okBut.Text = "OK";
             this.okBut.UseVisualStyleBackColor = true;
             // 
-            // latCol
+            // treeView
             // 
-            this.latCol.HeaderText = "Latitude";
-            this.latCol.Name = "latCol";
-            this.latCol.Width = 60;
+            this.treeView.AllowColumnReorder = true;
+            this.treeView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.treeView.AutoRowHeight = true;
+            this.treeView.BackColor = System.Drawing.SystemColors.Window;
+            this.treeView.Columns.Add(this.treeColumn1);
+            this.treeView.Columns.Add(this.descrText);
+            this.treeView.Columns.Add(this.lonCol);
+            this.treeView.Columns.Add(this.latCol);
+            this.treeView.DefaultToolTipProvider = null;
+            this.treeView.DragDropMarkColor = System.Drawing.Color.Maroon;
+            this.treeView.FullRowSelect = true;
+            this.treeView.GridLineStyle = ((Aga.Controls.Tree.GridLineStyle)((Aga.Controls.Tree.GridLineStyle.Horizontal | Aga.Controls.Tree.GridLineStyle.Vertical)));
+            this.treeView.LineColor = System.Drawing.SystemColors.ControlDark;
+            this.treeView.LoadOnDemand = true;
+            this.treeView.Location = new System.Drawing.Point(3, 3);
+            this.treeView.Model = null;
+            this.treeView.Name = "treeView";
+            this.treeView.NodeControls.Add(this.nodeStateIcon1);
+            this.treeView.NodeControls.Add(this.nodeName);
+            this.treeView.NodeControls.Add(this.nodeDescr);
+            this.treeView.SelectedNode = null;
+            this.treeView.Size = new System.Drawing.Size(680, 235);
+            this.treeView.TabIndex = 2;
+            this.treeView.Text = "POI tree";
+            this.treeView.UseColumns = true;
+            // 
+            // treeColumn1
+            // 
+            this.treeColumn1.Header = "Name";
+            this.treeColumn1.SortOrder = System.Windows.Forms.SortOrder.None;
+            this.treeColumn1.TooltipText = "POI name";
+            this.treeColumn1.Width = 200;
+            // 
+            // descrText
+            // 
+            this.descrText.Header = "Description";
+            this.descrText.SortOrder = System.Windows.Forms.SortOrder.None;
+            this.descrText.TooltipText = "POI description";
+            this.descrText.Width = 350;
             // 
             // lonCol
             // 
-            this.lonCol.HeaderText = "Longitude";
-            this.lonCol.Name = "lonCol";
+            this.lonCol.Header = "Longitude";
+            this.lonCol.SortOrder = System.Windows.Forms.SortOrder.None;
+            this.lonCol.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.lonCol.TooltipText = null;
             this.lonCol.Width = 60;
             // 
-            // name
+            // latCol
             // 
-            this.name.HeaderText = "Name";
-            this.name.Name = "name";
-            this.name.Width = 180;
+            this.latCol.Header = "Latitude";
+            this.latCol.SortOrder = System.Windows.Forms.SortOrder.None;
+            this.latCol.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.latCol.TooltipText = null;
+            this.latCol.Width = 60;
             // 
-            // descr
+            // nodeName
             // 
-            this.descr.HeaderText = "Description";
-            this.descr.Name = "descr";
-            this.descr.Width = 350;
+            this.nodeName.DataPropertyName = "Name";
+            this.nodeName.IncrementalSearchEnabled = true;
+            this.nodeName.LeftMargin = 3;
+            this.nodeName.ParentColumn = this.treeColumn1;
+            this.nodeName.Trimming = System.Drawing.StringTrimming.EllipsisCharacter;
+            this.nodeName.UseCompatibleTextRendering = true;
             // 
-            // group
+            // nodeDescr
             // 
-            this.group.AutoComplete = false;
-            this.group.HeaderText = "Group";
-            this.group.Items.AddRange(new object[] {
-            "test"});
-            this.group.Name = "group";
-            this.group.ToolTipText = "Menu group for POI";
-            this.group.Width = 150;
+            this.nodeDescr.DataPropertyName = "Description";
+            this.nodeDescr.IncrementalSearchEnabled = true;
+            this.nodeDescr.LeftMargin = 3;
+            this.nodeDescr.ParentColumn = this.descrText;
+            this.nodeDescr.Trimming = System.Drawing.StringTrimming.EllipsisCharacter;
+            this.nodeDescr.UseCompatibleTextRendering = true;
             // 
-            // idname
+            // nodeStateIcon1
             // 
-            this.idname.HeaderText = "id";
-            this.idname.Name = "idname";
-            this.idname.ReadOnly = true;
-            this.idname.Visible = false;
-            // 
-            // pinColor
-            // 
-            this.pinColor.HeaderText = "Pin color";
-            this.pinColor.Items.AddRange(new object[] {
-            "Yellow",
-            "Green",
-            "Red",
-            "Blue"});
-            this.pinColor.Name = "pinColor";
-            this.pinColor.Width = 60;
+            this.nodeStateIcon1.DataPropertyName = "IconImage";
+            this.nodeStateIcon1.LeftMargin = 1;
+            this.nodeStateIcon1.ParentColumn = this.treeColumn1;
+            this.nodeStateIcon1.ScaleMode = Aga.Controls.Tree.ImageScaleMode.AlwaysScale;
             // 
             // EditBooks
             // 
@@ -145,9 +159,8 @@
             this.ClientSize = new System.Drawing.Size(686, 271);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "EditBooks";
-            this.Text = "Edit places of interest";
+            this.Text = "Places of interest";
             this.tableLayoutPanel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGV)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -155,14 +168,14 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.DataGridView dataGV;
         private System.Windows.Forms.Button okBut;
-        private System.Windows.Forms.DataGridViewTextBoxColumn latCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn lonCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn name;
-        private System.Windows.Forms.DataGridViewTextBoxColumn descr;
-        private System.Windows.Forms.DataGridViewComboBoxColumn group;
-        private System.Windows.Forms.DataGridViewTextBoxColumn idname;
-        private System.Windows.Forms.DataGridViewComboBoxColumn pinColor;
+        private Aga.Controls.Tree.TreeViewAdv treeView;
+        private Aga.Controls.Tree.TreeColumn treeColumn1;
+        private Aga.Controls.Tree.TreeColumn descrText;
+        private Aga.Controls.Tree.TreeColumn lonCol;
+        private Aga.Controls.Tree.TreeColumn latCol;
+        private Aga.Controls.Tree.NodeControls.NodeTextBox nodeName;
+        private Aga.Controls.Tree.NodeControls.NodeTextBox nodeDescr;
+        private Aga.Controls.Tree.NodeControls.NodeStateIcon nodeStateIcon1;
     }
 }

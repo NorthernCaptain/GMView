@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data.Common;
 using ncUtils;
+using System.Drawing;
 
 namespace GMView.Bookmarks
 {
@@ -40,15 +41,25 @@ namespace GMView.Bookmarks
             set { description = value; }
         }
 
+
+        protected Image icon;
+        public Image IconImage
+        {
+            get { return null; }
+            set {}
+        }
+
+
         public POIGroup()
         {
-
+            icon = IconFactory.singleton.getIcon(POITypeFactory.singleton().typeById(1)).img;
         }
 
         public POIGroup(string iname)
         {
             name = iname;
             description = iname;
+            icon = IconFactory.singleton.getIcon(POITypeFactory.singleton().typeById(1)).img;
         }
 
         /// <summary>
@@ -62,6 +73,7 @@ namespace GMView.Bookmarks
             id = reader.GetInt32(0);
             name = reader.GetString(1);
             description = reader.GetString(2);
+            icon = IconFactory.singleton.getIcon(POITypeFactory.singleton().typeById(1)).img;
         }
 
         /// <summary>
@@ -130,6 +142,13 @@ namespace GMView.Bookmarks
         /// List of children of this group
         /// </summary>
         protected LinkedList<POIGroup> children;
+
+        public LinkedList<POIGroup> Children
+        {
+            get { return children; }
+            set { children = value; }
+        }
+
         /// <summary>
         /// Adds child group to the group, create all necessary links
         /// </summary>

@@ -149,6 +149,17 @@ namespace GMView
             set { flags = value; }
         }
 
+        /// <summary>
+        /// Icon image for display in dialogs
+        /// </summary>
+        protected Image icon;
+        [XmlIgnore]
+        public Image IconImage
+        {
+            get { return icon; }
+            set { }
+        }
+
 
         public Bookmark()
         {
@@ -200,11 +211,21 @@ namespace GMView
         {
             id = reader.GetInt32(reader.GetOrdinal("ID"));
             name = reader.GetString(reader.GetOrdinal("NAME"));
-            description = reader.GetString(reader.GetOrdinal("DESCRIPTION"));
-            comment = reader.GetString(reader.GetOrdinal("COMMENTS"));
+            {
+                int idx = reader.GetOrdinal("DESCRIPTION");
+                if(!reader.IsDBNull(idx))
+                    description = reader.GetString(idx);
+            }
+            {
+                int idx = reader.GetOrdinal("COMMENTS");
+                if (!reader.IsDBNull(idx))
+                    comment = reader.GetString(idx);
+            }
+
             int type_id = reader.GetInt32(reader.GetOrdinal("TYPE"));
             ptype = Bookmarks.POITypeFactory.singleton().typeById(type_id);
             iconfo = ptype;
+            icon = IconFactory.singleton.getIcon(iconfo).img;
             lon = reader.GetDouble(reader.GetOrdinal("LON"));
             lat = reader.GetDouble(reader.GetOrdinal("LAT"));
             alt = reader.GetDouble(reader.GetOrdinal("ALT"));
@@ -219,6 +240,7 @@ namespace GMView
         {
             ptype = newType;
             iconfo = ptype;
+            icon = IconFactory.singleton.getIcon(iconfo).img; 
             if (tex != null)
                 initGLData();
             if(name[0] == '?')

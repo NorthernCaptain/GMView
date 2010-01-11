@@ -111,6 +111,18 @@ namespace GMView.Bookmarks
         }
 
         /// <summary>
+        /// Finds and return POIGroup by its Id. Return null on fail
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public POIGroup findById(int id)
+        {
+            POIGroup pg;
+            if (idGroups.TryGetValue(id, out pg))
+                return pg;
+            return null;
+        }
+        /// <summary>
         /// Create a simple group by a given name nested directly into 'root' group
         /// </summary>
         /// <param name="groupName"></param>

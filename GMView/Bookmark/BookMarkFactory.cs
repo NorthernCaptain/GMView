@@ -5,7 +5,9 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Windows.Forms;
+using System.Data.Common;
 using ncGeo;
+using ncUtils;
 
 namespace GMView
 {
@@ -577,6 +579,43 @@ namespace GMView
                 subloadBookmarksKML(nlist, nsm, groupname);
             else
                 subloadBookmarksGPX(nlist, nsm, groupname);
+        }
+
+        /// <summary>
+        /// Loads all POI from DB that has given parent
+        /// </summary>
+        /// <param name="parent_id"></param>
+        /// <returns></returns>
+        public List<Bookmark> loadByParent(int parent_id)
+        {
+            DBObj dbo = null;
+            try
+            {
+                dbo = new DBObj(@"select poi.id, poi.name, poi.description, poi.comments, "
+                            + "poi.type, poi.lon, poi.lat, poi.alt, poi.flags "
+                            + "from poi, poi_group_member where poi.id = poi_group_member.member_id "
+                            + "and poi.is_group = 0 and poi_group_member.parent_id=@PARENT_ID");
+                dbo.addIntPar("@PARENT_ID", parent_id);
+                DbDataReader reader = dbo.cmd.ExecuteReader();
+                List<Bookmark> pois = new List<Bookmark>();
+                while (reader.Read())
+                {
+            		//DO each item processing
+                    Bookmark poi = new Bookmark(reader);
+                    pois.Add(poi);
+                }
+                return pois;
+            }
+            catch (System.Exception e)
+            {
+            	Program.Log("SQLError: " + e.ToString());
+                return null;
+            }
+            finally
+            {
+                if (dbo != null)
+                    dbo.Dispose();
+            }
         }
     }
 }
