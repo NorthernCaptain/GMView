@@ -32,12 +32,22 @@
             this.okBut = new System.Windows.Forms.Button();
             this.treeView = new Aga.Controls.Tree.TreeViewAdv();
             this.treeColumn1 = new Aga.Controls.Tree.TreeColumn();
-            this.descrText = new Aga.Controls.Tree.TreeColumn();
             this.lonCol = new Aga.Controls.Tree.TreeColumn();
             this.latCol = new Aga.Controls.Tree.TreeColumn();
+            this.descrText = new Aga.Controls.Tree.TreeColumn();
+            this.typeCol = new Aga.Controls.Tree.TreeColumn();
+            this.idCol = new Aga.Controls.Tree.TreeColumn();
+            this.commentsCol = new Aga.Controls.Tree.TreeColumn();
+            this.createdCol = new Aga.Controls.Tree.TreeColumn();
+            this.nodeStateIcon1 = new Aga.Controls.Tree.NodeControls.NodeStateIcon();
             this.nodeName = new Aga.Controls.Tree.NodeControls.NodeTextBox();
             this.nodeDescr = new Aga.Controls.Tree.NodeControls.NodeTextBox();
-            this.nodeStateIcon1 = new Aga.Controls.Tree.NodeControls.NodeStateIcon();
+            this.nodeIntegerTextBox_Id = new Aga.Controls.Tree.NodeControls.NodeIntegerTextBox();
+            this.nodeCombo_Type = new Aga.Controls.Tree.NodeControls.NodeComboBox();
+            this.nodeTextBox_Created = new Aga.Controls.Tree.NodeControls.NodeTextBox();
+            this.nodeTextBox_Comment = new Aga.Controls.Tree.NodeControls.NodeTextBox();
+            this.nodeTextBox_Lon = new Aga.Controls.Tree.NodeControls.NodeTextBox();
+            this.nodeTextBox_Lat = new Aga.Controls.Tree.NodeControls.NodeTextBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -70,17 +80,24 @@
             // treeView
             // 
             this.treeView.AllowColumnReorder = true;
+            this.treeView.AllowDrop = true;
             this.treeView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.treeView.AutoRowHeight = true;
             this.treeView.BackColor = System.Drawing.SystemColors.Window;
             this.treeView.Columns.Add(this.treeColumn1);
-            this.treeView.Columns.Add(this.descrText);
             this.treeView.Columns.Add(this.lonCol);
             this.treeView.Columns.Add(this.latCol);
+            this.treeView.Columns.Add(this.descrText);
+            this.treeView.Columns.Add(this.typeCol);
+            this.treeView.Columns.Add(this.idCol);
+            this.treeView.Columns.Add(this.commentsCol);
+            this.treeView.Columns.Add(this.createdCol);
             this.treeView.DefaultToolTipProvider = null;
+            this.treeView.DisplayDraggingNodes = true;
             this.treeView.DragDropMarkColor = System.Drawing.Color.Maroon;
+            this.treeView.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.treeView.FullRowSelect = true;
             this.treeView.GridLineStyle = ((Aga.Controls.Tree.GridLineStyle)((Aga.Controls.Tree.GridLineStyle.Horizontal | Aga.Controls.Tree.GridLineStyle.Vertical)));
             this.treeView.LineColor = System.Drawing.SystemColors.ControlDark;
@@ -91,11 +108,19 @@
             this.treeView.NodeControls.Add(this.nodeStateIcon1);
             this.treeView.NodeControls.Add(this.nodeName);
             this.treeView.NodeControls.Add(this.nodeDescr);
+            this.treeView.NodeControls.Add(this.nodeIntegerTextBox_Id);
+            this.treeView.NodeControls.Add(this.nodeCombo_Type);
+            this.treeView.NodeControls.Add(this.nodeTextBox_Created);
+            this.treeView.NodeControls.Add(this.nodeTextBox_Comment);
+            this.treeView.NodeControls.Add(this.nodeTextBox_Lon);
+            this.treeView.NodeControls.Add(this.nodeTextBox_Lat);
+            this.treeView.RowHeight = 19;
             this.treeView.SelectedNode = null;
             this.treeView.Size = new System.Drawing.Size(680, 235);
             this.treeView.TabIndex = 2;
             this.treeView.Text = "POI tree";
             this.treeView.UseColumns = true;
+            this.treeView.ColumnClicked += new System.EventHandler<Aga.Controls.Tree.TreeColumnEventArgs>(this.treeView_ColumnClicked);
             // 
             // treeColumn1
             // 
@@ -104,20 +129,13 @@
             this.treeColumn1.TooltipText = "POI name";
             this.treeColumn1.Width = 200;
             // 
-            // descrText
-            // 
-            this.descrText.Header = "Description";
-            this.descrText.SortOrder = System.Windows.Forms.SortOrder.None;
-            this.descrText.TooltipText = "POI description";
-            this.descrText.Width = 350;
-            // 
             // lonCol
             // 
             this.lonCol.Header = "Longitude";
             this.lonCol.SortOrder = System.Windows.Forms.SortOrder.None;
             this.lonCol.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.lonCol.TooltipText = null;
-            this.lonCol.Width = 60;
+            this.lonCol.Width = 70;
             // 
             // latCol
             // 
@@ -125,11 +143,55 @@
             this.latCol.SortOrder = System.Windows.Forms.SortOrder.None;
             this.latCol.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.latCol.TooltipText = null;
-            this.latCol.Width = 60;
+            this.latCol.Width = 70;
+            // 
+            // descrText
+            // 
+            this.descrText.Header = "Description";
+            this.descrText.SortOrder = System.Windows.Forms.SortOrder.None;
+            this.descrText.TooltipText = "POI description";
+            this.descrText.Width = 350;
+            // 
+            // typeCol
+            // 
+            this.typeCol.Header = "Type";
+            this.typeCol.SortOrder = System.Windows.Forms.SortOrder.None;
+            this.typeCol.TooltipText = "Type of POI";
+            this.typeCol.Width = 60;
+            // 
+            // idCol
+            // 
+            this.idCol.Header = "Id";
+            this.idCol.SortOrder = System.Windows.Forms.SortOrder.None;
+            this.idCol.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.idCol.TooltipText = "Record Id";
+            // 
+            // commentsCol
+            // 
+            this.commentsCol.Header = "Comments";
+            this.commentsCol.SortOrder = System.Windows.Forms.SortOrder.None;
+            this.commentsCol.TooltipText = null;
+            this.commentsCol.Width = 300;
+            // 
+            // createdCol
+            // 
+            this.createdCol.Header = "Date";
+            this.createdCol.SortOrder = System.Windows.Forms.SortOrder.None;
+            this.createdCol.TooltipText = "Date created";
+            this.createdCol.Width = 110;
+            // 
+            // nodeStateIcon1
+            // 
+            this.nodeStateIcon1.DataPropertyName = "IconImage";
+            this.nodeStateIcon1.LeftMargin = 1;
+            this.nodeStateIcon1.ParentColumn = this.treeColumn1;
+            this.nodeStateIcon1.ScaleMode = Aga.Controls.Tree.ImageScaleMode.AlwaysScale;
             // 
             // nodeName
             // 
             this.nodeName.DataPropertyName = "Name";
+            this.nodeName.EditEnabled = true;
+            this.nodeName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.nodeName.IncrementalSearchEnabled = true;
             this.nodeName.LeftMargin = 3;
             this.nodeName.ParentColumn = this.treeColumn1;
@@ -139,18 +201,78 @@
             // nodeDescr
             // 
             this.nodeDescr.DataPropertyName = "Description";
+            this.nodeDescr.EditEnabled = true;
+            this.nodeDescr.EditOnClick = true;
             this.nodeDescr.IncrementalSearchEnabled = true;
             this.nodeDescr.LeftMargin = 3;
             this.nodeDescr.ParentColumn = this.descrText;
             this.nodeDescr.Trimming = System.Drawing.StringTrimming.EllipsisCharacter;
             this.nodeDescr.UseCompatibleTextRendering = true;
             // 
-            // nodeStateIcon1
+            // nodeIntegerTextBox_Id
             // 
-            this.nodeStateIcon1.DataPropertyName = "IconImage";
-            this.nodeStateIcon1.LeftMargin = 1;
-            this.nodeStateIcon1.ParentColumn = this.treeColumn1;
-            this.nodeStateIcon1.ScaleMode = Aga.Controls.Tree.ImageScaleMode.AlwaysScale;
+            this.nodeIntegerTextBox_Id.DataPropertyName = "Id";
+            this.nodeIntegerTextBox_Id.IncrementalSearchEnabled = true;
+            this.nodeIntegerTextBox_Id.LeftMargin = 3;
+            this.nodeIntegerTextBox_Id.ParentColumn = this.idCol;
+            this.nodeIntegerTextBox_Id.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.nodeIntegerTextBox_Id.Trimming = System.Drawing.StringTrimming.EllipsisCharacter;
+            this.nodeIntegerTextBox_Id.UseCompatibleTextRendering = true;
+            // 
+            // nodeCombo_Type
+            // 
+            this.nodeCombo_Type.DataPropertyName = "Ptype";
+            this.nodeCombo_Type.EditEnabled = true;
+            this.nodeCombo_Type.EditorHeight = 150;
+            this.nodeCombo_Type.EditorWidth = 200;
+            this.nodeCombo_Type.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.nodeCombo_Type.IncrementalSearchEnabled = true;
+            this.nodeCombo_Type.LeftMargin = 3;
+            this.nodeCombo_Type.ParentColumn = this.typeCol;
+            this.nodeCombo_Type.Trimming = System.Drawing.StringTrimming.EllipsisCharacter;
+            this.nodeCombo_Type.UseCompatibleTextRendering = true;
+            // 
+            // nodeTextBox_Created
+            // 
+            this.nodeTextBox_Created.DataPropertyName = "CreatedS";
+            this.nodeTextBox_Created.IncrementalSearchEnabled = true;
+            this.nodeTextBox_Created.LeftMargin = 3;
+            this.nodeTextBox_Created.ParentColumn = this.createdCol;
+            this.nodeTextBox_Created.Trimming = System.Drawing.StringTrimming.EllipsisCharacter;
+            this.nodeTextBox_Created.UseCompatibleTextRendering = true;
+            // 
+            // nodeTextBox_Comment
+            // 
+            this.nodeTextBox_Comment.DataPropertyName = "Comment";
+            this.nodeTextBox_Comment.EditEnabled = true;
+            this.nodeTextBox_Comment.EditOnClick = true;
+            this.nodeTextBox_Comment.IncrementalSearchEnabled = true;
+            this.nodeTextBox_Comment.LeftMargin = 3;
+            this.nodeTextBox_Comment.ParentColumn = this.commentsCol;
+            this.nodeTextBox_Comment.Trimming = System.Drawing.StringTrimming.EllipsisCharacter;
+            this.nodeTextBox_Comment.UseCompatibleTextRendering = true;
+            // 
+            // nodeTextBox_Lon
+            // 
+            this.nodeTextBox_Lon.DataPropertyName = "LongitudeS";
+            this.nodeTextBox_Lon.EditEnabled = true;
+            this.nodeTextBox_Lon.IncrementalSearchEnabled = true;
+            this.nodeTextBox_Lon.LeftMargin = 3;
+            this.nodeTextBox_Lon.ParentColumn = this.lonCol;
+            this.nodeTextBox_Lon.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.nodeTextBox_Lon.Trimming = System.Drawing.StringTrimming.EllipsisCharacter;
+            this.nodeTextBox_Lon.UseCompatibleTextRendering = true;
+            // 
+            // nodeTextBox_Lat
+            // 
+            this.nodeTextBox_Lat.DataPropertyName = "LatitudeS";
+            this.nodeTextBox_Lat.EditEnabled = true;
+            this.nodeTextBox_Lat.IncrementalSearchEnabled = true;
+            this.nodeTextBox_Lat.LeftMargin = 3;
+            this.nodeTextBox_Lat.ParentColumn = this.latCol;
+            this.nodeTextBox_Lat.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.nodeTextBox_Lat.Trimming = System.Drawing.StringTrimming.EllipsisCharacter;
+            this.nodeTextBox_Lat.UseCompatibleTextRendering = true;
             // 
             // EditBooks
             // 
@@ -177,5 +299,15 @@
         private Aga.Controls.Tree.NodeControls.NodeTextBox nodeName;
         private Aga.Controls.Tree.NodeControls.NodeTextBox nodeDescr;
         private Aga.Controls.Tree.NodeControls.NodeStateIcon nodeStateIcon1;
+        private Aga.Controls.Tree.TreeColumn idCol;
+        private Aga.Controls.Tree.NodeControls.NodeIntegerTextBox nodeIntegerTextBox_Id;
+        private Aga.Controls.Tree.TreeColumn typeCol;
+        private Aga.Controls.Tree.TreeColumn commentsCol;
+        private Aga.Controls.Tree.TreeColumn createdCol;
+        private Aga.Controls.Tree.NodeControls.NodeComboBox nodeCombo_Type;
+        private Aga.Controls.Tree.NodeControls.NodeTextBox nodeTextBox_Created;
+        private Aga.Controls.Tree.NodeControls.NodeTextBox nodeTextBox_Comment;
+        private Aga.Controls.Tree.NodeControls.NodeTextBox nodeTextBox_Lon;
+        private Aga.Controls.Tree.NodeControls.NodeTextBox nodeTextBox_Lat;
     }
 }

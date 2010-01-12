@@ -167,9 +167,13 @@ insert into poi_type (name, description, icon, icon_cx, icon_cy) values('mountai
 ---
 insert into poi_type (name, description, icon, icon_cx, icon_cy) values('museum', 'Museum', 'museum-historical.png', 15, 34);
 ---
----insert into poi_type (name, description, icon, icon_cx, icon_cy) values('pagoda', 'Pagoda', 'park.png', 15, 34);
+insert into poi_type (name, description, icon, icon_cx, icon_cy) values('office', 'Office', 'workoffice.png', 15, 34);
 ---
 insert into poi_type (name, description, icon, icon_cx, icon_cy) values('park', 'Park', 'park.png', 15, 34);
+---
+insert into poi_type (name, description, icon, icon_cx, icon_cy) values('parking', 'Parking', 'parking.png', 15, 34);
+---
+insert into poi_type (name, description, icon, icon_cx, icon_cy) values('car parking', 'Car parking', 'parking.png', 15, 34);
 ---
 insert into poi_type (name, description, icon, icon_cx, icon_cy) values('picnic ground', 'Picnic Ground', 'picnic.png', 15, 34);
 ---

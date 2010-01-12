@@ -51,7 +51,7 @@ namespace GMView
         public string Description
         {
             get { return description; }
-            set { description = value; }
+            set { description = value; updateDB(); }
         }
 
         private string comment;
@@ -80,6 +80,14 @@ namespace GMView
             get { return created; }
             set { created = value; }
         }
+
+        [XmlIgnore]
+        public string CreatedS
+        {
+            get { return created.ToShortDateString() + " " + created.ToShortTimeString(); }
+            set {}
+        }
+
         /// <summary>
         /// Type of the POI
         /// </summary>
@@ -89,7 +97,22 @@ namespace GMView
         public Bookmarks.POIType Ptype
         {
             get { return ptype; }
-            set { ptype = value; }
+            set { if (value != null) { qchangeType(value); updateDB(); }; }
+        }
+
+
+        [XmlIgnore]
+        public string PtypeS
+        {
+            get { return ptype.Name; }
+            set 
+            {
+                Bookmarks.POIType pt = Bookmarks.POITypeFactory.singleton().typeByName(value);
+                if (pt != null)
+                {
+                    qchangeType(pt);
+                }
+            }
         }
 
         /// <summary>
@@ -230,6 +253,7 @@ namespace GMView
             lat = reader.GetDouble(reader.GetOrdinal("LAT"));
             alt = reader.GetDouble(reader.GetOrdinal("ALT"));
             flags = reader.GetInt32(reader.GetOrdinal("FLAGS"));
+            created = reader.GetDateTime(reader.GetOrdinal("CREATED"));
         }
 
         /// <summary>
@@ -494,6 +518,16 @@ namespace GMView
             }
         }
 
+        /// <summary>
+        /// Return string representation of the longitude
+        /// </summary>
+        [XmlIgnore]
+        public string LongitudeS
+        {
+            get { return ncUtils.Glob.lonString(lon); }
+            set { lon = ncUtils.Glob.parseLon(value); updateDB(); }
+        }
+
         [XmlIgnore]
         public double latitude
         {
@@ -505,6 +539,16 @@ namespace GMView
             {
                 lat = value;
             }
+        }
+
+        /// <summary>
+        /// Return string representation of the latitude
+        /// </summary>
+        [XmlIgnore]
+        public string LatitudeS
+        {
+            get { return ncUtils.Glob.latString(lat); }
+            set { lat = ncUtils.Glob.parseLat(value); updateDB(); }
         }
 
         /// <summary>
@@ -520,6 +564,7 @@ namespace GMView
             set
             {
                 alt = value;
+                updateDB();
             }
         }
 

@@ -74,6 +74,10 @@ namespace GMView.Bookmarks
             icon_dy = reader.GetInt32(5);
         }
 
+        /// <summary>
+        /// Return long name as a string representation of the type
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return textName;

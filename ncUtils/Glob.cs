@@ -48,6 +48,50 @@ namespace ncUtils
             return dir_angle.ToString("F1") + " " + course_names[(int)((dir_angle + 11.25) / 22.5)];
         }
 
+        /// <summary>
+        /// Parses string longitude like '54,33'21 W' and return double
+        /// </summary>
+        /// <param name="lon"></param>
+        /// <returns></returns>
+        public static double parseLon(string lon)
+        {
+            double sign = 1;
+            lon = lon.Trim();
+            int len = lon.Length;
+            if(Char.IsLetter(lon[len -1]))
+            {
+                if (lon[len - 1] == 'W' ||
+                   lon[len - 1] == 'w')
+                    sign = -1;
+                lon = lon.Remove(len - 1);
+            }
+            return parseLonLat(lon) * sign;
+        }
+
+        /// <summary>
+        /// Parses string latitude in format like '34.54'22 S' and return double
+        /// </summary>
+        /// <param name="lat"></param>
+        /// <returns></returns>
+        public static double parseLat(string lat)
+        {
+            double sign = 1;
+            lat = lat.Trim();
+            int len = lat.Length;
+            if (Char.IsLetter(lat[len - 1]))
+            {
+                if (lat[len - 1] == 'S' ||
+                   lat[len - 1] == 's')
+                    sign = -1;
+                lat = lat.Remove(len - 1);
+            }
+            return parseLonLat(lat) * sign;
+        }
+        /// <summary>
+        /// Parses string representation of the longitude or latitude (digits only)
+        /// </summary>
+        /// <param name="lon"></param>
+        /// <returns></returns>
         public static double parseLonLat(string lon)
         {
             double result = 0.0;

@@ -592,7 +592,7 @@ namespace GMView
             try
             {
                 dbo = new DBObj(@"select poi.id, poi.name, poi.description, poi.comments, "
-                            + "poi.type, poi.lon, poi.lat, poi.alt, poi.flags "
+                            + "poi.type, poi.lon, poi.lat, poi.alt, poi.flags, poi.created "
                             + "from poi, poi_group_member where poi.id = poi_group_member.member_id "
                             + "and poi.is_group = 0 and poi_group_member.parent_id=@PARENT_ID");
                 dbo.addIntPar("@PARENT_ID", parent_id);

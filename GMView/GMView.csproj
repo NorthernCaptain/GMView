@@ -69,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bookmark\BookMarkFactory.cs" />
+    <Compile Include="Bookmark\POIGridSorter.cs" />
     <Compile Include="Bookmark\POIGroup.cs" />
     <Compile Include="Bookmark\POIGroupFactory.cs" />
     <Compile Include="Bookmark\POITreeModel.cs" />
