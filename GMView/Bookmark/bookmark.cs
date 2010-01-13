@@ -183,6 +183,29 @@ namespace GMView
             set { }
         }
 
+        [XmlIgnore]
+        public bool IsShown
+        {
+            get { return shown; }
+            set 
+            {
+                if (value == shown)
+                    return;
+
+                if(value)
+                {
+                    mapo.addSub(this);
+                    show();
+                    mapo.CenterMapLonLat(lon, lat);
+                } else
+                {
+                    hide();
+                    mapo.delSub(this);
+                }
+                GML.device.repaint();
+                shown = value;
+            }
+        }
 
         public Bookmark()
         {

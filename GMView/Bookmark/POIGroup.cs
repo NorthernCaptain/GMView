@@ -28,7 +28,7 @@ namespace GMView.Bookmarks
         public string Name
         {
             get { return name; }
-            set { name = value; }
+            set { name = value; updateDB(); }
         }
         protected string description;
 
@@ -38,7 +38,7 @@ namespace GMView.Bookmarks
         public string Description
         {
             get { return description; }
-            set { description = value; }
+            set { description = value; updateDB(); }
         }
 
 
@@ -49,6 +49,26 @@ namespace GMView.Bookmarks
             set {}
         }
 
+        private bool shown = false;
+        /// <summary>
+        /// If we set this property to true, then we show all POIs in this group,
+        /// if to false, then we hide all POIs
+        /// </summary>
+        public bool IsShown
+        {
+            get { return shown; }
+            set 
+            {
+                if (value == shown || childrenPOIs == null)
+                    return;
+                
+                foreach (Bookmark poi in childrenPOIs)
+                {
+                    poi.IsShown = value;
+                }
+                shown = value;
+            }
+        }
 
         public POIGroup()
         {
@@ -149,6 +169,20 @@ namespace GMView.Bookmarks
             set { children = value; }
         }
 
+        /// <summary>
+        /// Children that are not subgroups, but real POIs. This list can be null or contains
+        /// only active (loaded) pois, not all of them.
+        /// </summary>
+        protected List<Bookmark> childrenPOIs = null;
+        /// <summary>
+        /// Children that are not subgroups, but real POIs. This list can be null or contains
+        /// only active (loaded) pois, not all of them.
+        /// </summary>
+        public List<Bookmark> ChildrenPOIs
+        {
+            get { return childrenPOIs; }
+            set { childrenPOIs = value; }
+        }
         /// <summary>
         /// Adds child group to the group, create all necessary links
         /// </summary>

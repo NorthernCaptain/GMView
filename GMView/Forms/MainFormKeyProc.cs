@@ -100,6 +100,10 @@ namespace GMView
             {
                 mypoi.qchangeType(qpoi.poiType);
                 mypoi.updateDB();
+                Bookmarks.POIGroup pgroup = Bookmarks.POIGroupFactory.singleton().findByName("quick add");
+                if (pgroup == null)
+                    pgroup = Bookmarks.POIGroupFactory.singleton().findById(0);
+                mypoi.addLinkDB(pgroup);
             }
             else
             {

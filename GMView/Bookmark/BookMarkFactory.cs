@@ -602,8 +602,10 @@ namespace GMView
                 {
             		//DO each item processing
                     Bookmark poi = new Bookmark(reader);
+                    poi.Owner = this;
                     pois.Add(poi);
                 }
+                Bookmarks.POIGroupFactory.singleton().findById(parent_id).ChildrenPOIs = pois;
                 return pois;
             }
             catch (System.Exception e)

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.okBut = new System.Windows.Forms.Button();
             this.treeView = new Aga.Controls.Tree.TreeViewAdv();
@@ -39,6 +40,9 @@
             this.idCol = new Aga.Controls.Tree.TreeColumn();
             this.commentsCol = new Aga.Controls.Tree.TreeColumn();
             this.createdCol = new Aga.Controls.Tree.TreeColumn();
+            this.contextMenuStripForTree = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.addGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.nodeCheckBox_Shown = new Aga.Controls.Tree.NodeControls.NodeCheckBox();
             this.nodeStateIcon1 = new Aga.Controls.Tree.NodeControls.NodeStateIcon();
             this.nodeName = new Aga.Controls.Tree.NodeControls.NodeTextBox();
             this.nodeDescr = new Aga.Controls.Tree.NodeControls.NodeTextBox();
@@ -49,6 +53,7 @@
             this.nodeTextBox_Lon = new Aga.Controls.Tree.NodeControls.NodeTextBox();
             this.nodeTextBox_Lat = new Aga.Controls.Tree.NodeControls.NodeTextBox();
             this.tableLayoutPanel1.SuspendLayout();
+            this.contextMenuStripForTree.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -94,6 +99,7 @@
             this.treeView.Columns.Add(this.idCol);
             this.treeView.Columns.Add(this.commentsCol);
             this.treeView.Columns.Add(this.createdCol);
+            this.treeView.ContextMenuStrip = this.contextMenuStripForTree;
             this.treeView.DefaultToolTipProvider = null;
             this.treeView.DisplayDraggingNodes = true;
             this.treeView.DragDropMarkColor = System.Drawing.Color.Maroon;
@@ -105,6 +111,7 @@
             this.treeView.Location = new System.Drawing.Point(3, 3);
             this.treeView.Model = null;
             this.treeView.Name = "treeView";
+            this.treeView.NodeControls.Add(this.nodeCheckBox_Shown);
             this.treeView.NodeControls.Add(this.nodeStateIcon1);
             this.treeView.NodeControls.Add(this.nodeName);
             this.treeView.NodeControls.Add(this.nodeDescr);
@@ -120,6 +127,7 @@
             this.treeView.TabIndex = 2;
             this.treeView.Text = "POI tree";
             this.treeView.UseColumns = true;
+            this.treeView.SelectionChanged += new System.EventHandler(this.treeView_SelectionChanged);
             this.treeView.ColumnClicked += new System.EventHandler<Aga.Controls.Tree.TreeColumnEventArgs>(this.treeView_ColumnClicked);
             // 
             // treeColumn1
@@ -157,7 +165,7 @@
             this.typeCol.Header = "Type";
             this.typeCol.SortOrder = System.Windows.Forms.SortOrder.None;
             this.typeCol.TooltipText = "Type of POI";
-            this.typeCol.Width = 60;
+            this.typeCol.Width = 100;
             // 
             // idCol
             // 
@@ -180,6 +188,27 @@
             this.createdCol.TooltipText = "Date created";
             this.createdCol.Width = 110;
             // 
+            // contextMenuStripForTree
+            // 
+            this.contextMenuStripForTree.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addGroupToolStripMenuItem});
+            this.contextMenuStripForTree.Name = "contextMenuStripForTree";
+            this.contextMenuStripForTree.Size = new System.Drawing.Size(159, 48);
+            // 
+            // addGroupToolStripMenuItem
+            // 
+            this.addGroupToolStripMenuItem.Name = "addGroupToolStripMenuItem";
+            this.addGroupToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.addGroupToolStripMenuItem.Text = "Add new group";
+            this.addGroupToolStripMenuItem.Click += new System.EventHandler(this.addGroupToolStripMenuItem_Click);
+            // 
+            // nodeCheckBox_Shown
+            // 
+            this.nodeCheckBox_Shown.DataPropertyName = "IsShown";
+            this.nodeCheckBox_Shown.EditEnabled = true;
+            this.nodeCheckBox_Shown.LeftMargin = 0;
+            this.nodeCheckBox_Shown.ParentColumn = this.treeColumn1;
+            // 
             // nodeStateIcon1
             // 
             this.nodeStateIcon1.DataPropertyName = "IconImage";
@@ -191,7 +220,7 @@
             // 
             this.nodeName.DataPropertyName = "Name";
             this.nodeName.EditEnabled = true;
-            this.nodeName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.nodeName.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.nodeName.IncrementalSearchEnabled = true;
             this.nodeName.LeftMargin = 3;
             this.nodeName.ParentColumn = this.treeColumn1;
@@ -202,7 +231,6 @@
             // 
             this.nodeDescr.DataPropertyName = "Description";
             this.nodeDescr.EditEnabled = true;
-            this.nodeDescr.EditOnClick = true;
             this.nodeDescr.IncrementalSearchEnabled = true;
             this.nodeDescr.LeftMargin = 3;
             this.nodeDescr.ParentColumn = this.descrText;
@@ -245,7 +273,6 @@
             // 
             this.nodeTextBox_Comment.DataPropertyName = "Comment";
             this.nodeTextBox_Comment.EditEnabled = true;
-            this.nodeTextBox_Comment.EditOnClick = true;
             this.nodeTextBox_Comment.IncrementalSearchEnabled = true;
             this.nodeTextBox_Comment.LeftMargin = 3;
             this.nodeTextBox_Comment.ParentColumn = this.commentsCol;
@@ -283,6 +310,7 @@
             this.Name = "EditBooks";
             this.Text = "Places of interest";
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.contextMenuStripForTree.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -309,5 +337,8 @@
         private Aga.Controls.Tree.NodeControls.NodeTextBox nodeTextBox_Comment;
         private Aga.Controls.Tree.NodeControls.NodeTextBox nodeTextBox_Lon;
         private Aga.Controls.Tree.NodeControls.NodeTextBox nodeTextBox_Lat;
+        private Aga.Controls.Tree.NodeControls.NodeCheckBox nodeCheckBox_Shown;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripForTree;
+        private System.Windows.Forms.ToolStripMenuItem addGroupToolStripMenuItem;
     }
 }

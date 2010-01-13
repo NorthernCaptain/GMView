@@ -17,10 +17,10 @@ create table poi_type (id integer primary key autoincrement, name varchar(48) no
 create unique index poi_type_name_idx on poi_type (name);
 ---
 insert into poi_type (id, name, description, icon, icon_cx, icon_cy) 
-            values(0, 'group', 'type for groups of POIs', 'group.png', 15, 34);
+            values(0, 'group', 'Type for groups of POIs', 'group.png', 15, 34);
 ---
 insert into poi_type (id, name, description, icon, icon_cx, icon_cy) 
-            values(1, 'unknown', 'Unknown POI type', 'unknown.png', 15, 34);
+            values(1, 'unknown', 'Unknown', 'unknown.png', 15, 34);
 ---
 insert into poi_type (name, description, icon, icon_cx, icon_cy) values('airport', 'Airport', 'airport.png', 15, 34);
 ---
