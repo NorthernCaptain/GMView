@@ -71,6 +71,20 @@ namespace GMView.Bookmarks
             }
         }
 
+        /// <summary>
+        /// Fires NodesRemoved event that updates TreeView after removing some nodes
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="removed"></param>
+        public void fireNodesRemoved(TreePath parent, object[] removed)
+        {
+            if (NodesRemoved != null)
+            {
+                TreeModelEventArgs args = new TreeModelEventArgs(parent, removed);
+                NodesRemoved(this, args);
+            }
+        }
+
         public event EventHandler<TreeModelEventArgs> NodesChanged;
 
         public event EventHandler<TreeModelEventArgs> NodesInserted;

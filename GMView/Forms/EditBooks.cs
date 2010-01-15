@@ -136,5 +136,106 @@ namespace GMView.Forms
             Bookmarks.POIGroupFactory.singleton().addGroup(new_group);
             treeModel.fireNodesInserted(treeView.GetPath(treeView.SelectedNode), new object[] { new_group });
         }
+
+        private void treeView_ItemDrag(object sender, ItemDragEventArgs e)
+        {
+            treeView.DoDragDropSelectedNodes(DragDropEffects.Move);
+        }
+
+        private void treeView_DragOver(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(TreeNodeAdv[])) && treeView.DropPosition.Node != null)
+            {
+                TreeNodeAdv[] nodes = e.Data.GetData(typeof(TreeNodeAdv[])) as TreeNodeAdv[];
+                TreeNodeAdv parent = treeView.DropPosition.Node;
+                if (treeView.DropPosition.Position != NodePosition.Inside)
+                    parent = parent.Parent;
+                if(parent.Parent == null)
+                {
+                    e.Effect = DragDropEffects.None;
+                    return;
+                }
+                foreach (TreeNodeAdv node in nodes)
+                    if (!CheckNodeParent(parent, node))
+                    {
+                        e.Effect = DragDropEffects.None;
+                        return;
+                    }
+
+                e.Effect = e.AllowedEffect;
+            }
+        }
+
+        private bool CheckNodeParent(TreeNodeAdv parent, TreeNodeAdv node)
+        {
+            while (parent != null)
+            {
+                if (node == parent)
+                    return false;
+                else
+                    parent = parent.Parent;
+            }
+            return true;
+        }
+
+        private void treeView_DragDrop(object sender, DragEventArgs e)
+        {
+            treeView.BeginUpdate();
+
+            TreeNodeAdv[] nodes = (TreeNodeAdv[])e.Data.GetData(typeof(TreeNodeAdv[]));
+            Bookmarks.POIGroup dropNode = treeView.DropPosition.Node.Tag as Bookmarks.POIGroup;
+
+            if (dropNode == null)
+                return;
+
+            if (treeView.DropPosition.Position == NodePosition.Inside)
+            {
+                List<object> removed = new List<object>();
+
+                foreach (TreeNodeAdv n in nodes)
+                {
+                    if (n.Tag is Bookmarks.POIGroup)
+                    {
+                        Bookmarks.POIGroup pg = n.Tag as Bookmarks.POIGroup;
+                        pg.reparentMeTo(dropNode);
+
+                        removed.Add(n);
+                    }
+                }
+                treeView.DropPosition.Node.IsExpanded = true;
+                object[] arr = removed.ToArray();
+                this.treeModel.fireNodesRemoved(treeView.GetPath(nodes[0].Parent), arr);
+                this.treeModel.fireNodesInserted(treeView.GetPath(treeView.DropPosition.Node), arr);
+            }
+            else
+            {
+                /*
+                Node parent = dropNode.Parent;
+                Node nextItem = dropNode;
+                if (treeView.DropPosition.Position == NodePosition.After)
+                    nextItem = dropNode.NextNode;
+
+                foreach (TreeNodeAdv node in nodes)
+                    (node.Tag as Node).Parent = null;
+
+                int index = -1;
+                index = parent.Nodes.IndexOf(nextItem);
+                foreach (TreeNodeAdv node in nodes)
+                {
+                    Node item = node.Tag as Node;
+                    if (index == -1)
+                        parent.Nodes.Add(item);
+                    else
+                    {
+                        parent.Nodes.Insert(index, item);
+                        index++;
+                    }
+                }*/
+            }
+
+            treeView.EndUpdate();
+
+        }
+
     }
 }

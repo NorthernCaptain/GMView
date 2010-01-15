@@ -10,7 +10,7 @@ namespace GMView.Bookmarks
     /// <summary>
     /// Class represents POI group, that is used for grouping POIs in user interface
     /// </summary>
-    public class POIGroup
+    public class POIGroup: IPOIBase
     {
         protected int id = 0;
         /// <summary>
@@ -152,10 +152,10 @@ namespace GMView.Bookmarks
         /// </summary>
         protected POIGroup parent;
 
-        public POIGroup Parent
+        public IPOIBase Parent
         {
             get { return parent; }
-            set { parent = value; }
+            set { parent = value as POIGroup; }
         }
 
         /// <summary>
@@ -187,12 +187,23 @@ namespace GMView.Bookmarks
         /// Adds child group to the group, create all necessary links
         /// </summary>
         /// <param name="child"></param>
-        public void addChild(POIGroup child)
+        public void addChild(IPOIBase child)
         {
             if (children == null)
                 children = new LinkedList<POIGroup>();
-            children.AddLast(child);
-            child.parent = this;
+            children.AddLast(child as POIGroup);
+            child.Parent = this;
+        }
+
+        /// <summary>
+        /// Remove child from this parent
+        /// </summary>
+        /// <param name="child"></param>
+        public void delChild(IPOIBase child)
+        {
+            if (children == null)
+                return;
+            children.Remove(child as POIGroup);
         }
 
         /// <summary>
@@ -233,5 +244,46 @@ namespace GMView.Bookmarks
                     dbo.Dispose();
             }
         }
+
+        /// <summary>
+        /// Reparent group to another parent. Updates DB.
+        /// </summary>
+        /// <param name="parentGroup"></param>
+        public void reparentMeTo(IPOIBase parentGroup)
+        {
+            if (parentGroup == null)
+                return;
+
+            POIGroup oldParent = parent;
+            parent.delChild(this);
+            parentGroup.addChild(this);
+
+            DBObj dbo = null;
+            try
+            {
+                dbo = new DBObj(@"update poi_group_member set parent_id=@NEWPARENT where "
+                      + "parent_id=@OLDPARENT and member_id=@CURRENT");
+                dbo.addIntPar("@NEWPARENT", parentGroup.Id);
+                dbo.addIntPar("@OLDPARENT", oldParent.Id);
+                dbo.addIntPar("@CURRENT", id);
+                dbo.executeNonQuery();
+            }
+            catch (System.Exception e)
+            {
+            	Program.Log("SQLError: " + e.ToString());
+            
+            }
+            finally
+            {
+                if (dbo != null)
+                    dbo.Dispose();
+            }
+        }
+
+        public bool IsGroup
+        {
+            get { return true; }
+        }
+
     }
 }

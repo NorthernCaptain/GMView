@@ -104,7 +104,6 @@
             this.treeView.DisplayDraggingNodes = true;
             this.treeView.DragDropMarkColor = System.Drawing.Color.Maroon;
             this.treeView.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.treeView.FullRowSelect = true;
             this.treeView.GridLineStyle = ((Aga.Controls.Tree.GridLineStyle)((Aga.Controls.Tree.GridLineStyle.Horizontal | Aga.Controls.Tree.GridLineStyle.Vertical)));
             this.treeView.LineColor = System.Drawing.SystemColors.ControlDark;
             this.treeView.LoadOnDemand = true;
@@ -123,12 +122,16 @@
             this.treeView.NodeControls.Add(this.nodeTextBox_Lat);
             this.treeView.RowHeight = 19;
             this.treeView.SelectedNode = null;
+            this.treeView.SelectionMode = Aga.Controls.Tree.TreeSelectionMode.MultiSameParent;
             this.treeView.Size = new System.Drawing.Size(680, 235);
             this.treeView.TabIndex = 2;
             this.treeView.Text = "POI tree";
             this.treeView.UseColumns = true;
             this.treeView.SelectionChanged += new System.EventHandler(this.treeView_SelectionChanged);
+            this.treeView.DragOver += new System.Windows.Forms.DragEventHandler(this.treeView_DragOver);
             this.treeView.ColumnClicked += new System.EventHandler<Aga.Controls.Tree.TreeColumnEventArgs>(this.treeView_ColumnClicked);
+            this.treeView.DragDrop += new System.Windows.Forms.DragEventHandler(this.treeView_DragDrop);
+            this.treeView.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.treeView_ItemDrag);
             // 
             // treeColumn1
             // 
@@ -193,7 +196,7 @@
             this.contextMenuStripForTree.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addGroupToolStripMenuItem});
             this.contextMenuStripForTree.Name = "contextMenuStripForTree";
-            this.contextMenuStripForTree.Size = new System.Drawing.Size(159, 48);
+            this.contextMenuStripForTree.Size = new System.Drawing.Size(159, 26);
             // 
             // addGroupToolStripMenuItem
             // 
