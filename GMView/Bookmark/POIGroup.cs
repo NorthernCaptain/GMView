@@ -189,10 +189,44 @@ namespace GMView.Bookmarks
         /// <param name="child"></param>
         public void addChild(IPOIBase child)
         {
-            if (children == null)
-                children = new LinkedList<POIGroup>();
-            children.AddLast(child as POIGroup);
+            if (child is POIGroup)
+            {
+                if (children == null)
+                    children = new LinkedList<POIGroup>();
+                children.AddLast(child as POIGroup);
+            }
+            else
+                if (childrenPOIs != null)
+                    childrenPOIs.Add(child as Bookmark);
             child.Parent = this;
+        }
+
+        /// <summary>
+        /// Add child to the group placing it after the requested one. Works only for
+        /// groups, for normal POIs do internal call to addChild.
+        /// </summary>
+        /// <param name="after"></param>
+        /// <param name="child"></param>
+        public void addChildAfter(IPOIBase after, IPOIBase child)
+        {
+            if(after == null)
+            {
+                addChild(child);
+                return;
+            }
+
+            POIGroup childGroup = child as POIGroup;
+            POIGroup afterGroup = after as POIGroup;
+            if (afterGroup != null)
+            {
+                LinkedListNode<POIGroup> found = children.Find(afterGroup);
+                if (childGroup != null && found != null)
+                {
+                    children.AddAfter(found, childGroup);
+                    return;
+                }
+            }
+            addChild(child);
         }
 
         /// <summary>
@@ -201,9 +235,16 @@ namespace GMView.Bookmarks
         /// <param name="child"></param>
         public void delChild(IPOIBase child)
         {
-            if (children == null)
-                return;
-            children.Remove(child as POIGroup);
+            POIGroup grp = child as POIGroup;
+            if (grp != null)
+            {
+                if (children == null)
+                    return;
+                children.Remove(grp);
+            }
+            else
+                if (childrenPOIs != null)
+                    childrenPOIs.Remove(child as Bookmark);
         }
 
         /// <summary>
@@ -249,14 +290,15 @@ namespace GMView.Bookmarks
         /// Reparent group to another parent. Updates DB.
         /// </summary>
         /// <param name="parentGroup"></param>
-        public void reparentMeTo(IPOIBase parentGroup)
+        public void reparentMeTo(IPOIBase parentGroup, IPOIBase after)
         {
             if (parentGroup == null)
                 return;
 
             POIGroup oldParent = parent;
-            parent.delChild(this);
-            parentGroup.addChild(this);
+            if (oldParent != null)
+                oldParent.delChild(this);
+            parentGroup.addChildAfter(after, this);
 
             DBObj dbo = null;
             try
@@ -270,8 +312,8 @@ namespace GMView.Bookmarks
             }
             catch (System.Exception e)
             {
-            	Program.Log("SQLError: " + e.ToString());
-            
+                Program.Log("SQLError: " + e.ToString());
+
             }
             finally
             {

@@ -82,16 +82,25 @@ namespace GMView.Bookmarks
         void addChild(IPOIBase child);
 
         /// <summary>
+        /// Add child to the group placing it after the requested one. Works only for
+        /// groups, for normal POIs do internal call to addChild.
+        /// </summary>
+        /// <param name="after"></param>
+        /// <param name="child"></param>
+        void addChildAfter(IPOIBase after, IPOIBase child);
+
+        /// <summary>
         /// Remove child from this parent
         /// </summary>
         /// <param name="child"></param>
         void delChild(IPOIBase child);
 
         /// <summary>
-        /// Reparent group to another parent. Updates DB.
+        /// Reparent group to another parent. Add to the list after the 'after' POI. Updates DB.
+        /// After could be passed as null, then do simple addition.
         /// </summary>
         /// <param name="parentGroup"></param>
-        void reparentMeTo(IPOIBase parent);
+        void reparentMeTo(IPOIBase parent, IPOIBase after);
 
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Aga.Controls;
 using Aga.Controls.Tree;
+using System.Windows.Forms;
 
 namespace GMView.Bookmarks
 {
@@ -83,6 +84,73 @@ namespace GMView.Bookmarks
                 TreeModelEventArgs args = new TreeModelEventArgs(parent, removed);
                 NodesRemoved(this, args);
             }
+        }
+
+        /// <summary>
+        /// Process Drop operation for dragged nodes in the tree
+        /// </summary>
+        /// <param name="treeView"></param>
+        /// <param name="e"></param>
+        public void doDropProcessing(TreeViewAdv treeView, DragEventArgs e)
+        {
+            treeView.BeginUpdate();
+
+            TreeNodeAdv[] nodes = (TreeNodeAdv[])e.Data.GetData(typeof(TreeNodeAdv[]));
+            Bookmarks.POIGroup dropNode = treeView.DropPosition.Node.Tag as Bookmarks.POIGroup;
+
+            List<object> removed = new List<object>();
+
+            if (treeView.DropPosition.Position == NodePosition.Inside)
+            {
+                if (dropNode == null)
+                    return;
+
+                foreach (TreeNodeAdv n in nodes)
+                {
+                    if (n.Tag is Bookmarks.IPOIBase)
+                    {
+                        Bookmarks.IPOIBase pg = n.Tag as Bookmarks.IPOIBase;
+                        pg.reparentMeTo(dropNode, null);
+
+                        removed.Add(n);
+                    }
+                }
+                treeView.DropPosition.Node.IsExpanded = true;
+                object[] arr = removed.ToArray();
+                fireNodesRemoved(treeView.GetPath(nodes[0].Parent), arr);
+                fireNodesInserted(treeView.GetPath(treeView.DropPosition.Node), arr);
+            }
+            else
+            {
+                Bookmarks.IPOIBase parent;
+                if (dropNode == null)
+                {
+                    dropNode = treeView.DropPosition.Node.Parent.Tag as Bookmarks.POIGroup;
+                    if (dropNode == null)
+                        return;
+                    parent = dropNode;
+                    dropNode = null;
+                }
+                else
+                    parent = dropNode.Parent;
+
+                foreach (TreeNodeAdv n in nodes)
+                {
+                    if (n.Tag is Bookmarks.IPOIBase)
+                    {
+                        Bookmarks.IPOIBase pg = n.Tag as Bookmarks.IPOIBase;
+                        pg.reparentMeTo(parent, dropNode);
+
+                        removed.Add(n);
+                    }
+                }
+                treeView.DropPosition.Node.Parent.IsExpanded = true;
+                object[] arr = removed.ToArray();
+                fireNodesRemoved(treeView.GetPath(nodes[0].Parent), arr);
+                fireNodesInserted(treeView.GetPath(treeView.DropPosition.Node.Parent), arr);
+            }
+
+            treeView.EndUpdate();
         }
 
         public event EventHandler<TreeModelEventArgs> NodesChanged;

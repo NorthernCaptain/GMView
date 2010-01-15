@@ -68,13 +68,13 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(686, 271);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(686, 468);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // okBut
             // 
             this.okBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.okBut.Location = new System.Drawing.Point(604, 244);
+            this.okBut.Location = new System.Drawing.Point(604, 441);
             this.okBut.Margin = new System.Windows.Forms.Padding(10, 3, 7, 3);
             this.okBut.Name = "okBut";
             this.okBut.Size = new System.Drawing.Size(75, 23);
@@ -123,7 +123,7 @@
             this.treeView.RowHeight = 19;
             this.treeView.SelectedNode = null;
             this.treeView.SelectionMode = Aga.Controls.Tree.TreeSelectionMode.MultiSameParent;
-            this.treeView.Size = new System.Drawing.Size(680, 235);
+            this.treeView.Size = new System.Drawing.Size(680, 432);
             this.treeView.TabIndex = 2;
             this.treeView.Text = "POI tree";
             this.treeView.UseColumns = true;
@@ -308,7 +308,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(686, 271);
+            this.ClientSize = new System.Drawing.Size(686, 468);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "EditBooks";
             this.Text = "Places of interest";

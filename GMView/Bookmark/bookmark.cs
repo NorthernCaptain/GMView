@@ -8,10 +8,11 @@ using System.Data.Common;
 using ncGeo;
 using ncUtils;
 using System.Data;
+using GMView.Bookmarks;
 
 namespace GMView
 {
-    public class Bookmark: ISprite, ncGeo.IGeoCoord
+    public class Bookmark: ISprite, ncGeo.IGeoCoord, Bookmarks.IPOIBase
     {
         [XmlIgnore]
         public string sid;
@@ -597,5 +598,68 @@ namespace GMView
         {
             return sid;
         }
+
+        #region IPOIBase Members
+
+        [XmlIgnore]
+        public bool IsGroup
+        {
+            get { return false; }
+        }
+
+        public void addChild(GMView.Bookmarks.IPOIBase child)
+        {
+        }
+
+        public void addChildAfter(IPOIBase after, IPOIBase child)
+        {
+        }
+
+        public void delChild(GMView.Bookmarks.IPOIBase child)
+        {
+        }
+
+        public void reparentMeTo(IPOIBase parentGroup, IPOIBase after)
+        {
+            if (parentGroup == null)
+                return;
+
+            POIGroup oldParent = parent;
+            if (oldParent != null)
+                oldParent.delChild(this);
+            parentGroup.addChildAfter(after, this);
+
+            DBObj dbo = null;
+            try
+            {
+                dbo = new DBObj(@"update poi_group_member set parent_id=@NEWPARENT where "
+                      + "parent_id=@OLDPARENT and member_id=@CURRENT");
+                dbo.addIntPar("@NEWPARENT", parentGroup.Id);
+                dbo.addIntPar("@OLDPARENT", oldParent.Id);
+                dbo.addIntPar("@CURRENT", id);
+                dbo.executeNonQuery();
+            }
+            catch (System.Exception e)
+            {
+                Program.Log("SQLError: " + e.ToString());
+
+            }
+            finally
+            {
+                if (dbo != null)
+                    dbo.Dispose();
+            }
+        }
+
+        private POIGroup parent;
+
+        [XmlIgnore]
+        public IPOIBase Parent
+        {
+            get { return parent; }
+            set { parent = value as POIGroup; }
+        }
+
+        #endregion
     }
 }

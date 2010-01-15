@@ -32,7 +32,19 @@ namespace GMView
         public event BookmarkFactoryChangedDelegate onChanged;
 
         #region Get/Set methods + XML serialization
-        
+
+        private Bookmarks.POIGroupFactory groupFactory;
+
+        /// <summary>
+        /// POI group factory associated with this POI factory
+        /// </summary>
+        [XmlIgnore]
+        public Bookmarks.POIGroupFactory GroupFactory
+        {
+            get { return groupFactory; }
+            set { groupFactory = value; }
+        }
+
         /// <summary>
         /// Return a list of bookmarks, i.e not a list but sorted dictionary
         /// </summary>
@@ -54,6 +66,15 @@ namespace GMView
                     loadXml();
                 return instance;
             }
+        }
+
+        /// <summary>
+        /// Factory constructor.
+        /// </summary>
+        public BookMarkFactory()
+        {
+            Bookmarks.POITypeFactory.singleton();
+            groupFactory = Bookmarks.POIGroupFactory.singleton();
         }
 
         [XmlArray("bookmarks"),
@@ -598,14 +619,17 @@ namespace GMView
                 dbo.addIntPar("@PARENT_ID", parent_id);
                 DbDataReader reader = dbo.cmd.ExecuteReader();
                 List<Bookmark> pois = new List<Bookmark>();
+                Bookmarks.POIGroup pgroup = groupFactory.findById(parent_id);
+
                 while (reader.Read())
                 {
             		//DO each item processing
                     Bookmark poi = new Bookmark(reader);
                     poi.Owner = this;
+                    poi.Parent = pgroup;
                     pois.Add(poi);
                 }
-                Bookmarks.POIGroupFactory.singleton().findById(parent_id).ChildrenPOIs = pois;
+                pgroup.ChildrenPOIs = pois;
                 return pois;
             }
             catch (System.Exception e)

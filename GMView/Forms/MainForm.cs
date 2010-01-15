@@ -1495,7 +1495,8 @@ namespace GMView
 
         private void editBMarksMI_Click(object sender, EventArgs e)
         {
-            Forms.EditBooks editbooks = new GMView.Forms.EditBooks();
+            Forms.EditBooks editbooks = new GMView.Forms.EditBooks(BookMarkFactory.singleton,
+                                                                Bookmarks.POIGroupFactory.singleton());
             editbooks.Visible = true;
         }
 

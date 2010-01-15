@@ -11,8 +11,13 @@ namespace GMView.Forms
 {
     public partial class EditBooks : Form
     {
-        public EditBooks()
+        private Bookmarks.POIGroupFactory groupFactory;
+        private BookMarkFactory poiFactory;
+
+        public EditBooks(BookMarkFactory ipoiFactory, Bookmarks.POIGroupFactory igroupFactory)
         {
+            poiFactory = ipoiFactory;
+            groupFactory = igroupFactory;
             InitializeComponent();
             fillGrid();
         }
@@ -20,7 +25,7 @@ namespace GMView.Forms
         private Bookmarks.POITreeModel treeModel;
         private void fillGrid()
         {
-            treeModel = new Bookmarks.POITreeModel(Bookmarks.POIGroupFactory.singleton());
+            treeModel = new Bookmarks.POITreeModel(groupFactory);
             treeView.Model = new SortedTreeModel(treeModel);
             SortedTreeModel model = treeView.Model as SortedTreeModel;
             model.Comparer = new Bookmarks.POIGridSorter("Name", SortOrder.Ascending);
@@ -133,7 +138,7 @@ namespace GMView.Forms
             new_group.updateDB();
             parent_group.addChild(new_group);
             parent_group.updateChildrenLinksDB();
-            Bookmarks.POIGroupFactory.singleton().addGroup(new_group);
+            groupFactory.addGroup(new_group);
             treeModel.fireNodesInserted(treeView.GetPath(treeView.SelectedNode), new object[] { new_group });
         }
 
@@ -180,61 +185,7 @@ namespace GMView.Forms
 
         private void treeView_DragDrop(object sender, DragEventArgs e)
         {
-            treeView.BeginUpdate();
-
-            TreeNodeAdv[] nodes = (TreeNodeAdv[])e.Data.GetData(typeof(TreeNodeAdv[]));
-            Bookmarks.POIGroup dropNode = treeView.DropPosition.Node.Tag as Bookmarks.POIGroup;
-
-            if (dropNode == null)
-                return;
-
-            if (treeView.DropPosition.Position == NodePosition.Inside)
-            {
-                List<object> removed = new List<object>();
-
-                foreach (TreeNodeAdv n in nodes)
-                {
-                    if (n.Tag is Bookmarks.POIGroup)
-                    {
-                        Bookmarks.POIGroup pg = n.Tag as Bookmarks.POIGroup;
-                        pg.reparentMeTo(dropNode);
-
-                        removed.Add(n);
-                    }
-                }
-                treeView.DropPosition.Node.IsExpanded = true;
-                object[] arr = removed.ToArray();
-                this.treeModel.fireNodesRemoved(treeView.GetPath(nodes[0].Parent), arr);
-                this.treeModel.fireNodesInserted(treeView.GetPath(treeView.DropPosition.Node), arr);
-            }
-            else
-            {
-                /*
-                Node parent = dropNode.Parent;
-                Node nextItem = dropNode;
-                if (treeView.DropPosition.Position == NodePosition.After)
-                    nextItem = dropNode.NextNode;
-
-                foreach (TreeNodeAdv node in nodes)
-                    (node.Tag as Node).Parent = null;
-
-                int index = -1;
-                index = parent.Nodes.IndexOf(nextItem);
-                foreach (TreeNodeAdv node in nodes)
-                {
-                    Node item = node.Tag as Node;
-                    if (index == -1)
-                        parent.Nodes.Add(item);
-                    else
-                    {
-                        parent.Nodes.Insert(index, item);
-                        index++;
-                    }
-                }*/
-            }
-
-            treeView.EndUpdate();
-
+            treeModel.doDropProcessing(treeView, e);
         }
 
     }
