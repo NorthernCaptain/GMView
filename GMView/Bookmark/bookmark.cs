@@ -198,10 +198,12 @@ namespace GMView
                     mapo.addSub(this);
                     show();
                     mapo.CenterMapLonLat(lon, lat);
+                    owner.POIShown(this);
                 } else
                 {
                     hide();
                     mapo.delSub(this);
+                    owner.POIHidden(this);
                 }
                 GML.device.repaint();
                 shown = value;
@@ -649,6 +651,50 @@ namespace GMView
                 if (dbo != null)
                     dbo.Dispose();
             }
+        }
+
+        /// <summary>
+        /// Deletes POI from DB.
+        /// </summary>
+        public void deleteFromDB()
+        {
+            DBObj dbo = null;
+            try
+            {
+                dbo = new DBObj(@"delete from poi_spatial where id=@ID");
+                dbo.addIntPar("@ID", id);
+                dbo.executeNonQuery();
+
+                dbo.commandText = "delete from poi_group_member where member_id=@ID";
+                dbo.addIntPar("@ID", id);
+                dbo.executeNonQuery();
+
+                dbo.commandText = "delete from poi where id=@ID";
+                dbo.addIntPar("@ID", id);
+                dbo.executeNonQuery();
+
+                unregisterMe();
+            }
+            catch (System.Exception e)
+            {
+            	Program.Log("SQLError: " + e.ToString());
+            
+            }
+            finally
+            {
+                if (dbo != null)
+                    dbo.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Unregisters from the owner (factory).
+        /// </summary>
+        public void unregisterMe()
+        {
+            IsShown = false;
+            parent.delChild(this);
+            owner.unregister(this);
         }
 
         private POIGroup parent;

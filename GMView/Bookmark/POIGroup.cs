@@ -322,10 +322,91 @@ namespace GMView.Bookmarks
             }
         }
 
+        /// <summary>
+        /// Deletes Group from DB, calls itself recursively for deleting subgroups
+        /// </summary>
+        public void deleteFromDB()
+        {
+            if (children != null)
+            {
+                POIGroup[] arr = new POIGroup[children.Count];
+                children.CopyTo(arr, 0);
+
+                foreach (POIGroup subgrp in arr)
+                {
+                    subgrp.deleteFromDB();
+                }
+            }
+
+            this.IsShown = false;
+
+            DBObj dbo = null;
+            try
+            {
+                dbo = new DBObj(@"delete from poi_spatial where id in "
+                        + "(select member_id from poi_group_member where parent_id=@PARENT_ID)");
+                dbo.addIntPar("@PARENT_ID", id);
+                dbo.executeNonQuery();
+
+                dbo.commandText = "delete from poi where id in (select member_id from poi_group_member where parent_id=@PARENT_ID)";
+                dbo.addIntPar("@PARENT_ID", id);
+                dbo.executeNonQuery();
+
+                dbo.commandText = "delete from poi_group_member where parent_id=@PARENT_ID";
+                dbo.addIntPar("@PARENT_ID", id);
+                dbo.executeNonQuery();
+
+                dbo.commandText = "delete from poi where id=@ID";
+                dbo.addIntPar("@ID", id);
+                dbo.executeNonQuery();
+
+                if(childrenPOIs != null)
+                {
+                    Bookmark[] childrenCopy = childrenPOIs.ToArray();
+                    foreach (Bookmark poi in childrenCopy)
+                    {
+                        poi.unregisterMe();
+                    }
+                }
+                unregisterMe();
+            }
+            catch (System.Exception e)
+            {
+            	Program.Log("SQLError: " + e.ToString());
+            
+            }
+            finally
+            {
+                if (dbo != null)
+                    dbo.Dispose();
+            }
+        }
+
+        public void unregisterMe()
+        {
+            if (parent != null)
+                parent.delChild(this);
+
+            if (owner != null)
+                owner.unregister(this);
+        }
+
         public bool IsGroup
         {
             get { return true; }
         }
 
+
+        private POIGroupFactory owner;
+        
+
+        /// <summary>
+        /// Owner of this group. Owner is a factory that creates and manages this object
+        /// </summary>
+        public POIGroupFactory Owner
+        {
+            get { return owner; }
+            set { owner = value; }
+        }
     }
 }

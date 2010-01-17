@@ -149,7 +149,18 @@ namespace GMView.Bookmarks
         {
             allGroups.Add(newGroup);
             idGroups.Add(newGroup.Id, newGroup);
+            newGroup.Owner = this;
             return newGroup;
+        }
+
+        /// <summary>
+        /// Unregister POIGroup from the factory.
+        /// </summary>
+        /// <param name="grp"></param>
+        public void unregister(POIGroup grp)
+        {
+            idGroups.Remove(grp.Id);
+            allGroups.Remove(grp);
         }
     }
 }

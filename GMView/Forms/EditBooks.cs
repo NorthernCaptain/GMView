@@ -188,5 +188,20 @@ namespace GMView.Forms
             treeModel.doDropProcessing(treeView, e);
         }
 
+        private void deletePOIOrGroupToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("You are about to delete POI. Deleted POI will be lost completely.\nAre you sure?",
+                "Delete POI?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != 
+                       DialogResult.Yes)
+            return;
+
+            treeModel.deleteSelectedNodes(treeView);
+        }
+
+        private void okBut_Click(object sender, EventArgs e)
+        {
+            this.Visible = false;
+        }
+
     }
 }

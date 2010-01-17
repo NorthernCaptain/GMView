@@ -270,9 +270,15 @@ namespace GMView
             }
         }
 
+        /// <summary>
+        /// Called when zoom level of the map changes, we recompute all coordinates for
+        /// shown POIs
+        /// </summary>
+        /// <param name="old_zoom"></param>
+        /// <param name="new_zoom"></param>
         public void updateOnZoomChange(int old_zoom, int new_zoom)
         {
-            foreach (KeyValuePair<string, Bookmark> pair in marks)
+            foreach (KeyValuePair<int, Bookmark> pair in shownPOIs)
             {
                 pair.Value.calculateXY(mapo);
             }
@@ -624,8 +630,15 @@ namespace GMView
                 while (reader.Read())
                 {
             		//DO each item processing
-                    Bookmark poi = new Bookmark(reader);
-                    poi.Owner = this;
+                    int poi_id = reader.GetInt32(reader.GetOrdinal("ID"));
+
+                    Bookmark poi;
+                    if (!loadedPOIs.TryGetValue(poi_id, out poi))
+                    {
+                        poi = new Bookmark(reader);
+                        register(poi);
+                    } else
+                        poi.Owner = this;
                     poi.Parent = pgroup;
                     pois.Add(poi);
                 }
@@ -642,6 +655,56 @@ namespace GMView
                 if (dbo != null)
                     dbo.Dispose();
             }
+        }
+
+        /// <summary>
+        /// List of all POIs that are loaded into memory
+        /// </summary>
+        private Dictionary<int, Bookmark> loadedPOIs = new Dictionary<int, Bookmark>();
+
+        /// <summary>
+        /// The list of POIs shown on the screen (has IsShown == true).
+        /// </summary>
+        private Dictionary<int, Bookmark> shownPOIs = new Dictionary<int, Bookmark>();
+        
+        /// <summary>
+        /// Unregister POI from the factory that manages it
+        /// </summary>
+        /// <param name="bookmark"></param>
+        internal void unregister(Bookmark bookmark)
+        {
+            loadedPOIs.Remove(bookmark.Id);
+            shownPOIs.Remove(bookmark.Id);
+        }
+
+        /// <summary>
+        /// Register new POI with the factory, for proper management
+        /// </summary>
+        /// <param name="poi"></param>
+        internal void register(Bookmark poi)
+        {
+            loadedPOIs.Add(poi.Id, poi);
+            poi.Owner = this;
+            if (poi.IsShown)
+                shownPOIs.Add(poi.Id, poi);
+        }
+
+        /// <summary>
+        /// Register POI that is shown
+        /// </summary>
+        /// <param name="poi"></param>
+        internal void POIShown(Bookmark poi)
+        {
+            shownPOIs.Add(poi.Id, poi);
+        }
+
+        /// <summary>
+        /// Unregister poi from shown list on hide
+        /// </summary>
+        /// <param name="poi"></param>
+        internal void POIHidden(Bookmark poi)
+        {
+            shownPOIs.Remove(poi.Id);
         }
     }
 }

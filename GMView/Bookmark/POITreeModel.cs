@@ -153,6 +153,32 @@ namespace GMView.Bookmarks
             treeView.EndUpdate();
         }
 
+        /// <summary>
+        /// Delete nodes from tree and objects from memory and DB.
+        /// </summary>
+        /// <param name="treeView"></param>
+        public void deleteSelectedNodes(TreeViewAdv treeView)
+        {
+            if (treeView.SelectedNodes.Count == 0)
+                return;
+
+            List<TreeNodeAdv> deleted = new List<TreeNodeAdv>();
+            foreach (TreeNodeAdv node in treeView.SelectedNodes)
+            {
+                IPOIBase poi = node.Tag as Bookmarks.IPOIBase;
+                if(poi == null)
+                    continue;
+
+                //We do not delete system entries
+                if (poi.Id < 3)
+                    continue;
+
+                poi.deleteFromDB();
+                deleted.Add(node);
+            }
+            fireNodesRemoved(treeView.GetPath(treeView.SelectedNode.Parent), deleted.ToArray());
+        }
+
         public event EventHandler<TreeModelEventArgs> NodesChanged;
 
         public event EventHandler<TreeModelEventArgs> NodesInserted;

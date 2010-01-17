@@ -75,6 +75,8 @@ namespace GMView
             if (mode != UserAction.Navigate)
                 return;
 
+            GML.tranBegin();
+
             if(gtrack.on_air && gtrack.lastData != null)
             {
                 lon = gtrack.lastData.lon;
@@ -89,9 +91,8 @@ namespace GMView
             }
 
             Bookmark mypoi = new Bookmark(lon, lat, alt);
-            mypoi.Mapo = mapo;
-            mapo.addSub(mypoi);
-            mypoi.show();
+            BookMarkFactory.singleton.register(mypoi);
+            mypoi.IsShown = true;
             repaintMap();
 
             Forms.QuickPOIForm qpoi = new Forms.QuickPOIForm();
@@ -104,13 +105,17 @@ namespace GMView
                 if (pgroup == null)
                     pgroup = Bookmarks.POIGroupFactory.singleton().findById(0);
                 mypoi.addLinkDB(pgroup);
+                pgroup.addChild(mypoi);
+                BookMarkFactory.singleton.unregister(mypoi);
+                BookMarkFactory.singleton.register(mypoi);
             }
             else
             {
-                mypoi.hide();
-                mapo.delSub(mypoi);
+                mypoi.unregisterMe();
             }
             repaintMap();
+
+            GML.tranEnd();
         }
 
         void nightViewToggle_Key(object sender, KeyEventArgs e)

@@ -102,5 +102,16 @@ namespace GMView.Bookmarks
         /// <param name="parentGroup"></param>
         void reparentMeTo(IPOIBase parent, IPOIBase after);
 
+        /// <summary>
+        /// Deletes POI object from DB and its parent. For groups, recursively deletes all
+        /// subgroups and POIs
+        /// </summary>
+        void deleteFromDB();
+
+        /// <summary>
+        /// Unregisters itself from the Owner (factory that manages this POI)
+        /// </summary>
+        void unregisterMe();
+
     }
 }
