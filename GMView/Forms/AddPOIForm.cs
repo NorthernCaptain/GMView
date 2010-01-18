@@ -27,7 +27,7 @@ namespace GMView.Forms
             InitializeComponent();
 
             treeModel = new POIGroupTreeModel(groupFactory);
-            treeView.Model = treeModel;
+            treeView.Model = new Aga.Controls.Tree.SortedTreeModel(treeModel);
 
             poiTypeListBox.loadList();
             poiTypeListBox.SelectedItem = currentPOI.Ptype;
@@ -91,5 +91,17 @@ namespace GMView.Forms
 
             this.DialogResult = DialogResult.OK;
         }
+
+        private void addGroupToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Bookmarks.POIGroup parent_group = treeView.SelectedNode.Tag as Bookmarks.POIGroup;
+            Bookmarks.POIGroup new_group = new Bookmarks.POIGroup("?new group?");
+            new_group.updateDB();
+            parent_group.addChild(new_group);
+            parent_group.updateChildrenLinksDB();
+            groupFactory.addGroup(new_group);
+            treeModel.fireNodesInserted(treeView.GetPath(treeView.SelectedNode), new object[] { new_group });
+        }
+
     }
 }

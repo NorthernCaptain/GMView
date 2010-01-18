@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.treeView = new Aga.Controls.Tree.TreeViewAdv();
             this.groupBoxPOI = new System.Windows.Forms.GroupBox();
             this.okBut = new System.Windows.Forms.Button();
@@ -49,14 +50,17 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.commentTB = new System.Windows.Forms.TextBox();
-            this.poiTypeListBox = new GMView.Forms.POITypeListBox();
             this.altTB = new System.Windows.Forms.NumericUpDown();
+            this.poiTypeListBox = new GMView.Forms.POITypeListBox();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.addNewGroupHereToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBoxPOI.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.altTB)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // treeView
@@ -66,6 +70,7 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.treeView.BackColor = System.Drawing.SystemColors.Window;
             this.treeView.Columns.Add(this.treeColumnName);
+            this.treeView.ContextMenuStrip = this.contextMenuStrip1;
             this.treeView.DefaultToolTipProvider = null;
             this.treeView.DragDropMarkColor = System.Drawing.Color.Black;
             this.treeView.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -236,9 +241,12 @@
             // nodeTextBox_Name
             // 
             this.nodeTextBox_Name.DataPropertyName = "Name";
+            this.nodeTextBox_Name.EditEnabled = true;
             this.nodeTextBox_Name.IncrementalSearchEnabled = true;
             this.nodeTextBox_Name.LeftMargin = 3;
             this.nodeTextBox_Name.ParentColumn = this.treeColumnName;
+            this.nodeTextBox_Name.Trimming = System.Drawing.StringTrimming.EllipsisCharacter;
+            this.nodeTextBox_Name.UseCompatibleTextRendering = true;
             // 
             // tabControl1
             // 
@@ -285,19 +293,6 @@
             this.commentTB.TabIndex = 5;
             this.commentTB.TabStop = false;
             // 
-            // poiTypeListBox
-            // 
-            this.poiTypeListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.poiTypeListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.poiTypeListBox.FormattingEnabled = true;
-            this.poiTypeListBox.ItemHeight = 40;
-            this.poiTypeListBox.Location = new System.Drawing.Point(6, 232);
-            this.poiTypeListBox.Name = "poiTypeListBox";
-            this.poiTypeListBox.Size = new System.Drawing.Size(239, 164);
-            this.poiTypeListBox.TabIndex = 7;
-            // 
             // altTB
             // 
             this.altTB.Increment = new decimal(new int[] {
@@ -319,6 +314,33 @@
             this.altTB.Name = "altTB";
             this.altTB.Size = new System.Drawing.Size(71, 20);
             this.altTB.TabIndex = 5;
+            // 
+            // poiTypeListBox
+            // 
+            this.poiTypeListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.poiTypeListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.poiTypeListBox.FormattingEnabled = true;
+            this.poiTypeListBox.ItemHeight = 40;
+            this.poiTypeListBox.Location = new System.Drawing.Point(6, 232);
+            this.poiTypeListBox.Name = "poiTypeListBox";
+            this.poiTypeListBox.Size = new System.Drawing.Size(239, 164);
+            this.poiTypeListBox.TabIndex = 7;
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addNewGroupHereToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(184, 26);
+            // 
+            // addNewGroupHereToolStripMenuItem
+            // 
+            this.addNewGroupHereToolStripMenuItem.Name = "addNewGroupHereToolStripMenuItem";
+            this.addNewGroupHereToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.addNewGroupHereToolStripMenuItem.Text = "Add new group here";
+            this.addNewGroupHereToolStripMenuItem.Click += new System.EventHandler(this.addGroupToolStripMenuItem_Click);
             // 
             // AddPOIForm
             // 
@@ -343,6 +365,7 @@
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.altTB)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -372,5 +395,7 @@
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.TextBox commentTB;
         private System.Windows.Forms.NumericUpDown altTB;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem addNewGroupHereToolStripMenuItem;
     }
 }

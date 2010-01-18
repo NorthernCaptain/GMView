@@ -40,6 +40,35 @@ namespace GMView.Bookmarks
             return !(treePath.LastNode is POIGroup);
         }
 
+        /// <summary>
+        /// Fires NodesInserted event that updates TreeView after insertion
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="inserted"></param>
+        public void fireNodesInserted(TreePath parent, object[] inserted)
+        {
+            if (NodesInserted != null)
+            {
+                TreeModelEventArgs args = new TreeModelEventArgs(parent, inserted);
+                NodesInserted(this, args);
+            }
+        }
+
+        /// <summary>
+        /// Fires NodesRemoved event that updates TreeView after removing some nodes
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="removed"></param>
+        public void fireNodesRemoved(TreePath parent, object[] removed)
+        {
+            if (NodesRemoved != null)
+            {
+                TreeModelEventArgs args = new TreeModelEventArgs(parent, removed);
+                NodesRemoved(this, args);
+            }
+        }
+
+
         public event EventHandler<TreeModelEventArgs> NodesChanged;
 
         public event EventHandler<TreeModelEventArgs> NodesInserted;
