@@ -1484,13 +1484,62 @@ namespace GMView
             }
         }
 
+        /// <summary>
+        /// Adds new POI to the map, opens Create POI dialog
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void addBookMI_Click(object sender, EventArgs e)
         {
-            Forms.BookmarkForm bmf = new GMView.Forms.BookmarkForm();
+            double lon, lat, alt;
+            bool isFullMode = true;
 
-            bmf.setLonLat(upos.Lon, upos.Lat);
-            mapo.CenterMapLonLat(upos.Lon, upos.Lat);
-            bmf.Visible = true;
+            if (mode != UserAction.Navigate)
+                return;
+
+            GML.tranBegin();
+
+            if (gtrack.on_air && gtrack.lastData != null)
+            {
+                lon = gtrack.lastData.lon;
+                lat = gtrack.lastData.lat;
+                alt = gtrack.lastData.height;
+                isFullMode = false;
+            }
+            else
+            {
+                lon = upos.Lon;
+                lat = upos.Lat;
+                alt = 0;
+                centerMapLonLat(lon, lat);
+            }
+
+            Bookmark mypoi = new Bookmark(lon, lat, alt);
+            BookMarkFactory.singleton.register(mypoi);
+            mypoi.IsShown = true;
+            repaintMap();
+
+            GML.tranEnd();
+
+            if (isFullMode)
+            {
+                Forms.AddPOIForm addpoi = new Forms.AddPOIForm(Bookmarks.POIGroupFactory.singleton(),
+                                                        BookMarkFactory.singleton, mypoi);
+                addpoi.Owner = this;
+                if (addpoi.ShowDialog() != DialogResult.OK)
+                    mypoi.unregisterMe();
+            }
+            else
+            {
+                Forms.QuickPOIForm qpoi = new Forms.QuickPOIForm(mypoi);
+                qpoi.Owner = this;
+                if (qpoi.ShowDialog() != DialogResult.OK)
+                {
+                    mypoi.unregisterMe();
+                }
+
+            }
+            repaintMap();
         }
 
         private void editBMarksMI_Click(object sender, EventArgs e)

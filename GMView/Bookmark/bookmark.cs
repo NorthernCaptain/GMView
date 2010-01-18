@@ -693,7 +693,8 @@ namespace GMView
         public void unregisterMe()
         {
             IsShown = false;
-            parent.delChild(this);
+            if(parent != null)
+                parent.delChild(this);
             owner.unregister(this);
         }
 

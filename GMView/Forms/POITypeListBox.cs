@@ -45,8 +45,7 @@ namespace GMView.Forms
         protected override void OnDrawItem(DrawItemEventArgs e)
         {
             e.DrawBackground();
-            e.DrawFocusRectangle();
-            if (this.DesignMode)
+            if (this.DesignMode || e.Index < 0)
             {
                 base.OnDrawItem(e);
                 return;
@@ -72,6 +71,7 @@ namespace GMView.Forms
 
             if(this.ItemHeight != heightItem)
                 this.ItemHeight = heightItem;
+            e.DrawFocusRectangle();
         }
     }
 }

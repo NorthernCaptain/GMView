@@ -36,6 +36,10 @@ namespace GMView.Forms
             nodeTextBox_Comment.DrawText += new EventHandler<Aga.Controls.Tree.NodeControls.DrawEventArgs>(nodeDescr_DrawText);
             nodeTextBox_Lat.DrawText += new EventHandler<Aga.Controls.Tree.NodeControls.DrawEventArgs>(nodeDescr_DrawText);
             nodeTextBox_Lon.DrawText += new EventHandler<Aga.Controls.Tree.NodeControls.DrawEventArgs>(nodeDescr_DrawText);
+
+            IEnumerator<TreeNodeAdv> ienum = treeView.AllNodes.GetEnumerator();
+            ienum.MoveNext();
+            ienum.Current.IsExpanded = true;
         }
 
         void nodeDescr_DrawText(object sender, Aga.Controls.Tree.NodeControls.DrawEventArgs e)

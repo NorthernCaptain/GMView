@@ -73,6 +73,7 @@
     <Compile Include="Bookmark\POIGridSorter.cs" />
     <Compile Include="Bookmark\POIGroup.cs" />
     <Compile Include="Bookmark\POIGroupFactory.cs" />
+    <Compile Include="Bookmark\POIGroupTreeModel.cs" />
     <Compile Include="Bookmark\POITreeModel.cs" />
     <Compile Include="Bookmark\POIType.cs" />
     <Compile Include="Bookmark\POITypeFactory.cs" />
@@ -94,6 +95,12 @@
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Bookmark\bookmark.cs" />
+    <Compile Include="Forms\AddPOIForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AddPOIForm.Designer.cs">
+      <DependentUpon>AddPOIForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\BookmarkForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -245,6 +252,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AddPOIForm.resx">
+      <DependentUpon>AddPOIForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\BookmarkForm.resx">

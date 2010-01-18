@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.treeView = new Aga.Controls.Tree.TreeViewAdv();
             this.treeColumn1 = new Aga.Controls.Tree.TreeColumn();
             this.lonCol = new Aga.Controls.Tree.TreeColumn();
             this.latCol = new Aga.Controls.Tree.TreeColumn();
+            this.altitudeCol = new Aga.Controls.Tree.TreeColumn();
             this.descrText = new Aga.Controls.Tree.TreeColumn();
             this.typeCol = new Aga.Controls.Tree.TreeColumn();
             this.idCol = new Aga.Controls.Tree.TreeColumn();
@@ -52,30 +52,11 @@
             this.nodeTextBox_Comment = new Aga.Controls.Tree.NodeControls.NodeTextBox();
             this.nodeTextBox_Lon = new Aga.Controls.Tree.NodeControls.NodeTextBox();
             this.nodeTextBox_Lat = new Aga.Controls.Tree.NodeControls.NodeTextBox();
-            this.altitudeCol = new Aga.Controls.Tree.TreeColumn();
             this.nodeNumericUpDown_Alt = new Aga.Controls.Tree.NodeControls.NodeNumericUpDown();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.okBut = new System.Windows.Forms.Button();
-            this.tableLayoutPanel1.SuspendLayout();
             this.contextMenuStripForTree.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.treeView, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 1);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(686, 468);
-            this.tableLayoutPanel1.TabIndex = 0;
             // 
             // treeView
             // 
@@ -103,7 +84,7 @@
             this.treeView.GridLineStyle = ((Aga.Controls.Tree.GridLineStyle)((Aga.Controls.Tree.GridLineStyle.Horizontal | Aga.Controls.Tree.GridLineStyle.Vertical)));
             this.treeView.LineColor = System.Drawing.SystemColors.ControlDark;
             this.treeView.LoadOnDemand = true;
-            this.treeView.Location = new System.Drawing.Point(3, 3);
+            this.treeView.Location = new System.Drawing.Point(0, 0);
             this.treeView.Model = null;
             this.treeView.Name = "treeView";
             this.treeView.NodeControls.Add(this.nodeCheckBox_Shown);
@@ -120,7 +101,7 @@
             this.treeView.RowHeight = 19;
             this.treeView.SelectedNode = null;
             this.treeView.SelectionMode = Aga.Controls.Tree.TreeSelectionMode.MultiSameParent;
-            this.treeView.Size = new System.Drawing.Size(680, 422);
+            this.treeView.Size = new System.Drawing.Size(686, 422);
             this.treeView.TabIndex = 2;
             this.treeView.Text = "POI tree";
             this.treeView.UseColumns = true;
@@ -152,6 +133,13 @@
             this.latCol.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.latCol.TooltipText = null;
             this.latCol.Width = 70;
+            // 
+            // altitudeCol
+            // 
+            this.altitudeCol.Header = "Altitude";
+            this.altitudeCol.SortOrder = System.Windows.Forms.SortOrder.None;
+            this.altitudeCol.TooltipText = null;
+            this.altitudeCol.Width = 60;
             // 
             // descrText
             // 
@@ -309,13 +297,6 @@
             this.nodeTextBox_Lat.Trimming = System.Drawing.StringTrimming.EllipsisCharacter;
             this.nodeTextBox_Lat.UseCompatibleTextRendering = true;
             // 
-            // altitudeCol
-            // 
-            this.altitudeCol.Header = "Altitude";
-            this.altitudeCol.SortOrder = System.Windows.Forms.SortOrder.None;
-            this.altitudeCol.TooltipText = null;
-            this.altitudeCol.Width = 60;
-            // 
             // nodeNumericUpDown_Alt
             // 
             this.nodeNumericUpDown_Alt.DataPropertyName = "altitude";
@@ -341,41 +322,22 @@
             this.nodeNumericUpDown_Alt.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nodeNumericUpDown_Alt.Trimming = System.Drawing.StringTrimming.EllipsisCharacter;
             // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tableLayoutPanel2.Controls.Add(this.checkBox1, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.okBut, 1, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 431);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(680, 34);
-            this.tableLayoutPanel2.TabIndex = 3;
-            // 
             // checkBox1
             // 
-            this.checkBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.checkBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(3, 3);
+            this.checkBox1.Location = new System.Drawing.Point(12, 439);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(153, 28);
+            this.checkBox1.Size = new System.Drawing.Size(153, 17);
             this.checkBox1.TabIndex = 0;
             this.checkBox1.Text = "Auto show POI on the map";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // okBut
             // 
-            this.okBut.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.okBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.okBut.Image = global::GMView.Properties.Resources.lamp_on;
-            this.okBut.Location = new System.Drawing.Point(603, 3);
+            this.okBut.Location = new System.Drawing.Point(600, 428);
             this.okBut.Name = "okBut";
             this.okBut.Size = new System.Drawing.Size(74, 28);
             this.okBut.TabIndex = 1;
@@ -389,20 +351,19 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(686, 468);
-            this.Controls.Add(this.tableLayoutPanel1);
+            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.treeView);
+            this.Controls.Add(this.okBut);
             this.Name = "EditBooks";
-            this.Text = "Places of interest";
-            this.tableLayoutPanel1.ResumeLayout(false);
+            this.Text = "Points of interest";
             this.contextMenuStripForTree.ResumeLayout(false);
-            this.tableLayoutPanel2.ResumeLayout(false);
-            this.tableLayoutPanel2.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private Aga.Controls.Tree.TreeViewAdv treeView;
         private Aga.Controls.Tree.TreeColumn treeColumn1;
         private Aga.Controls.Tree.TreeColumn descrText;
@@ -427,7 +388,6 @@
         private System.Windows.Forms.ToolStripMenuItem deletePOIOrGroupToolStripMenuItem;
         private Aga.Controls.Tree.TreeColumn altitudeCol;
         private Aga.Controls.Tree.NodeControls.NodeNumericUpDown nodeNumericUpDown_Alt;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Button okBut;
     }

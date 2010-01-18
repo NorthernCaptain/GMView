@@ -68,54 +68,14 @@ namespace GMView
             onKeyDownDict.Add(Keys.C, new onKeyEvent(quickPOI_Key));
         }
 
-
+        /// <summary>
+        /// Quickly add new POI to the map
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void quickPOI_Key(object sender, KeyEventArgs e)
         {
-            double lon, lat, alt;
-            if (mode != UserAction.Navigate)
-                return;
-
-            GML.tranBegin();
-
-            if(gtrack.on_air && gtrack.lastData != null)
-            {
-                lon = gtrack.lastData.lon;
-                lat = gtrack.lastData.lat;
-                alt = gtrack.lastData.height;
-            } else
-            {
-                lon = upos.Lon;
-                lat = upos.Lat;
-                alt = 0;
-                centerMapLonLat(lon, lat);
-            }
-
-            Bookmark mypoi = new Bookmark(lon, lat, alt);
-            BookMarkFactory.singleton.register(mypoi);
-            mypoi.IsShown = true;
-            repaintMap();
-
-            Forms.QuickPOIForm qpoi = new Forms.QuickPOIForm();
-            qpoi.Owner = this;
-            if(qpoi.ShowDialog() == DialogResult.OK)
-            {
-                mypoi.qchangeType(qpoi.poiType);
-                mypoi.updateDB();
-                Bookmarks.POIGroup pgroup = Bookmarks.POIGroupFactory.singleton().findByName("quick add");
-                if (pgroup == null)
-                    pgroup = Bookmarks.POIGroupFactory.singleton().findById(0);
-                mypoi.addLinkDB(pgroup);
-                pgroup.addChild(mypoi);
-                BookMarkFactory.singleton.unregister(mypoi);
-                BookMarkFactory.singleton.register(mypoi);
-            }
-            else
-            {
-                mypoi.unregisterMe();
-            }
-            repaintMap();
-
-            GML.tranEnd();
+            addBookMI_Click(sender, e);
         }
 
         void nightViewToggle_Key(object sender, KeyEventArgs e)

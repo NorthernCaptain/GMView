@@ -51,7 +51,7 @@ namespace GMView.Bookmarks
             DBObj dbo = null;
             try
             {
-                dbo = new DBObj(@"select id, name, description from poi where is_group=1");
+                dbo = new DBObj(@"select id, name, description from poi where is_group=1 order by name");
                 DbDataReader reader = dbo.cmd.ExecuteReader();
                 while (reader.Read())
                 {
