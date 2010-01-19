@@ -26,15 +26,19 @@ namespace GMView.Forms
 
             InitializeComponent();
 
-            treeModel = new POIGroupTreeModel(groupFactory);
-            treeView.Model = new Aga.Controls.Tree.SortedTreeModel(treeModel);
+            {
+                treeModel = new POIGroupTreeModel(groupFactory, treeView);
+                Aga.Controls.Tree.SortedTreeModel model = new Aga.Controls.Tree.SortedTreeModel(treeModel);
+                treeView.Model = model;
+                model.Comparer = new Bookmarks.POIGridSorter("Name", SortOrder.Ascending);
+            }
 
-            poiTypeListBox.loadList();
+            poiTypeListBox.loadList(false);
             poiTypeListBox.SelectedItem = currentPOI.Ptype;
 
             latTB.Text = currentPOI.LatitudeS;
             lonTb.Text = currentPOI.LongitudeS;
-            altTB.Value = (decimal) currentPOI.altitude;
+            altTB.Value = (decimal)currentPOI.altitude;
         }
 
         private void AddPOIForm_Load(object sender, EventArgs e)
@@ -94,13 +98,7 @@ namespace GMView.Forms
 
         private void addGroupToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Bookmarks.POIGroup parent_group = treeView.SelectedNode.Tag as Bookmarks.POIGroup;
-            Bookmarks.POIGroup new_group = new Bookmarks.POIGroup("?new group?");
-            new_group.updateDB();
-            parent_group.addChild(new_group);
-            parent_group.updateChildrenLinksDB();
-            groupFactory.addGroup(new_group);
-            treeModel.fireNodesInserted(treeView.GetPath(treeView.SelectedNode), new object[] { new_group });
+            treeModel.addNewGroup();
         }
 
     }

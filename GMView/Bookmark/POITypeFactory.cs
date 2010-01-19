@@ -84,8 +84,8 @@ namespace GMView.Bookmarks
             Program.Log("Loading POI types");
             try
             {
-                dbo = new DBObj("select id, name, description, icon, icon_cx, icon_cy "
-                                + "from poi_type where id > 0 order by sort_order desc, description");
+                dbo = new DBObj("select id, name, description, icon, icon_cx, icon_cy, is_quick_type, "
+                                + "is_auto_show, min_zoom_lvl from poi_type where id > 0 order by sort_order desc, description");
 
                 DbDataReader reader = dbo.cmd.ExecuteReader();
                 while (reader.Read())

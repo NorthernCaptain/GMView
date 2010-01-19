@@ -11,7 +11,8 @@ create index history_tn_idx on history_items (typename);
 --- POI types
 create table poi_type (id integer primary key autoincrement, name varchar(48) not null, description varchar(128) not null,
 	icon varchar(64), icon_cx integer default 0, icon_cy integer default 0, zoom_lvl integer default 12,
-	color integer, flags integer default 0, comments varchar(128), sort_order integer default 0);
+	color integer, flags integer default 0, comments varchar(128), sort_order integer default 0, is_auto_show integer default 0,
+	min_zoom_lvl integer default 10, is_quick_type integer default 1);
 --- flags: bit 1 = 0x1 - if set then User defined POI type
 ---
 create unique index poi_type_name_idx on poi_type (name);

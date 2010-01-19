@@ -56,6 +56,40 @@ namespace GMView.Bookmarks
             get { return shortName; }
         }
 
+        private bool isAutoShow = false;
+
+        /// <summary>
+        /// Is this type can be used in Auto show POI mode
+        /// </summary>
+        public bool IsAutoShow
+        {
+            get { return isAutoShow; }
+            set { isAutoShow = value; }
+        }
+
+        private bool isQuickType = true;
+
+        /// <summary>
+        /// Can this type be used in quick type list widget
+        /// </summary>
+        public bool IsQuickType
+        {
+            get { return isQuickType; }
+            set { isQuickType = value; }
+        }
+
+        private int minZoomLvl = 10;
+
+        /// <summary>
+        /// Minimum zoom lvl for this type to show POIs on the screen
+        /// </summary>
+        public int MinZoomLvl
+        {
+            get { return minZoomLvl; }
+            set { minZoomLvl = value; }
+        }
+
+
         public POIType() { textName = string.Empty; }
 
         /// <summary>
@@ -66,12 +100,15 @@ namespace GMView.Bookmarks
         /// <param name="reader"></param>
         public POIType(System.Data.Common.DbDataReader reader)
         {
-            id = reader.GetInt32(0);
-            shortName = reader.GetString(1);
-            textName = reader.GetString(2);
-            iconS = reader.GetString(3);
-            icon_dx = reader.GetInt32(4);
-            icon_dy = reader.GetInt32(5);
+            id = reader.GetInt32(reader.GetOrdinal("ID"));
+            shortName = reader.GetString(reader.GetOrdinal("NAME"));
+            textName = reader.GetString(reader.GetOrdinal("DESCRIPTION"));
+            iconS = reader.GetString(reader.GetOrdinal("ICON"));
+            icon_dx = reader.GetInt32(reader.GetOrdinal("ICON_CX"));
+            icon_dy = reader.GetInt32(reader.GetOrdinal("ICON_CY"));
+            isAutoShow = reader.GetInt32(reader.GetOrdinal("IS_AUTO_SHOW")) > 0;
+            isQuickType = reader.GetInt32(reader.GetOrdinal("IS_QUICK_TYPE")) > 0;
+            minZoomLvl = reader.GetInt32(reader.GetOrdinal("MIN_ZOOM_LVL"));
         }
 
         /// <summary>

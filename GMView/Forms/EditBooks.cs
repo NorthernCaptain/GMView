@@ -25,7 +25,7 @@ namespace GMView.Forms
         private Bookmarks.POITreeModel treeModel;
         private void fillGrid()
         {
-            treeModel = new Bookmarks.POITreeModel(groupFactory);
+            treeModel = new Bookmarks.POITreeModel(groupFactory, treeView);
             treeView.Model = new SortedTreeModel(treeModel);
             SortedTreeModel model = treeView.Model as SortedTreeModel;
             model.Comparer = new Bookmarks.POIGridSorter("Name", SortOrder.Ascending);
@@ -137,13 +137,7 @@ namespace GMView.Forms
 
         private void addGroupToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Bookmarks.POIGroup parent_group = treeView.SelectedNode.Tag as Bookmarks.POIGroup;
-            Bookmarks.POIGroup new_group = new Bookmarks.POIGroup("?new group?");
-            new_group.updateDB();
-            parent_group.addChild(new_group);
-            parent_group.updateChildrenLinksDB();
-            groupFactory.addGroup(new_group);
-            treeModel.fireNodesInserted(treeView.GetPath(treeView.SelectedNode), new object[] { new_group });
+            treeModel.addNewGroup();
         }
 
         private void treeView_ItemDrag(object sender, ItemDragEventArgs e)
@@ -189,7 +183,7 @@ namespace GMView.Forms
 
         private void treeView_DragDrop(object sender, DragEventArgs e)
         {
-            treeModel.doDropProcessing(treeView, e);
+            treeModel.doDropProcessing(e);
         }
 
         private void deletePOIOrGroupToolStripMenuItem_Click(object sender, EventArgs e)
@@ -199,7 +193,7 @@ namespace GMView.Forms
                        DialogResult.Yes)
             return;
 
-            treeModel.deleteSelectedNodes(treeView);
+            treeModel.deleteSelectedNodes();
         }
 
         private void okBut_Click(object sender, EventArgs e)

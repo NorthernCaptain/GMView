@@ -33,7 +33,7 @@ namespace GMView.Forms
             mypoi = ipoi;
             InitializeComponent();
             poiTypeList.BeginUpdate();
-            poiTypeList.loadList();
+            poiTypeList.loadList(true);
             poiTypeList.EndUpdate();
         }
 

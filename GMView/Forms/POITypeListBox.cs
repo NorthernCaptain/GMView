@@ -25,11 +25,22 @@ namespace GMView.Forms
         /// <summary>
         /// Loads types from DB and fills the list
         /// </summary>
-        public void loadList()
+        public void loadList(bool quickType)
         {
-            POIType[] arr = new POIType[POITypeFactory.singleton().count];
-            POITypeFactory.singleton().items.CopyTo(arr);
-            this.Items.AddRange(arr);
+            List<POIType> result = new List<POIType>();
+
+            foreach (POIType ptype in POITypeFactory.singleton().items)
+            {
+                if (quickType)
+                {
+                    if (ptype.IsQuickType)
+                        result.Add(ptype);
+                }
+                else
+                    result.Add(ptype);
+            }
+
+            this.Items.AddRange(result.ToArray());
             if (this.Items.Count > 0)
                 this.SelectedIndex = 0;
         }
