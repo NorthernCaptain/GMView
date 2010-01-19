@@ -55,16 +55,48 @@
             this.nodeNumericUpDown_Alt = new Aga.Controls.Tree.NodeControls.NodeNumericUpDown();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.okBut = new System.Windows.Forms.Button();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.PTapplyBut = new System.Windows.Forms.Button();
+            this.PTminZoomLvlNum = new System.Windows.Forms.NumericUpDown();
+            this.PTquickAddCB = new System.Windows.Forms.CheckBox();
+            this.PTautoShowCB = new System.Windows.Forms.CheckBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.PTiconPic = new System.Windows.Forms.PictureBox();
+            this.ChangeIconBut = new System.Windows.Forms.Button();
+            this.PTdescrTB = new System.Windows.Forms.TextBox();
+            this.PTnameTB = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.treeViewPType = new Aga.Controls.Tree.TreeViewAdv();
+            this.PTnameCol = new Aga.Controls.Tree.TreeColumn();
+            this.PTdescrCol = new Aga.Controls.Tree.TreeColumn();
+            this.PTquickAddCol = new Aga.Controls.Tree.TreeColumn();
+            this.PTautoShowCol = new Aga.Controls.Tree.TreeColumn();
+            this.PTminZoomCol = new Aga.Controls.Tree.TreeColumn();
+            this.PTnodeStateIcon = new Aga.Controls.Tree.NodeControls.NodeStateIcon();
+            this.PTnodeTextBoxName = new Aga.Controls.Tree.NodeControls.NodeTextBox();
+            this.PTnodeTextBoxDesc = new Aga.Controls.Tree.NodeControls.NodeTextBox();
+            this.PTnodeCheckBoxQuick = new Aga.Controls.Tree.NodeControls.NodeCheckBox();
+            this.PTnodeCheckBoxAuto = new Aga.Controls.Tree.NodeControls.NodeCheckBox();
+            this.PTnodeNumericUpDownMinZ = new Aga.Controls.Tree.NodeControls.NodeNumericUpDown();
             this.contextMenuStripForTree.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PTminZoomLvlNum)).BeginInit();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PTiconPic)).BeginInit();
             this.SuspendLayout();
             // 
             // treeView
             // 
             this.treeView.AllowColumnReorder = true;
             this.treeView.AllowDrop = true;
-            this.treeView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
             this.treeView.AutoRowHeight = true;
             this.treeView.BackColor = System.Drawing.SystemColors.Window;
             this.treeView.Columns.Add(this.treeColumn1);
@@ -79,12 +111,13 @@
             this.treeView.ContextMenuStrip = this.contextMenuStripForTree;
             this.treeView.DefaultToolTipProvider = null;
             this.treeView.DisplayDraggingNodes = true;
+            this.treeView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeView.DragDropMarkColor = System.Drawing.Color.Maroon;
             this.treeView.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.treeView.GridLineStyle = ((Aga.Controls.Tree.GridLineStyle)((Aga.Controls.Tree.GridLineStyle.Horizontal | Aga.Controls.Tree.GridLineStyle.Vertical)));
             this.treeView.LineColor = System.Drawing.SystemColors.ControlDark;
             this.treeView.LoadOnDemand = true;
-            this.treeView.Location = new System.Drawing.Point(0, 0);
+            this.treeView.Location = new System.Drawing.Point(3, 3);
             this.treeView.Model = null;
             this.treeView.Name = "treeView";
             this.treeView.NodeControls.Add(this.nodeCheckBox_Shown);
@@ -101,7 +134,7 @@
             this.treeView.RowHeight = 19;
             this.treeView.SelectedNode = null;
             this.treeView.SelectionMode = Aga.Controls.Tree.TreeSelectionMode.MultiSameParent;
-            this.treeView.Size = new System.Drawing.Size(686, 422);
+            this.treeView.Size = new System.Drawing.Size(721, 388);
             this.treeView.TabIndex = 2;
             this.treeView.Text = "POI tree";
             this.treeView.UseColumns = true;
@@ -337,26 +370,350 @@
             // 
             this.okBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.okBut.Image = global::GMView.Properties.Resources.lamp_on;
-            this.okBut.Location = new System.Drawing.Point(600, 428);
+            this.okBut.Location = new System.Drawing.Point(650, 428);
             this.okBut.Name = "okBut";
-            this.okBut.Size = new System.Drawing.Size(74, 28);
+            this.okBut.Size = new System.Drawing.Size(74, 37);
             this.okBut.TabIndex = 1;
             this.okBut.Text = "OK";
             this.okBut.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.okBut.UseVisualStyleBackColor = true;
             this.okBut.Click += new System.EventHandler(this.okBut_Click);
             // 
+            // tabControl1
+            // 
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Location = new System.Drawing.Point(1, 2);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(735, 420);
+            this.tabControl1.TabIndex = 3;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.treeView);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(727, 394);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Points of Interest";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.groupBox1);
+            this.tabPage2.Controls.Add(this.treeViewPType);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(727, 394);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Types";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.PTapplyBut);
+            this.groupBox1.Controls.Add(this.PTminZoomLvlNum);
+            this.groupBox1.Controls.Add(this.PTquickAddCB);
+            this.groupBox1.Controls.Add(this.PTautoShowCB);
+            this.groupBox1.Controls.Add(this.groupBox2);
+            this.groupBox1.Controls.Add(this.PTdescrTB);
+            this.groupBox1.Controls.Add(this.PTnameTB);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Location = new System.Drawing.Point(491, 6);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(228, 382);
+            this.groupBox1.TabIndex = 1;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Type info:";
+            // 
+            // PTapplyBut
+            // 
+            this.PTapplyBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.PTapplyBut.Location = new System.Drawing.Point(61, 350);
+            this.PTapplyBut.Name = "PTapplyBut";
+            this.PTapplyBut.Size = new System.Drawing.Size(111, 26);
+            this.PTapplyBut.TabIndex = 8;
+            this.PTapplyBut.Text = "Apply changes";
+            this.PTapplyBut.UseVisualStyleBackColor = true;
+            // 
+            // PTminZoomLvlNum
+            // 
+            this.PTminZoomLvlNum.Location = new System.Drawing.Point(167, 245);
+            this.PTminZoomLvlNum.Maximum = new decimal(new int[] {
+            18,
+            0,
+            0,
+            0});
+            this.PTminZoomLvlNum.Minimum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.PTminZoomLvlNum.Name = "PTminZoomLvlNum";
+            this.PTminZoomLvlNum.Size = new System.Drawing.Size(55, 20);
+            this.PTminZoomLvlNum.TabIndex = 7;
+            this.PTminZoomLvlNum.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
+            // PTquickAddCB
+            // 
+            this.PTquickAddCB.AutoSize = true;
+            this.PTquickAddCB.Location = new System.Drawing.Point(12, 212);
+            this.PTquickAddCB.Name = "PTquickAddCB";
+            this.PTquickAddCB.Size = new System.Drawing.Size(138, 17);
+            this.PTquickAddCB.TabIndex = 6;
+            this.PTquickAddCB.Text = "Use in Quick Add mode";
+            this.PTquickAddCB.UseVisualStyleBackColor = true;
+            // 
+            // PTautoShowCB
+            // 
+            this.PTautoShowCB.AutoSize = true;
+            this.PTautoShowCB.Location = new System.Drawing.Point(12, 189);
+            this.PTautoShowCB.Name = "PTautoShowCB";
+            this.PTautoShowCB.Size = new System.Drawing.Size(132, 17);
+            this.PTautoShowCB.TabIndex = 5;
+            this.PTautoShowCB.Text = "Auto show on the map";
+            this.PTautoShowCB.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.PTiconPic);
+            this.groupBox2.Controls.Add(this.ChangeIconBut);
+            this.groupBox2.Location = new System.Drawing.Point(6, 97);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(216, 86);
+            this.groupBox2.TabIndex = 4;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Icon:";
+            // 
+            // PTiconPic
+            // 
+            this.PTiconPic.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.PTiconPic.Location = new System.Drawing.Point(6, 19);
+            this.PTiconPic.Name = "PTiconPic";
+            this.PTiconPic.Size = new System.Drawing.Size(64, 58);
+            this.PTiconPic.TabIndex = 2;
+            this.PTiconPic.TabStop = false;
+            // 
+            // ChangeIconBut
+            // 
+            this.ChangeIconBut.Location = new System.Drawing.Point(110, 35);
+            this.ChangeIconBut.Name = "ChangeIconBut";
+            this.ChangeIconBut.Size = new System.Drawing.Size(75, 23);
+            this.ChangeIconBut.TabIndex = 3;
+            this.ChangeIconBut.Text = "Change";
+            this.ChangeIconBut.UseVisualStyleBackColor = true;
+            // 
+            // PTdescrTB
+            // 
+            this.PTdescrTB.Location = new System.Drawing.Point(6, 71);
+            this.PTdescrTB.Name = "PTdescrTB";
+            this.PTdescrTB.Size = new System.Drawing.Size(216, 20);
+            this.PTdescrTB.TabIndex = 1;
+            // 
+            // PTnameTB
+            // 
+            this.PTnameTB.Location = new System.Drawing.Point(6, 32);
+            this.PTnameTB.Name = "PTnameTB";
+            this.PTnameTB.Size = new System.Drawing.Size(216, 20);
+            this.PTnameTB.TabIndex = 1;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(9, 247);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(139, 13);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "Minimum display zoom level:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 55);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(63, 13);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "Description:";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 16);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(64, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Short name:";
+            // 
+            // treeViewPType
+            // 
+            this.treeViewPType.AllowColumnReorder = true;
+            this.treeViewPType.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.treeViewPType.AutoRowHeight = true;
+            this.treeViewPType.BackColor = System.Drawing.SystemColors.Window;
+            this.treeViewPType.Columns.Add(this.PTnameCol);
+            this.treeViewPType.Columns.Add(this.PTdescrCol);
+            this.treeViewPType.Columns.Add(this.PTquickAddCol);
+            this.treeViewPType.Columns.Add(this.PTautoShowCol);
+            this.treeViewPType.Columns.Add(this.PTminZoomCol);
+            this.treeViewPType.DefaultToolTipProvider = null;
+            this.treeViewPType.DragDropMarkColor = System.Drawing.Color.Black;
+            this.treeViewPType.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.treeViewPType.GridLineStyle = ((Aga.Controls.Tree.GridLineStyle)((Aga.Controls.Tree.GridLineStyle.Horizontal | Aga.Controls.Tree.GridLineStyle.Vertical)));
+            this.treeViewPType.LineColor = System.Drawing.SystemColors.ControlDark;
+            this.treeViewPType.Location = new System.Drawing.Point(3, 6);
+            this.treeViewPType.Model = null;
+            this.treeViewPType.Name = "treeViewPType";
+            this.treeViewPType.NodeControls.Add(this.PTnodeStateIcon);
+            this.treeViewPType.NodeControls.Add(this.PTnodeTextBoxName);
+            this.treeViewPType.NodeControls.Add(this.PTnodeTextBoxDesc);
+            this.treeViewPType.NodeControls.Add(this.PTnodeCheckBoxQuick);
+            this.treeViewPType.NodeControls.Add(this.PTnodeCheckBoxAuto);
+            this.treeViewPType.NodeControls.Add(this.PTnodeNumericUpDownMinZ);
+            this.treeViewPType.RowHeight = 40;
+            this.treeViewPType.SelectedNode = null;
+            this.treeViewPType.ShowLines = false;
+            this.treeViewPType.ShowPlusMinus = false;
+            this.treeViewPType.Size = new System.Drawing.Size(482, 382);
+            this.treeViewPType.TabIndex = 0;
+            this.treeViewPType.Text = "Type view";
+            this.treeViewPType.UseColumns = true;
+            this.treeViewPType.SelectionChanged += new System.EventHandler(this.treeViewPType_SelectionChanged);
+            // 
+            // PTnameCol
+            // 
+            this.PTnameCol.Header = "Name";
+            this.PTnameCol.SortOrder = System.Windows.Forms.SortOrder.None;
+            this.PTnameCol.TooltipText = null;
+            this.PTnameCol.Width = 140;
+            // 
+            // PTdescrCol
+            // 
+            this.PTdescrCol.Header = "Description";
+            this.PTdescrCol.SortOrder = System.Windows.Forms.SortOrder.None;
+            this.PTdescrCol.TooltipText = null;
+            this.PTdescrCol.Width = 200;
+            // 
+            // PTquickAddCol
+            // 
+            this.PTquickAddCol.Header = "Quick";
+            this.PTquickAddCol.SortOrder = System.Windows.Forms.SortOrder.None;
+            this.PTquickAddCol.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.PTquickAddCol.TooltipText = null;
+            this.PTquickAddCol.Width = 40;
+            // 
+            // PTautoShowCol
+            // 
+            this.PTautoShowCol.Header = "Auto";
+            this.PTautoShowCol.SortOrder = System.Windows.Forms.SortOrder.None;
+            this.PTautoShowCol.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.PTautoShowCol.TooltipText = null;
+            this.PTautoShowCol.Width = 40;
+            // 
+            // PTminZoomCol
+            // 
+            this.PTminZoomCol.Header = "Min zoom";
+            this.PTminZoomCol.SortOrder = System.Windows.Forms.SortOrder.None;
+            this.PTminZoomCol.TooltipText = null;
+            // 
+            // PTnodeStateIcon
+            // 
+            this.PTnodeStateIcon.DataPropertyName = "IconImg";
+            this.PTnodeStateIcon.LeftMargin = 1;
+            this.PTnodeStateIcon.ParentColumn = this.PTnameCol;
+            this.PTnodeStateIcon.ScaleMode = Aga.Controls.Tree.ImageScaleMode.Clip;
+            // 
+            // PTnodeTextBoxName
+            // 
+            this.PTnodeTextBoxName.DataPropertyName = "Name";
+            this.PTnodeTextBoxName.EditEnabled = true;
+            this.PTnodeTextBoxName.IncrementalSearchEnabled = true;
+            this.PTnodeTextBoxName.LeftMargin = 3;
+            this.PTnodeTextBoxName.ParentColumn = this.PTnameCol;
+            this.PTnodeTextBoxName.Trimming = System.Drawing.StringTrimming.EllipsisCharacter;
+            this.PTnodeTextBoxName.UseCompatibleTextRendering = true;
+            // 
+            // PTnodeTextBoxDesc
+            // 
+            this.PTnodeTextBoxDesc.DataPropertyName = "Text";
+            this.PTnodeTextBoxDesc.EditEnabled = true;
+            this.PTnodeTextBoxDesc.IncrementalSearchEnabled = true;
+            this.PTnodeTextBoxDesc.LeftMargin = 3;
+            this.PTnodeTextBoxDesc.ParentColumn = this.PTdescrCol;
+            this.PTnodeTextBoxDesc.Trimming = System.Drawing.StringTrimming.EllipsisCharacter;
+            // 
+            // PTnodeCheckBoxQuick
+            // 
+            this.PTnodeCheckBoxQuick.DataPropertyName = "IsQuickType";
+            this.PTnodeCheckBoxQuick.EditEnabled = true;
+            this.PTnodeCheckBoxQuick.LeftMargin = 0;
+            this.PTnodeCheckBoxQuick.ParentColumn = this.PTquickAddCol;
+            // 
+            // PTnodeCheckBoxAuto
+            // 
+            this.PTnodeCheckBoxAuto.DataPropertyName = "IsAutoShow";
+            this.PTnodeCheckBoxAuto.EditEnabled = true;
+            this.PTnodeCheckBoxAuto.LeftMargin = 0;
+            this.PTnodeCheckBoxAuto.ParentColumn = this.PTautoShowCol;
+            // 
+            // PTnodeNumericUpDownMinZ
+            // 
+            this.PTnodeNumericUpDownMinZ.DataPropertyName = "MinZoomLvl";
+            this.PTnodeNumericUpDownMinZ.EditEnabled = true;
+            this.PTnodeNumericUpDownMinZ.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.PTnodeNumericUpDownMinZ.IncrementalSearchEnabled = true;
+            this.PTnodeNumericUpDownMinZ.LeftMargin = 3;
+            this.PTnodeNumericUpDownMinZ.Maximum = new decimal(new int[] {
+            18,
+            0,
+            0,
+            0});
+            this.PTnodeNumericUpDownMinZ.Minimum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.PTnodeNumericUpDownMinZ.ParentColumn = this.PTminZoomCol;
+            this.PTnodeNumericUpDownMinZ.Trimming = System.Drawing.StringTrimming.Character;
+            // 
             // EditBooks
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(686, 468);
+            this.ClientSize = new System.Drawing.Size(736, 468);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.checkBox1);
-            this.Controls.Add(this.treeView);
             this.Controls.Add(this.okBut);
             this.Name = "EditBooks";
             this.Text = "Points of interest";
             this.contextMenuStripForTree.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PTminZoomLvlNum)).EndInit();
+            this.groupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.PTiconPic)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -390,5 +747,33 @@
         private Aga.Controls.Tree.NodeControls.NodeNumericUpDown nodeNumericUpDown_Alt;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Button okBut;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private Aga.Controls.Tree.TreeViewAdv treeViewPType;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TextBox PTdescrTB;
+        private System.Windows.Forms.TextBox PTnameTB;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckBox PTquickAddCB;
+        private System.Windows.Forms.CheckBox PTautoShowCB;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.PictureBox PTiconPic;
+        private System.Windows.Forms.Button ChangeIconBut;
+        private System.Windows.Forms.NumericUpDown PTminZoomLvlNum;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button PTapplyBut;
+        private Aga.Controls.Tree.TreeColumn PTnameCol;
+        private Aga.Controls.Tree.TreeColumn PTdescrCol;
+        private Aga.Controls.Tree.TreeColumn PTquickAddCol;
+        private Aga.Controls.Tree.TreeColumn PTautoShowCol;
+        private Aga.Controls.Tree.TreeColumn PTminZoomCol;
+        private Aga.Controls.Tree.NodeControls.NodeStateIcon PTnodeStateIcon;
+        private Aga.Controls.Tree.NodeControls.NodeTextBox PTnodeTextBoxName;
+        private Aga.Controls.Tree.NodeControls.NodeTextBox PTnodeTextBoxDesc;
+        private Aga.Controls.Tree.NodeControls.NodeCheckBox PTnodeCheckBoxQuick;
+        private Aga.Controls.Tree.NodeControls.NodeCheckBox PTnodeCheckBoxAuto;
+        private Aga.Controls.Tree.NodeControls.NodeNumericUpDown PTnodeNumericUpDownMinZ;
     }
 }

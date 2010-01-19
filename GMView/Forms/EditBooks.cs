@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using Aga.Controls.Tree;
+using GMView.Bookmarks;
 
 namespace GMView.Forms
 {
@@ -20,6 +21,7 @@ namespace GMView.Forms
             groupFactory = igroupFactory;
             InitializeComponent();
             fillGrid();
+            fillTypeGrid();
         }
 
         private Bookmarks.POITreeModel treeModel;
@@ -40,6 +42,16 @@ namespace GMView.Forms
             IEnumerator<TreeNodeAdv> ienum = treeView.AllNodes.GetEnumerator();
             ienum.MoveNext();
             ienum.Current.IsExpanded = true;
+        }
+
+        private Bookmarks.POITypeTreeModel typeTreeModel;
+        private void fillTypeGrid()
+        {
+            typeTreeModel = new Bookmarks.POITypeTreeModel(Bookmarks.POITypeFactory.singleton(),
+                                                           treeViewPType);
+            treeViewPType.Model = new SortedTreeModel(typeTreeModel);
+            PTnodeTextBoxName.DrawText += new EventHandler<Aga.Controls.Tree.NodeControls.DrawEventArgs>(nodeDescr_DrawText);
+            PTnodeTextBoxDesc.DrawText += new EventHandler<Aga.Controls.Tree.NodeControls.DrawEventArgs>(nodeDescr_DrawText); 
         }
 
         void nodeDescr_DrawText(object sender, Aga.Controls.Tree.NodeControls.DrawEventArgs e)
@@ -199,6 +211,18 @@ namespace GMView.Forms
         private void okBut_Click(object sender, EventArgs e)
         {
             this.Visible = false;
+        }
+
+        private POIType currentPT;
+
+        private void treeViewPType_SelectionChanged(object sender, EventArgs e)
+        {
+            currentPT = treeViewPType.SelectedNode.Tag as POIType;
+            PTnameTB.Text = currentPT.Name;
+            PTdescrTB.Text = currentPT.Text;
+            PTminZoomLvlNum.Value = (decimal)currentPT.MinZoomLvl;
+            PTautoShowCB.Checked = currentPT.IsAutoShow;
+            PTquickAddCB.Checked = currentPT.IsQuickType;
         }
 
     }
