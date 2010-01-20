@@ -31,6 +31,15 @@ namespace GMView.Bookmarks
             return true;
         }
 
+
+        public void fireStructureChanged()
+        {
+            if(StructureChanged != null)
+            {
+                StructureChanged(this, new TreePathEventArgs());
+            }
+        }
+
         public event EventHandler<TreeModelEventArgs> NodesChanged;
 
         public event EventHandler<TreeModelEventArgs> NodesInserted;

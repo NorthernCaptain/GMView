@@ -59,11 +59,17 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.newTypeBut = new System.Windows.Forms.Button();
+            this.cancelChangesBut = new System.Windows.Forms.Button();
             this.PTapplyBut = new System.Windows.Forms.Button();
             this.PTminZoomLvlNum = new System.Windows.Forms.NumericUpDown();
             this.PTquickAddCB = new System.Windows.Forms.CheckBox();
             this.PTautoShowCB = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.PTiconCYNum = new System.Windows.Forms.NumericUpDown();
+            this.PTiconCXNum = new System.Windows.Forms.NumericUpDown();
             this.PTiconPic = new System.Windows.Forms.PictureBox();
             this.ChangeIconBut = new System.Windows.Forms.Button();
             this.PTdescrTB = new System.Windows.Forms.TextBox();
@@ -83,6 +89,8 @@
             this.PTnodeCheckBoxQuick = new Aga.Controls.Tree.NodeControls.NodeCheckBox();
             this.PTnodeCheckBoxAuto = new Aga.Controls.Tree.NodeControls.NodeCheckBox();
             this.PTnodeNumericUpDownMinZ = new Aga.Controls.Tree.NodeControls.NodeNumericUpDown();
+            this.PTIconOpenDialog = new System.Windows.Forms.OpenFileDialog();
+            this.PTdelTypeBut = new System.Windows.Forms.Button();
             this.contextMenuStripForTree.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -90,6 +98,8 @@
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PTminZoomLvlNum)).BeginInit();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PTiconCYNum)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PTiconCXNum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PTiconPic)).BeginInit();
             this.SuspendLayout();
             // 
@@ -419,6 +429,9 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.PTdelTypeBut);
+            this.groupBox1.Controls.Add(this.newTypeBut);
+            this.groupBox1.Controls.Add(this.cancelChangesBut);
             this.groupBox1.Controls.Add(this.PTapplyBut);
             this.groupBox1.Controls.Add(this.PTminZoomLvlNum);
             this.groupBox1.Controls.Add(this.PTquickAddCB);
@@ -436,15 +449,39 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Type info:";
             // 
+            // newTypeBut
+            // 
+            this.newTypeBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.newTypeBut.Location = new System.Drawing.Point(9, 318);
+            this.newTypeBut.Name = "newTypeBut";
+            this.newTypeBut.Size = new System.Drawing.Size(99, 26);
+            this.newTypeBut.TabIndex = 8;
+            this.newTypeBut.Text = "New Type";
+            this.newTypeBut.UseVisualStyleBackColor = true;
+            this.newTypeBut.Click += new System.EventHandler(this.newTypeBut_Click);
+            // 
+            // cancelChangesBut
+            // 
+            this.cancelChangesBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cancelChangesBut.Location = new System.Drawing.Point(123, 350);
+            this.cancelChangesBut.Name = "cancelChangesBut";
+            this.cancelChangesBut.Size = new System.Drawing.Size(99, 26);
+            this.cancelChangesBut.TabIndex = 8;
+            this.cancelChangesBut.Text = "Cancel";
+            this.cancelChangesBut.UseVisualStyleBackColor = true;
+            this.cancelChangesBut.Click += new System.EventHandler(this.cancelChangesBut_Click);
+            // 
             // PTapplyBut
             // 
             this.PTapplyBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.PTapplyBut.Location = new System.Drawing.Point(61, 350);
+            this.PTapplyBut.Enabled = false;
+            this.PTapplyBut.Location = new System.Drawing.Point(9, 350);
             this.PTapplyBut.Name = "PTapplyBut";
-            this.PTapplyBut.Size = new System.Drawing.Size(111, 26);
+            this.PTapplyBut.Size = new System.Drawing.Size(99, 26);
             this.PTapplyBut.TabIndex = 8;
             this.PTapplyBut.Text = "Apply changes";
             this.PTapplyBut.UseVisualStyleBackColor = true;
+            this.PTapplyBut.Click += new System.EventHandler(this.PTapplyBut_Click);
             // 
             // PTminZoomLvlNum
             // 
@@ -490,6 +527,10 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.label5);
+            this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Controls.Add(this.PTiconCYNum);
+            this.groupBox2.Controls.Add(this.PTiconCXNum);
             this.groupBox2.Controls.Add(this.PTiconPic);
             this.groupBox2.Controls.Add(this.ChangeIconBut);
             this.groupBox2.Location = new System.Drawing.Point(6, 97);
@@ -499,23 +540,61 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Icon:";
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(78, 54);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(24, 13);
+            this.label5.TabIndex = 5;
+            this.label5.Text = "CY:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(78, 28);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(24, 13);
+            this.label4.TabIndex = 5;
+            this.label4.Text = "CX:";
+            // 
+            // PTiconCYNum
+            // 
+            this.PTiconCYNum.Location = new System.Drawing.Point(108, 52);
+            this.PTiconCYNum.Name = "PTiconCYNum";
+            this.PTiconCYNum.Size = new System.Drawing.Size(49, 20);
+            this.PTiconCYNum.TabIndex = 4;
+            this.PTiconCYNum.ValueChanged += new System.EventHandler(this.PTiconCXNum_ValueChanged);
+            // 
+            // PTiconCXNum
+            // 
+            this.PTiconCXNum.Location = new System.Drawing.Point(108, 26);
+            this.PTiconCXNum.Name = "PTiconCXNum";
+            this.PTiconCXNum.Size = new System.Drawing.Size(49, 20);
+            this.PTiconCXNum.TabIndex = 4;
+            this.PTiconCXNum.ValueChanged += new System.EventHandler(this.PTiconCXNum_ValueChanged);
+            // 
             // PTiconPic
             // 
             this.PTiconPic.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.PTiconPic.Cursor = System.Windows.Forms.Cursors.Cross;
             this.PTiconPic.Location = new System.Drawing.Point(6, 19);
             this.PTiconPic.Name = "PTiconPic";
             this.PTiconPic.Size = new System.Drawing.Size(64, 58);
             this.PTiconPic.TabIndex = 2;
             this.PTiconPic.TabStop = false;
+            this.PTiconPic.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PTiconPic_MouseDown);
+            this.PTiconPic.Paint += new System.Windows.Forms.PaintEventHandler(this.PTiconPic_Paint);
             // 
             // ChangeIconBut
             // 
-            this.ChangeIconBut.Location = new System.Drawing.Point(110, 35);
+            this.ChangeIconBut.Location = new System.Drawing.Point(165, 28);
             this.ChangeIconBut.Name = "ChangeIconBut";
-            this.ChangeIconBut.Size = new System.Drawing.Size(75, 23);
+            this.ChangeIconBut.Size = new System.Drawing.Size(45, 37);
             this.ChangeIconBut.TabIndex = 3;
-            this.ChangeIconBut.Text = "Change";
+            this.ChangeIconBut.Text = "Load";
             this.ChangeIconBut.UseVisualStyleBackColor = true;
+            this.ChangeIconBut.Click += new System.EventHandler(this.ChangeIconBut_Click);
             // 
             // PTdescrTB
             // 
@@ -695,6 +774,23 @@
             this.PTnodeNumericUpDownMinZ.ParentColumn = this.PTminZoomCol;
             this.PTnodeNumericUpDownMinZ.Trimming = System.Drawing.StringTrimming.Character;
             // 
+            // PTIconOpenDialog
+            // 
+            this.PTIconOpenDialog.DefaultExt = "png";
+            this.PTIconOpenDialog.FileName = "icon.png";
+            this.PTIconOpenDialog.Title = "Choose icon for the type";
+            // 
+            // PTdelTypeBut
+            // 
+            this.PTdelTypeBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.PTdelTypeBut.Location = new System.Drawing.Point(123, 318);
+            this.PTdelTypeBut.Name = "PTdelTypeBut";
+            this.PTdelTypeBut.Size = new System.Drawing.Size(99, 26);
+            this.PTdelTypeBut.TabIndex = 8;
+            this.PTdelTypeBut.Text = "Delete Type";
+            this.PTdelTypeBut.UseVisualStyleBackColor = true;
+            this.PTdelTypeBut.Click += new System.EventHandler(this.PTdelTypeBut_Click);
+            // 
             // EditBooks
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -713,6 +809,9 @@
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PTminZoomLvlNum)).EndInit();
             this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PTiconCYNum)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PTiconCXNum)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PTiconPic)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -775,5 +874,13 @@
         private Aga.Controls.Tree.NodeControls.NodeCheckBox PTnodeCheckBoxQuick;
         private Aga.Controls.Tree.NodeControls.NodeCheckBox PTnodeCheckBoxAuto;
         private Aga.Controls.Tree.NodeControls.NodeNumericUpDown PTnodeNumericUpDownMinZ;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.NumericUpDown PTiconCYNum;
+        private System.Windows.Forms.NumericUpDown PTiconCXNum;
+        private System.Windows.Forms.Button cancelChangesBut;
+        private System.Windows.Forms.Button newTypeBut;
+        private System.Windows.Forms.OpenFileDialog PTIconOpenDialog;
+        private System.Windows.Forms.Button PTdelTypeBut;
     }
 }

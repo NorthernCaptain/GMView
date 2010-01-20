@@ -13,6 +13,10 @@ namespace GMView.Bookmarks
     public class POIType: IIconInfo
     {
         /// <summary>
+        /// Means that this is user defined type, not a system one
+        /// </summary>
+        public const int FlagUserEntry = 1;
+        /// <summary>
         /// ID of this type in DB
         /// </summary>
         int id = 0;
@@ -105,8 +109,22 @@ namespace GMView.Bookmarks
             set { flags = value; }
         }
 
+        /// <summary>
+        /// Is flag set or no.
+        /// </summary>
+        /// <param name="flagMask"></param>
+        /// <returns></returns>
+        public bool isFlag(int flagMask)
+        {
+            return (flags & flagMask) == flagMask;
+        }
 
-        public POIType() { textName = string.Empty; }
+        public POIType() 
+        { 
+            textName = string.Empty;
+            shortName = string.Empty;
+            iconS = "unknown.png";
+        }
 
         /// <summary>
         /// Constructor reads data from DB opened cursor (table poi_type)
@@ -149,9 +167,9 @@ namespace GMView.Bookmarks
                 try
                 {
                     dbo = new DBObj(@"insert into poi_type (name, description, icon, icon_cx, "
-                                + "icon_cy, min_zoom_lvl, is_auto_show, is_quick_type) "
+                                + "icon_cy, min_zoom_lvl, is_auto_show, is_quick_type, flags) "
                                 + "values (@NAME,@DESCR, @ICON, @ICON_CX, @ICON_CY, "
-                                + "@MINZOOM, @ISAUTOSHOW, @ISQUICK)");
+                                + "@MINZOOM, @ISAUTOSHOW, @ISQUICK, 1)");
                     dbo.addStringPar("@NAME", shortName);
                     dbo.addStringPar("@DESCR", textName);
                     dbo.addStringPar("@ICON", iconS);
@@ -164,6 +182,7 @@ namespace GMView.Bookmarks
                     dbo.executeNonQuery();
 
                     id = dbo.seqCurval("poi_type");
+                    flags |= FlagUserEntry;
                 }
                 catch (System.Exception e)
                 {
@@ -181,7 +200,7 @@ namespace GMView.Bookmarks
                 try
                 {
                     dbo = new DBObj(@"update poi_type set name=@NAME, description=@DESCR, "
-                                + "icon=@ICON, icon_cx=@ICON_CX, min_zoom_lvl=@MINZOOM, "
+                                + "icon=@ICON, icon_cx=@ICON_CX, icon_cy=@ICON_CY, min_zoom_lvl=@MINZOOM, "
                                 + "is_auto_show=@ISAUTOSHOW, is_quick_type=@ISQUICK "
                                 + "where id=@ID");
                     dbo.addStringPar("@NAME", shortName);
@@ -215,16 +234,19 @@ namespace GMView.Bookmarks
         public string iconName
         {
             get { return iconS; }
+            set { iconS = value;}
         }
 
         public int iconDeltaX
         {
             get { return icon_dx; }
+            set { icon_dx = value; }
         }
 
         public int iconDeltaY
         {
             get { return icon_dy; }
+            set { icon_dy = value; }
         }
 
         #endregion

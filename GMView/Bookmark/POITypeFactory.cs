@@ -92,9 +92,7 @@ namespace GMView.Bookmarks
                 while (reader.Read())
                 {
                     POIType pi = new POIType(reader);
-                    allTypes.Add(pi);
-                    nameTypes.Add(pi.Name, pi);
-                    idTypes.Add(pi.Id, pi);
+                    addNewType(pi);
                 }
             }
             catch (System.Exception ex)
@@ -105,6 +103,29 @@ namespace GMView.Bookmarks
             {
                 if (dbo != null)
                     dbo.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Register new POI type in the factory.
+        /// </summary>
+        /// <param name="newType"></param>
+        public void addNewType(POIType newType)
+        {
+            allTypes.Add(newType);
+            nameTypes.Add(newType.Name, newType);
+            idTypes.Add(newType.Id, newType);
+        }
+
+        /// <summary>
+        /// Resort the list in alphabetic order
+        /// </summary>
+        public void resortAll()
+        {
+            allTypes.Clear();
+            foreach (KeyValuePair<string, POIType> pair in nameTypes)
+            {
+                allTypes.Add(pair.Value);
             }
         }
     }

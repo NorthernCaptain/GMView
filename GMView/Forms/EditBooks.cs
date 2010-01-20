@@ -217,12 +217,202 @@ namespace GMView.Forms
 
         private void treeViewPType_SelectionChanged(object sender, EventArgs e)
         {
-            currentPT = treeViewPType.SelectedNode.Tag as POIType;
-            PTnameTB.Text = currentPT.Name;
-            PTdescrTB.Text = currentPT.Text;
-            PTminZoomLvlNum.Value = (decimal)currentPT.MinZoomLvl;
-            PTautoShowCB.Checked = currentPT.IsAutoShow;
-            PTquickAddCB.Checked = currentPT.IsQuickType;
+            setTypeInfo((treeViewPType.SelectedNode ==  null ?  null : treeViewPType.SelectedNode.Tag as POIType));
+            PTapplyBut.Enabled = true;
+        }
+
+        private void setTypeInfo(POIType ptype)
+        {
+            currentPT = ptype;
+            if (ptype != null)
+            {
+                PTnameTB.Text = currentPT.Name;
+                PTdescrTB.Text = currentPT.Text;
+                PTminZoomLvlNum.Value = (decimal)currentPT.MinZoomLvl;
+                PTautoShowCB.Checked = currentPT.IsAutoShow;
+                PTquickAddCB.Checked = currentPT.IsQuickType;
+                PTiconCXNum.Value = (decimal)currentPT.iconDeltaX;
+                PTiconCYNum.Value = (decimal)currentPT.iconDeltaY;
+                if (ptype.Id != 0)
+                {
+                    pt_delta_x = currentPT.iconDeltaX;
+                    pt_delta_y = currentPT.iconDeltaY;
+                }
+                PTiconImage = currentPT.IconImg;
+                PTiconString = currentPT.iconName;
+            }
+            else
+            {
+                PTnameTB.Text = string.Empty;
+                PTdescrTB.Text = string.Empty;
+                PTautoShowCB.Checked = false;
+                PTquickAddCB.Checked = false;
+                PTiconImage = null;
+                PTiconString = String.Empty;
+            }
+            PTiconPic.Invalidate();
+        }
+
+        private int pt_delta_x;
+        private int pt_delta_y;
+
+        private void PTiconPic_Paint(object sender, PaintEventArgs e)
+        {
+            Pen pen = new Pen(Brushes.White, 1);
+            Pen linepen = new Pen(Brushes.DarkBlue, 1);
+
+            e.Graphics.DrawRectangle(pen, 0, 0, e.ClipRectangle.Width, e.ClipRectangle.Height);
+            if (PTiconImage != null)
+            {
+                e.Graphics.DrawImage(PTiconImage, 0, 0, PTiconImage.Width, PTiconImage.Height);
+                e.Graphics.DrawLine(pen, pt_delta_x - 2, pt_delta_y +1, pt_delta_x + 4, pt_delta_y +1);
+                e.Graphics.DrawLine(pen, pt_delta_x +1, pt_delta_y - 2, pt_delta_x +1, pt_delta_y + 4);
+                e.Graphics.DrawLine(linepen, pt_delta_x - 3, pt_delta_y, pt_delta_x + 3, pt_delta_y);
+                e.Graphics.DrawLine(linepen, pt_delta_x, pt_delta_y - 3, pt_delta_x, pt_delta_y + 3);
+            }
+        }
+
+        private void PTiconPic_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (currentPT == null)
+                return;
+            ImageDot idot = IconFactory.singleton.getIcon(currentPT);
+            if (e.Button != MouseButtons.Left)
+                return;
+
+            if (e.X >= idot.real_len || e.Y >= idot.real_hei)
+                return;
+
+            pt_delta_x = e.X;
+            pt_delta_y = e.Y;
+
+            PTiconPic.Invalidate();
+            PTiconCXNum.Value = (decimal)e.X;
+            PTiconCYNum.Value = (decimal)e.Y;
+        }
+
+        private void cancelChangesBut_Click(object sender, EventArgs e)
+        {
+            treeViewPType_SelectionChanged(sender, e);
+        }
+
+        private void newTypeBut_Click(object sender, EventArgs e)
+        {
+            currentPT = new POIType();
+            setTypeInfo(currentPT);
+            PTapplyBut.Enabled = true;
+            PTnameTB.Focus();
+        }
+
+        private void PTapplyBut_Click(object sender, EventArgs e)
+        {
+            if(currentPT == null)
+                return;
+
+            if(PTnameTB.Text.Trim().Length == 0)
+            {
+                PTnameTB.Focus();
+                return;
+            }
+            if(PTdescrTB.Text.Trim().Length == 0)
+            {
+                PTdescrTB.Focus();
+                return;
+            }
+
+            bool newType = currentPT.Id == 0;
+            currentPT.iconName = PTiconString;
+            currentPT.iconDeltaY = pt_delta_y;
+            currentPT.iconDeltaX = pt_delta_x;
+
+            currentPT.Name = PTnameTB.Text.Trim();
+            currentPT.Text = PTdescrTB.Text.Trim();
+
+            currentPT.IsQuickType = PTquickAddCB.Checked;
+            currentPT.IsAutoShow = PTautoShowCB.Checked;
+            currentPT.MinZoomLvl = (int)PTminZoomLvlNum.Value;
+
+            PTapplyBut.Enabled = false;
+
+            if (newType)
+            {
+                POITypeFactory.singleton().addNewType(currentPT);
+                POITypeFactory.singleton().resortAll();
+                typeTreeModel.fireStructureChanged();
+            }
+        }
+
+        private string PTiconString;
+        private Image PTiconImage;
+
+        private void ChangeIconBut_Click(object sender, EventArgs e)
+        {
+            PTIconOpenDialog.InitialDirectory = Program.opt.iconSetPath;
+            if(PTIconOpenDialog.ShowDialog() == DialogResult.OK)
+            {
+                string iconString = System.IO.Path.GetFileName(PTIconOpenDialog.FileName);
+                try
+                {
+                    Image iconImage = new Bitmap(System.IO.Path.Combine(Program.opt.iconSetPath, iconString));
+                    if (iconImage.Width > 48 || iconImage.Height > 48)
+                    {
+                        MessageBox.Show("Icon size should be less or equal to 48x48 pixels.\nPlease, choose another icon",
+                            "Wrong Icon size", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);                        
+                    }
+                    else
+                    {
+                        PTiconString = iconString;
+                        PTiconImage = iconImage;
+                        PTiconPic.Invalidate();
+
+                        if(PTnameTB.Text.Trim().Length == 0)
+                        {
+                            PTnameTB.Text = System.IO.Path.GetFileNameWithoutExtension(iconString).ToLower();
+                        }
+                        if(PTdescrTB.Text.Trim().Length == 0)
+                        {
+                            string desc = System.IO.Path.GetFileNameWithoutExtension(iconString).ToLower();
+                            desc = char.ToUpper(desc[0]) + desc.Substring(1);
+                            PTdescrTB.Text = desc;
+                        }
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    MessageBox.Show("Could not load image for the icon.\nFile path: " +
+                    System.IO.Path.Combine(Program.opt.iconSetPath, PTiconString), "Error loading image",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void PTiconCXNum_ValueChanged(object sender, EventArgs e)
+        {
+            pt_delta_x = (int)PTiconCXNum.Value;
+            pt_delta_y = (int)PTiconCYNum.Value;
+            PTiconPic.Invalidate();
+        }
+
+        private void PTdelTypeBut_Click(object sender, EventArgs e)
+        {
+            if(currentPT != null && currentPT.Id != 0)
+            {
+                if(!currentPT.isFlag(POIType.FlagUserEntry))
+                {
+                    MessageBox.Show("You could not delete system types.\nOnly types created by yourself could be deleted",
+                        "Could not delete type", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+
+                if(MessageBox.Show("You are about to delete POI type: " + currentPT.Name +
+                    "\nAre you sure?", "Delete POI type", MessageBoxButtons.YesNo, 
+                    MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+
+
+
+                }
+            }
         }
 
     }
