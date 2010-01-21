@@ -216,6 +216,7 @@ namespace GMView
 
         public void fillMenuItems(ToolStripItemCollection items)
         {
+            /*
             tsitems = items;
             foreach (KeyValuePair<string, Bookmark> pair in marks)
             {
@@ -228,7 +229,7 @@ namespace GMView
                     grp.DropDown.Items.Add(tstrip);
                 tstrip.Click += tstrip_Click;
             }
-
+            */
             if (onChanged != null)
                 onChanged(this);
         }
@@ -432,9 +433,7 @@ namespace GMView
                 writer.WriteElementString("time", book.Created.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"));
                 {
                     writer.WriteStartElement("extensions");
-                    writer.WriteElementString("group", book.group);
-                    writer.WriteElementString("color", book.image_idx.ToString());
-                    writer.WriteElementString("zoom", book.Original_zoom.ToString());
+                    writer.WriteElementString("group", book.Parent.Name);
                     writer.WriteEndElement();
                 }
                 writer.WriteEndElement();
@@ -609,6 +608,12 @@ namespace GMView
         }
 
         /// <summary>
+        /// List of required fields for creating bookmark object based on Select statement
+        /// </summary>
+        public static readonly string poiSelectFields =
+                    " poi.id, poi.name, poi.description, poi.comments, "
+                  + "poi.type, poi.lon, poi.lat, poi.alt, poi.flags, poi.created ";
+        /// <summary>
         /// Loads all POI from DB that has given parent
         /// </summary>
         /// <param name="parent_id"></param>
@@ -618,8 +623,7 @@ namespace GMView
             DBObj dbo = null;
             try
             {
-                dbo = new DBObj(@"select poi.id, poi.name, poi.description, poi.comments, "
-                            + "poi.type, poi.lon, poi.lat, poi.alt, poi.flags, poi.created "
+                dbo = new DBObj(@"select " + poiSelectFields
                             + "from poi, poi_group_member where poi.id = poi_group_member.member_id "
                             + "and poi.is_group = 0 and poi_group_member.parent_id=@PARENT_ID");
                 dbo.addIntPar("@PARENT_ID", parent_id);

@@ -229,6 +229,33 @@ namespace GMView.Bookmarks
             }
         }
 
+        /// <summary>
+        /// Delete poi type from DB
+        /// </summary>
+        public void deleteFromDB()
+        {
+            if (id == 0) //not in DB
+                return;
+
+            DBObj dbo = null;
+            try
+            {
+                dbo = new DBObj(@"delete from poi_type where id=@ID");
+                dbo.addIntPar("@ID", id);
+                dbo.executeNonQuery();
+            }
+            catch (System.Exception e)
+            {
+            	Program.Log("SQLError: " + e.ToString());
+            
+            }
+            finally
+            {
+                if (dbo != null)
+                    dbo.Dispose();
+            }
+        }
+
         #region IIconInfo Members
 
         public string iconName

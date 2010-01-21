@@ -78,6 +78,7 @@
     <Compile Include="Bookmark\POIType.cs" />
     <Compile Include="Bookmark\POITypeFactory.cs" />
     <Compile Include="Bookmark\POITypeTreeModel.cs" />
+    <Compile Include="Bookmark\POIVisualWorkerTask.cs" />
     <Compile Include="CenterPositioning.cs" />
     <Compile Include="Dash\DashBoardBase.cs" />
     <Compile Include="Dash\GPSInfoDash.cs" />

@@ -336,7 +336,7 @@ namespace GMView.Forms
 
             if (newType)
             {
-                POITypeFactory.singleton().addNewType(currentPT);
+                POITypeFactory.singleton().registerType(currentPT);
                 POITypeFactory.singleton().resortAll();
                 typeTreeModel.fireStructureChanged();
             }
@@ -408,9 +408,10 @@ namespace GMView.Forms
                     "\nAre you sure?", "Delete POI type", MessageBoxButtons.YesNo, 
                     MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-
-
-
+                    POITypeFactory.singleton().unregisterType(currentPT);
+                    currentPT.deleteFromDB();
+                    typeTreeModel.fireStructureChanged();
+                    setTypeInfo(null);
                 }
             }
         }

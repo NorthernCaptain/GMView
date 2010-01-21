@@ -40,11 +40,21 @@ namespace GMView
         public double alt = 0.0;
         private string name;
 
+        /// <summary>
+        /// Short POI name. On set update DB
+        /// </summary>
         [XmlAttribute("name")]
         public string Name
         {
             get { return name; }
-            set { name = value; }
+            set 
+            { 
+                if ( (name != null && id > 3) || name == null) 
+                { 
+                    name = value; 
+                    updateDB(); 
+                } 
+            }
         }
 
         private string description;

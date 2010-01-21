@@ -92,7 +92,7 @@ namespace GMView.Bookmarks
                 while (reader.Read())
                 {
                     POIType pi = new POIType(reader);
-                    addNewType(pi);
+                    registerType(pi);
                 }
             }
             catch (System.Exception ex)
@@ -110,11 +110,22 @@ namespace GMView.Bookmarks
         /// Register new POI type in the factory.
         /// </summary>
         /// <param name="newType"></param>
-        public void addNewType(POIType newType)
+        public void registerType(POIType newType)
         {
             allTypes.Add(newType);
             nameTypes.Add(newType.Name, newType);
             idTypes.Add(newType.Id, newType);
+        }
+
+        /// <summary>
+        /// Unregisters poi type from the factory
+        /// </summary>
+        /// <param name="ptype"></param>
+        public void unregisterType(POIType ptype)
+        {
+            allTypes.Remove(ptype);
+            nameTypes.Remove(ptype.Name);
+            idTypes.Remove(ptype.Id);
         }
 
         /// <summary>
