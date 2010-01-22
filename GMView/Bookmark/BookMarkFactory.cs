@@ -710,5 +710,65 @@ namespace GMView
         {
             shownPOIs.Remove(poi.Id);
         }
+
+        /// <summary>
+        /// Gui control for receiving Worker thread commands
+        /// </summary>
+        private Control guiControl;
+
+        private GUIWorkerThread<Bookmarks.POIVisualWorkerTask> visualWorker;
+
+        /// <summary>
+        /// Register the GUI control for receiving callbacks in main thread,
+        /// starts worker thread for Auto show POI processing
+        /// </summary>
+        /// <param name="ctrl"></param>
+        public void startAutoShowWorker(Control ctrl)
+        {
+            guiControl = ctrl;
+            visualWorker = new GUIWorkerThread<Bookmarks.POIVisualWorkerTask>(guiControl);
+            visualWorker.start();
+            visualWorker.taskCompleted += visualWorker_taskCompleted;
+            mapo.onZoomChanged += mapo_onZoomChanged;
+        }
+
+        /// <summary>
+        /// Creates a task for visualizing POI that is in auto show mode
+        /// </summary>
+        /// <param name="old_zoom"></param>
+        /// <param name="new_zoom"></param>
+        void mapo_onZoomChanged(int old_zoom, int new_zoom)
+        {
+            if (visualWorker == null)
+                return;
+
+            Bookmarks.POIVisualWorkerTask task = new Bookmarks.POIVisualWorkerTask(
+                mapo.start_nx, mapo.start_ny, mapo.size_nw, mapo.size_nh, mapo.zoom,
+                mapo.geosystem.baseType, this);
+            visualWorker.addTask(task);
+        }
+
+        /// <summary>
+        /// Process a list of POIs to show as the result of Auto show POI thread.
+        /// Shows new POIs and hide old ones.
+        /// Works in the main GUI thread
+        /// </summary>
+        /// <param name="completedTask"></param>
+        void visualWorker_taskCompleted(GMView.Bookmarks.POIVisualWorkerTask completedTask)
+        {
+            List<Bookmark> resultList = completedTask.result;
+
+            foreach (Bookmark poi in resultList)
+            {
+                if (!loadedPOIs.ContainsKey(poi.Id))
+                    register(poi);
+
+                if(!shownPOIs.ContainsKey(poi.Id))
+                {
+                    poi.show();
+                    shownPOIs.Add(poi.Id, poi);
+                }
+            }
+        }
     }
 }

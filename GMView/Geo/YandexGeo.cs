@@ -233,5 +233,10 @@ namespace GMView
         {
             get { return trafSystem; }
         }
+
+        public override MapTileType baseType
+        {
+            get { return ncGeo.MapTileType.YandexMap; }
+        }
     }
 }

@@ -87,5 +87,14 @@ namespace ncGeo
         {
             get;
         }
+
+        /// <summary>
+        /// Return base type of the map or lets say the type of the underlying coordinate system.
+        /// Many map types uses the same coordinate geo system, so we return base (first) type.
+        /// </summary>
+        public abstract MapTileType baseType
+        {
+            get;
+        }
     }
 }

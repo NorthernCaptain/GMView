@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using ncUtils;
 using System.Data.Common;
+using System.Drawing;
 
 namespace GMView.Bookmarks
 {
@@ -54,6 +55,11 @@ namespace GMView.Bookmarks
             set { lat2 = value; }
         }
 
+        private int start_nx, start_ny;
+        private int size_nh, size_nw;
+        private int zoom;
+        private ncGeo.MapTileType maptype;
+
         /// <summary>
         /// Factory that we use for loading POIs
         /// </summary>
@@ -68,19 +74,61 @@ namespace GMView.Bookmarks
         /// <param name="ilat1"></param>
         /// <param name="ilon2"></param>
         /// <param name="ilat2"></param>
-        public POIVisualWorkerTask(double ilon1, double ilat1, double ilon2, double ilat2,
-                BookMarkFactory ifactory)
+        public POIVisualWorkerTask(int ix, int iy, int len, int hei, int izoom,
+                ncGeo.MapTileType imaptype, BookMarkFactory ifactory)
         {
-            lon1 = ilon1;
-            lat1 = ilat1;
-            lon2 = ilon2;
-            lat2 = ilat2;
+            start_nx = ix;
+            start_ny = iy;
+            size_nw = len;
+            size_nh = hei;
+            zoom = izoom;
+            maptype = imaptype;
             factory = ifactory;
         }
+
+
 
         public POIVisualWorkerTask(BookMarkFactory ifactory)
         {
             factory = ifactory;
+        }
+
+        private static Dictionary<ncGeo.MapTileType, ncGeo.BaseGeo> geos = new Dictionary<ncGeo.MapTileType, ncGeo.BaseGeo>();
+
+        /// <summary>
+        /// Return our geosystem
+        /// </summary>
+        private ncGeo.BaseGeo geosystem
+        {
+            get
+            {
+                ncGeo.BaseGeo geo;
+                if (!geos.TryGetValue(maptype, out geo))
+                {
+                    geo = Program.opt.getGeoSystem(maptype);
+                    geos.Add(maptype, geo);
+                }
+                return geo;
+            }
+        }
+
+        /// <summary>
+        /// Calculates and fills lon1,lat1 and lon2,lat2 from nx, ny tile coordinates
+        /// using appropriate Geosystem.
+        /// </summary>
+        private void calculateLonLat()
+        {
+            ncGeo.BaseGeo geo = geosystem;
+
+            geo.zoomLevel = zoom;
+
+            Point xy = new Point(start_nx * Program.opt.image_len, 
+                                start_ny * Program.opt.image_hei);
+            Point xy2 = xy;
+            xy2.Offset(size_nw * Program.opt.image_len, size_nh * Program.opt.image_hei);
+
+            geo.getLonLatByXY(xy, out lon1, out lat1);
+            geo.getLonLatByXY(xy2, out lon2, out lat2);
         }
 
         #region IRunnable Members
@@ -91,6 +139,9 @@ namespace GMView.Bookmarks
         public void run()
         {
             listToShow = new List<Bookmark>();
+
+            calculateLonLat();
+
             DBObj dbo = null;
             try
             {

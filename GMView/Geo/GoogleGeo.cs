@@ -98,5 +98,13 @@ namespace GMView
         {
             get { return trafSystem; }
         }
+
+        /// <summary>
+        /// Return MapOnly as base type
+        /// </summary>
+        public override MapTileType baseType
+        {
+            get { return MapTileType.MapOnly; }
+        }
     }
 }
