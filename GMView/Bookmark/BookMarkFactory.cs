@@ -485,6 +485,7 @@ namespace GMView
             foreach (XmlNode node in nlist)
             {
                 Bookmark bmark = new Bookmark();
+                bmark.IsDbChange = false;
 
                 bmark.lat = NMEACommand.getDouble(node.Attributes.GetNamedItem("lat").Value);
                 bmark.lon = NMEACommand.getDouble(node.Attributes.GetNamedItem("lon").Value);
@@ -536,6 +537,7 @@ namespace GMView
                 if (xnode != null)
                     bmark.Original_zoom = int.Parse(xnode.InnerText);
 
+                bmark.IsDbChange = true;
                 bmark.updateDB();
 
                 Bookmarks.POIGroup pgroup = Bookmarks.POIGroupFactory.singleton().findByName(bmark.group);
@@ -564,9 +566,11 @@ namespace GMView
                 XmlNode xnode = node.SelectSingleNode("./kml:Point/kml:coordinates", nsm);
                 if(xnode != null)
                 { //we have POI here, lets add it to our bookmarks
-                    Bookmark bmark = new Bookmark();
                     if (!GPSTrack.splitKMLCoordTuple(xnode.InnerText, out lon, out lat, out hei))
                         continue;
+                    Bookmark bmark = new Bookmark();
+                    bmark.IsDbChange = false;
+
                     bmark.lon = lon;
                     bmark.lat = lat;
 
@@ -576,7 +580,7 @@ namespace GMView
                     bmark.Name = xnode.InnerText;
                     xnode = node.SelectSingleNode("./kml:description", nsm);
                     if (xnode != null)
-                        bmark.Comment = xnode.InnerText;
+                        bmark.Description = xnode.InnerText;
 
                     if (groupname == null)
                     {
@@ -588,8 +592,17 @@ namespace GMView
                         bmark.is_temporary = true;
                     }
 
-                    if (addBookmarkSilently(bmark))
-                        count++;
+                    bmark.IsDbChange = true;
+                    bmark.updateDB();
+
+                    Bookmarks.POIGroup pgroup = Bookmarks.POIGroupFactory.singleton().findByName(bmark.group);
+                    if (pgroup == null)
+                    {
+                        pgroup = Bookmarks.POIGroupFactory.singleton().createSimpleGroup(bmark.group);
+                    }
+                    bmark.addLinkDB(pgroup);
+
+                    count++;
                 }
             }
             if (onChanged != null)
@@ -758,6 +771,7 @@ namespace GMView
         {
             List<Bookmark> resultList = completedTask.result;
 
+            GML.tranBegin();
             foreach (Bookmark poi in resultList)
             {
                 if (!loadedPOIs.ContainsKey(poi.Id))
@@ -765,10 +779,10 @@ namespace GMView
 
                 if(!shownPOIs.ContainsKey(poi.Id))
                 {
-                    poi.show();
-                    shownPOIs.Add(poi.Id, poi);
+                    poi.IsShown = true;
                 }
             }
+            GML.tranEnd();
         }
     }
 }

@@ -28,6 +28,12 @@ TODO list:
   
 - Import track from clipboard buffer. Add Paste function that will paste data from clipboard and 
   loads it as a track, show on the map.
+  Loading such routes from file now works, but we need load placemarks with point tag, not only as
+  POI, but also as Waypoints on the track.
+  Add paste function for loading directly from GE.
+
+- When loading track file again and again, do not import POIs - check for existence by coordinates
+  and name.
 
 - Save track redesign. When we hit Record track, display dialog with From and Destination 
   text fields. Create and auto save this track into file 'From-Destination-YY-MM-DD.gpõ' into

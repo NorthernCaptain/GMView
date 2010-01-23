@@ -81,7 +81,7 @@ namespace GMView
         void nightViewToggle_Key(object sender, KeyEventArgs e)
         {
             Program.opt.isNightView = Program.opt.isNightView ? false : true;
-            GML.device.repaint();
+            GML.repaint();
         }
 
         void minimizeWindow_Key(object sender, KeyEventArgs e)

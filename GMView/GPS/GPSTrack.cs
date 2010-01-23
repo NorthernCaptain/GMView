@@ -1360,21 +1360,24 @@ namespace GMView
             string nodeval = "";
             foreach (XmlNode xnode in nlist)
             {
-                if (track.xmltag(xnode, "./kml:LineString/kml:coordinates", nsm, ref nodeval) ||
-                    track.xmltag(xnode, "./*/kml:LineString/kml:coordinates", nsm, ref nodeval))
+
+                XmlNodeList coordlist;
+                coordlist = xnode.SelectNodes("./kml:LineString/kml:coordinates", nsm);
+                if(coordlist.Count == 0)
+                    coordlist = xnode.SelectNodes("./*/kml:LineString/kml:coordinates", nsm);
+                foreach (XmlNode cnode in coordlist)
                 {
-                    track.loadKMLPoints(nodeval);
+                    track.loadKMLPoints(cnode.InnerText);
                     if (titleNode == null)
                         titleNode = xnode.SelectSingleNode("./kml:name", nsm);
                 }
-
             }
 
             if (track.trackData.Count == 0)
                 throw new ApplicationException("This file does not have any tracks or routes! Check file content");
-
-            if (titleNode == null)
-                titleNode = folder.SelectSingleNode("./kml:name", nsm);
+            XmlNode docTitleNode = folder.SelectSingleNode("./kml:name", nsm);
+            if (docTitleNode != null)
+                titleNode = docTitleNode;
 
             if (titleNode != null)
             {
@@ -1411,6 +1414,10 @@ namespace GMView
                     || track.xmltag(xnode, "./kml:Placemark/*/kml:LineString/kml:coordinates", nsm, ref nodeval))
                     return xnode;
             }
+            XmlNode res = doc.DocumentElement.SelectSingleNode("./kml:Document", nsm);
+            if (res != null && (res.SelectSingleNode("./kml:Placemark/*/kml:LineString/kml:coordinates", nsm) != null
+                            || res.SelectSingleNode("./kml:Placemark/kml:LineString/kml:coordinates", nsm) != null))
+                return res;
             return null;
         }
 

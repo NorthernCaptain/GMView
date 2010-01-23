@@ -152,10 +152,10 @@ namespace GMView.Bookmarks
                     + "and poi_spatial.minLon>=@LON1 and poi_spatial.maxLon<=@LON2 "
                     + "and poi_spatial.minLat>=@LAT1 and poi_spatial.maxLat<=@LAT2");
 
-                dbo.addFloatPar("@LON1", lon1);
-                dbo.addFloatPar("@LON2", lon2);
-                dbo.addFloatPar("@LAT1", lat1);
-                dbo.addFloatPar("@LAT2", lat2);
+                dbo.addFloatPar("@LON1", (lon1 < lon2 ? lon1 : lon2));
+                dbo.addFloatPar("@LON2", (lon1 < lon2 ? lon2 : lon1));
+                dbo.addFloatPar("@LAT1", (lat1 < lat2 ? lat1 : lat2));
+                dbo.addFloatPar("@LAT2", (lat1 < lat2 ? lat2 : lat1));
 
                 DbDataReader reader = dbo.cmd.ExecuteReader();
                 while (reader.Read())

@@ -341,6 +341,7 @@ namespace GMView
 
             initFollowUP();
             wind_rose.follower = followConnect;
+            BookMarkFactory.singleton.startAutoShowWorker(this);
         }
 
         /// <summary>
@@ -1649,7 +1650,7 @@ namespace GMView
         {
             mouseOverTimer.Stop();
             trackinformer.hide();
-            GML.device.repaint();
+            GML.repaint();
         }
 
         private void trafficTbut_CheckedChanged(object sender, EventArgs e)

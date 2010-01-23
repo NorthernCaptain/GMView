@@ -68,7 +68,7 @@ namespace GMView.GPS
                 {
                     findctx.reset();
                     hide();
-                    GML.device.repaint();
+                    GML.repaint();
                     return;
                 }
 
@@ -76,7 +76,7 @@ namespace GMView.GPS
                 show();
             }
 
-            GML.device.repaint();
+            GML.repaint();
         }
 
         #region ISprite Members

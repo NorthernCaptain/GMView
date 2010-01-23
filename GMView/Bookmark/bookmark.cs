@@ -183,6 +183,17 @@ namespace GMView
             set { flags = value; }
         }
 
+        private bool isDbChange = true;
+
+        /// <summary>
+        /// Is changes to DB allowed?
+        /// </summary>
+        public bool IsDbChange
+        {
+            get { return isDbChange; }
+            set { isDbChange = value; }
+        }
+
         /// <summary>
         /// Icon image for display in dialogs
         /// </summary>
@@ -207,7 +218,6 @@ namespace GMView
                 {
                     mapo.addSub(this);
                     show();
-                    mapo.CenterMapLonLat(lon, lat);
                     owner.POIShown(this);
                 } else
                 {
@@ -215,8 +225,20 @@ namespace GMView
                     mapo.delSub(this);
                     owner.POIHidden(this);
                 }
-                GML.device.repaint();
+                GML.repaint();
                 shown = value;
+            }
+        }
+
+        [XmlIgnore]
+        public bool IsShownCentered
+        {
+            get { return shown; }
+            set
+            {
+                if (value != shown && value)
+                    mapo.CenterMapLonLat(lon, lat);
+                IsShown = value;
             }
         }
 
@@ -317,6 +339,9 @@ namespace GMView
         /// </summary>
         public void updateDB()
         {
+            if (!isDbChange)
+                return;
+
             if(id == 0)
             {
                 //Do insert statement (new record)
@@ -345,7 +370,7 @@ namespace GMView
                     dbo.executeNonQuery();
 
                     id = dbo.seqCurval("poi");
-
+                    
                     dbo.commandText = "insert into poi_spatial (id, minLon, maxLon, minLat, maxLat) "
                         + "values (@ID, @MINLON, @MAXLON, @MINLAT, @MAXLAT)";
                     dbo.addIntPar("@ID", id);
@@ -354,6 +379,7 @@ namespace GMView
                     dbo.addFloatPar("@MINLAT", lat);
                     dbo.addFloatPar("@MAXLAT", lat);
                     dbo.executeNonQuery();
+                    
                     is_temporary = false;
                 }
                 catch (System.Exception ex)
@@ -393,7 +419,7 @@ namespace GMView
                     dbo.addIntPar("@ID", id);
 
                     dbo.executeNonQuery();
-
+                    
                     dbo.commandText = "update poi_spatial set minLon=@MINLON, maxLon=@MAXLON, "
                             + "minLat=@MINLAT, maxLat=@MAXLAT where id=@ID";
                     dbo.addIntPar("@ID", id);
@@ -402,6 +428,7 @@ namespace GMView
                     dbo.addFloatPar("@MINLAT", lat);
                     dbo.addFloatPar("@MAXLAT", lat);
                     dbo.executeNonQuery();
+                     
                     is_temporary = false;
                 }
                 catch (System.Exception ex)

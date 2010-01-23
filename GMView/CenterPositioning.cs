@@ -184,7 +184,7 @@ namespace GMView
             steps_to_finish--;
 
             GML.device.deltaCenter = current_pos;
-            GML.device.repaint();
+            GML.repaint();
         }
     }
 }

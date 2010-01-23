@@ -41,7 +41,7 @@ namespace GMView
         {
             end_p.X += idelta_p.X;
             end_p.Y += idelta_p.Y;
-            GML.device.repaint();
+            GML.repaint();
         }
 
         public void setEndXY(Point iend_p)
