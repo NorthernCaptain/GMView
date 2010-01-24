@@ -208,6 +208,44 @@ namespace GMView.Forms
             treeModel.deleteSelectedNodes();
         }
 
+        private void changeTypeOfPOIsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Forms.SelectPOITypeForm ptForm = new Forms.SelectPOITypeForm();
+            ptForm.Owner = this;
+
+            foreach (TreeNodeAdv node in treeView.SelectedNodes)
+            {
+                Bookmark firstPOI = node.Tag as Bookmark;
+                if (firstPOI != null)
+                {
+                    ptForm.result = firstPOI.Ptype;
+                    break;
+                }
+            }
+
+            if (ptForm.ShowDialog() != DialogResult.OK)
+            {
+                ptForm.Dispose();
+                return;
+            }
+
+            Bookmarks.POIType newType = ptForm.result;
+            if(newType == null)
+                return;
+
+            foreach (TreeNodeAdv node in treeView.SelectedNodes)
+            {
+                Bookmark poi = node.Tag as Bookmark;
+                if (poi != null)
+                {
+                    poi.Ptype = newType;
+                }
+            }
+            treeView.Invalidate();
+        }
+
+        
+        
         private void okBut_Click(object sender, EventArgs e)
         {
             this.Visible = false;

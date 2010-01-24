@@ -34,6 +34,8 @@ TODO list:
 
 - When loading track file again and again, do not import POIs - check for existence by coordinates
   and name.
+  
+- Transactions in DB DML operations for each thread. This should speed up DB updates.
 
 - Save track redesign. When we hit Record track, display dialog with From and Destination 
   text fields. Create and auto save this track into file 'From-Destination-YY-MM-DD.gpõ' into

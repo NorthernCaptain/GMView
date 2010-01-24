@@ -43,6 +43,46 @@
             this.satInfoSLb = new System.Windows.Forms.ToolStripStatusLabel();
             this.modeSLbl = new System.Windows.Forms.ToolStripStatusLabel();
             this.mainPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.toolStrip = new System.Windows.Forms.ToolStrip();
+            this.backwardSBut = new System.Windows.Forms.ToolStripButton();
+            this.forwardSBut = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
+            this.viewSBut = new System.Windows.Forms.ToolStripButton();
+            this.zoomSBut = new System.Windows.Forms.ToolStripButton();
+            this.selectRectDownSBut = new System.Windows.Forms.ToolStripButton();
+            this.pinMarkSBut = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
+            this.latSTb = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.lonSTb = new System.Windows.Forms.ToolStripTextBox();
+            this.setLLBut = new System.Windows.Forms.ToolStripButton();
+            this.mapTypeSCombo = new System.Windows.Forms.ToolStripComboBox();
+            this.trafficTbut = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.addPOISB = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.gpsTrackTBut = new System.Windows.Forms.ToolStripButton();
+            this.gpsFollowMapTBut = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
+            this.gpsTrackOnAir = new System.Windows.Forms.ToolStripButton();
+            this.loadTrackSB = new System.Windows.Forms.ToolStripButton();
+            this.saveTrackSB = new System.Windows.Forms.ToolStripButton();
+            this.removeTracksSB = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
+            this.followTrackList = new System.Windows.Forms.ToolStripComboBox();
+            this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
+            this.saveTrackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.followTrackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.reverseFollowerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator21 = new System.Windows.Forms.ToolStripSeparator();
+            this.zoomToStartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.zoomToFinishToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showInfoWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator22 = new System.Windows.Forms.ToolStripSeparator();
+            this.downloadTilesAlongTheTrackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OptionsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -90,46 +130,6 @@
             this.toolStripSeparator18 = new System.Windows.Forms.ToolStripSeparator();
             this.reinitGPSMI = new System.Windows.Forms.ToolStripMenuItem();
             this.GeoTagMI = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStrip = new System.Windows.Forms.ToolStrip();
-            this.backwardSBut = new System.Windows.Forms.ToolStripButton();
-            this.forwardSBut = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
-            this.viewSBut = new System.Windows.Forms.ToolStripButton();
-            this.zoomSBut = new System.Windows.Forms.ToolStripButton();
-            this.selectRectDownSBut = new System.Windows.Forms.ToolStripButton();
-            this.pinMarkSBut = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
-            this.latSTb = new System.Windows.Forms.ToolStripTextBox();
-            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
-            this.lonSTb = new System.Windows.Forms.ToolStripTextBox();
-            this.setLLBut = new System.Windows.Forms.ToolStripButton();
-            this.mapTypeSCombo = new System.Windows.Forms.ToolStripComboBox();
-            this.trafficTbut = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.addPOISB = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.gpsTrackTBut = new System.Windows.Forms.ToolStripButton();
-            this.gpsFollowMapTBut = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
-            this.gpsTrackOnAir = new System.Windows.Forms.ToolStripButton();
-            this.loadTrackSB = new System.Windows.Forms.ToolStripButton();
-            this.saveTrackSB = new System.Windows.Forms.ToolStripButton();
-            this.removeTracksSB = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
-            this.followTrackList = new System.Windows.Forms.ToolStripComboBox();
-            this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
-            this.saveTrackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.followTrackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.reverseFollowerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator21 = new System.Windows.Forms.ToolStripSeparator();
-            this.zoomToStartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.zoomToFinishToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showInfoWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator22 = new System.Windows.Forms.ToolStripSeparator();
-            this.downloadTilesAlongTheTrackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.miniMapTimer = new System.Windows.Forms.Timer(this.components);
             this.trackSaveFileDialog = new System.Windows.Forms.SaveFileDialog();
@@ -140,13 +140,14 @@
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.mouseOverTimer = new System.Windows.Forms.Timer(this.components);
             this.deltaCenterTimer = new System.Windows.Forms.Timer(this.components);
+            this.pasteTrackFromClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
             this.toolStripContainer1.SuspendLayout();
             this.statusStrip.SuspendLayout();
-            this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
+            this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStripContainer1
@@ -296,345 +297,6 @@
             // 
             resources.ApplyResources(this.mainPanel, "mainPanel");
             this.mainPanel.Name = "mainPanel";
-            // 
-            // menuStrip
-            // 
-            this.menuStrip.BackColor = System.Drawing.SystemColors.Control;
-            resources.ApplyResources(this.menuStrip, "menuStrip");
-            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem,
-            this.toolStripMenuItem1,
-            this.ViewMI,
-            this.trackStripMenuItem,
-            this.poiMI,
-            this.toolsMI,
-            this.GeoTagMI});
-            this.menuStrip.Name = "menuStrip";
-            this.menuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            // 
-            // fileToolStripMenuItem
-            // 
-            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.OptionsMenuItem,
-            this.toolStripSeparator1,
-            this.ExitItem});
-            this.fileToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            resources.ApplyResources(this.fileToolStripMenuItem, "fileToolStripMenuItem");
-            // 
-            // OptionsMenuItem
-            // 
-            this.OptionsMenuItem.Image = global::GMView.Properties.Resources.configure;
-            this.OptionsMenuItem.Name = "OptionsMenuItem";
-            resources.ApplyResources(this.OptionsMenuItem, "OptionsMenuItem");
-            this.OptionsMenuItem.Click += new System.EventHandler(this.OptionsMenuItem_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
-            // 
-            // ExitItem
-            // 
-            this.ExitItem.Image = global::GMView.Properties.Resources.exit;
-            this.ExitItem.Name = "ExitItem";
-            resources.ApplyResources(this.ExitItem, "ExitItem");
-            this.ExitItem.Click += new System.EventHandler(this.ExitItem_Click);
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aboutToolStripMenuItem});
-            this.toolStripMenuItem1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.toolStripMenuItem1.Image = global::GMView.Properties.Resources.help;
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            resources.ApplyResources(this.toolStripMenuItem1, "toolStripMenuItem1");
-            // 
-            // aboutToolStripMenuItem
-            // 
-            this.aboutToolStripMenuItem.Image = global::GMView.Properties.Resources.personal;
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            resources.ApplyResources(this.aboutToolStripMenuItem, "aboutToolStripMenuItem");
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
-            // 
-            // ViewMI
-            // 
-            this.ViewMI.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.gpsInfoViewMI,
-            this.satInfoMI,
-            this.miniMapMI,
-            this.showZoomMI,
-            this.windRoseMI,
-            this.toolStripSeparator6,
-            this.openLogMI,
-            this.showBlockFNameMI,
-            this.toolStripSeparator8,
-            this.fullScreenMI});
-            this.ViewMI.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.ViewMI.Name = "ViewMI";
-            resources.ApplyResources(this.ViewMI, "ViewMI");
-            // 
-            // gpsInfoViewMI
-            // 
-            this.gpsInfoViewMI.Checked = true;
-            this.gpsInfoViewMI.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.gpsInfoViewMI.Name = "gpsInfoViewMI";
-            resources.ApplyResources(this.gpsInfoViewMI, "gpsInfoViewMI");
-            this.gpsInfoViewMI.Click += new System.EventHandler(this.gpsInfoViewMI_Click);
-            // 
-            // satInfoMI
-            // 
-            this.satInfoMI.Checked = true;
-            this.satInfoMI.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.satInfoMI.Name = "satInfoMI";
-            resources.ApplyResources(this.satInfoMI, "satInfoMI");
-            this.satInfoMI.Click += new System.EventHandler(this.trackInfoMI_Click);
-            // 
-            // miniMapMI
-            // 
-            this.miniMapMI.Name = "miniMapMI";
-            resources.ApplyResources(this.miniMapMI, "miniMapMI");
-            this.miniMapMI.Click += new System.EventHandler(this.miniMapMI_Click);
-            // 
-            // showZoomMI
-            // 
-            this.showZoomMI.Name = "showZoomMI";
-            resources.ApplyResources(this.showZoomMI, "showZoomMI");
-            this.showZoomMI.Click += new System.EventHandler(this.zoomDashMI_Click);
-            // 
-            // windRoseMI
-            // 
-            this.windRoseMI.CheckOnClick = true;
-            this.windRoseMI.Name = "windRoseMI";
-            resources.ApplyResources(this.windRoseMI, "windRoseMI");
-            this.windRoseMI.Click += new System.EventHandler(this.windRoseMI_Click);
-            // 
-            // toolStripSeparator6
-            // 
-            this.toolStripSeparator6.Name = "toolStripSeparator6";
-            resources.ApplyResources(this.toolStripSeparator6, "toolStripSeparator6");
-            // 
-            // openLogMI
-            // 
-            this.openLogMI.Name = "openLogMI";
-            resources.ApplyResources(this.openLogMI, "openLogMI");
-            this.openLogMI.Click += new System.EventHandler(this.openLogMI_Click);
-            // 
-            // showBlockFNameMI
-            // 
-            this.showBlockFNameMI.CheckOnClick = true;
-            this.showBlockFNameMI.Name = "showBlockFNameMI";
-            resources.ApplyResources(this.showBlockFNameMI, "showBlockFNameMI");
-            this.showBlockFNameMI.Click += new System.EventHandler(this.showBlockFNameMI_Click);
-            // 
-            // toolStripSeparator8
-            // 
-            this.toolStripSeparator8.Name = "toolStripSeparator8";
-            resources.ApplyResources(this.toolStripSeparator8, "toolStripSeparator8");
-            // 
-            // fullScreenMI
-            // 
-            this.fullScreenMI.Name = "fullScreenMI";
-            resources.ApplyResources(this.fullScreenMI, "fullScreenMI");
-            this.fullScreenMI.Click += new System.EventHandler(this.fullScreenMI_Click);
-            // 
-            // trackStripMenuItem
-            // 
-            this.trackStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.recordTrackMI,
-            this.toolStripSeparator12,
-            this.loadTrackMI,
-            this.saveTrackMI,
-            this.saveKMLMI,
-            this.toolStripSeparator13,
-            this.removeTracksMI,
-            this.toolStripSeparator14});
-            this.trackStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.trackStripMenuItem.Name = "trackStripMenuItem";
-            resources.ApplyResources(this.trackStripMenuItem, "trackStripMenuItem");
-            // 
-            // recordTrackMI
-            // 
-            this.recordTrackMI.Name = "recordTrackMI";
-            resources.ApplyResources(this.recordTrackMI, "recordTrackMI");
-            this.recordTrackMI.Click += new System.EventHandler(this.gpsTrackOnAir_CheckedChanged);
-            // 
-            // toolStripSeparator12
-            // 
-            this.toolStripSeparator12.Name = "toolStripSeparator12";
-            resources.ApplyResources(this.toolStripSeparator12, "toolStripSeparator12");
-            // 
-            // loadTrackMI
-            // 
-            this.loadTrackMI.Image = global::GMView.Properties.Resources.track_load;
-            resources.ApplyResources(this.loadTrackMI, "loadTrackMI");
-            this.loadTrackMI.Name = "loadTrackMI";
-            this.loadTrackMI.Click += new System.EventHandler(this.loadTrackSB_Click);
-            // 
-            // saveTrackMI
-            // 
-            this.saveTrackMI.Image = global::GMView.Properties.Resources.track_save;
-            resources.ApplyResources(this.saveTrackMI, "saveTrackMI");
-            this.saveTrackMI.Name = "saveTrackMI";
-            this.saveTrackMI.Click += new System.EventHandler(this.saveTrackSB_Click);
-            // 
-            // saveKMLMI
-            // 
-            this.saveKMLMI.Name = "saveKMLMI";
-            resources.ApplyResources(this.saveKMLMI, "saveKMLMI");
-            this.saveKMLMI.Click += new System.EventHandler(this.saveKMLMI_Click);
-            // 
-            // toolStripSeparator13
-            // 
-            this.toolStripSeparator13.Name = "toolStripSeparator13";
-            resources.ApplyResources(this.toolStripSeparator13, "toolStripSeparator13");
-            // 
-            // removeTracksMI
-            // 
-            this.removeTracksMI.Image = global::GMView.Properties.Resources.track_remove;
-            resources.ApplyResources(this.removeTracksMI, "removeTracksMI");
-            this.removeTracksMI.Name = "removeTracksMI";
-            this.removeTracksMI.Click += new System.EventHandler(this.removeTracksSB_Click);
-            // 
-            // toolStripSeparator14
-            // 
-            this.toolStripSeparator14.Name = "toolStripSeparator14";
-            resources.ApplyResources(this.toolStripSeparator14, "toolStripSeparator14");
-            // 
-            // poiMI
-            // 
-            this.poiMI.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addPOIMI,
-            this.editPOIMI,
-            this.toolStripSeparator7,
-            this.exportPOIMI,
-            this.importPOIMI,
-            this.toolStripSeparator19,
-            this.hideAllPOIMI,
-            this.toolStripSeparator20});
-            this.poiMI.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.poiMI.Name = "poiMI";
-            resources.ApplyResources(this.poiMI, "poiMI");
-            // 
-            // addPOIMI
-            // 
-            this.addPOIMI.Image = global::GMView.Properties.Resources.mark_new;
-            resources.ApplyResources(this.addPOIMI, "addPOIMI");
-            this.addPOIMI.Name = "addPOIMI";
-            this.addPOIMI.Click += new System.EventHandler(this.addBookMI_Click);
-            // 
-            // editPOIMI
-            // 
-            this.editPOIMI.Name = "editPOIMI";
-            resources.ApplyResources(this.editPOIMI, "editPOIMI");
-            this.editPOIMI.Click += new System.EventHandler(this.editBMarksMI_Click);
-            // 
-            // toolStripSeparator7
-            // 
-            this.toolStripSeparator7.Name = "toolStripSeparator7";
-            resources.ApplyResources(this.toolStripSeparator7, "toolStripSeparator7");
-            // 
-            // exportPOIMI
-            // 
-            this.exportPOIMI.Name = "exportPOIMI";
-            resources.ApplyResources(this.exportPOIMI, "exportPOIMI");
-            this.exportPOIMI.Click += new System.EventHandler(this.exportPOIMI_Click);
-            // 
-            // importPOIMI
-            // 
-            this.importPOIMI.Name = "importPOIMI";
-            resources.ApplyResources(this.importPOIMI, "importPOIMI");
-            this.importPOIMI.Click += new System.EventHandler(this.importPOIMI_Click);
-            // 
-            // toolStripSeparator19
-            // 
-            this.toolStripSeparator19.Name = "toolStripSeparator19";
-            resources.ApplyResources(this.toolStripSeparator19, "toolStripSeparator19");
-            // 
-            // hideAllPOIMI
-            // 
-            this.hideAllPOIMI.Name = "hideAllPOIMI";
-            resources.ApplyResources(this.hideAllPOIMI, "hideAllPOIMI");
-            this.hideAllPOIMI.Click += new System.EventHandler(this.hideAllBMarksMI_Click);
-            // 
-            // toolStripSeparator20
-            // 
-            this.toolStripSeparator20.Name = "toolStripSeparator20";
-            resources.ApplyResources(this.toolStripSeparator20, "toolStripSeparator20");
-            // 
-            // toolsMI
-            // 
-            this.toolsMI.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.rebuildAllMI,
-            this.rebuildMapTypeMI,
-            this.rebuildMapOnlyMI,
-            this.toolStripSeparator16,
-            this.reloadScrFromSiteMI,
-            this.toolStripSeparator17,
-            this.cleanCacheMI,
-            this.toolStripSeparator18,
-            this.reinitGPSMI});
-            this.toolsMI.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.toolsMI.Name = "toolsMI";
-            resources.ApplyResources(this.toolsMI, "toolsMI");
-            // 
-            // rebuildAllMI
-            // 
-            this.rebuildAllMI.Name = "rebuildAllMI";
-            resources.ApplyResources(this.rebuildAllMI, "rebuildAllMI");
-            this.rebuildAllMI.Click += new System.EventHandler(this.rebuildAllMI_Click);
-            // 
-            // rebuildMapTypeMI
-            // 
-            this.rebuildMapTypeMI.Name = "rebuildMapTypeMI";
-            resources.ApplyResources(this.rebuildMapTypeMI, "rebuildMapTypeMI");
-            this.rebuildMapTypeMI.Click += new System.EventHandler(this.rebuildMapTypeMI_Click);
-            // 
-            // rebuildMapOnlyMI
-            // 
-            this.rebuildMapOnlyMI.Name = "rebuildMapOnlyMI";
-            resources.ApplyResources(this.rebuildMapOnlyMI, "rebuildMapOnlyMI");
-            this.rebuildMapOnlyMI.Click += new System.EventHandler(this.rebuildMapOnlyMI_Click);
-            // 
-            // toolStripSeparator16
-            // 
-            this.toolStripSeparator16.Name = "toolStripSeparator16";
-            resources.ApplyResources(this.toolStripSeparator16, "toolStripSeparator16");
-            // 
-            // reloadScrFromSiteMI
-            // 
-            this.reloadScrFromSiteMI.Name = "reloadScrFromSiteMI";
-            resources.ApplyResources(this.reloadScrFromSiteMI, "reloadScrFromSiteMI");
-            this.reloadScrFromSiteMI.Click += new System.EventHandler(this.reloadFromSiteMI_Click);
-            // 
-            // toolStripSeparator17
-            // 
-            this.toolStripSeparator17.Name = "toolStripSeparator17";
-            resources.ApplyResources(this.toolStripSeparator17, "toolStripSeparator17");
-            // 
-            // cleanCacheMI
-            // 
-            this.cleanCacheMI.Name = "cleanCacheMI";
-            resources.ApplyResources(this.cleanCacheMI, "cleanCacheMI");
-            this.cleanCacheMI.Click += new System.EventHandler(this.resetCacheMI_Click);
-            // 
-            // toolStripSeparator18
-            // 
-            this.toolStripSeparator18.Name = "toolStripSeparator18";
-            resources.ApplyResources(this.toolStripSeparator18, "toolStripSeparator18");
-            // 
-            // reinitGPSMI
-            // 
-            this.reinitGPSMI.Name = "reinitGPSMI";
-            resources.ApplyResources(this.reinitGPSMI, "reinitGPSMI");
-            this.reinitGPSMI.Click += new System.EventHandler(this.reinitGPSMI_Click);
-            // 
-            // GeoTagMI
-            // 
-            this.GeoTagMI.Name = "GeoTagMI";
-            resources.ApplyResources(this.GeoTagMI, "GeoTagMI");
-            this.GeoTagMI.Click += new System.EventHandler(this.GeoTagMI_Click);
             // 
             // toolStrip
             // 
@@ -960,6 +622,346 @@
             resources.ApplyResources(this.downloadTilesAlongTheTrackToolStripMenuItem, "downloadTilesAlongTheTrackToolStripMenuItem");
             this.downloadTilesAlongTheTrackToolStripMenuItem.Click += new System.EventHandler(this.downloadTilesAlongTheTrackToolStripMenuItem_Click);
             // 
+            // menuStrip
+            // 
+            this.menuStrip.BackColor = System.Drawing.SystemColors.Control;
+            resources.ApplyResources(this.menuStrip, "menuStrip");
+            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.toolStripMenuItem1,
+            this.ViewMI,
+            this.trackStripMenuItem,
+            this.poiMI,
+            this.toolsMI,
+            this.GeoTagMI});
+            this.menuStrip.Name = "menuStrip";
+            this.menuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.OptionsMenuItem,
+            this.toolStripSeparator1,
+            this.ExitItem});
+            this.fileToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            resources.ApplyResources(this.fileToolStripMenuItem, "fileToolStripMenuItem");
+            // 
+            // OptionsMenuItem
+            // 
+            this.OptionsMenuItem.Image = global::GMView.Properties.Resources.configure;
+            this.OptionsMenuItem.Name = "OptionsMenuItem";
+            resources.ApplyResources(this.OptionsMenuItem, "OptionsMenuItem");
+            this.OptionsMenuItem.Click += new System.EventHandler(this.OptionsMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
+            // 
+            // ExitItem
+            // 
+            this.ExitItem.Image = global::GMView.Properties.Resources.exit;
+            this.ExitItem.Name = "ExitItem";
+            resources.ApplyResources(this.ExitItem, "ExitItem");
+            this.ExitItem.Click += new System.EventHandler(this.ExitItem_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutToolStripMenuItem});
+            this.toolStripMenuItem1.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.toolStripMenuItem1.Image = global::GMView.Properties.Resources.help;
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            resources.ApplyResources(this.toolStripMenuItem1, "toolStripMenuItem1");
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Image = global::GMView.Properties.Resources.personal;
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            resources.ApplyResources(this.aboutToolStripMenuItem, "aboutToolStripMenuItem");
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
+            // ViewMI
+            // 
+            this.ViewMI.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.gpsInfoViewMI,
+            this.satInfoMI,
+            this.miniMapMI,
+            this.showZoomMI,
+            this.windRoseMI,
+            this.toolStripSeparator6,
+            this.openLogMI,
+            this.showBlockFNameMI,
+            this.toolStripSeparator8,
+            this.fullScreenMI});
+            this.ViewMI.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.ViewMI.Name = "ViewMI";
+            resources.ApplyResources(this.ViewMI, "ViewMI");
+            // 
+            // gpsInfoViewMI
+            // 
+            this.gpsInfoViewMI.Checked = true;
+            this.gpsInfoViewMI.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.gpsInfoViewMI.Name = "gpsInfoViewMI";
+            resources.ApplyResources(this.gpsInfoViewMI, "gpsInfoViewMI");
+            this.gpsInfoViewMI.Click += new System.EventHandler(this.gpsInfoViewMI_Click);
+            // 
+            // satInfoMI
+            // 
+            this.satInfoMI.Checked = true;
+            this.satInfoMI.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.satInfoMI.Name = "satInfoMI";
+            resources.ApplyResources(this.satInfoMI, "satInfoMI");
+            this.satInfoMI.Click += new System.EventHandler(this.trackInfoMI_Click);
+            // 
+            // miniMapMI
+            // 
+            this.miniMapMI.Name = "miniMapMI";
+            resources.ApplyResources(this.miniMapMI, "miniMapMI");
+            this.miniMapMI.Click += new System.EventHandler(this.miniMapMI_Click);
+            // 
+            // showZoomMI
+            // 
+            this.showZoomMI.Name = "showZoomMI";
+            resources.ApplyResources(this.showZoomMI, "showZoomMI");
+            this.showZoomMI.Click += new System.EventHandler(this.zoomDashMI_Click);
+            // 
+            // windRoseMI
+            // 
+            this.windRoseMI.CheckOnClick = true;
+            this.windRoseMI.Name = "windRoseMI";
+            resources.ApplyResources(this.windRoseMI, "windRoseMI");
+            this.windRoseMI.Click += new System.EventHandler(this.windRoseMI_Click);
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            resources.ApplyResources(this.toolStripSeparator6, "toolStripSeparator6");
+            // 
+            // openLogMI
+            // 
+            this.openLogMI.Name = "openLogMI";
+            resources.ApplyResources(this.openLogMI, "openLogMI");
+            this.openLogMI.Click += new System.EventHandler(this.openLogMI_Click);
+            // 
+            // showBlockFNameMI
+            // 
+            this.showBlockFNameMI.CheckOnClick = true;
+            this.showBlockFNameMI.Name = "showBlockFNameMI";
+            resources.ApplyResources(this.showBlockFNameMI, "showBlockFNameMI");
+            this.showBlockFNameMI.Click += new System.EventHandler(this.showBlockFNameMI_Click);
+            // 
+            // toolStripSeparator8
+            // 
+            this.toolStripSeparator8.Name = "toolStripSeparator8";
+            resources.ApplyResources(this.toolStripSeparator8, "toolStripSeparator8");
+            // 
+            // fullScreenMI
+            // 
+            this.fullScreenMI.Name = "fullScreenMI";
+            resources.ApplyResources(this.fullScreenMI, "fullScreenMI");
+            this.fullScreenMI.Click += new System.EventHandler(this.fullScreenMI_Click);
+            // 
+            // trackStripMenuItem
+            // 
+            this.trackStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.recordTrackMI,
+            this.toolStripSeparator12,
+            this.loadTrackMI,
+            this.pasteTrackFromClipboardToolStripMenuItem,
+            this.saveTrackMI,
+            this.saveKMLMI,
+            this.toolStripSeparator13,
+            this.removeTracksMI,
+            this.toolStripSeparator14});
+            this.trackStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.trackStripMenuItem.Name = "trackStripMenuItem";
+            resources.ApplyResources(this.trackStripMenuItem, "trackStripMenuItem");
+            // 
+            // recordTrackMI
+            // 
+            this.recordTrackMI.Name = "recordTrackMI";
+            resources.ApplyResources(this.recordTrackMI, "recordTrackMI");
+            this.recordTrackMI.Click += new System.EventHandler(this.gpsTrackOnAir_CheckedChanged);
+            // 
+            // toolStripSeparator12
+            // 
+            this.toolStripSeparator12.Name = "toolStripSeparator12";
+            resources.ApplyResources(this.toolStripSeparator12, "toolStripSeparator12");
+            // 
+            // loadTrackMI
+            // 
+            this.loadTrackMI.Image = global::GMView.Properties.Resources.track_load;
+            resources.ApplyResources(this.loadTrackMI, "loadTrackMI");
+            this.loadTrackMI.Name = "loadTrackMI";
+            this.loadTrackMI.Click += new System.EventHandler(this.loadTrackSB_Click);
+            // 
+            // saveTrackMI
+            // 
+            this.saveTrackMI.Image = global::GMView.Properties.Resources.track_save;
+            resources.ApplyResources(this.saveTrackMI, "saveTrackMI");
+            this.saveTrackMI.Name = "saveTrackMI";
+            this.saveTrackMI.Click += new System.EventHandler(this.saveTrackSB_Click);
+            // 
+            // saveKMLMI
+            // 
+            this.saveKMLMI.Name = "saveKMLMI";
+            resources.ApplyResources(this.saveKMLMI, "saveKMLMI");
+            this.saveKMLMI.Click += new System.EventHandler(this.saveKMLMI_Click);
+            // 
+            // toolStripSeparator13
+            // 
+            this.toolStripSeparator13.Name = "toolStripSeparator13";
+            resources.ApplyResources(this.toolStripSeparator13, "toolStripSeparator13");
+            // 
+            // removeTracksMI
+            // 
+            this.removeTracksMI.Image = global::GMView.Properties.Resources.track_remove;
+            resources.ApplyResources(this.removeTracksMI, "removeTracksMI");
+            this.removeTracksMI.Name = "removeTracksMI";
+            this.removeTracksMI.Click += new System.EventHandler(this.removeTracksSB_Click);
+            // 
+            // toolStripSeparator14
+            // 
+            this.toolStripSeparator14.Name = "toolStripSeparator14";
+            resources.ApplyResources(this.toolStripSeparator14, "toolStripSeparator14");
+            // 
+            // poiMI
+            // 
+            this.poiMI.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addPOIMI,
+            this.editPOIMI,
+            this.toolStripSeparator7,
+            this.exportPOIMI,
+            this.importPOIMI,
+            this.toolStripSeparator19,
+            this.hideAllPOIMI,
+            this.toolStripSeparator20});
+            this.poiMI.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.poiMI.Name = "poiMI";
+            resources.ApplyResources(this.poiMI, "poiMI");
+            // 
+            // addPOIMI
+            // 
+            this.addPOIMI.Image = global::GMView.Properties.Resources.mark_new;
+            resources.ApplyResources(this.addPOIMI, "addPOIMI");
+            this.addPOIMI.Name = "addPOIMI";
+            this.addPOIMI.Click += new System.EventHandler(this.addBookMI_Click);
+            // 
+            // editPOIMI
+            // 
+            this.editPOIMI.Name = "editPOIMI";
+            resources.ApplyResources(this.editPOIMI, "editPOIMI");
+            this.editPOIMI.Click += new System.EventHandler(this.editBMarksMI_Click);
+            // 
+            // toolStripSeparator7
+            // 
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            resources.ApplyResources(this.toolStripSeparator7, "toolStripSeparator7");
+            // 
+            // exportPOIMI
+            // 
+            this.exportPOIMI.Name = "exportPOIMI";
+            resources.ApplyResources(this.exportPOIMI, "exportPOIMI");
+            this.exportPOIMI.Click += new System.EventHandler(this.exportPOIMI_Click);
+            // 
+            // importPOIMI
+            // 
+            this.importPOIMI.Name = "importPOIMI";
+            resources.ApplyResources(this.importPOIMI, "importPOIMI");
+            this.importPOIMI.Click += new System.EventHandler(this.importPOIMI_Click);
+            // 
+            // toolStripSeparator19
+            // 
+            this.toolStripSeparator19.Name = "toolStripSeparator19";
+            resources.ApplyResources(this.toolStripSeparator19, "toolStripSeparator19");
+            // 
+            // hideAllPOIMI
+            // 
+            this.hideAllPOIMI.Name = "hideAllPOIMI";
+            resources.ApplyResources(this.hideAllPOIMI, "hideAllPOIMI");
+            this.hideAllPOIMI.Click += new System.EventHandler(this.hideAllBMarksMI_Click);
+            // 
+            // toolStripSeparator20
+            // 
+            this.toolStripSeparator20.Name = "toolStripSeparator20";
+            resources.ApplyResources(this.toolStripSeparator20, "toolStripSeparator20");
+            // 
+            // toolsMI
+            // 
+            this.toolsMI.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.rebuildAllMI,
+            this.rebuildMapTypeMI,
+            this.rebuildMapOnlyMI,
+            this.toolStripSeparator16,
+            this.reloadScrFromSiteMI,
+            this.toolStripSeparator17,
+            this.cleanCacheMI,
+            this.toolStripSeparator18,
+            this.reinitGPSMI});
+            this.toolsMI.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.toolsMI.Name = "toolsMI";
+            resources.ApplyResources(this.toolsMI, "toolsMI");
+            // 
+            // rebuildAllMI
+            // 
+            this.rebuildAllMI.Name = "rebuildAllMI";
+            resources.ApplyResources(this.rebuildAllMI, "rebuildAllMI");
+            this.rebuildAllMI.Click += new System.EventHandler(this.rebuildAllMI_Click);
+            // 
+            // rebuildMapTypeMI
+            // 
+            this.rebuildMapTypeMI.Name = "rebuildMapTypeMI";
+            resources.ApplyResources(this.rebuildMapTypeMI, "rebuildMapTypeMI");
+            this.rebuildMapTypeMI.Click += new System.EventHandler(this.rebuildMapTypeMI_Click);
+            // 
+            // rebuildMapOnlyMI
+            // 
+            this.rebuildMapOnlyMI.Name = "rebuildMapOnlyMI";
+            resources.ApplyResources(this.rebuildMapOnlyMI, "rebuildMapOnlyMI");
+            this.rebuildMapOnlyMI.Click += new System.EventHandler(this.rebuildMapOnlyMI_Click);
+            // 
+            // toolStripSeparator16
+            // 
+            this.toolStripSeparator16.Name = "toolStripSeparator16";
+            resources.ApplyResources(this.toolStripSeparator16, "toolStripSeparator16");
+            // 
+            // reloadScrFromSiteMI
+            // 
+            this.reloadScrFromSiteMI.Name = "reloadScrFromSiteMI";
+            resources.ApplyResources(this.reloadScrFromSiteMI, "reloadScrFromSiteMI");
+            this.reloadScrFromSiteMI.Click += new System.EventHandler(this.reloadFromSiteMI_Click);
+            // 
+            // toolStripSeparator17
+            // 
+            this.toolStripSeparator17.Name = "toolStripSeparator17";
+            resources.ApplyResources(this.toolStripSeparator17, "toolStripSeparator17");
+            // 
+            // cleanCacheMI
+            // 
+            this.cleanCacheMI.Name = "cleanCacheMI";
+            resources.ApplyResources(this.cleanCacheMI, "cleanCacheMI");
+            this.cleanCacheMI.Click += new System.EventHandler(this.resetCacheMI_Click);
+            // 
+            // toolStripSeparator18
+            // 
+            this.toolStripSeparator18.Name = "toolStripSeparator18";
+            resources.ApplyResources(this.toolStripSeparator18, "toolStripSeparator18");
+            // 
+            // reinitGPSMI
+            // 
+            this.reinitGPSMI.Name = "reinitGPSMI";
+            resources.ApplyResources(this.reinitGPSMI, "reinitGPSMI");
+            this.reinitGPSMI.Click += new System.EventHandler(this.reinitGPSMI_Click);
+            // 
+            // GeoTagMI
+            // 
+            this.GeoTagMI.Name = "GeoTagMI";
+            resources.ApplyResources(this.GeoTagMI, "GeoTagMI");
+            this.GeoTagMI.Click += new System.EventHandler(this.GeoTagMI_Click);
+            // 
             // toolStripSeparator9
             // 
             this.toolStripSeparator9.Name = "toolStripSeparator9";
@@ -1013,6 +1015,12 @@
             // 
             this.deltaCenterTimer.Interval = 75;
             // 
+            // pasteTrackFromClipboardToolStripMenuItem
+            // 
+            this.pasteTrackFromClipboardToolStripMenuItem.Name = "pasteTrackFromClipboardToolStripMenuItem";
+            resources.ApplyResources(this.pasteTrackFromClipboardToolStripMenuItem, "pasteTrackFromClipboardToolStripMenuItem");
+            this.pasteTrackFromClipboardToolStripMenuItem.Click += new System.EventHandler(this.pasteFromClipboardToolStripMenuItem_Click);
+            // 
             // GMViewForm
             // 
             resources.ApplyResources(this, "$this");
@@ -1034,10 +1042,10 @@
             this.toolStripContainer1.PerformLayout();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
-            this.menuStrip.ResumeLayout(false);
-            this.menuStrip.PerformLayout();
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();
+            this.menuStrip.ResumeLayout(false);
+            this.menuStrip.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1154,6 +1162,7 @@
         private System.Windows.Forms.ToolStripMenuItem zoomToFinishToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator22;
         private System.Windows.Forms.ToolStripMenuItem downloadTilesAlongTheTrackToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pasteTrackFromClipboardToolStripMenuItem;
     }
 }
 

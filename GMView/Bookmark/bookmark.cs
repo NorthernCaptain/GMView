@@ -194,6 +194,18 @@ namespace GMView
             set { isDbChange = value; }
         }
 
+
+        private bool isAutoShow = false;
+
+        /// <summary>
+        /// Is this POI in auto show mode or not
+        /// </summary>
+        public bool IsAutoShow
+        {
+            get { return isAutoShow; }
+            set { isAutoShow = value; }
+        }
+
         /// <summary>
         /// Icon image for display in dialogs
         /// </summary>

@@ -1675,5 +1675,41 @@ namespace GMView
                     this.DesktopLocation.Y + this.Size.Height - geoTagForm.Size.Height);
         }
 
+        private void pasteFromClipboardToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Clipboard.ContainsText())
+            {
+                string clipbuffer = Clipboard.GetText();
+
+                GPSTrack gtr;
+                try
+                {
+                    gtr = GPSTrack.loadKML(clipbuffer, false);
+                    gtr.need_arrows = false;
+                    gtr.trackMode = GPSTrack.TrackMode.ViewSaved;
+                    gtr.map = mapo;
+
+                    gtr.trackColor = Color.BlueViolet;
+                    mapo.addSub(gtr);
+                    gtr.initGLData();
+                    gtr.show();
+                    mapo.CenterMapLonLat(gtr.lastData.lon, gtr.lastData.lat);
+                    repaintMap();
+
+                    GPSTrackFactory.singleton.addTrack(gtr);
+                    GPSTrackFactory.singleton.infoForm(gtr).Visible = true;
+                    GPSTrackFactory.singleton.rebuildMenuStrip(trackStripMenuItem.DropDown.Items);
+
+                    GPSTrackFactory.singleton.currentTrack = gtr;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Could not load track from clipboard\nReason:\n" +
+                        ex.ToString(), "Error loading track", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Clipboard.Clear();
+                }
+            }
+        }
+
     }
 }

@@ -66,6 +66,7 @@ namespace GMView.Bookmarks
         private BookMarkFactory factory;
 
         private List<Bookmark> listToShow;
+        private Dictionary<int, Bookmark> listToHide;
 
         /// <summary>
         /// Constructor that takes region for poi visualization
@@ -140,6 +141,8 @@ namespace GMView.Bookmarks
         {
             listToShow = new List<Bookmark>();
 
+            listToHide = factory.fillListToHide();
+
             calculateLonLat();
 
             DBObj dbo = null;
@@ -148,10 +151,11 @@ namespace GMView.Bookmarks
                 DateTime start = DateTime.Now;
                 dbo = new DBObj(@"select " + BookMarkFactory.poiSelectFields
                     + "from poi, poi_type, poi_spatial where poi.id = poi_spatial.id "
-                    + "and poi_type.id = poi.type and poi_type.is_auto_show=1 "
+                    + "and poi_type.id = poi.type and poi_type.is_auto_show=1 and poi_type.min_zoom_lvl>=@ZOOM "
                     + "and poi_spatial.minLon>=@LON1 and poi_spatial.maxLon<=@LON2 "
                     + "and poi_spatial.minLat>=@LAT1 and poi_spatial.maxLat<=@LAT2");
 
+                dbo.addIntPar("@ZOOM", zoom);
                 dbo.addFloatPar("@LON1", (lon1 < lon2 ? lon1 : lon2));
                 dbo.addFloatPar("@LON2", (lon1 < lon2 ? lon2 : lon1));
                 dbo.addFloatPar("@LAT1", (lat1 < lat2 ? lat1 : lat2));
@@ -163,6 +167,7 @@ namespace GMView.Bookmarks
             		//DO each item processing
                     Bookmark poi = new Bookmark(reader);
                     listToShow.Add( poi );
+                    listToHide.Remove(poi.Id);
                 }
                 TimeSpan ts = DateTime.Now - start;
                 Program.Log("POIVisualTask: search took: " + ts.TotalSeconds.ToString("F3"));
@@ -187,6 +192,17 @@ namespace GMView.Bookmarks
         public List<Bookmark> result
         {
             get { return listToShow; }
+        }
+
+        /// <summary>
+        /// The list of pois that we need to hide
+        /// </summary>
+        public Dictionary<int, Bookmark> hideList
+        {
+            get
+            {
+                return listToHide;
+            }
         }
     }
 }

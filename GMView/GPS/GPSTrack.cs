@@ -1197,7 +1197,7 @@ namespace GMView
             if (first_line.Contains("gpx"))
                 return loadGPX(fname);
             if (first_line.Contains("kml"))
-                return loadKML(fname);
+                return loadKML(fname, true);
             if (first_line.Contains("$GP") || first_line.Contains("$PS"))
                 return loadNMEA(fname);
             if (first_line.Contains("gps_track"))
@@ -1319,14 +1319,17 @@ namespace GMView
         /// </summary>
         /// <param name="fname"></param>
         /// <returns></returns>
-        public static GPSTrack loadKML(string fname)
+        public static GPSTrack loadKML(string fname, bool isFNameFile)
         {
             XmlDocument doc = new XmlDocument();
 
             XmlNamespaceManager nsm = new XmlNamespaceManager(doc.NameTable);
             nsm.AddNamespace("xlink", "http://www.w3.org/1999/xlink");
 
-            doc.Load(fname);
+            if (isFNameFile)
+                doc.Load(fname);
+            else
+                doc.LoadXml(fname);
 
             if (doc.DocumentElement.Name != "kml")
                 throw new ApplicationException("Not a valid KML file! Could not find kml root tag.");
@@ -1344,9 +1347,12 @@ namespace GMView
 
             GPSTrack track = new GPSTrack();
 
-            string dirname = Path.GetDirectoryName(fname);
-            track.name = "Track: " + dirname.Substring(dirname.LastIndexOf(Path.DirectorySeparatorChar) + 1) + Path.DirectorySeparatorChar + Path.GetFileNameWithoutExtension(fname);
-            track.way.name = "Route: " + Path.GetFileNameWithoutExtension(fname);
+            if (isFNameFile)
+            {
+                string dirname = Path.GetDirectoryName(fname);
+                track.name = "Track: " + dirname.Substring(dirname.LastIndexOf(Path.DirectorySeparatorChar) + 1) + Path.DirectorySeparatorChar + Path.GetFileNameWithoutExtension(fname);
+                track.way.name = "Route: " + Path.GetFileNameWithoutExtension(fname);
+            }
 
             XmlNode folder = selectKMLFolders(doc, nsm, track);
             XmlNode titleNode = null;
@@ -1390,7 +1396,11 @@ namespace GMView
 
             BookMarkFactory.singleton.loadTemporaryBookmarks(track.track_name, nlist, nsm);
 
-            track.filename = fname;
+            if (isFNameFile)
+                track.filename = fname;
+            else
+                track.filename = track.name + ".kml";
+
             track.calculateParameters();
             track.lastSpeedPos = track.lastPos;
 

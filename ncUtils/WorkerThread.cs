@@ -115,12 +115,28 @@ namespace ncUtils
         {
             while (!threadDone)
             {
-                TaskType task = taskQueue.Dequeue();
+                TaskType task;
+                if (onlyLast)
+                    task = taskQueue.DequeueAllGetLast();
+                else
+                    task = taskQueue.Dequeue();
 
                 task.run();
 
                 notifyTaskCompletion(task);
             }
+        }
+
+
+        private bool onlyLast = false;
+
+        /// <summary>
+        /// Process only last message in the queue if we have more than one
+        /// </summary>
+        public bool OnlyLast
+        {
+            get { return onlyLast; }
+            set { onlyLast = value; }
         }
 
         /// <summary>

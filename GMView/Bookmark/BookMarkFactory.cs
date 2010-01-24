@@ -31,6 +31,8 @@ namespace GMView
         /// </summary>
         public event BookmarkFactoryChangedDelegate onChanged;
 
+        private readonly object locker = new object();
+
         #region Get/Set methods + XML serialization
 
         private Bookmarks.POIGroupFactory groupFactory;
@@ -650,12 +652,16 @@ namespace GMView
                     int poi_id = reader.GetInt32(reader.GetOrdinal("ID"));
 
                     Bookmark poi;
-                    if (!loadedPOIs.TryGetValue(poi_id, out poi))
+                    lock (locker)
                     {
-                        poi = new Bookmark(reader);
-                        register(poi);
-                    } else
-                        poi.Owner = this;
+                        if (!loadedPOIs.TryGetValue(poi_id, out poi))
+                        {
+                            poi = new Bookmark(reader);
+                            register(poi);
+                        }
+                        else
+                            poi.Owner = this;
+                    }
                     poi.Parent = pgroup;
                     pois.Add(poi);
                 }
@@ -690,8 +696,11 @@ namespace GMView
         /// <param name="bookmark"></param>
         internal void unregister(Bookmark bookmark)
         {
-            loadedPOIs.Remove(bookmark.Id);
-            shownPOIs.Remove(bookmark.Id);
+            lock (locker)
+            {
+                loadedPOIs.Remove(bookmark.Id);
+                shownPOIs.Remove(bookmark.Id);
+            }
         }
 
         /// <summary>
@@ -700,10 +709,14 @@ namespace GMView
         /// <param name="poi"></param>
         internal void register(Bookmark poi)
         {
-            loadedPOIs.Add(poi.Id, poi);
-            poi.Owner = this;
-            if (poi.IsShown)
-                shownPOIs.Add(poi.Id, poi);
+            lock (locker)
+            {
+
+                loadedPOIs.Add(poi.Id, poi);
+                poi.Owner = this;
+                if (poi.IsShown)
+                    shownPOIs.Add(poi.Id, poi);
+            }
         }
 
         /// <summary>
@@ -712,7 +725,10 @@ namespace GMView
         /// <param name="poi"></param>
         internal void POIShown(Bookmark poi)
         {
-            shownPOIs.Add(poi.Id, poi);
+            lock (locker)
+            {
+                shownPOIs.Add(poi.Id, poi);
+            }
         }
 
         /// <summary>
@@ -721,7 +737,10 @@ namespace GMView
         /// <param name="poi"></param>
         internal void POIHidden(Bookmark poi)
         {
-            shownPOIs.Remove(poi.Id);
+            lock (locker)
+            {
+                shownPOIs.Remove(poi.Id);
+            }
         }
 
         /// <summary>
@@ -740,6 +759,7 @@ namespace GMView
         {
             guiControl = ctrl;
             visualWorker = new GUIWorkerThread<Bookmarks.POIVisualWorkerTask>(guiControl);
+            visualWorker.OnlyLast = true;
             visualWorker.start();
             visualWorker.taskCompleted += visualWorker_taskCompleted;
             mapo.onZoomChanged += mapo_onZoomChanged;
@@ -750,7 +770,15 @@ namespace GMView
         /// </summary>
         /// <param name="old_zoom"></param>
         /// <param name="new_zoom"></param>
-        void mapo_onZoomChanged(int old_zoom, int new_zoom)
+        private void mapo_onZoomChanged(int old_zoom, int new_zoom)
+        {
+            sendVisualWorkerTask();
+        }
+
+        /// <summary>
+        /// Creates a task for visualizing POI in auto show mode to be done in separate thread
+        /// </summary>
+        private void sendVisualWorkerTask()
         {
             if (visualWorker == null)
                 return;
@@ -767,22 +795,56 @@ namespace GMView
         /// Works in the main GUI thread
         /// </summary>
         /// <param name="completedTask"></param>
-        void visualWorker_taskCompleted(GMView.Bookmarks.POIVisualWorkerTask completedTask)
+        private void visualWorker_taskCompleted(GMView.Bookmarks.POIVisualWorkerTask completedTask)
         {
             List<Bookmark> resultList = completedTask.result;
+            Dictionary<int, Bookmark> listToHide = completedTask.hideList;
 
             GML.tranBegin();
-            foreach (Bookmark poi in resultList)
-            {
-                if (!loadedPOIs.ContainsKey(poi.Id))
-                    register(poi);
 
-                if(!shownPOIs.ContainsKey(poi.Id))
+            lock (locker)
+            {
+                foreach (KeyValuePair<int, Bookmark> delpoi in listToHide)
                 {
-                    poi.IsShown = true;
+                    if (shownPOIs.ContainsKey(delpoi.Value.Id))
+                        delpoi.Value.IsShown = false;
+                    unregister(delpoi.Value);
+                }
+
+                foreach (Bookmark poi in resultList)
+                {
+                    Bookmark rpoi;
+                    if (!loadedPOIs.TryGetValue(poi.Id, out rpoi))
+                    {
+                        register(poi);
+                        rpoi = poi;
+                    }
+
+                    if (!shownPOIs.ContainsKey(poi.Id))
+                    {
+                        rpoi.IsShown = true;
+                    }
                 }
             }
             GML.tranEnd();
+        }
+
+        /// <summary>
+        /// Fills and returns list of poi that is in auto show mode.
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<int, Bookmark> fillListToHide()
+        {
+            Dictionary<int, Bookmark> listToHide = new Dictionary<int, Bookmark>();
+            lock (locker)
+            {
+                foreach (KeyValuePair<int, Bookmark> poi in shownPOIs)
+                {
+                    if (poi.Value.IsAutoShow)
+                        listToHide.Add(poi.Key, poi.Value);
+                }
+            }
+            return listToHide;
         }
     }
 }

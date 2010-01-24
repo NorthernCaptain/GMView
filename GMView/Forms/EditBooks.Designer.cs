@@ -91,6 +91,8 @@
             this.PTnodeCheckBoxAuto = new Aga.Controls.Tree.NodeControls.NodeCheckBox();
             this.PTnodeNumericUpDownMinZ = new Aga.Controls.Tree.NodeControls.NodeNumericUpDown();
             this.PTIconOpenDialog = new System.Windows.Forms.OpenFileDialog();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.changeTypeOfPOIsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStripForTree.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -128,7 +130,7 @@
             this.treeView.LineColor = System.Drawing.SystemColors.ControlDark;
             this.treeView.LoadOnDemand = true;
             this.treeView.Location = new System.Drawing.Point(4, 4);
-            this.treeView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.treeView.Margin = new System.Windows.Forms.Padding(4);
             this.treeView.Model = null;
             this.treeView.Name = "treeView";
             this.treeView.NodeControls.Add(this.nodeCheckBox_Shown);
@@ -224,21 +226,23 @@
             // 
             this.contextMenuStripForTree.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addGroupToolStripMenuItem,
-            this.deletePOIOrGroupToolStripMenuItem});
+            this.deletePOIOrGroupToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.changeTypeOfPOIsToolStripMenuItem});
             this.contextMenuStripForTree.Name = "contextMenuStripForTree";
-            this.contextMenuStripForTree.Size = new System.Drawing.Size(223, 48);
+            this.contextMenuStripForTree.Size = new System.Drawing.Size(230, 98);
             // 
             // addGroupToolStripMenuItem
             // 
             this.addGroupToolStripMenuItem.Name = "addGroupToolStripMenuItem";
-            this.addGroupToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.addGroupToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
             this.addGroupToolStripMenuItem.Text = "Add new group";
             this.addGroupToolStripMenuItem.Click += new System.EventHandler(this.addGroupToolStripMenuItem_Click);
             // 
             // deletePOIOrGroupToolStripMenuItem
             // 
             this.deletePOIOrGroupToolStripMenuItem.Name = "deletePOIOrGroupToolStripMenuItem";
-            this.deletePOIOrGroupToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.deletePOIOrGroupToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
             this.deletePOIOrGroupToolStripMenuItem.Text = "Delete POI or group";
             this.deletePOIOrGroupToolStripMenuItem.Click += new System.EventHandler(this.deletePOIOrGroupToolStripMenuItem_Click);
             // 
@@ -371,7 +375,7 @@
             this.checkBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBox1.AutoSize = true;
             this.checkBox1.Location = new System.Drawing.Point(16, 540);
-            this.checkBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkBox1.Margin = new System.Windows.Forms.Padding(4);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(197, 21);
             this.checkBox1.TabIndex = 0;
@@ -383,7 +387,7 @@
             this.okBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.okBut.Image = global::GMView.Properties.Resources.lamp_on;
             this.okBut.Location = new System.Drawing.Point(867, 527);
-            this.okBut.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.okBut.Margin = new System.Windows.Forms.Padding(4);
             this.okBut.Name = "okBut";
             this.okBut.Size = new System.Drawing.Size(99, 46);
             this.okBut.TabIndex = 1;
@@ -400,7 +404,7 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Location = new System.Drawing.Point(1, 2);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(980, 517);
@@ -410,9 +414,9 @@
             // 
             this.tabPage1.Controls.Add(this.treeView);
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage1.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(4);
             this.tabPage1.Size = new System.Drawing.Size(972, 488);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Points of Interest";
@@ -423,9 +427,9 @@
             this.tabPage2.Controls.Add(this.groupBox1);
             this.tabPage2.Controls.Add(this.treeViewPType);
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(4);
             this.tabPage2.Size = new System.Drawing.Size(972, 488);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Types";
@@ -449,9 +453,9 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(655, 7);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox1.Size = new System.Drawing.Size(304, 470);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
@@ -461,7 +465,7 @@
             // 
             this.PTdelTypeBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.PTdelTypeBut.Location = new System.Drawing.Point(164, 391);
-            this.PTdelTypeBut.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.PTdelTypeBut.Margin = new System.Windows.Forms.Padding(4);
             this.PTdelTypeBut.Name = "PTdelTypeBut";
             this.PTdelTypeBut.Size = new System.Drawing.Size(132, 32);
             this.PTdelTypeBut.TabIndex = 8;
@@ -473,7 +477,7 @@
             // 
             this.newTypeBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.newTypeBut.Location = new System.Drawing.Point(12, 391);
-            this.newTypeBut.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.newTypeBut.Margin = new System.Windows.Forms.Padding(4);
             this.newTypeBut.Name = "newTypeBut";
             this.newTypeBut.Size = new System.Drawing.Size(132, 32);
             this.newTypeBut.TabIndex = 8;
@@ -485,7 +489,7 @@
             // 
             this.cancelChangesBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cancelChangesBut.Location = new System.Drawing.Point(164, 431);
-            this.cancelChangesBut.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cancelChangesBut.Margin = new System.Windows.Forms.Padding(4);
             this.cancelChangesBut.Name = "cancelChangesBut";
             this.cancelChangesBut.Size = new System.Drawing.Size(132, 32);
             this.cancelChangesBut.TabIndex = 8;
@@ -498,7 +502,7 @@
             this.PTapplyBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.PTapplyBut.Enabled = false;
             this.PTapplyBut.Location = new System.Drawing.Point(12, 431);
-            this.PTapplyBut.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.PTapplyBut.Margin = new System.Windows.Forms.Padding(4);
             this.PTapplyBut.Name = "PTapplyBut";
             this.PTapplyBut.Size = new System.Drawing.Size(132, 32);
             this.PTapplyBut.TabIndex = 8;
@@ -509,7 +513,7 @@
             // PTminZoomLvlNum
             // 
             this.PTminZoomLvlNum.Location = new System.Drawing.Point(223, 302);
-            this.PTminZoomLvlNum.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.PTminZoomLvlNum.Margin = new System.Windows.Forms.Padding(4);
             this.PTminZoomLvlNum.Maximum = new decimal(new int[] {
             18,
             0,
@@ -533,7 +537,7 @@
             // 
             this.PTquickAddCB.AutoSize = true;
             this.PTquickAddCB.Location = new System.Drawing.Point(16, 261);
-            this.PTquickAddCB.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.PTquickAddCB.Margin = new System.Windows.Forms.Padding(4);
             this.PTquickAddCB.Name = "PTquickAddCB";
             this.PTquickAddCB.Size = new System.Drawing.Size(178, 21);
             this.PTquickAddCB.TabIndex = 6;
@@ -544,7 +548,7 @@
             // 
             this.PTautoShowCB.AutoSize = true;
             this.PTautoShowCB.Location = new System.Drawing.Point(16, 233);
-            this.PTautoShowCB.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.PTautoShowCB.Margin = new System.Windows.Forms.Padding(4);
             this.PTautoShowCB.Name = "PTautoShowCB";
             this.PTautoShowCB.Size = new System.Drawing.Size(170, 21);
             this.PTautoShowCB.TabIndex = 5;
@@ -560,9 +564,9 @@
             this.groupBox2.Controls.Add(this.PTiconPic);
             this.groupBox2.Controls.Add(this.ChangeIconBut);
             this.groupBox2.Location = new System.Drawing.Point(8, 119);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox2.Size = new System.Drawing.Size(288, 106);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
@@ -591,7 +595,7 @@
             // PTiconCYNum
             // 
             this.PTiconCYNum.Location = new System.Drawing.Point(144, 64);
-            this.PTiconCYNum.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.PTiconCYNum.Margin = new System.Windows.Forms.Padding(4);
             this.PTiconCYNum.Name = "PTiconCYNum";
             this.PTiconCYNum.Size = new System.Drawing.Size(65, 22);
             this.PTiconCYNum.TabIndex = 4;
@@ -600,7 +604,7 @@
             // PTiconCXNum
             // 
             this.PTiconCXNum.Location = new System.Drawing.Point(144, 32);
-            this.PTiconCXNum.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.PTiconCXNum.Margin = new System.Windows.Forms.Padding(4);
             this.PTiconCXNum.Name = "PTiconCXNum";
             this.PTiconCXNum.Size = new System.Drawing.Size(65, 22);
             this.PTiconCXNum.TabIndex = 4;
@@ -611,7 +615,7 @@
             this.PTiconPic.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.PTiconPic.Cursor = System.Windows.Forms.Cursors.Cross;
             this.PTiconPic.Location = new System.Drawing.Point(8, 23);
-            this.PTiconPic.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.PTiconPic.Margin = new System.Windows.Forms.Padding(4);
             this.PTiconPic.Name = "PTiconPic";
             this.PTiconPic.Size = new System.Drawing.Size(85, 71);
             this.PTiconPic.TabIndex = 2;
@@ -622,7 +626,7 @@
             // ChangeIconBut
             // 
             this.ChangeIconBut.Location = new System.Drawing.Point(220, 34);
-            this.ChangeIconBut.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ChangeIconBut.Margin = new System.Windows.Forms.Padding(4);
             this.ChangeIconBut.Name = "ChangeIconBut";
             this.ChangeIconBut.Size = new System.Drawing.Size(60, 46);
             this.ChangeIconBut.TabIndex = 3;
@@ -633,7 +637,7 @@
             // PTdescrTB
             // 
             this.PTdescrTB.Location = new System.Drawing.Point(8, 87);
-            this.PTdescrTB.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.PTdescrTB.Margin = new System.Windows.Forms.Padding(4);
             this.PTdescrTB.Name = "PTdescrTB";
             this.PTdescrTB.Size = new System.Drawing.Size(287, 22);
             this.PTdescrTB.TabIndex = 1;
@@ -641,7 +645,7 @@
             // PTnameTB
             // 
             this.PTnameTB.Location = new System.Drawing.Point(8, 39);
-            this.PTnameTB.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.PTnameTB.Margin = new System.Windows.Forms.Padding(4);
             this.PTnameTB.Name = "PTnameTB";
             this.PTnameTB.Size = new System.Drawing.Size(287, 22);
             this.PTnameTB.TabIndex = 1;
@@ -695,7 +699,7 @@
             this.treeViewPType.GridLineStyle = ((Aga.Controls.Tree.GridLineStyle)((Aga.Controls.Tree.GridLineStyle.Horizontal | Aga.Controls.Tree.GridLineStyle.Vertical)));
             this.treeViewPType.LineColor = System.Drawing.SystemColors.ControlDark;
             this.treeViewPType.Location = new System.Drawing.Point(4, 7);
-            this.treeViewPType.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.treeViewPType.Margin = new System.Windows.Forms.Padding(4);
             this.treeViewPType.Model = null;
             this.treeViewPType.Name = "treeViewPType";
             this.treeViewPType.NodeControls.Add(this.PTnodeStateIcon);
@@ -820,6 +824,18 @@
             this.PTIconOpenDialog.FileName = "icon.png";
             this.PTIconOpenDialog.Title = "Choose icon for the type";
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(226, 6);
+            // 
+            // changeTypeOfPOIsToolStripMenuItem
+            // 
+            this.changeTypeOfPOIsToolStripMenuItem.Name = "changeTypeOfPOIsToolStripMenuItem";
+            this.changeTypeOfPOIsToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
+            this.changeTypeOfPOIsToolStripMenuItem.Text = "Change type of POIs";
+            this.changeTypeOfPOIsToolStripMenuItem.Click += new System.EventHandler(this.changeTypeOfPOIsToolStripMenuItem_Click);
+            // 
             // EditBooks
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -828,7 +844,7 @@
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.okBut);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "EditBooks";
             this.Text = "Points of interest";
             this.contextMenuStripForTree.ResumeLayout(false);
@@ -912,5 +928,7 @@
         private System.Windows.Forms.Button newTypeBut;
         private System.Windows.Forms.OpenFileDialog PTIconOpenDialog;
         private System.Windows.Forms.Button PTdelTypeBut;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem changeTypeOfPOIsToolStripMenuItem;
     }
 }
