@@ -19,6 +19,34 @@ namespace ncUtils
         private List<SQLiteConnection> allConnections = new List<SQLiteConnection>(50);
 
         /// <summary>
+        /// Simple class for holding connection and transaction data for the thread
+        /// </summary>
+        private class ThreadData
+        {
+            SQLiteTransaction tran;
+            SQLiteConnection conn;
+
+            internal SQLiteConnection connection
+            {
+                get { return conn; }
+            }
+
+            internal SQLiteTransaction transaction
+            {
+                get { return tran; }
+            }
+
+            internal ThreadData(SQLiteConnection iconn, SQLiteTransaction itran)
+            {
+                conn = iconn;
+                tran = itran;
+            }
+        }
+
+        private readonly Dictionary<System.Threading.Thread, ThreadData> threadTranList
+            = new Dictionary<System.Threading.Thread, ThreadData>();
+
+        /// <summary>
         /// Gets a single instance of DBConnPool
         /// </summary>
         public static DBConnPool singleton
@@ -51,11 +79,80 @@ namespace ncUtils
         {
             lock (conPool)
             {
+                ThreadData tData;
+                threadTranList.TryGetValue(System.Threading.Thread.CurrentThread, out tData);
+
+                if(tData != null)
+                {
+                    return tData.connection;
+                }
+
                 if (conPool.First == null)
                     return newCon();
                 DbConnection con = conPool.First.Value;
                 conPool.RemoveFirst();
                 return con;
+            }
+        }
+
+        /// <summary>
+        /// Opens DB transaction for current thread, return Transaction object.
+        /// Every call to getCon will return the same transaction for the thread.
+        /// </summary>
+        /// <returns></returns>
+        public DbTransaction beginThreadTransaction()
+        {
+            lock (conPool)
+            {
+                ThreadData tData;
+                threadTranList.TryGetValue(System.Threading.Thread.CurrentThread, out tData);
+
+                if (tData == null)
+                {
+                    SQLiteConnection con = getCon() as SQLiteConnection;
+                    tData = new ThreadData(con, con.BeginTransaction());
+                    threadTranList.Add(System.Threading.Thread.CurrentThread,
+                        tData);
+                }
+                return tData.transaction;
+            }
+        }
+
+        /// <summary>
+        /// Commit transaction for current thread
+        /// </summary>
+        public void commitThreadTransaction()
+        {
+            lock (conPool)
+            {
+                ThreadData tData;
+                threadTranList.TryGetValue(System.Threading.Thread.CurrentThread, out tData);
+
+                if (tData == null)
+                    return; //No transaction at all
+
+                tData.transaction.Commit();
+                tData.transaction.Dispose();
+                threadTranList.Remove(System.Threading.Thread.CurrentThread);
+            }
+        }
+
+        /// <summary>
+        /// Rollback transaction for current thread
+        /// </summary>
+        public void rollbackThreadTransaction()
+        {
+            lock (conPool)
+            {
+                ThreadData tData;
+                threadTranList.TryGetValue(System.Threading.Thread.CurrentThread, out tData);
+
+                if (tData == null)
+                    return; //No transaction at all
+
+                tData.transaction.Rollback();
+                tData.transaction.Dispose();
+                threadTranList.Remove(System.Threading.Thread.CurrentThread);
             }
         }
 
@@ -92,6 +189,14 @@ namespace ncUtils
 
             lock (conPool)
             {
+                ThreadData tData;
+                threadTranList.TryGetValue(System.Threading.Thread.CurrentThread, out tData);
+
+                if (tData != null && tData.connection == con)
+                {
+                    return;
+                }
+
                 conPool.AddLast(con as SQLiteConnection);
             }
         }
@@ -142,6 +247,7 @@ namespace ncUtils
             {
                 con = new SQLiteConnection(constr);
                 con.Open();
+                DbTransaction tran = con.BeginTransaction();
                 DbCommand cmd = con.CreateCommand();
                 cmd.CommandType = CommandType.Text;
 
@@ -183,6 +289,7 @@ namespace ncUtils
                 {
                     reader.Close();
                 }
+                tran.Commit();
             }
             catch (System.Exception e)
             {

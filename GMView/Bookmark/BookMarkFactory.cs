@@ -136,6 +136,8 @@ namespace GMView
 
         public static BookMarkFactory loadXml(string fname)
         {
+            return null;
+
             FileStream fs;
             try
             {
@@ -483,6 +485,7 @@ namespace GMView
         private int subloadBookmarksGPX(XmlNodeList nlist, XmlNamespaceManager nsm, string groupname)
         {
             int count = 0;
+            ncUtils.DBConnPool.singleton.beginThreadTransaction();
             NMEA_RMC rmc = new NMEA_RMC();
             foreach (XmlNode node in nlist)
             {
@@ -553,6 +556,8 @@ namespace GMView
                     count++;
             }
 
+            ncUtils.DBConnPool.singleton.commitThreadTransaction();
+
             if (onChanged != null)
                 onChanged(this);
             return count;
@@ -563,6 +568,10 @@ namespace GMView
             int count = 0;
             NMEA_RMC rmc = new NMEA_RMC();
             double lon, lat, hei;
+            DateTime startTime = DateTime.Now;
+
+            ncUtils.DBConnPool.singleton.beginThreadTransaction();
+
             foreach (XmlNode node in nlist)
             {
                 XmlNode xnode = node.SelectSingleNode("./kml:Point/kml:coordinates", nsm);
@@ -607,6 +616,11 @@ namespace GMView
                     count++;
                 }
             }
+
+            ncUtils.DBConnPool.singleton.commitThreadTransaction();
+
+            TimeSpan dTime = DateTime.Now - startTime;
+            Program.Log("Loaded " + count + " POI's in seconds: " + dTime.TotalSeconds.ToString("F3"));
             if (onChanged != null)
                 onChanged(this);
             return count;

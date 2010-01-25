@@ -182,6 +182,7 @@
     <Compile Include="GML\WindRose.cs" />
     <Compile Include="GPS\FollowUpConnector.cs" />
     <Compile Include="GPS\GPSTrackFactory.cs" />
+    <Compile Include="GPS\TrackFileInfo.cs" />
     <Compile Include="GPS\TrackPositionInformer.cs" />
     <Compile Include="ILog.cs" />
     <Compile Include="Forms\MainFormDrawPane.cs">

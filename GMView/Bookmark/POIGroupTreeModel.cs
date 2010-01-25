@@ -102,54 +102,67 @@ namespace GMView.Bookmarks
 
             List<object> removed = new List<object>();
 
-            if (treeView.DropPosition.Position == NodePosition.Inside)
-            {
-                if (dropNode == null)
-                    return;
+            ncUtils.DBConnPool.singleton.beginThreadTransaction();
 
-                foreach (TreeNodeAdv n in nodes)
-                {
-                    if (n.Tag is Bookmarks.IPOIBase)
-                    {
-                        Bookmarks.IPOIBase pg = n.Tag as Bookmarks.IPOIBase;
-                        pg.reparentMeTo(dropNode, null);
-
-                        removed.Add(n);
-                    }
-                }
-                treeView.DropPosition.Node.IsExpanded = true;
-                object[] arr = removed.ToArray();
-                fireNodesRemoved(treeView.GetPath(nodes[0].Parent), arr);
-                fireNodesInserted(treeView.GetPath(treeView.DropPosition.Node), arr);
-            }
-            else
+            try
             {
-                Bookmarks.IPOIBase parent;
-                if (dropNode == null)
+                if (treeView.DropPosition.Position == NodePosition.Inside)
                 {
-                    dropNode = treeView.DropPosition.Node.Parent.Tag as Bookmarks.POIGroup;
                     if (dropNode == null)
                         return;
-                    parent = dropNode;
-                    dropNode = null;
+
+                    foreach (TreeNodeAdv n in nodes)
+                    {
+                        if (n.Tag is Bookmarks.IPOIBase)
+                        {
+                            Bookmarks.IPOIBase pg = n.Tag as Bookmarks.IPOIBase;
+                            pg.reparentMeTo(dropNode, null);
+
+                            removed.Add(n);
+                        }
+                    }
+                    treeView.DropPosition.Node.IsExpanded = true;
+                    object[] arr = removed.ToArray();
+                    fireNodesRemoved(treeView.GetPath(nodes[0].Parent), arr);
+                    fireNodesInserted(treeView.GetPath(treeView.DropPosition.Node), arr);
                 }
                 else
-                    parent = dropNode.Parent;
-
-                foreach (TreeNodeAdv n in nodes)
                 {
-                    if (n.Tag is Bookmarks.IPOIBase)
+                    Bookmarks.IPOIBase parent;
+                    if (dropNode == null)
                     {
-                        Bookmarks.IPOIBase pg = n.Tag as Bookmarks.IPOIBase;
-                        pg.reparentMeTo(parent, dropNode);
-
-                        removed.Add(n);
+                        dropNode = treeView.DropPosition.Node.Parent.Tag as Bookmarks.POIGroup;
+                        if (dropNode == null)
+                            return;
+                        parent = dropNode;
+                        dropNode = null;
                     }
+                    else
+                        parent = dropNode.Parent;
+
+                    foreach (TreeNodeAdv n in nodes)
+                    {
+                        if (n.Tag is Bookmarks.IPOIBase)
+                        {
+                            Bookmarks.IPOIBase pg = n.Tag as Bookmarks.IPOIBase;
+                            pg.reparentMeTo(parent, dropNode);
+
+                            removed.Add(n);
+                        }
+                    }
+                    treeView.DropPosition.Node.Parent.IsExpanded = true;
+                    object[] arr = removed.ToArray();
+                    fireNodesRemoved(treeView.GetPath(nodes[0].Parent), arr);
+                    fireNodesInserted(treeView.GetPath(treeView.DropPosition.Node.Parent), arr);
                 }
-                treeView.DropPosition.Node.Parent.IsExpanded = true;
-                object[] arr = removed.ToArray();
-                fireNodesRemoved(treeView.GetPath(nodes[0].Parent), arr);
-                fireNodesInserted(treeView.GetPath(treeView.DropPosition.Node.Parent), arr);
+            }
+            catch (System.Exception)
+            {
+
+            }
+            finally
+            {
+                ncUtils.DBConnPool.singleton.commitThreadTransaction();
             }
 
             treeView.EndUpdate();
@@ -163,20 +176,31 @@ namespace GMView.Bookmarks
         {
             if (treeView.SelectedNodes.Count == 0)
                 return;
-
-            List<TreeNodeAdv> deleted = new List<TreeNodeAdv>();
-            foreach (TreeNodeAdv node in treeView.SelectedNodes)
+            ncUtils.DBConnPool.singleton.beginThreadTransaction();
+            try
             {
-                IPOIBase poi = node.Tag as Bookmarks.IPOIBase;
-                if(poi == null)
-                    continue;
+                List<TreeNodeAdv> deleted = new List<TreeNodeAdv>();
+                foreach (TreeNodeAdv node in treeView.SelectedNodes)
+                {
+                    IPOIBase poi = node.Tag as Bookmarks.IPOIBase;
+                    if (poi == null)
+                        continue;
 
-                //We do not delete system entries
-                if (poi.Id < 3)
-                    continue;
+                    //We do not delete system entries
+                    if (poi.Id < 3)
+                        continue;
 
-                poi.deleteFromDB();
-                deleted.Add(node);
+                    poi.deleteFromDB();
+                    deleted.Add(node);
+                }
+            }
+            catch (System.Exception)
+            {
+
+            }
+            finally
+            {
+                ncUtils.DBConnPool.singleton.commitThreadTransaction();
             }
             fireNodesRemoved(treeView.GetPath(treeView.SelectedNode.Parent), deleted.ToArray());
         }

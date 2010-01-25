@@ -415,7 +415,7 @@ namespace GMView.Forms
                         }
                     }
                 }
-                catch (System.Exception ex)
+                catch (System.Exception)
                 {
                     MessageBox.Show("Could not load image for the icon.\nFile path: " +
                     System.IO.Path.Combine(Program.opt.iconSetPath, PTiconString), "Error loading image",
