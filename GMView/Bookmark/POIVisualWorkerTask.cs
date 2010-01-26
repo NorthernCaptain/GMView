@@ -55,8 +55,10 @@ namespace GMView.Bookmarks
             set { lat2 = value; }
         }
 
-        private int start_nx, start_ny;
-        private int size_nh, size_nw;
+        /// <summary>
+        /// Position in tiles and size in tiles
+        /// </summary>
+        private Rectangle position;
         private int zoom;
         private ncGeo.MapTileType maptype;
 
@@ -75,13 +77,10 @@ namespace GMView.Bookmarks
         /// <param name="ilat1"></param>
         /// <param name="ilon2"></param>
         /// <param name="ilat2"></param>
-        public POIVisualWorkerTask(int ix, int iy, int len, int hei, int izoom,
+        public POIVisualWorkerTask(Rectangle ipos, int izoom,
                 ncGeo.MapTileType imaptype, BookMarkFactory ifactory)
         {
-            start_nx = ix;
-            start_ny = iy;
-            size_nw = len;
-            size_nh = hei;
+            position = ipos;
             zoom = izoom;
             maptype = imaptype;
             factory = ifactory;
@@ -123,10 +122,10 @@ namespace GMView.Bookmarks
 
             geo.zoomLevel = zoom;
 
-            Point xy = new Point(start_nx * Program.opt.image_len, 
-                                start_ny * Program.opt.image_hei);
+            Point xy = new Point(position.X * Program.opt.image_len, 
+                                position.Y * Program.opt.image_hei);
             Point xy2 = xy;
-            xy2.Offset(size_nw * Program.opt.image_len, size_nh * Program.opt.image_hei);
+            xy2.Offset(position.Width * Program.opt.image_len, position.Height * Program.opt.image_hei);
 
             geo.getLonLatByXY(xy, out lon1, out lat1);
             geo.getLonLatByXY(xy2, out lon2, out lat2);
@@ -139,6 +138,8 @@ namespace GMView.Bookmarks
         /// </summary>
         public void run()
         {
+            System.Threading.Thread.Sleep(1500);
+
             listToShow = new List<Bookmark>();
 
             listToHide = factory.fillListToHide();
@@ -151,7 +152,7 @@ namespace GMView.Bookmarks
                 DateTime start = DateTime.Now;
                 dbo = new DBObj(@"select " + BookMarkFactory.poiSelectFields
                     + "from poi, poi_type, poi_spatial where poi.id = poi_spatial.id "
-                    + "and poi_type.id = poi.type and poi_type.is_auto_show=1 and poi_type.min_zoom_lvl>=@ZOOM "
+                    + "and poi_type.id = poi.type and poi_type.is_auto_show=1 and poi_type.min_zoom_lvl<=@ZOOM "
                     + "and poi_spatial.minLon>=@LON1 and poi_spatial.maxLon<=@LON2 "
                     + "and poi_spatial.minLat>=@LAT1 and poi_spatial.maxLat<=@LAT2");
 
@@ -166,6 +167,7 @@ namespace GMView.Bookmarks
                 {
             		//DO each item processing
                     Bookmark poi = new Bookmark(reader);
+                    poi.IsAutoShow = true;
                     listToShow.Add( poi );
                     listToHide.Remove(poi.Id);
                 }

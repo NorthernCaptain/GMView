@@ -12,7 +12,7 @@ namespace GMView
     {
         public MapObject mapo;
         public SatelliteForm satForm;
-        public GPSInfoPanel gpsinfo;
+        public GPS.GPSInfoPanel gpsinfo;
         private double scene_angle;
 
         public MapDrawControl()
@@ -20,7 +20,7 @@ namespace GMView
             InitializeComponent();
         }
 
-        public MapDrawControl(MapObject imapo, SatelliteForm isatForm, GPSInfoPanel igpsinfo)
+        public MapDrawControl(MapObject imapo, SatelliteForm isatForm, GPS.GPSInfoPanel igpsinfo)
         {
             mapo = imapo;
             satForm = isatForm;

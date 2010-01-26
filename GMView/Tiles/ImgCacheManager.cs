@@ -193,8 +193,8 @@ namespace GMView
                 return;
 
             if (zoom != mapo.zoom || mType != Program.opt.mapType ||
-                last_nx != mapo.start_nx || last_ny != mapo.start_ny ||
-                last_nw != mapo.size_nw || last_nh != mapo.size_nh)
+                last_nx != mapo.tilePosNXNY.X || last_ny != mapo.tilePosNXNY.Y ||
+                last_nw != mapo.tilePosNXNY.Width || last_nh != mapo.tilePosNXNY.Height)
             {
                 updateTimer.Stop();
                 updateTimer.Start();
@@ -211,10 +211,10 @@ namespace GMView
         {
             zoom = mapo.zoom;
             mType = Program.opt.mapType;
-            last_nx = mapo.start_nx;
-            last_ny = mapo.start_ny;
-            last_nw = mapo.size_nw;
-            last_nh = mapo.size_nh;
+            last_nx = mapo.tilePosNXNY.X;
+            last_ny = mapo.tilePosNXNY.Y;
+            last_nw = mapo.tilePosNXNY.Width;
+            last_nh = mapo.tilePosNXNY.Height;
 
             visTasks.Enqueue(new RenderInfo(last_nx, last_ny, last_nw, last_nh, curZoom, mType));
         }
@@ -415,10 +415,10 @@ namespace GMView
             GML.device.texFilter(etex, TexFilter.Pixel);
             GML.device.texDrawBegin();
 
-            int start_x = mapo.start_nx << delta;
-            int start_y = mapo.start_ny << delta;
-            int size_nw = mapo.size_nw << delta;
-            int size_nh = map.size_nh << delta;
+            int start_x = mapo.tilePosNXNY.X << delta;
+            int start_y = mapo.tilePosNXNY.Y << delta;
+            int size_nw = mapo.tilePosNXNY.Width << delta;
+            int size_nh = map.tilePosNXNY.Height << delta;
             int zoom = Program.opt.cur_zoom_lvl + delta;
             MapTileType mt = Program.opt.mapType;
 

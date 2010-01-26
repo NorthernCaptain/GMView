@@ -21,7 +21,7 @@ namespace GMView
             mapo = imapo;
             loadqueue = new ImgCollector.LoadTask(mapo);
             InitializeComponent();
-            nearbyNT.Value = (mapo.size_nw + 3) / 2;
+            nearbyNT.Value = (mapo.tilePosNXNY.Width + 3) / 2;
         }
 
         private void cancelBut_Click(object sender, EventArgs e)

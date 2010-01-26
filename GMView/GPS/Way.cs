@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Xml;
 using ncGeo;
 
-namespace GMView
+namespace GMView.GPS
 {
     /// <summary>
     /// Real way (route) class with waypoints

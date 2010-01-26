@@ -233,6 +233,10 @@ namespace GMView.Forms
             if(newType == null)
                 return;
 
+            
+            ncUtils.DBConnPool.singleton.beginThreadTransaction();
+
+
             foreach (TreeNodeAdv node in treeView.SelectedNodes)
             {
                 Bookmark poi = node.Tag as Bookmark;
@@ -241,6 +245,9 @@ namespace GMView.Forms
                     poi.Ptype = newType;
                 }
             }
+
+            ncUtils.DBConnPool.singleton.commitThreadTransaction();
+
             treeView.Invalidate();
         }
 

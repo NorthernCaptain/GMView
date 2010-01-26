@@ -4,7 +4,7 @@ using System.Text;
 using System.Drawing;
 using ncGeo;
 
-namespace GMView
+namespace GMView.GPS
 {
     /// <summary>
     /// Panel that show GPS information about satellites, position and speed

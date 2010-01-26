@@ -479,7 +479,7 @@ namespace GMView
             if (nlist.Count == 0)
                 return 0;
 
-            return subloadBookmarksGPX(nlist, nsm, null);
+            return subloadBookmarksGPX(nlist, nsm, Path.GetFileNameWithoutExtension(fname));
         }
 
         private int subloadBookmarksGPX(XmlNodeList nlist, XmlNamespaceManager nsm, string groupname)
@@ -561,6 +561,39 @@ namespace GMView
             if (onChanged != null)
                 onChanged(this);
             return count;
+        }
+
+        /// <summary>
+        /// Import all waypoints (placemark) from KML file into our POI 
+        /// </summary>
+        /// <param name="fname"></param>
+        /// <returns></returns>
+        internal int importKML(string fname)
+        {
+            XmlDocument doc = new XmlDocument();
+
+            doc.Load(fname);
+
+            if (doc.DocumentElement.Name != "kml")
+                throw new ApplicationException("Not a valid KML file! Could not find kml root tag.");
+
+            XmlNamespaceManager nsm = new XmlNamespaceManager(doc.NameTable);
+
+            { //retreive xmlns
+                XmlNode xnsnode = doc.DocumentElement.Attributes.GetNamedItem("xmlns");
+                if (xnsnode != null)
+                    nsm.AddNamespace("kml", xnsnode.Value);
+                else
+                {
+                    nsm.AddNamespace("kml", "");
+                }
+            }
+
+            XmlNodeList nlist = doc.DocumentElement.SelectNodes("//kml:Placemark", nsm);
+            if (nlist.Count == 0)
+                return 0;
+
+            return subloadBookmarksKML(nlist, nsm, Path.GetFileNameWithoutExtension(fname));
         }
 
         private int subloadBookmarksKML(XmlNodeList nlist, XmlNamespaceManager nsm, string groupname)
@@ -777,6 +810,16 @@ namespace GMView
             visualWorker.start();
             visualWorker.taskCompleted += visualWorker_taskCompleted;
             mapo.onZoomChanged += mapo_onZoomChanged;
+            mapo.onTileCenterChanged += mapo_onTileCenterChanged;
+        }
+
+        /// <summary>
+        /// Called on every change of the map position in tiles, not in pixels
+        /// </summary>
+        /// <param name="tilePosNXNY"></param>
+        void mapo_onTileCenterChanged(System.Drawing.Rectangle tilePosNXNY)
+        {
+            sendVisualWorkerTask();
         }
 
         /// <summary>
@@ -798,7 +841,7 @@ namespace GMView
                 return;
 
             Bookmarks.POIVisualWorkerTask task = new Bookmarks.POIVisualWorkerTask(
-                mapo.start_nx, mapo.start_ny, mapo.size_nw, mapo.size_nh, mapo.zoom,
+                mapo.tilePosNXNY, mapo.zoom,
                 mapo.geosystem.baseType, this);
             visualWorker.addTask(task);
         }

@@ -655,7 +655,7 @@ namespace GMView
             glEmptyTexture = GML.device.texFromBitmap(ref img);
         }
 
-        public UserControl newMapDrawControl(MapObject mapo, SatelliteForm satForm, GPSInfoPanel gpsinfo)
+        public UserControl newMapDrawControl(MapObject mapo, SatelliteForm satForm, GPS.GPSInfoPanel gpsinfo)
         {
             switch (useGML)
             {

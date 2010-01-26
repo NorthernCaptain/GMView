@@ -369,6 +369,8 @@
     <Compile Include="Forms\IntroForm.Designer.cs">
       <DependentUpon>IntroForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="TrackLoader\ITrackLoader.cs" />
+    <Compile Include="TrackLoader\TrackLoaderFactory.cs" />
     <Compile Include="Traffic\GoogleTraffic.cs" />
     <Compile Include="Traffic\YandexTraffic.cs" />
     <Compile Include="UserPosition.cs" />

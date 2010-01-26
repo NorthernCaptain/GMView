@@ -6,6 +6,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.IO;
 using ncGeo;
+using GMView.GPS;
 
 namespace GMView
 {
@@ -61,7 +62,7 @@ namespace GMView
         protected List<Point> drawPoints = new List<Point>();
 
         [XmlIgnore]
-        public Way way = new Way();
+        public GPS.Way way = new GPS.Way();
 
         [XmlAttributeAttribute()]
         public bool need_arrows = true;

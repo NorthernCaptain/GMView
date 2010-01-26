@@ -176,10 +176,10 @@ namespace GMView.Bookmarks
         {
             if (treeView.SelectedNodes.Count == 0)
                 return;
+            List<TreeNodeAdv> deleted = new List<TreeNodeAdv>(); 
             ncUtils.DBConnPool.singleton.beginThreadTransaction();
             try
             {
-                List<TreeNodeAdv> deleted = new List<TreeNodeAdv>();
                 foreach (TreeNodeAdv node in treeView.SelectedNodes)
                 {
                     IPOIBase poi = node.Tag as Bookmarks.IPOIBase;

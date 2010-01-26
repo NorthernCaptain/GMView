@@ -322,7 +322,8 @@ namespace GMView
             createDashBoards();
 
             if (opt.command_line_args.Length > 0)
-                loadTrack(opt.command_line_args[0].ToString(), Color.DarkOrange);
+                loadTrack(new GPS.TrackFileInfo(opt.command_line_args[0].ToString(), 
+                                            GPS.TrackFileInfo.SourceType.FileName));
             else
                 GPSTrackFactory.singleton.currentTrack = gtrack;
 
@@ -1205,17 +1206,18 @@ namespace GMView
         /// </summary>
         /// <param name="fname"></param>
         /// <param name="col"></param>
-        private void loadTrack(string fname, Color col)
+        private void loadTrack(GPS.TrackFileInfo trackInfo)
         {
             GPSTrack gtr;
             try
             {
-                gtr = GPSTrack.loadFromFile(fname);
+                gtr = GPSTrack.loadFromFile(trackInfo.fileOrBuffer);
                 gtr.need_arrows = false;
                 gtr.trackMode = GPSTrack.TrackMode.ViewSaved;
                 gtr.map = mapo;
 
-                gtr.trackColor = col;
+                gtr.trackColor = trackInfo.trackColor;
+
                 mapo.addSub(gtr);
                 gtr.initGLData();
                 gtr.show();
@@ -1230,8 +1232,13 @@ namespace GMView
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Could not load track:\n" + trackOpenFileDialog.FileName + "\nReason:\n" +
-                    ex.ToString(), "Error loading track", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if(trackInfo.stype == GPS.TrackFileInfo.SourceType.FileName)
+                    MessageBox.Show("Could not load track:\n" + trackInfo.fileOrBuffer + "\nReason:\n" +
+                        ex.ToString(), "Error loading track", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                else
+                    MessageBox.Show("Could not load track from the buffer\nReason:\n" +
+                        ex.ToString(), "Error loading track", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
             }
         }
 
@@ -1681,32 +1688,25 @@ namespace GMView
             {
                 string clipbuffer = Clipboard.GetText();
 
-                GPSTrack gtr;
+                loadTrack(new GPS.TrackFileInfo(clipbuffer, GPS.TrackFileInfo.SourceType.StringBuffer));
+            }
+        }
+
+        private void importPOIFromKMLFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (trackOpenFileDialog.ShowDialog() == DialogResult.OK)
+            {
                 try
                 {
-                    gtr = GPSTrack.loadKML(clipbuffer, false);
-                    gtr.need_arrows = false;
-                    gtr.trackMode = GPSTrack.TrackMode.ViewSaved;
-                    gtr.map = mapo;
-
-                    gtr.trackColor = Color.BlueViolet;
-                    mapo.addSub(gtr);
-                    gtr.initGLData();
-                    gtr.show();
-                    mapo.CenterMapLonLat(gtr.lastData.lon, gtr.lastData.lat);
-                    repaintMap();
-
-                    GPSTrackFactory.singleton.addTrack(gtr);
-                    GPSTrackFactory.singleton.infoForm(gtr).Visible = true;
-                    GPSTrackFactory.singleton.rebuildMenuStrip(trackStripMenuItem.DropDown.Items);
-
-                    GPSTrackFactory.singleton.currentTrack = gtr;
+                    int imported = BookMarkFactory.singleton.importKML(trackOpenFileDialog.FileName);
+                    MessageBox.Show("Successfuly loaded " + imported + " items from \n" +
+                    trackOpenFileDialog.FileName + "\ninto 'Imported' POI group", "POI loading results",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Could not load track from clipboard\nReason:\n" +
-                        ex.ToString(), "Error loading track", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Clipboard.Clear();
+                    MessageBox.Show("Could not load waypoints:\n" + trackOpenFileDialog.FileName + "\nReason:\n" +
+                        ex.ToString(), "Error loading POIs", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

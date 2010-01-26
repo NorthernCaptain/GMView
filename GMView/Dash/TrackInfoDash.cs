@@ -60,7 +60,7 @@ namespace GMView
         bool clickNextTrack(Point xy)
         {
             GPSTrackFactory.singleton.stepToNextTrack();
-            Way.WayPoint wp = track.way.currentWP;
+            GPS.Way.WayPoint wp = track.way.currentWP;
             track.textInfo.fill_all_info(track);
             GML.repaint();
             if (onCenterWaypoint != null)
@@ -70,7 +70,7 @@ namespace GMView
 
         bool clickNextWayPoint(Point xy)
         {
-            Way.WayPoint wp = track.way.stepNextPoint();
+            GPS.Way.WayPoint wp = track.way.stepNextPoint();
             track.textInfo.fill_all_info(track);
             GML.repaint();
             if (onCenterWaypoint != null)
@@ -80,7 +80,7 @@ namespace GMView
 
         bool clickPrevWayPoint(Point xy)
         {
-            Way.WayPoint wp = track.way.stepPrevPoint();
+            GPS.Way.WayPoint wp = track.way.stepPrevPoint();
             track.textInfo.fill_all_info(track);
             GML.repaint();
             if (onCenterWaypoint != null)

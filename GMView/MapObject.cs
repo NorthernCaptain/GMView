@@ -14,15 +14,14 @@ namespace GMView
         public delegate void OnZoomDelegate(int old_zoom, int new_zoom);
         public event OnZoomDelegate onZoomChanged;
 
-        //Start image piece number in upper left corner of the screen
-        public int start_nx;
-        public int start_ny;
-
         public Point start_real_xy = new Point();
 
-        //Number of pieces we need to cover visible area
-        public int size_nw;
-        public int size_nh;
+        /// <summary>
+        /// Coordinates in tile of the left-upper corner of the screen, and size of the
+        /// screen in tiles.
+        /// </summary>
+        public Rectangle tilePosNXNY = new Rectangle();
+
         public int max_piece = 0;
 
         private BaseGeo geoSystem = new GoogleGeo();
@@ -68,7 +67,9 @@ namespace GMView
         double visible_delta_lon = 0.0;
         double visible_delta_lat = 0.0;
 
-        //Point in pixels of the center of the screen in global coordinates (pixels)
+        /// <summary>
+        /// Point in pixels of the center of the screen in global coordinates (pixels)
+        /// </summary>
         Point center_p = new Point();
 
         Pen center_pen;
@@ -82,7 +83,22 @@ namespace GMView
         public event onLonLatChange onCenterChanged;
 
         /// <summary>
-        /// Cinstructor of the Map object
+        /// Delegate for events that occurs on every change of map position in tiles,
+        /// not in pixels or coordinates.
+        /// </summary>
+        /// <param name="tilePosNXNY.X"></param>
+        /// <param name="tilePosNXNY.Y"></param>
+        /// <param name="tilePosNXNY.Width"></param>
+        /// <param name="tilePosNXNY.Height"></param>
+        public delegate void onTileCenterChange(Rectangle tilePosNXNY);
+        /// <summary>
+        /// event raises on every change in tile coordinates of the map, so every 256 pixels
+        /// or on size change of the map
+        /// </summary>
+        public event onTileCenterChange onTileCenterChanged;
+
+        /// <summary>
+        /// Constructor of the Map object
         /// </summary>
         public MapObject()
         {
@@ -100,8 +116,8 @@ namespace GMView
 
         protected virtual void initObject()
         {
-            start_nx = Program.opt.start_x;
-            start_ny = Program.opt.start_y;
+            tilePosNXNY.X = Program.opt.start_x;
+            tilePosNXNY.Y = Program.opt.start_y;
             zoom_lvl = Program.opt.cur_zoom_lvl;
             center_lon = Program.opt.lon;
             center_lat = Program.opt.lat;
@@ -211,8 +227,11 @@ namespace GMView
         /// <param name="sz"></param>
         public void SetVisibleSize(Size sz)
         {
+            Rectangle oldPos = tilePosNXNY;
             vis_size = sz;
             RecalculateParams();
+            if (!oldPos.Equals(tilePosNXNY) && onTileCenterChanged != null)
+                onTileCenterChanged(tilePosNXNY);
         }
 
         /// <summary>
@@ -279,7 +298,7 @@ namespace GMView
         /// <returns>return image piece or null</returns>
         public ImgTile getImage(int x_idx, int y_idx)
         {
-            return img_collector.getImage(start_nx + x_idx, start_ny + y_idx, zoom_lvl, Program.opt.mapType);
+            return img_collector.getImage(tilePosNXNY.X + x_idx, tilePosNXNY.Y + y_idx, zoom_lvl, Program.opt.mapType);
         }
         /// <summary>
         /// Gets the image piece for displaying on screen.
@@ -291,7 +310,7 @@ namespace GMView
         /// <returns></returns>
         public ImgTile getImage(int x_idx, int y_idx, MapTileType mType)
         {
-            return img_collector.getImage(start_nx + x_idx, start_ny + y_idx, zoom_lvl, mType);
+            return img_collector.getImage(tilePosNXNY.X + x_idx, tilePosNXNY.Y + y_idx, zoom_lvl, mType);
         }
         /// <summary>
         /// Gets starting point of the upper left image
@@ -340,69 +359,69 @@ namespace GMView
             if (start_p.X > 0)
             {
                 start_p.X -= Program.opt.image_len;
-                start_nx--;
+                tilePosNXNY.X--;
             }
             if (start_p.Y > 0)
             {
                 start_p.Y -= Program.opt.image_hei;
-                start_ny--;
+                tilePosNXNY.Y--;
             }
 
             if (start_p.X <= -Program.opt.image_len)
             {
                 start_p.X += Program.opt.image_len;
-                start_nx++;
+                tilePosNXNY.X++;
             }
             else
                 if (start_p.X >= Program.opt.image_len)
                 {
                     start_p.X -= Program.opt.image_len;
-                    start_nx--;
+                    tilePosNXNY.X--;
                 }
 
             if (start_p.Y <= -Program.opt.image_hei)
             {
                 start_p.Y += Program.opt.image_hei;
-                start_ny++;
+                tilePosNXNY.Y++;
             }
             else
                 if (start_p.Y >= Program.opt.image_hei)
                 {
                     start_p.Y -= Program.opt.image_hei;
-                    start_ny--;
+                    tilePosNXNY.Y--;
                 }
 
-            if (start_nx < 0)
+            if (tilePosNXNY.X < 0)
             {
-                start_nx = 0;
+                tilePosNXNY.X = 0;
                 start_p.X = 0;
             }
 
-            if (start_ny < 0)
+            if (tilePosNXNY.Y < 0)
             {
-                start_ny = 0;
+                tilePosNXNY.Y = 0;
                 start_p.Y = 0;
             }
 
-            size_nw = (vis_size.Width + Program.opt.image_len - 1 - start_p.X) / Program.opt.image_len;
-            size_nh = (vis_size.Height + Program.opt.image_hei - 1 - start_p.Y) / Program.opt.image_hei;
+            tilePosNXNY.Width = (vis_size.Width + Program.opt.image_len - 1 - start_p.X) / Program.opt.image_len;
+            tilePosNXNY.Height = (vis_size.Height + Program.opt.image_hei - 1 - start_p.Y) / Program.opt.image_hei;
 
-            if (size_nw >= max_piece)
+            if (tilePosNXNY.Width >= max_piece)
             {
-                start_nx = 0;
+                tilePosNXNY.X = 0;
                 start_p.X = 0;
-                size_nw = max_piece;
+                tilePosNXNY.Width = max_piece;
             }
 
-            if (size_nh >= max_piece)
+            if (tilePosNXNY.Height >= max_piece)
             {
-                start_ny = 0;
+                tilePosNXNY.Y = 0;
                 start_p.Y = 0;
-                size_nh = max_piece;
+                tilePosNXNY.Height = max_piece;
             }
 
-            start_real_xy.X = (start_nx * Program.opt.image_len - start_p.X);
-            start_real_xy.Y = (start_ny * Program.opt.image_hei - start_p.Y);
+            start_real_xy.X = (tilePosNXNY.X * Program.opt.image_len - start_p.X);
+            start_real_xy.Y = (tilePosNXNY.Y * Program.opt.image_hei - start_p.Y);
             center_p.X =  start_real_xy.X + vis_size.Width / 2;
             center_p.Y =  start_real_xy.Y + vis_size.Height / 2;
 
@@ -424,8 +443,8 @@ namespace GMView
                 visible_delta_lat = Math.Abs(visible_lat1 - visible_lat2)/(double)p.Y;
             }
 
-            //Program.Log("Recalc: start delta xy: " + start_p.ToString() + " piece nums: " + start_nx + "/" 
-            //    + start_ny + " [" + size_nw + "x" + size_nh + "]");
+            //Program.Log("Recalc: start delta xy: " + start_p.ToString() + " piece nums: " + tilePosNXNY.X + "/" 
+            //    + tilePosNXNY.Y + " [" + tilePosNXNY.Width + "x" + tilePosNXNY.Height + "]");
         }
         #endregion
 
@@ -433,6 +452,8 @@ namespace GMView
 
         public void MoveMapByScreenPoint(Point mouse_delta_p)
         {
+            Rectangle oldPos = tilePosNXNY;
+
             start_p.X += mouse_delta_p.X;
             start_p.Y += mouse_delta_p.Y;
             RecalculateParams();
@@ -440,6 +461,8 @@ namespace GMView
             center_zoom_lvl = zoom_lvl;
             if (onCenterChanged != null)
                 onCenterChanged(center_lon, center_lat);
+            if (!oldPos.Equals(tilePosNXNY) && onTileCenterChanged != null)
+                onTileCenterChanged(tilePosNXNY);
         }
 
         /// <summary>
@@ -460,23 +483,7 @@ namespace GMView
 
             getXYByLonLat(lon, lat, out xy);
 
-            //here is a right way of calculating viewing borders
-            start_p.X = (xy.X - vis_size.Width / 2);
-            start_p.Y = (xy.Y - vis_size.Height / 2);
-            start_nx = start_p.X/Program.opt.image_len;
-            start_ny = start_p.Y/Program.opt.image_hei;
-            start_p.X = - (start_p.X % Program.opt.image_len);
-            start_p.Y = - (start_p.Y % Program.opt.image_hei);
-
-            if (start_nx < 0)
-                start_nx = 0;
-            if (start_ny < 0)
-                start_ny = 0;
-
-            RecalculateParams();
-            if (onCenterChanged != null)
-                onCenterChanged(center_lon, center_lat);
-
+            CenterMapAbsXY(xy);
         }
 
         /// <summary>
@@ -485,8 +492,8 @@ namespace GMView
         /// <param name="xy"></param>
         public void CenterMapVisibleXY(Point xy)
         {
-            xy.X += (start_nx * Program.opt.image_len - start_p.X);
-            xy.Y += (start_ny * Program.opt.image_hei - start_p.Y);
+            xy.X += (tilePosNXNY.X * Program.opt.image_len - start_p.X);
+            xy.Y += (tilePosNXNY.Y * Program.opt.image_hei - start_p.Y);
 
             CenterMapAbsXY(xy);
         }
@@ -501,24 +508,28 @@ namespace GMView
             if (xy.X < 0 || xy.Y < 0 ||
                 xy.X >= max_x || xy.Y >= max_x)
                 return;
+            Rectangle oldPos = tilePosNXNY;
+
             //here is a right way of calculating viewing borders
             start_p.X = (xy.X - vis_size.Width / 2);
             start_p.Y = (xy.Y - vis_size.Height / 2);
-            start_nx = start_p.X / Program.opt.image_len;
-            start_ny = start_p.Y / Program.opt.image_hei;
+            tilePosNXNY.X = start_p.X / Program.opt.image_len;
+            tilePosNXNY.Y = start_p.Y / Program.opt.image_hei;
             start_p.X = -(start_p.X % Program.opt.image_len);
             start_p.Y = -(start_p.Y % Program.opt.image_hei);
 
-            if (start_nx < 0)
-                start_nx = 0;
-            if (start_ny < 0)
-                start_ny = 0;
+            if (tilePosNXNY.X < 0)
+                tilePosNXNY.X = 0;
+            if (tilePosNXNY.Y < 0)
+                tilePosNXNY.Y = 0;
 
             RecalculateParams();
             getLonLatByXY(center_p, out center_lon, out center_lat);
             center_zoom_lvl = zoom_lvl;
             if (onCenterChanged != null)
                 onCenterChanged(center_lon, center_lat);
+            if (!oldPos.Equals(tilePosNXNY) && onTileCenterChanged != null)
+                onTileCenterChanged(tilePosNXNY);
         }
 
         /// <summary>
@@ -553,8 +564,8 @@ namespace GMView
             double lon, lat;
             int old_zoom = zoom_lvl;
 
-            centerxy.X += (start_nx * Program.opt.image_len - start_p.X);
-            centerxy.Y += (start_ny * Program.opt.image_hei - start_p.Y);
+            centerxy.X += (tilePosNXNY.X * Program.opt.image_len - start_p.X);
+            centerxy.Y += (tilePosNXNY.Y * Program.opt.image_hei - start_p.Y);
 
             getLonLatByXY(centerxy, out lon, out lat);
             zoom_lvl = new_zoom_lvl;
@@ -570,8 +581,8 @@ namespace GMView
             {
                 Point centerxy = new Point();
 
-                int w = size_nw * Program.opt.image_len + start_p.X;
-                int h = size_nh * Program.opt.image_hei + start_p.Y;
+                int w = tilePosNXNY.Width * Program.opt.image_len + start_p.X;
+                int h = tilePosNXNY.Height * Program.opt.image_hei + start_p.Y;
 
                 w = w < vis_size.Width ? w : vis_size.Width;
                 h = h < vis_size.Height ? h : vis_size.Height;
@@ -610,8 +621,8 @@ namespace GMView
         /// </summary>
         internal void reloadScreen()
         {
-            int sy = -1, size_ny = size_nh + 2;
-            int sx = -1, size_nx = size_nw + 2;
+            int sy = -1, size_ny = tilePosNXNY.Height + 2;
+            int sx = -1, size_nx = tilePosNXNY.Width + 2;
 
             if (rotate_angle > 0.01 || rotate_angle < -0.01)
             {
@@ -624,7 +635,7 @@ namespace GMView
             {
                 for (int y = sy; y < size_ny; y++)
                 {
-                    img_collector.reloadImage(start_nx + x, start_ny + y, zoom_lvl, Program.opt.mapType);
+                    img_collector.reloadImage(tilePosNXNY.X + x, tilePosNXNY.Y + y, zoom_lvl, Program.opt.mapType);
                 }
             }
             endTileAcquisition();
@@ -660,8 +671,8 @@ namespace GMView
 
         public void getLonLatByVisibleXY(Point xy, out double lon, out double lat)
         {
-            xy.X += (start_nx * Program.opt.image_len - start_p.X);
-            xy.Y += (start_ny * Program.opt.image_hei - start_p.Y);
+            xy.X += (tilePosNXNY.X * Program.opt.image_len - start_p.X);
+            xy.Y += (tilePosNXNY.Y * Program.opt.image_hei - start_p.Y);
 
             getLonLatByXY(xy, out lon, out lat);
 
@@ -676,8 +687,8 @@ namespace GMView
         public void getVisibleXYByLonLat(double lon, double lat, out Point xy)
         {
             getXYByLonLat(lon, lat, out xy);
-            xy.X = xy.X - start_nx * Program.opt.image_len + start_p.X;
-            xy.Y = xy.Y - start_ny * Program.opt.image_hei + start_p.Y;
+            xy.X = xy.X - tilePosNXNY.X * Program.opt.image_len + start_p.X;
+            xy.Y = xy.Y - tilePosNXNY.Y * Program.opt.image_hei + start_p.Y;
         }
 
         public static double getDistanceByLonLatFast(double lon1, double lat1, double lon2, double lat2)
@@ -709,9 +720,9 @@ namespace GMView
 
             //draw our map from tiles
             startTileAcquisition();
-            for (int x = 0; x < size_nw; x++)
+            for (int x = 0; x < tilePosNXNY.Width; x++)
             {
-                for (int y = 0; y < size_nh; y++)
+                for (int y = 0; y < tilePosNXNY.Height; y++)
                 {
                     ImgTile img = getImage(x, y);
                     if (img != null && img.status == ImgStatus.InMemory)
@@ -784,7 +795,7 @@ namespace GMView
             {
                 for (int y = sy; y < size_ny; y++)
                 {
-                    ImgTile img = img_collector.getImageThreaded(start_nx + x, start_ny + y, zoom_lvl, mType);
+                    ImgTile img = img_collector.getImageThreaded(tilePosNXNY.X + x, tilePosNXNY.Y + y, zoom_lvl, mType);
                     if (img != null && img.status == ImgStatus.InMemory)
                         img.draw(null, start_p.X + x * Program.opt.image_len - centerx,
                                 centery - (start_p.Y + y * Program.opt.image_hei));
@@ -795,8 +806,8 @@ namespace GMView
             while ((img_loaded = img_collector.popLoaded()) != null)
             {
                 if (img_loaded.status == ImgStatus.InMemory)
-                    img_loaded.draw(null, start_p.X + (img_loaded.x - start_nx) * Program.opt.image_len - centerx,
-                            centery - (start_p.Y + (img_loaded.y - start_ny) * Program.opt.image_hei));
+                    img_loaded.draw(null, start_p.X + (img_loaded.x - tilePosNXNY.X) * Program.opt.image_len - centerx,
+                            centery - (start_p.Y + (img_loaded.y - tilePosNXNY.Y) * Program.opt.image_hei));
             }
 
         }
@@ -824,11 +835,11 @@ namespace GMView
             if (childMode)
                 syncWithParent();
 
-            int sy = -2, size_ny = size_nh+3;
-            int sx = -1, size_nx = size_nw+2;
+            int sy = -2, size_ny = tilePosNXNY.Height+3;
+            int sx = -1, size_nx = tilePosNXNY.Width+2;
 
             bool needTrafficLayer = zoom_lvl > 9 && Program.opt.showTraffic && geoSystem.trafficSystem != null
-                    && geoSystem.trafficSystem.hasTrafficNXNY(start_nx, start_ny, size_nx, size_ny);
+                    && geoSystem.trafficSystem.hasTrafficNXNY(tilePosNXNY.X, tilePosNXNY.Y, size_nx, size_ny);
 
             if (rotate_angle > 0.01 || rotate_angle < -0.01)
             {
