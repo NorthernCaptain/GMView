@@ -56,7 +56,7 @@ namespace GMView.Bookmarks
                 while (reader.Read())
                 {
             		//DO each item processing
-                    addGroup(new POIGroup(reader));
+                    register(new POIGroup(reader));
                 }
 
                 reader.Close();
@@ -132,7 +132,7 @@ namespace GMView.Bookmarks
             POIGroup pgroup = new POIGroup(groupName);
             pgroup.updateDB();
 
-            addGroup(pgroup);
+            register(pgroup);
 
             POIGroup root = findByName("root");
             root.addChild(pgroup);
@@ -145,7 +145,7 @@ namespace GMView.Bookmarks
         /// </summary>
         /// <param name="newGroup"></param>
         /// <returns></returns>
-        public POIGroup addGroup(POIGroup newGroup)
+        public POIGroup register(POIGroup newGroup)
         {
             allGroups.Add(newGroup);
             idGroups.Add(newGroup.Id, newGroup);
@@ -161,6 +161,17 @@ namespace GMView.Bookmarks
         {
             idGroups.Remove(grp.Id);
             allGroups.Remove(grp);
+        }
+
+        /// <summary>
+        /// Root of all evil group
+        /// </summary>
+        public POIGroup rootGroup
+        {
+            get
+            {
+                return idGroups[0];
+            }
         }
     }
 }

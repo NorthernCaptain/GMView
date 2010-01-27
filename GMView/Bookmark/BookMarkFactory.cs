@@ -390,7 +390,7 @@ namespace GMView
         /// <param name="fname"></param>
         public void exportGPX(string fname)
         {
-            Bookmarks.POIGroup root = groupFactory.findById(0);
+            Bookmarks.POIGroup root = groupFactory.rootGroup;
             List<Bookmark> childrenPOI = this.loadByParent(0, false);
             exportGPX(fname, root.Children, childrenPOI, root);
         }
@@ -461,7 +461,7 @@ namespace GMView
         {
             string currentGroupName = null;
             if (parentGroup == null)
-                parentGroup = groupFactory.findById(0);
+                parentGroup = groupFactory.rootGroup;
 
             if (pois != null)
             {
@@ -537,8 +537,13 @@ namespace GMView
             int count = 0;
             ncUtils.DBConnPool.singleton.beginThreadTransaction();
             NMEA_RMC rmc = new NMEA_RMC();
+
+            if (string.IsNullOrEmpty(groupname))
+                groupname = "Imported";
+            
             try
             {
+                Bookmarks.POIGroup parentGroup = groupFactory.rootGroup.getSubGroupByPath(groupname);
                 foreach (XmlNode node in nlist)
                 {
                     Bookmark bmark = new Bookmark();
@@ -577,32 +582,22 @@ namespace GMView
                     if (xnode != null)
                         bmark.Comment = xnode.InnerText.Trim();
 
+                    //Empty description but non-empty comment
+                    if (string.IsNullOrEmpty(bmark.Description) &&
+                        !string.IsNullOrEmpty(bmark.Comment))
+                        bmark.Description = bmark.Comment;
 
                     xnode = node.SelectSingleNode("./gpx:ele", nsm);
                     if (xnode != null)
-                        bmark.altitude = double.Parse(xnode.InnerText.Trim());
-
-                    if (groupname == null)
                     {
-                        bmark.group = "Imported";
-
-                        xnode = node.SelectSingleNode("./gpx:extensions/gpx:group", nsm);
-                        if (xnode != null)
-                            bmark.group = xnode.InnerText.Trim();
-                    }
-                    else
-                    {
-                        bmark.group = groupname;
-                        bmark.is_temporary = true;
+                        bmark.altitude = NMEACommand.getDouble(xnode.InnerText.Trim());
                     }
 
-                    xnode = node.SelectSingleNode("./gpx:extensions/gpx:color", nsm);
+                    xnode = node.SelectSingleNode("./gpx:extensions/gpx:group", nsm);
                     if (xnode != null)
-                        bmark.image_idx = int.Parse(xnode.InnerText);
-
-                    xnode = node.SelectSingleNode("./gpx:extensions/gpx:zoom", nsm);
-                    if (xnode != null)
-                        bmark.Original_zoom = int.Parse(xnode.InnerText);
+                    {
+                        bmark.group = xnode.InnerText.Trim();
+                    }
 
                     xnode = node.SelectSingleNode("./gpx:sym", nsm);
                     if (xnode != null)
@@ -613,14 +608,8 @@ namespace GMView
                     bmark.IsDbChange = true;
                     bmark.updateDB();
 
-                    Bookmarks.POIGroup pgroup = Bookmarks.POIGroupFactory.singleton().findByName(bmark.group);
-                    if (pgroup == null)
-                    {
-                        pgroup = Bookmarks.POIGroupFactory.singleton().createSimpleGroup(bmark.group);
-                    }
-                    bmark.addLinkDB(pgroup);
+                    bmark.addLinkDB(parentGroup.getSubGroupByPath(bmark.group));
 
-                    //if (addBookmarkSilently(bmark))
                     count++;
                 }
             }
@@ -680,52 +669,50 @@ namespace GMView
 
             ncUtils.DBConnPool.singleton.beginThreadTransaction();
 
-            foreach (XmlNode node in nlist)
+            if (string.IsNullOrEmpty(groupname))
+                groupname = "Imported";
+
+            try
             {
-                XmlNode xnode = node.SelectSingleNode("./kml:Point/kml:coordinates", nsm);
-                if(xnode != null)
-                { //we have POI here, lets add it to our bookmarks
-                    if (!GPSTrack.splitKMLCoordTuple(xnode.InnerText, out lon, out lat, out hei))
-                        continue;
-                    Bookmark bmark = new Bookmark();
-                    bmark.IsDbChange = false;
-
-                    bmark.lon = lon;
-                    bmark.lat = lat;
-
-                    xnode = node.SelectSingleNode("./kml:name", nsm);
-                    if (xnode == null)
-                        continue;
-                    bmark.Name = xnode.InnerText;
-                    xnode = node.SelectSingleNode("./kml:description", nsm);
+                Bookmarks.POIGroup parentGroup = groupFactory.rootGroup.getSubGroupByPath(groupname);
+                foreach (XmlNode node in nlist)
+                {
+                    XmlNode xnode = node.SelectSingleNode("./kml:Point/kml:coordinates", nsm);
                     if (xnode != null)
-                        bmark.Description = xnode.InnerText;
+                    { //we have POI here, lets add it to our bookmarks
+                        if (!GPSTrack.splitKMLCoordTuple(xnode.InnerText, out lon, out lat, out hei))
+                            continue;
+                        Bookmark bmark = new Bookmark();
+                        bmark.IsDbChange = false;
 
-                    if (groupname == null)
-                    {
-                        bmark.group = "Imported";
+                        bmark.lon = lon;
+                        bmark.lat = lat;
+
+                        xnode = node.SelectSingleNode("./kml:name", nsm);
+                        if (xnode == null)
+                            continue;
+                        bmark.Name = xnode.InnerText;
+                        xnode = node.SelectSingleNode("./kml:description", nsm);
+                        if (xnode != null)
+                            bmark.Description = xnode.InnerText;
+
+                        bmark.IsDbChange = true;
+                        bmark.updateDB();
+
+                        bmark.addLinkDB(parentGroup);
+
+                        count++;
                     }
-                    else
-                    {
-                        bmark.group = groupname;
-                        bmark.is_temporary = true;
-                    }
-
-                    bmark.IsDbChange = true;
-                    bmark.updateDB();
-
-                    Bookmarks.POIGroup pgroup = Bookmarks.POIGroupFactory.singleton().findByName(bmark.group);
-                    if (pgroup == null)
-                    {
-                        pgroup = Bookmarks.POIGroupFactory.singleton().createSimpleGroup(bmark.group);
-                    }
-                    bmark.addLinkDB(pgroup);
-
-                    count++;
                 }
             }
+            catch (System.Exception ex)
+            {
 
-            ncUtils.DBConnPool.singleton.commitThreadTransaction();
+            }
+            finally
+            {
+                ncUtils.DBConnPool.singleton.commitThreadTransaction();
+            }
 
             TimeSpan dTime = DateTime.Now - startTime;
             Program.Log("Loaded " + count + " POI's in seconds: " + dTime.TotalSeconds.ToString("F3"));

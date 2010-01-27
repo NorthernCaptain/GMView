@@ -44,7 +44,7 @@ namespace GMView.Forms
             mypoi.updateDB();
             Bookmarks.POIGroup pgroup = Bookmarks.POIGroupFactory.singleton().findByName("quick add");
             if (pgroup == null)
-                pgroup = Bookmarks.POIGroupFactory.singleton().findById(0);
+                pgroup = Bookmarks.POIGroupFactory.singleton().rootGroup;
             mypoi.addLinkDB(pgroup);
             pgroup.addChild(mypoi);
             BookMarkFactory.singleton.unregister(mypoi);

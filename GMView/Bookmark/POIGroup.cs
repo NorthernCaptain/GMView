@@ -439,5 +439,61 @@ namespace GMView.Bookmarks
             }
             return buf.ToString();
         }
+
+        private readonly char[] groupSep = new char[] { '/' };
+        /// <summary>
+        /// Find a subgroup by the given path string. If there is no such group, then creates
+        /// it and all its parents
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public POIGroup getSubGroupByPath(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+                return this;
+
+            string[] elements = path.Split(groupSep);
+
+            POIGroup current = this;
+            for (int i = 0; i < elements.Length; i++)
+            {
+                current = current.findOrCreateSubGroup(elements[i]);
+            }
+            return current;
+        }
+
+        /// <summary>
+        /// Find subgroup by name or create it if not found in the children list
+        /// </summary>
+        /// <param name="subname"></param>
+        /// <returns></returns>
+        private POIGroup findOrCreateSubGroup(string subname)
+        {
+            if (string.IsNullOrEmpty(subname))
+                return this;
+
+            POIGroup foundGroup = null;
+
+            if (children != null)
+            {
+                foreach (POIGroup sub in children)
+                {
+                    if (sub.name.Equals(subname))
+                    {
+                        return sub;
+                    }
+                }
+            }
+
+            foundGroup = new POIGroup(subname);
+            foundGroup.updateDB();
+
+            this.addChild(foundGroup);
+            owner.register(foundGroup);
+            
+            this.updateChildrenLinksDB();
+            
+            return foundGroup;
+        }
     }
 }

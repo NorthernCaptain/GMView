@@ -1607,10 +1607,12 @@ namespace GMView
             {
                 try
                 {
-                    int imported = BookMarkFactory.singleton.importGPX(trackOpenFileDialog.FileName);
-                    MessageBox.Show("Successfuly loaded " + imported + " items from \n" +
-                    trackOpenFileDialog.FileName + "\ninto 'Imported' POI group", "POI loading results", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    string fname = trackOpenFileDialog.FileName;
+                    int imported = BookMarkFactory.singleton.importGPX(fname);
+                    MessageBox.Show("Successfully loaded " + imported + " items from \n" +
+                    trackOpenFileDialog.FileName + "\ninto "+ Path.GetFileNameWithoutExtension(fname)
+                                    +" POI group", "POI loading results", 
+                                    MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
                 {
@@ -1698,10 +1700,12 @@ namespace GMView
             {
                 try
                 {
-                    int imported = BookMarkFactory.singleton.importKML(trackOpenFileDialog.FileName);
-                    MessageBox.Show("Successfuly loaded " + imported + " items from \n" +
-                    trackOpenFileDialog.FileName + "\ninto 'Imported' POI group", "POI loading results",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    string fname = trackOpenFileDialog.FileName;
+                    int imported = BookMarkFactory.singleton.importKML(fname);
+                    MessageBox.Show("Successfully loaded " + imported + " items from \n" +
+                    trackOpenFileDialog.FileName + "\ninto " + Path.GetFileNameWithoutExtension(fname)
+                                    + " POI group", "POI loading results",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
                 {

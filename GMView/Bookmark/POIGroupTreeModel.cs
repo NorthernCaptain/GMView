@@ -19,7 +19,7 @@ namespace GMView.Bookmarks
         {
             treeView = itree;
             groupFact = igroupFact;
-            rootList.Add(groupFact.findById(0)); //Adding root element
+            rootList.Add(groupFact.rootGroup); //Adding root element
         }
 
         protected List<POIGroup> rootList = new List<POIGroup>();
@@ -82,7 +82,7 @@ namespace GMView.Bookmarks
             new_group.updateDB();
             parent_group.addChild(new_group);
             parent_group.updateChildrenLinksDB();
-            groupFact.addGroup(new_group);
+            groupFact.register(new_group);
             fireNodesInserted(treeView.GetPath(treeView.SelectedNode), new object[] { new_group });
             treeView.SelectedNode.IsExpanded = true;
         }

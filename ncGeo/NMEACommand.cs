@@ -80,7 +80,7 @@ namespace ncGeo
 
         public static double getDouble(string str)
         {
-            if (str == null || str.Length == 0)
+            if (string.IsNullOrEmpty(str))
                 return 0.0;
             try
             {

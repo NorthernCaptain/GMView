@@ -89,7 +89,7 @@ namespace GMView.Forms
             currentPOI.IsShown = true;
             POIGroup parentGrp = (treeView.SelectedNode != null) ? treeView.SelectedNode.Tag as POIGroup : null;
             if (parentGrp == null)
-                parentGrp = groupFactory.findById(0);
+                parentGrp = groupFactory.rootGroup;
             currentPOI.addLinkDB(parentGrp);
             parentGrp.addChild(currentPOI);
 
