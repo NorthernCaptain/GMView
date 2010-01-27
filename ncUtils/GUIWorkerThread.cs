@@ -35,7 +35,13 @@ namespace ncUtils
         {
             if (resultCaller != null)
             {
-                resultCaller.Invoke(new onTaskCompleteDelegate(this.controlThreadCaller), new Object[] { task });
+                try
+                {
+                    resultCaller.Invoke(new onTaskCompleteDelegate(this.controlThreadCaller), new Object[] { task });
+                }
+                catch (System.Exception)
+                {
+                }
             }
         }
 

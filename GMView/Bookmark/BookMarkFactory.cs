@@ -165,7 +165,7 @@ namespace GMView
 
         public void saveXml()
         {
-            saveXml(globalFilename);
+            //saveXml(globalFilename);
         }
 
         public void saveXml(string fname)
@@ -383,11 +383,24 @@ namespace GMView
             return blist;
         }
 
+
         /// <summary>
-        /// Exports all our bookmarks in GPX format as waypoint
+        /// Exports all bookmarks into GPX file as waypoints
         /// </summary>
         /// <param name="fname"></param>
         public void exportGPX(string fname)
+        {
+            Bookmarks.POIGroup root = groupFactory.findById(0);
+            List<Bookmark> childrenPOI = this.loadByParent(0, false);
+            exportGPX(fname, root.Children, childrenPOI, root);
+        }
+
+        /// <summary>
+        /// Exports given bookmarks in GPX format as waypoint
+        /// </summary>
+        /// <param name="fname"></param>
+        public void exportGPX(string fname, LinkedList<Bookmarks.POIGroup> groups,
+                                List<Bookmark> poilist, Bookmarks.POIGroup parentGroup)
         {
             XmlTextWriter writer = null;
             System.Globalization.CultureInfo cul = new System.Globalization.CultureInfo("");
@@ -426,22 +439,8 @@ namespace GMView
                 writer.WriteEndElement();
             }
 
-            foreach (KeyValuePair<string, Bookmark> pair in marks)
-            {
-                Bookmark book = pair.Value;
-                writer.WriteStartElement("wpt");
-                writer.WriteAttributeString("lon", book.lon.ToString("F6", nf));
-                writer.WriteAttributeString("lat", book.lat.ToString("F6", nf));
-                writer.WriteElementString("name", book.Name);
-                writer.WriteElementString("desc", book.Comment);
-                writer.WriteElementString("time", book.Created.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"));
-                {
-                    writer.WriteStartElement("extensions");
-                    writer.WriteElementString("group", book.Parent.Name);
-                    writer.WriteEndElement();
-                }
-                writer.WriteEndElement();
-            }
+            saveListToGPX(writer, groups, poilist, parentGroup, nf);
+
             // end of gpx root tag
             writer.WriteEndElement(); //gpx
             writer.WriteEndDocument();
@@ -449,6 +448,57 @@ namespace GMView
             writer.Close();
         }
 
+        /// <summary>
+        /// Recursively saves all pois and subgroups
+        /// </summary>
+        /// <param name="writer"></param>
+        /// <param name="groups"></param>
+        /// <param name="pois"></param>
+        private void saveListToGPX(XmlTextWriter writer, 
+                                    LinkedList<Bookmarks.POIGroup> groups, 
+                                    List<Bookmark> pois, Bookmarks.POIGroup parentGroup,
+                                    System.Globalization.NumberFormatInfo nf)
+        {
+            string currentGroupName = null;
+            if (parentGroup == null)
+                parentGroup = groupFactory.findById(0);
+
+            if (pois != null)
+            {
+                foreach (Bookmark book in pois)
+                {
+                    if (currentGroupName == null)
+                    {
+                        currentGroupName = (book.Parent as Bookmarks.POIGroup).getPathTill(parentGroup);
+                    }
+                    writer.WriteStartElement("wpt");
+                    writer.WriteAttributeString("lon", book.longitude.ToString("F6", nf));
+                    writer.WriteAttributeString("lat", book.latitude.ToString("F6", nf));
+                    writer.WriteElementString("name", book.Name);
+                    writer.WriteElementString("ele", book.altitude.ToString("F1", nf));
+                    writer.WriteElementString("desc", book.Description);
+                    writer.WriteElementString("cmt", book.Comment);
+                    writer.WriteElementString("sym", book.PtypeS);
+                    writer.WriteElementString("time", book.Created.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"));
+                    {
+                        writer.WriteStartElement("extensions");
+                        writer.WriteElementString("group", currentGroupName);
+                        writer.WriteEndElement();
+                    }
+                    writer.WriteEndElement();
+                }
+            }
+
+            if (groups != null)
+            {
+                foreach (Bookmarks.POIGroup node in groups)
+                {
+                    List<Bookmark> childrenPOI = this.loadByParent(node.Id, false);
+                    saveListToGPX(writer, node.Children, childrenPOI, 
+                                    parentGroup, nf);
+                }
+            }
+        }
         /// <summary>
         /// Import all waypoints (wpt) from GPX file into our POI 
         /// </summary>
@@ -487,76 +537,101 @@ namespace GMView
             int count = 0;
             ncUtils.DBConnPool.singleton.beginThreadTransaction();
             NMEA_RMC rmc = new NMEA_RMC();
-            foreach (XmlNode node in nlist)
+            try
             {
-                Bookmark bmark = new Bookmark();
-                bmark.IsDbChange = false;
-
-                bmark.lat = NMEACommand.getDouble(node.Attributes.GetNamedItem("lat").Value);
-                bmark.lon = NMEACommand.getDouble(node.Attributes.GetNamedItem("lon").Value);
-
-                XmlNode xnode = node.SelectSingleNode("./gpx:time", nsm);
-                if (xnode != null)
+                foreach (XmlNode node in nlist)
                 {
-                    try
-                    {
-                        rmc.utc_time = DateTime.Parse(xnode.InnerText).ToUniversalTime();
-                    }
-                    catch
-                    {
-                        rmc.utc_time = DateTime.MinValue.AddYears(2000).ToUniversalTime();
-                    }
+                    Bookmark bmark = new Bookmark();
+                    bmark.IsDbChange = false;
 
-                }
-                else
-                    rmc.utc_time = DateTime.MinValue.AddYears(2000).ToUniversalTime();
-                bmark.Created = rmc.utc_time.ToLocalTime();
+                    bmark.lat = NMEACommand.getDouble(node.Attributes.GetNamedItem("lat").Value);
+                    bmark.lon = NMEACommand.getDouble(node.Attributes.GetNamedItem("lon").Value);
 
-                xnode = node.SelectSingleNode("./gpx:name", nsm);
-                if (xnode == null)
-                    continue;
-                bmark.Name = xnode.InnerText.Trim();
-
-                xnode = node.SelectSingleNode("./gpx:desc", nsm);
-                if (xnode != null)
-                    bmark.Comment = xnode.InnerText.Trim();
-                if (groupname == null)
-                {
-                    bmark.group = "Imported";
-
-                    xnode = node.SelectSingleNode("./gpx:extensions/gpx:group", nsm);
+                    XmlNode xnode = node.SelectSingleNode("./gpx:time", nsm);
                     if (xnode != null)
-                        bmark.group = xnode.InnerText.Trim();
-                }
-                else
-                {
-                    bmark.group = groupname;
-                    bmark.is_temporary = true;
-                }
+                    {
+                        try
+                        {
+                            rmc.utc_time = DateTime.Parse(xnode.InnerText).ToUniversalTime();
+                        }
+                        catch
+                        {
+                            rmc.utc_time = DateTime.MinValue.AddYears(2000).ToUniversalTime();
+                        }
 
-                xnode = node.SelectSingleNode("./gpx:extensions/gpx:color", nsm);
-                if (xnode != null)
-                    bmark.image_idx = int.Parse(xnode.InnerText);
+                    }
+                    else
+                        rmc.utc_time = DateTime.MinValue.AddYears(2000).ToUniversalTime();
+                    bmark.Created = rmc.utc_time.ToLocalTime();
 
-                xnode = node.SelectSingleNode("./gpx:extensions/gpx:zoom", nsm);
-                if (xnode != null)
-                    bmark.Original_zoom = int.Parse(xnode.InnerText);
+                    xnode = node.SelectSingleNode("./gpx:name", nsm);
+                    if (xnode == null)
+                        continue;
+                    bmark.Name = xnode.InnerText.Trim();
 
-                bmark.IsDbChange = true;
-                bmark.updateDB();
+                    xnode = node.SelectSingleNode("./gpx:desc", nsm);
+                    if (xnode != null)
+                        bmark.Description = xnode.InnerText.Trim();
 
-                Bookmarks.POIGroup pgroup = Bookmarks.POIGroupFactory.singleton().findByName(bmark.group);
-                if(pgroup == null)
-                {
-                    pgroup = Bookmarks.POIGroupFactory.singleton().createSimpleGroup(bmark.group);
-                }
-                bmark.addLinkDB(pgroup);
+                    xnode = node.SelectSingleNode("./gpx:cmt", nsm);
+                    if (xnode != null)
+                        bmark.Comment = xnode.InnerText.Trim();
 
-                //if (addBookmarkSilently(bmark))
+
+                    xnode = node.SelectSingleNode("./gpx:ele", nsm);
+                    if (xnode != null)
+                        bmark.altitude = double.Parse(xnode.InnerText.Trim());
+
+                    if (groupname == null)
+                    {
+                        bmark.group = "Imported";
+
+                        xnode = node.SelectSingleNode("./gpx:extensions/gpx:group", nsm);
+                        if (xnode != null)
+                            bmark.group = xnode.InnerText.Trim();
+                    }
+                    else
+                    {
+                        bmark.group = groupname;
+                        bmark.is_temporary = true;
+                    }
+
+                    xnode = node.SelectSingleNode("./gpx:extensions/gpx:color", nsm);
+                    if (xnode != null)
+                        bmark.image_idx = int.Parse(xnode.InnerText);
+
+                    xnode = node.SelectSingleNode("./gpx:extensions/gpx:zoom", nsm);
+                    if (xnode != null)
+                        bmark.Original_zoom = int.Parse(xnode.InnerText);
+
+                    xnode = node.SelectSingleNode("./gpx:sym", nsm);
+                    if (xnode != null)
+                    {
+                        bmark.PtypeS = xnode.InnerText.Trim();
+                    }
+
+                    bmark.IsDbChange = true;
+                    bmark.updateDB();
+
+                    Bookmarks.POIGroup pgroup = Bookmarks.POIGroupFactory.singleton().findByName(bmark.group);
+                    if (pgroup == null)
+                    {
+                        pgroup = Bookmarks.POIGroupFactory.singleton().createSimpleGroup(bmark.group);
+                    }
+                    bmark.addLinkDB(pgroup);
+
+                    //if (addBookmarkSilently(bmark))
                     count++;
+                }
             }
-
-            ncUtils.DBConnPool.singleton.commitThreadTransaction();
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                ncUtils.DBConnPool.singleton.commitThreadTransaction();
+            }
 
             if (onChanged != null)
                 onChanged(this);
@@ -680,7 +755,7 @@ namespace GMView
         /// </summary>
         /// <param name="parent_id"></param>
         /// <returns></returns>
-        public List<Bookmark> loadByParent(int parent_id)
+        public List<Bookmark> loadByParent(int parent_id, bool needRegister)
         {
             DBObj dbo = null;
             try
@@ -699,20 +774,28 @@ namespace GMView
                     int poi_id = reader.GetInt32(reader.GetOrdinal("ID"));
 
                     Bookmark poi;
-                    lock (locker)
+
+                    if (needRegister)
                     {
-                        if (!loadedPOIs.TryGetValue(poi_id, out poi))
+                        lock (locker)
                         {
-                            poi = new Bookmark(reader);
-                            register(poi);
+                            if (!loadedPOIs.TryGetValue(poi_id, out poi))
+                            {
+                                poi = new Bookmark(reader);
+                                register(poi);
+                            }
+                            else
+                                poi.Owner = this;
                         }
-                        else
-                            poi.Owner = this;
                     }
+                    else
+                        poi = new Bookmark(reader);
+
                     poi.Parent = pgroup;
                     pois.Add(poi);
                 }
-                pgroup.ChildrenPOIs = pois;
+                if(needRegister)
+                    pgroup.ChildrenPOIs = pois;
                 return pois;
             }
             catch (System.Exception e)

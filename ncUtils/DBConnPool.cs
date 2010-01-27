@@ -214,7 +214,7 @@ namespace ncUtils
                 allConnections.Add(con);
                 return con;
             }
-            catch (System.Exception e)
+            catch (System.Exception)
             {
                 return null;
             }
@@ -276,7 +276,7 @@ namespace ncUtils
                                 stmt = string.Empty;
                                 cmd.ExecuteNonQuery();
                             }
-                            catch (System.Exception e)
+                            catch (System.Exception)
                             {
 
                             }
@@ -291,7 +291,7 @@ namespace ncUtils
                 }
                 tran.Commit();
             }
-            catch (System.Exception e)
+            catch (System.Exception)
             {
             	
             }

@@ -97,7 +97,7 @@ namespace ncUtils
                 if (historyChanged != null)
                     historyChanged(this);
             }
-            catch (System.Exception e)
+            catch (System.Exception)
             {
             	
             }
@@ -146,7 +146,7 @@ namespace ncUtils
                 dbo.cmd.ExecuteNonQuery();
                 hi.id = dbo.seqCurval("history_items");
             }
-            catch (System.Exception e)
+            catch (System.Exception)
             {
             	
             }
@@ -173,7 +173,7 @@ namespace ncUtils
                 dbo.addIntPar("@ID", hi.id);
                 dbo.cmd.ExecuteNonQuery();
             }
-            catch (System.Exception e)
+            catch (System.Exception)
             {
             	
             }

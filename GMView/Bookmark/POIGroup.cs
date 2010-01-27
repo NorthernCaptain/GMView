@@ -65,9 +65,19 @@ namespace GMView.Bookmarks
                 foreach (Bookmark poi in childrenPOIs)
                 {
                     poi.IsShown = value;
+                    poi.IsAutoShow = !value;
                 }
                 shown = value;
             }
+        }
+
+        /// <summary>
+        /// Need for treeView compatibility calls
+        /// </summary>
+        public bool IsShownCentered
+        {
+            get { return shown; }
+            set { IsShown = value; }
         }
 
         public POIGroup()
@@ -407,6 +417,27 @@ namespace GMView.Bookmarks
         {
             get { return owner; }
             set { owner = value; }
+        }
+
+        /// <summary>
+        /// Return full path to the group limited by tillGroup parent
+        /// </summary>
+        /// <param name="tillGroup"></param>
+        /// <returns></returns>
+        public string getPathTill(POIGroup tillGroup)
+        {
+            if (tillGroup == this || parent == null)
+                return string.Empty;
+
+            StringBuilder buf = new StringBuilder(name);
+
+            POIGroup cur = parent;
+            while (cur != null && cur != tillGroup)
+            {
+                buf.Insert(0, cur.name + "/");
+                cur = cur.Parent as POIGroup;
+            }
+            return buf.ToString();
         }
     }
 }

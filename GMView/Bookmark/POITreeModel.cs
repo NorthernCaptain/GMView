@@ -31,7 +31,7 @@ namespace GMView.Bookmarks
             if(parent == null)
                 return null;
             LinkedList<POIGroup> grplist = parent.Children;
-            List<Bookmark> poilist = BookMarkFactory.singleton.loadByParent(parent.Id);
+            List<Bookmark> poilist = BookMarkFactory.singleton.loadByParent(parent.Id, true);
             if (grplist == null || grplist.Count == 0)
                 return poilist;
             if (poilist == null || poilist.Count == 0)

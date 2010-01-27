@@ -195,7 +195,7 @@ namespace GMView
         }
 
 
-        private bool isAutoShow = false;
+        private bool isAutoShow = true;
 
         /// <summary>
         /// Is this POI in auto show mode or not
@@ -203,7 +203,10 @@ namespace GMView
         public bool IsAutoShow
         {
             get { return isAutoShow; }
-            set { isAutoShow = value; }
+            set 
+            { 
+                isAutoShow = value;
+            }
         }
 
         /// <summary>
@@ -251,6 +254,7 @@ namespace GMView
                 if (value != shown && value)
                     mapo.CenterMapLonLat(lon, lat);
                 IsShown = value;
+                IsAutoShow = !value;
             }
         }
 
