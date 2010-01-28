@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
+using System.Xml;
 
 namespace GMView.GPS
 {
@@ -29,6 +30,36 @@ namespace GMView.GPS
         /// Desired track color
         /// </summary>
         public Color trackColor;
+
+
+        /// <summary>
+        /// Not null if we have opened xml document for our file or buffer
+        /// </summary>
+        public XmlDocument openedXml = null;
+
+        /// <summary>
+        /// Try to open document as xml and return this XmlDocument
+        /// </summary>
+        /// <returns></returns>
+        public XmlDocument openXml()
+        {
+            if(openedXml != null)
+                return openedXml;
+
+            if(stype == SourceType.FileName)
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(fileOrBuffer);
+                openedXml = doc;
+            } else
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.LoadXml(fileOrBuffer);
+                openedXml = doc;
+            }
+
+            return openedXml;
+        }
 
         /// <summary>
         /// Constructor for buffer and type, color set by default

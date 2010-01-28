@@ -499,6 +499,22 @@ namespace GMView
                 }
             }
         }
+
+        /// <summary>
+        /// Import POIs from the given file or buffer. Recognizes file format and loads
+        /// from it all POIs into the group. Group name is identified by file name or
+        /// internal document name.
+        /// </summary>
+        /// <param name="fileInfo"></param>
+        /// <returns></returns>
+        internal int importFrom(GPS.TrackFileInfo fileInfo)
+        {
+            TrackLoader.IPOILoader loader = TrackLoader.TrackLoaderFactory.singleton.getPOILoader(fileInfo);
+            if(loader == null)
+                return 0;
+            return loader.importPOIs(fileInfo, this, groupFactory);
+        }
+
         /// <summary>
         /// Import all waypoints (wpt) from GPX file into our POI 
         /// </summary>

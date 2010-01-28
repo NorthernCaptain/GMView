@@ -1608,7 +1608,8 @@ namespace GMView
                 try
                 {
                     string fname = trackOpenFileDialog.FileName;
-                    int imported = BookMarkFactory.singleton.importGPX(fname);
+                    int imported = BookMarkFactory.singleton.importFrom(new GPS.TrackFileInfo(fname, 
+                                                            GPS.TrackFileInfo.SourceType.FileName));
                     MessageBox.Show("Successfully loaded " + imported + " items from \n" +
                     trackOpenFileDialog.FileName + "\ninto "+ Path.GetFileNameWithoutExtension(fname)
                                     +" POI group", "POI loading results", 

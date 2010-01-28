@@ -9,15 +9,15 @@ namespace GMView.TrackLoader
     /// </summary>
     public class TrackLoaderFactory
     {
-        private Dictionary<string, ITrackLoader> trackLoaders = new Dictionary<string, ITrackLoader>();
+        private Dictionary<string, IFormatLoader> trackLoaders = new Dictionary<string, IFormatLoader>();
 
 
-        private volatile TrackLoaderFactory instance;
+        private static volatile TrackLoaderFactory instance;
 
         /// <summary>
         /// Return single instance of the factory
         /// </summary>
-        public TrackLoaderFactory singleton
+        public static TrackLoaderFactory singleton
         {
             get
             {
@@ -37,9 +37,26 @@ namespace GMView.TrackLoader
         /// </summary>
         private void registerLoaders()
         {
-            trackLoaders.Add("GPX", null);
-            trackLoaders.Add("KML", null);
-            trackLoaders.Add("NMEA", null);
+            trackLoaders.Add("GPX", new GPXLoader());
+        }
+
+        /// <summary>
+        /// Finds and returns POILoader object for the given file or buffer
+        /// Return null if not found
+        /// </summary>
+        /// <param name="fileInfo"></param>
+        /// <returns></returns>
+        public IPOILoader getPOILoader(GPS.TrackFileInfo fileInfo)
+        {
+            foreach (KeyValuePair<string, IFormatLoader> pair in trackLoaders)
+            {
+                if(pair.Value.isOurFormat(fileInfo))
+                {
+                    fileInfo.fileType = pair.Key;
+                    return pair.Value as IPOILoader;
+                }
+            }
+            return null;
         }
     }
 }
