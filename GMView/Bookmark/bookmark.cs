@@ -260,7 +260,7 @@ namespace GMView
 
         public Bookmark()
         {
-            ptype = Bookmarks.POITypeFactory.singleton().typeByName("home");
+            ptype = Bookmarks.POITypeFactory.singleton().typeByName("unknown");
             iconfo = ptype;
         }
 

@@ -1594,11 +1594,29 @@ namespace GMView
         private void exportPOIMI_Click(object sender, EventArgs e)
         {
             trackSaveFileDialog.FileName = "points_of_interest.gpx";
-            trackSaveFileDialog.Title = "Save POI to GPX file";
-            trackSaveFileDialog.Filter = "GPX unified files|*.gpx|All files|*.*";
+            trackSaveFileDialog.Title = "Save POI to a file";
+            trackSaveFileDialog.Filter = "GPX unified files|*.gpx|KML google files|*.kml|All files|*.*";
             trackSaveFileDialog.DefaultExt = "gpx";
             if (trackSaveFileDialog.ShowDialog() == DialogResult.OK)
-                BookMarkFactory.singleton.exportGPX(trackSaveFileDialog.FileName);
+            {
+                GPS.TrackFileInfo finfo = new GPS.TrackFileInfo(trackSaveFileDialog.FileName,
+                                            GMView.GPS.TrackFileInfo.SourceType.FileName);
+                finfo.fileType = Path.GetExtension(trackSaveFileDialog.FileName).ToLower();
+                if (string.IsNullOrEmpty(finfo.fileType))
+                    finfo.fileType = "gpx";
+                else
+                    finfo.fileType = finfo.fileType.Remove(0, 1);
+
+                try
+                {
+                    BookMarkFactory.singleton.exportTo(finfo);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Could not export POIs:\n" + trackOpenFileDialog.FileName + "\nReason:\n" +
+                        ex.ToString(), "Error exporting POIs", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
 
         private void importPOIMI_Click(object sender, EventArgs e)
@@ -1692,27 +1710,6 @@ namespace GMView
                 string clipbuffer = Clipboard.GetText();
 
                 loadTrack(new GPS.TrackFileInfo(clipbuffer, GPS.TrackFileInfo.SourceType.StringBuffer));
-            }
-        }
-
-        private void importPOIFromKMLFileToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (trackOpenFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                try
-                {
-                    string fname = trackOpenFileDialog.FileName;
-                    int imported = BookMarkFactory.singleton.importKML(fname);
-                    MessageBox.Show("Successfully loaded " + imported + " items from \n" +
-                    trackOpenFileDialog.FileName + "\ninto " + Path.GetFileNameWithoutExtension(fname)
-                                    + " POI group", "POI loading results",
-                                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Could not load waypoints:\n" + trackOpenFileDialog.FileName + "\nReason:\n" +
-                        ex.ToString(), "Error loading POIs", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
             }
         }
 

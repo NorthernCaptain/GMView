@@ -37,7 +37,20 @@ namespace GMView.TrackLoader
         /// </summary>
         private void registerLoaders()
         {
-            trackLoaders.Add("GPX", new GPXLoader());
+            trackLoaders.Add("gpx", new GPXLoader());
+            trackLoaders.Add("kml", new KMLLoader());
+        }
+
+        /// <summary>
+        /// Return loader by a given name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public IFormatLoader getLoaderByName(string name)
+        {
+            IFormatLoader res = null;
+            trackLoaders.TryGetValue(name, out res);
+            return res;
         }
 
         /// <summary>
