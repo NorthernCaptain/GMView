@@ -661,7 +661,15 @@ namespace GMView
 
                 if (Program.opt.do_autosave && trackData.Count > lastSavedPoint + 20)
                 {
-                    saveGPX(filename.Length > 0 ? filename : Program.opt.autosavefile);
+                    try
+                    {
+                        this.save(new GPS.TrackFileInfo((filename.Length > 0 ? filename : Program.opt.autosavefile),
+                            TrackFileInfo.SourceType.FileName), BookMarkFactory.singleton, Bookmarks.POIGroupFactory.singleton());
+                    }
+                    catch (System.Exception ex)
+                    {
+                    	
+                    }
                     lastSavedPoint = trackData.Count;
                 }
             }
@@ -908,20 +916,25 @@ namespace GMView
         #endregion
 
         #region Save and Load tracks from different formats (GPX, KML, NMEA)
+
         /// <summary>
-        /// Saves track data into xml file using xml serialization
+        /// Save the track and surrounding POI into a file with format defined in fi.fileType
+        /// Different formats are supported: GPX, KML ...
         /// </summary>
-        /// <param name="fname"></param>
-        public void saveXml(string fname)
+        /// <param name="fi"></param>
+        /// <param name="poiFact"></param>
+        /// <param name="groupFact"></param>
+        /// <returns></returns>
+        public GPS.TrackFileInfo save(GPS.TrackFileInfo fi, BookMarkFactory poiFact,
+                                    Bookmarks.POIGroupFactory groupFact)
         {
-            //generate_test_track();
+            TrackLoader.ITrackLoader loader = TrackLoader.TrackLoaderFactory.singleton.getLoaderByName(fi.FileType)
+                            as TrackLoader.ITrackLoader;
 
-            TextWriter writer = new StreamWriter(fname);
-            XmlSerializer xser = new XmlSerializer(typeof(GPSTrack));
-
-            xser.Serialize(writer, this);
-            writer.Close();
-            filename = fname;
+            if (loader == null)
+                throw new ApplicationException("Could not find saving plugin for type: " + fi.FileType);
+            loader.save(this, fi, poiFact, groupFact);
+            return fi;
         }
 
         /// <summary>
@@ -1199,13 +1212,14 @@ namespace GMView
         /// </summary>
         /// <param name="fname"></param>
         /// <returns></returns>
-        public static GPSTrack loadFrom(GPS.TrackFileInfo fi)
+        public static GPSTrack loadFrom(GPS.TrackFileInfo fi, BookMarkFactory poiFact,
+                                        Bookmarks.POIGroupFactory groupFact)
         {
             TrackLoader.ITrackLoader loader = TrackLoader.TrackLoaderFactory.singleton.getTrackLoader(fi);
             if(loader == null)
                 throw new ApplicationException("Unknown file format! Could not load file: " 
                     + (fi.stype == TrackFileInfo.SourceType.FileName ? fi.fileOrBuffer : "Clipboard buffer"));
-            return loader.load(fi);
+            return loader.load(fi, poiFact, groupFact);
         }
 
         /// <summary>
@@ -1217,7 +1231,7 @@ namespace GMView
         {
             List<GPSTrack> gtlist = new List<GPSTrack>();
 
-            GPSTrack track = loadFrom(fi);
+            GPSTrack track = loadFrom(fi, BookMarkFactory.singleton, Bookmarks.POIGroupFactory.singleton());
             if (track.startTime.DayOfYear == track.endTime.DayOfYear)
             {
                 gtlist.Add(track);
@@ -1268,398 +1282,6 @@ namespace GMView
             filename = from.filename;
         }
 
-        /// <summary>
-        /// Loads GPS track from NMEA log file, uses only RMC sentences from it.
-        /// </summary>
-        /// <param name="fname"></param>
-        /// <returns></returns>
-        public static GPSTrack loadNMEA(string fname)
-        {
-            System.IO.StreamReader reader = null;
-            reader = new System.IO.StreamReader(fname);
-
-            GPSTrack track = new GPSTrack();
-
-            string dirname = Path.GetDirectoryName(fname);
-            track.name = "Track: " + dirname.Substring(dirname.LastIndexOf(Path.DirectorySeparatorChar) + 1) + Path.DirectorySeparatorChar + Path.GetFileNameWithoutExtension(fname);
-            track.way.name = "Route: " + Path.GetFileNameWithoutExtension(fname);
-
-            string buf;
-
-            try
-            {
-                while ((buf = reader.ReadLine()) != null)
-                {
-                    if (buf.Substring(0, 3) == "$GP" || buf.Substring(0, 6) == "$GPGSA")
-                    {
-                        NMEACommand cmd = NMEAThread.parse_command(new NMEAString(buf));
-                        if (cmd.state == NMEACommand.Status.DataOK && cmd is NMEA_RMC)
-                        {
-                            NMEA_RMC rmc = cmd as NMEA_RMC;
-                            track.addGPSDataInternal(rmc);
-                        }
-                    }
-                }
-            }
-            finally
-            {
-                reader.Close();
-            }
-
-            if (track.trackData.Count == 0)
-                throw new ApplicationException("This file does not have any tracks or routes! Check file content");
-
-            track.filename = fname;
-            track.calculateParameters();
-            track.lastSpeedPos = track.lastPos;
-
-            return track;
-
-        }
-
-        /// <summary>
-        /// Loads GPSTrack from Google Earth KML file. Throws an ApplicationException if something goes wrong
-        /// </summary>
-        /// <param name="fname"></param>
-        /// <returns></returns>
-        public static GPSTrack loadKML(string fname, bool isFNameFile)
-        {
-            XmlDocument doc = new XmlDocument();
-
-            XmlNamespaceManager nsm = new XmlNamespaceManager(doc.NameTable);
-            nsm.AddNamespace("xlink", "http://www.w3.org/1999/xlink");
-
-            if (isFNameFile)
-                doc.Load(fname);
-            else
-                doc.LoadXml(fname);
-
-            if (doc.DocumentElement.Name != "kml")
-                throw new ApplicationException("Not a valid KML file! Could not find kml root tag.");
-
-            { //retrieve xmlns
-                XmlNode xnsnode = doc.DocumentElement.Attributes.GetNamedItem("xmlns");
-                if (xnsnode != null)
-                    nsm.AddNamespace("kml", xnsnode.Value);
-                else
-                {
-                    nsm.AddNamespace("kml", "");
-                }
-            }
-
-
-            GPSTrack track = new GPSTrack();
-
-            if (isFNameFile)
-            {
-                string dirname = Path.GetDirectoryName(fname);
-                track.name = "Track: " + dirname.Substring(dirname.LastIndexOf(Path.DirectorySeparatorChar) + 1) + Path.DirectorySeparatorChar + Path.GetFileNameWithoutExtension(fname);
-                track.way.name = "Route: " + Path.GetFileNameWithoutExtension(fname);
-            }
-
-            XmlNode folder = selectKMLFolders(doc, nsm, track);
-            XmlNode titleNode = null;
-
-            if (folder == null)
-            {
-                throw new ApplicationException("This file does not have any tracks or routes! Check file content");
-            }
-
-            XmlNodeList nlist = folder.SelectNodes("./kml:Placemark", nsm);
-            string nodeval = "";
-            foreach (XmlNode xnode in nlist)
-            {
-
-                XmlNodeList coordlist;
-                coordlist = xnode.SelectNodes("./kml:LineString/kml:coordinates", nsm);
-                if(coordlist.Count == 0)
-                    coordlist = xnode.SelectNodes("./*/kml:LineString/kml:coordinates", nsm);
-                foreach (XmlNode cnode in coordlist)
-                {
-                    track.loadKMLPoints(cnode.InnerText);
-                    if (titleNode == null)
-                        titleNode = xnode.SelectSingleNode("./kml:name", nsm);
-                }
-            }
-
-            if (track.trackData.Count == 0)
-                throw new ApplicationException("This file does not have any tracks or routes! Check file content");
-            XmlNode docTitleNode = folder.SelectSingleNode("./kml:name", nsm);
-            if (docTitleNode != null)
-                titleNode = docTitleNode;
-
-            if (titleNode != null)
-            {
-                nodeval = titleNode.InnerText;
-                if (nodeval.Length > 7 && nodeval.Substring(0, 7) == "Track: ")
-                    nodeval = nodeval.Substring(7);
-                track.name = "Track: " + nodeval;
-                track.way.name = "Route: " + nodeval;
-            }
-
-            BookMarkFactory.singleton.loadTemporaryBookmarks(track.track_name, nlist, nsm);
-
-            if (isFNameFile)
-                track.filename = fname;
-            else
-                track.filename = track.name + ".kml";
-
-            track.calculateParameters();
-            track.lastSpeedPos = track.lastPos;
-
-            return track;
-        }
-
-        /// <summary>
-        /// Searches for Folder tags and return first folder that contains coordinates
-        /// </summary>
-        /// <param name="doc"></param>
-        /// <param name="nsm"></param>
-        /// <param name="track"></param>
-        /// <returns></returns>
-        private static XmlNode selectKMLFolders(XmlDocument doc, XmlNamespaceManager nsm, GPSTrack track)
-        {
-            string nodeval = "";
-            XmlNodeList nlist = doc.DocumentElement.SelectNodes("//kml:Folder", nsm);
-            foreach (XmlNode xnode in nlist)
-            {
-                if (track.xmltag(xnode, "./kml:Placemark/kml:LineString/kml:coordinates", nsm, ref nodeval)
-                    || track.xmltag(xnode, "./kml:Placemark/*/kml:LineString/kml:coordinates", nsm, ref nodeval))
-                    return xnode;
-            }
-            XmlNode res = doc.DocumentElement.SelectSingleNode("./kml:Document", nsm);
-            if (res != null && (res.SelectSingleNode("./kml:Placemark/*/kml:LineString/kml:coordinates", nsm) != null
-                            || res.SelectSingleNode("./kml:Placemark/kml:LineString/kml:coordinates", nsm) != null))
-                return res;
-            return null;
-        }
-
-        private void loadKMLPoints(string nodeval)
-        {
-            double lon, lat, hei;
-            char[] sep = new char[] { ' ', '\n', '\r', '\t' };
-            string[] tuples = nodeval.Split(sep, StringSplitOptions.RemoveEmptyEntries);
-            DateTime now = DateTime.Now.ToUniversalTime();
-            foreach (string tuple in tuples)
-            {
-                if (splitKMLCoordTuple(tuple, out lon, out lat, out hei))
-                {
-                    NMEA_RMC rmc = new NMEA_RMC();
-                    rmc.lat = lat;
-                    rmc.lon = lon;
-                    rmc.height = hei;
-                    rmc.state = NMEACommand.Status.DataOK;
-                    rmc.utc_time = now;
-                    rmc.ptype = NMEA_LL.PointType.TP;
-
-                    trackData.AddLast(rmc);
-                    lastPos = lastTrackPos = lastSpeedPos = rmc;
-                }
-            }
-        }
-
-        public static bool splitKMLCoordTuple(string tuple, out double lon, out double lat, out double hei)
-        {
-            char[] sep = new char[] { ',' };
-
-            string[] elements = tuple.Split(sep, StringSplitOptions.RemoveEmptyEntries);
-            lon = lat = hei = 0.0;
-
-            if (elements.Length < 2)
-                return false;
-            lon = NMEACommand.getDouble(elements[0]);
-            lat = NMEACommand.getDouble(elements[1]);
-            if (elements.Length > 2)
-                hei = NMEACommand.getDouble(elements[2]);
-            return true;
-        }
-
-        /// <summary>
-        /// Loads track or route from GPX file. Throws an ApplicationException if something goes wrong
-        /// </summary>
-        /// <param name="fname"></param>
-        /// <returns>GPSTrack loaded into memory</returns>
-        public static GPSTrack loadGPX(string fname)
-        {
-            XmlDocument doc = new XmlDocument();
-
-            try
-            {
-                doc.Load(fname);
-
-                if (doc.DocumentElement.Name != "gpx")
-                    throw new ApplicationException("Not a valid GPX file! Could not find gpx root tag.");
-
-                XmlNamespaceManager nsm = new XmlNamespaceManager(doc.NameTable);
-
-                { //retrieve xmlns
-                    XmlNode xnsnode = doc.DocumentElement.Attributes.GetNamedItem("xmlns");
-                    if (xnsnode != null)
-                        nsm.AddNamespace("gpx", xnsnode.Value);
-                    else
-                    {
-                        nsm.AddNamespace("gpx", "");
-                    }
-                }
-
-
-                GPSTrack track = new GPSTrack();
-
-                XmlNode node = doc.DocumentElement.SelectSingleNode("/gpx:gpx/gpx:metadata/gpx:name", nsm);
-                if (node != null)
-                {
-                    string nodeval = node.InnerText;
-                    if (nodeval.Length > 7 && nodeval.Substring(0, 7) == "Track: ")
-                        nodeval = nodeval.Substring(7);
-
-                    track.name = "Track: " + nodeval;
-                    track.way.name = "Route: " + nodeval;
-                }
-                else
-                {
-                    string dirname = Path.GetDirectoryName(fname);
-                    track.name = "Track: " + dirname.Substring(dirname.LastIndexOf(Path.DirectorySeparatorChar) + 1) + Path.DirectorySeparatorChar + Path.GetFileNameWithoutExtension(fname);
-                    track.way.name = "Route: " + Path.GetFileNameWithoutExtension(fname);
-                }
-
-                XmlNodeList nlist = doc.DocumentElement.SelectNodes("/gpx:gpx/gpx:trk/gpx:trkseg/gpx:trkpt", nsm);
-                foreach (XmlNode xnode in nlist)
-                {
-                    track.loadPoint(xnode, nsm);
-                }
-
-                if (nlist.Count == 0) //we don't have track in file, lets try route
-                {
-                    nlist = doc.DocumentElement.SelectNodes("/gpx:gpx/gpx:rte/gpx:rtept", nsm);
-                    foreach (XmlNode xnode in nlist)
-                    {
-                        track.loadPoint(xnode, nsm);
-                    }
-                }
-
-                if (track.trackData.Count == 0)
-                    throw new ApplicationException("This file does not have any tracks or routes! Check file content");
-
-                nlist = doc.DocumentElement.SelectNodes("/gpx:gpx/gpx:wpt", nsm);
-
-                if (nlist.Count > 0)
-                {
-                    BookMarkFactory.singleton.loadTemporaryBookmarks(track.track_name, nlist, nsm);
-                }
-
-                track.filename = fname;
-                track.calculateParameters();
-                track.lastSpeedPos = track.lastPos;
-
-                return track;
-            }
-            finally
-            {
-                doc = null;
-            }
-        }
-
-        /// <summary>
-        /// Loads one track point from GPX xml document
-        /// </summary>
-        /// <param name="xnode"></param>
-        /// <param name="nsm"></param>
-        private void loadPoint(XmlNode xnode, XmlNamespaceManager nsm)
-        {
-            NMEA_RMC rmc = new NMEA_RMC();
-            rmc.lat = NMEACommand.getDouble(xnode.Attributes.GetNamedItem("lat").Value);
-            rmc.lon = NMEACommand.getDouble(xnode.Attributes.GetNamedItem("lon").Value);
-
-            string sval = "";
-            if (xmltag(xnode, "./gpx:time", nsm, ref sval))
-            {
-                try
-                {
-                    rmc.utc_time = DateTime.Parse(sval).ToUniversalTime();
-                }
-                catch
-                {
-                    rmc.utc_time = DateTime.MinValue.AddYears(2000).ToUniversalTime();
-                }
-
-            }
-            else
-                rmc.utc_time = DateTime.MinValue.AddYears(2000).ToUniversalTime();
-
-            if (xmltag(xnode, "./gpx:ele", nsm, ref sval))
-                rmc.height = NMEACommand.getDouble(sval);
-            if (xmltag(xnode, "./gpx:sat", nsm, ref sval))
-                rmc.usedSats = int.Parse(sval);
-            if (xmltag(xnode, "./gpx:hdop", nsm, ref sval))
-                rmc.HDOP = NMEACommand.getDouble(sval);
-            if (xmltag(xnode, "./*/gpx:vel", nsm, ref sval))
-                rmc.speed = NMEACommand.getDouble(sval);
-            if (xmltag(xnode, "./*/gpx:dir", nsm, ref sval))
-                rmc.dir_angle = NMEACommand.getDouble(sval);
-            if (xmltag(xnode, "./gpx:type", nsm, ref sval))
-                rmc.ptype = NMEA_LL.parsePointType(sval);
-
-            lastPos = lastTrackPos = lastSpeedPos = rmc;
-            trackData.AddLast(lastPos);
-        }
-
-        /// <summary>
-        /// Helper for retreiving xml data
-        /// </summary>
-        /// <param name="node"></param>
-        /// <param name="xpath"></param>
-        /// <param name="nsm"></param>
-        /// <param name="val"></param>
-        /// <returns></returns>
-        private bool xmltag(XmlNode node, string xpath, XmlNamespaceManager nsm, ref string val)
-        {
-            XmlNode result = node.SelectSingleNode(xpath, nsm);
-            if (result != null)
-            {
-                val = result.InnerText;
-                return true;
-            }
-            val = "";
-            return false;
-        }
-
-        /// <summary>
-        /// Loads GPSTrack from xml file written by saveXML (using serialization)
-        /// </summary>
-        /// <param name="fname"></param>
-        /// <returns></returns>
-        public static GPSTrack loadXml(string fname)
-        {
-            FileStream fs;
-            try
-            {
-                fs = new FileStream(fname, FileMode.Open);
-            }
-            catch
-            {
-                return null;
-            }
-            try
-            {
-                XmlSerializer xser = new XmlSerializer(typeof(GPSTrack));
-                GPSTrack track = (GPSTrack)xser.Deserialize(fs);
-                string dirname = Path.GetDirectoryName(fname);
-                track.name = "Track: " + dirname.Substring(dirname.LastIndexOf(Path.DirectorySeparatorChar) + 1) + Path.DirectorySeparatorChar + Path.GetFileNameWithoutExtension(fname);
-                track.way.name = "Route: " + Path.GetFileNameWithoutExtension(fname);
-                track.filename = fname;
-                track.calculateParameters();
-                track.lastSpeedPos = track.lastPos;
-                return track;
-            }
-            catch
-            {
-                return null;
-            }
-            finally
-            {
-                fs.Close();
-            }
-        }
         #endregion
 
         #region ISprite Members

@@ -60,7 +60,7 @@ namespace GMView.GPS
 
         internal void saveGPX(XmlTextWriter writer, System.Globalization.NumberFormatInfo nf)
         {
-            if (total_points <= 2)
+            if (TotalPoints <= 2)
                 return;
 
             writer.WriteStartElement("rte");
@@ -83,7 +83,7 @@ namespace GMView.GPS
 
         internal void saveKML(XmlTextWriter writer, System.Globalization.NumberFormatInfo nf)
         {
-            if (total_points <= 2)
+            if (TotalPoints <= 2)
                 return;
 
             writer.WriteStartElement("Style");

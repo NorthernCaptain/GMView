@@ -1211,7 +1211,7 @@ namespace GMView
             GPSTrack gtr;
             try
             {
-                gtr = GPSTrack.loadFrom(trackInfo);
+                gtr = GPSTrack.loadFrom(trackInfo, BookMarkFactory.singleton, Bookmarks.POIGroupFactory.singleton());
                 gtr.need_arrows = false;
                 gtr.trackMode = GPSTrack.TrackMode.ViewSaved;
                 gtr.map = mapo;
@@ -1274,7 +1274,8 @@ namespace GMView
                             {
                                 string fnameonly = Path.GetFileName(gt.track_name);
                                 string fname = Path.Combine(path, fnameonly+".gpx");
-                                gt.saveGPX(fname);
+                                gt.save(new GPS.TrackFileInfo(fname, GPS.TrackFileInfo.SourceType.FileName),
+                                    BookMarkFactory.singleton, Bookmarks.POIGroupFactory.singleton());
                             }
                         }
                     }
@@ -1602,11 +1603,11 @@ namespace GMView
             {
                 GPS.TrackFileInfo finfo = new GPS.TrackFileInfo(trackSaveFileDialog.FileName,
                                             GMView.GPS.TrackFileInfo.SourceType.FileName);
-                finfo.fileType = Path.GetExtension(trackSaveFileDialog.FileName).ToLower();
-                if (string.IsNullOrEmpty(finfo.fileType))
-                    finfo.fileType = "gpx";
+                finfo.FileType = Path.GetExtension(trackSaveFileDialog.FileName).ToLower();
+                if (string.IsNullOrEmpty(finfo.FileType))
+                    finfo.FileType = "gpx";
                 else
-                    finfo.fileType = finfo.fileType.Remove(0, 1);
+                    finfo.FileType = finfo.FileType.Remove(0, 1);
 
                 try
                 {
