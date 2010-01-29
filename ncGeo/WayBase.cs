@@ -14,6 +14,12 @@ namespace ncGeo
         protected double total_distance = 0.0;
         protected TimeSpan total_time;
         protected int total_points = 0;
+
+        public int TotalPoints
+        {
+            get { return total_points; }
+        }
+
         protected WayPoint currentWayPoint = null;
         protected string way_name = "Route: manual";
 

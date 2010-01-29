@@ -21,6 +21,15 @@ namespace GMView.TrackLoader
         /// </summary>
         /// <param name="info"></param>
         /// <returns></returns>
-        GPSTrack load(GPS.TrackFileInfo info);
+        GPSTrack load(GPS.TrackFileInfo info, BookMarkFactory poiFact, Bookmarks.POIGroupFactory igroupFact);
+
+        /// <summary>
+        /// Saves track and optionally surrounding POI into a file
+        /// </summary>
+        /// <param name="track"></param>
+        /// <param name="fi"></param>
+        /// <param name="poiFact"></param>
+        /// <param name="igroupFact"></param>
+        void save(GPSTrack track, GPS.TrackFileInfo fi, BookMarkFactory poiFact, Bookmarks.POIGroupFactory igroupFact);
     }
 }

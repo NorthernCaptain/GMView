@@ -24,7 +24,7 @@ namespace GMView.TrackLoader
         /// </summary>
         /// <param name="fi"></param>
         /// <returns></returns>
-        public GPSTrack load(GMView.GPS.TrackFileInfo fi)
+        public GPSTrack load(GMView.GPS.TrackFileInfo fi, BookMarkFactory poiFact, Bookmarks.POIGroupFactory igroupFact)
         {
             GPSTrack track = new GPSTrack();
 
@@ -84,6 +84,11 @@ namespace GMView.TrackLoader
             return track;
         }
 
+        public void save(GPSTrack track, GMView.GPS.TrackFileInfo fi, BookMarkFactory poiFact, GMView.Bookmarks.POIGroupFactory igroupFact)
+        {
+            throw new NotImplementedException("Could not save NMEA file, read-only support");
+        }
+
         #endregion
 
         #region IFormatLoader Members
@@ -136,5 +141,6 @@ namespace GMView.TrackLoader
         }
 
         #endregion
+
     }
 }

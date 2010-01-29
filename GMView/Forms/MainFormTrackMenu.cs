@@ -131,10 +131,16 @@ namespace GMView
                     System.IO.Path.GetFileNameWithoutExtension(fname) + ".gpx");
                 trackSaveFileDialog.FileName = fname;
                 trackSaveFileDialog.DefaultExt = "gpx";
-                trackSaveFileDialog.Title = "Save track to GPX file";
-                trackSaveFileDialog.Filter = "GPX unified files|*.gpx|All files|*.*";
+                trackSaveFileDialog.Title = "Save track to a file";
+                trackSaveFileDialog.Filter = "GPX unified files|*.gpx|KML google earth files|*.kml|All files|*.*";
                 if (trackSaveFileDialog.ShowDialog() == DialogResult.OK)
-                    track.saveGPX(trackSaveFileDialog.FileName);
+                {
+                    GPS.TrackFileInfo fi = new GPS.TrackFileInfo(trackSaveFileDialog.FileName,
+                                                GPS.TrackFileInfo.SourceType.FileName);
+                    if (!string.IsNullOrEmpty(System.IO.Path.GetExtension(fi.fileOrBuffer)))
+                        fi.FileType = System.IO.Path.GetExtension(fi.fileOrBuffer).Remove(0, 1).ToLower();
+                    track.save(fi, BookMarkFactory.singleton, Bookmarks.POIGroupFactory.singleton());
+                }
             }
         }
 

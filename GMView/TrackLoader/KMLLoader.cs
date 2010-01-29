@@ -27,9 +27,12 @@ namespace GMView.TrackLoader
         /// </summary>
         /// <param name="info"></param>
         /// <returns></returns>
-        public GPSTrack load(GMView.GPS.TrackFileInfo fi)
+        public GPSTrack load(GMView.GPS.TrackFileInfo fi, BookMarkFactory poiFact, Bookmarks.POIGroupFactory igroupFact)
         {
             XmlDocument doc = fi.openXml();
+
+            poiFactory = poiFact;
+            groupFactory = igroupFact;
 
             XmlNamespaceManager nsm = new XmlNamespaceManager(doc.NameTable);
             nsm.AddNamespace("xlink", "http://www.w3.org/1999/xlink");
@@ -57,14 +60,14 @@ namespace GMView.TrackLoader
                 string dirname = Path.GetDirectoryName(fi.fileOrBuffer);
                 tname = dirname.Substring(dirname.LastIndexOf(Path.DirectorySeparatorChar) + 1)
                       + Path.DirectorySeparatorChar + Path.GetFileNameWithoutExtension(fi.fileOrBuffer);
-                track.track_name = "Track: " + tname;
+                track.track_name = tname;
                 track.wayObject.name = "Route: " + Path.GetFileNameWithoutExtension(fi.fileOrBuffer);
             }
             else
             {
                 tname = "KML buffer " + DateTime.Now.ToShortDateString()
                     + " " + DateTime.Now.ToShortTimeString();
-                track.track_name = "Track: " + tname;
+                track.track_name = tname;
                 track.wayObject.name = "Route: " + tname;
             }
 
@@ -105,12 +108,17 @@ namespace GMView.TrackLoader
                 nodeval = titleNode.InnerText;
                 if (nodeval.Length > 7 && nodeval.Substring(0, 7) == "Track: ")
                     nodeval = nodeval.Substring(7);
-                track.track_name = "Track: " + nodeval;
+                track.track_name = nodeval;
                 track.wayObject.name = "Route: " + nodeval;
                 tname = nodeval;
             }
 
-            subloadBookmarks(nlist, nsm, track.track_name);
+            nlist = doc.DocumentElement.SelectNodes("//kml:Placemark", nsm);
+            if (fi.needPOI)
+            {
+                if(nlist.Count > 0)
+                    subloadBookmarks(nlist, nsm, fi.poiParentGroupName + "/" + track.track_name);
+            }
 
             if (fi.stype == GPS.TrackFileInfo.SourceType.FileName)
                 track.fileName = fi.fileOrBuffer;
@@ -120,7 +128,45 @@ namespace GMView.TrackLoader
             track.calculateParameters();
             track.lastNonZeroPos = track.lastData;
 
+            if (nlist.Count > 0)
+                findAndMarkWayPoints(track, nlist, nsm);
+            
             return track;
+        }
+
+        /// <summary>
+        /// Find any way point and try to place it on the track
+        /// </summary>
+        /// <param name="track"></param>
+        /// <param name="nlist"></param>
+        /// <param name="nsm"></param>
+        private void findAndMarkWayPoints(GPSTrack track, XmlNodeList nlist, XmlNamespaceManager nsm)
+        {
+            double lon, lat, hei;
+            try
+            {
+                ncGeo.FindNearestPointByDistance findctx = new ncGeo.FindNearestPointByDistance();
+
+                foreach (XmlNode node in nlist)
+                {
+                    XmlNode xnode = node.SelectSingleNode("./kml:Point/kml:coordinates", nsm);
+                    if (xnode != null)
+                    { //we have POI here, lets add it to our bookmarks
+                        if (!splitKMLCoordTuple(xnode.InnerText, out lon, out lat, out hei))
+                            continue;
+                        findctx.init(lon, lat);
+                        track.findNearest(findctx);
+
+                        if (findctx.resultPoint != null && findctx.distance <= 0.01)
+                            findctx.resultPoint.Value.ptype = NMEA_LL.PointType.MWP;
+                    }
+                }
+                track.calculateParameters();
+            }
+            catch (System.Exception)
+            {
+
+            }
         }
 
         /// <summary>
@@ -171,6 +217,170 @@ namespace GMView.TrackLoader
             }
         }
 
+        /// <summary>
+        /// Save track, waypoints and surrounding POI into KML google file
+        /// </summary>
+        /// <param name="track"></param>
+        /// <param name="fi"></param>
+        /// <param name="poiFact"></param>
+        /// <param name="igroupFact"></param>
+        public void save(GPSTrack track, GMView.GPS.TrackFileInfo fi, BookMarkFactory poiFact, GMView.Bookmarks.POIGroupFactory igroupFact)
+        {
+            double minlon, minlat, maxlon, maxlat;
+            XmlTextWriter writer = null;
+            System.Globalization.CultureInfo cul = new System.Globalization.CultureInfo("");
+            System.Globalization.NumberFormatInfo nf = cul.NumberFormat;
+
+            lock (track)
+            {
+                writer = new XmlTextWriter(fi.fileOrBuffer, Encoding.UTF8);
+                writer.Formatting = Formatting.Indented;
+                writer.WriteStartDocument();
+                writer.WriteStartElement("kml");
+                writer.WriteAttributeString("xmlns", @"http://earth.google.com/kml/2.0");
+
+                { //document
+                    writer.WriteStartElement("Document");
+                    writer.WriteElementString("name", track.track_name);
+
+                    writer.WriteStartElement("Style");
+                    writer.WriteAttributeString("id", "trackStyle");
+                    writer.WriteStartElement("LineStyle");
+                    writer.WriteElementString("color", "F03399FF");
+                    writer.WriteElementString("width", "4");
+                    writer.WriteEndElement();
+                    writer.WriteEndElement();
+
+                    { //placemark - our track header
+                        writer.WriteStartElement("Folder");
+                        writer.WriteElementString("name", "Tracks");
+                        writer.WriteStartElement("Placemark");
+                        writer.WriteElementString("name", track.track_name);
+                        writer.WriteElementString("styleUrl", "#trackStyle");
+                        {//LineString - our track
+                            writer.WriteStartElement("MultiGeometry");
+                            writer.WriteStartElement("LineString");
+                            writer.WriteElementString("tessellate", "1");
+                            { //cordinates of our track
+                                writer.WriteStartElement("coordinates");
+
+                                foreach (NMEA_LL tp in track.trackPointData)
+                                {
+                                    string slon = tp.lon.ToString("F8", nf);
+                                    string slat = tp.lat.ToString("F8", nf);
+                                    string shei = tp.height.ToString("F2", nf);
+                                    writer.WriteString(slon + "," + slat + "," + shei + " ");
+                                }
+                                writer.WriteEndElement();
+                            }
+                            writer.WriteEndElement(); //lineString
+                            writer.WriteEndElement();
+                        }
+                        writer.WriteEndElement(); //placemark
+                        writer.WriteEndElement(); //folder
+                    }
+
+                    this.saveWayPoints(track.way, writer, nf);
+
+                    track.getBounds(out minlon, out minlat, out maxlon, out maxlat);
+
+                    { // save bookmarks if we have them in our region
+                        double delta_lon = (maxlon - minlon) / 5;
+                        double delta_lat = (maxlat - minlat) / 5;
+
+                        List<Bookmark> booklist = BookMarkFactory.singleton.getBookmarksByBounds(
+                            minlon - delta_lon, minlat - delta_lat, maxlon + delta_lon, maxlat + delta_lat);
+                        if (booklist.Count > 0)
+                        {
+                            writer.WriteStartElement("Folder");
+                            writer.WriteElementString("name", "Places");
+
+
+                            foreach (Bookmark book in booklist)
+                            {
+                                writer.WriteStartElement("Placemark");
+                                writer.WriteElementString("name", book.Name);
+                                writer.WriteElementString("description", book.Description);
+                                writer.WriteStartElement("Point");
+                                writer.WriteElementString("coordinates", book.lon.ToString("F8", nf) 
+                                    + "," + book.lat.ToString("F8", nf) + "," + book.alt.ToString("F1", nf));
+                                writer.WriteEndElement();
+                                writer.WriteEndElement();
+                            }
+
+                            writer.WriteEndElement();
+                        }
+                    }
+
+
+                    writer.WriteStartElement("LookAt");
+
+                    writer.WriteElementString("latitude", ((minlat + maxlat) / 2.0).ToString("F8", nf));
+                    writer.WriteElementString("longitude", ((minlon + maxlon) / 2.0).ToString("F8", nf));
+                    writer.WriteElementString("altitude", "0");
+                    writer.WriteElementString("range", "10000");
+                    writer.WriteElementString("tilt", "0");
+                    writer.WriteElementString("heading", "0");
+                    writer.WriteEndElement();
+
+                    writer.WriteEndElement();
+                }
+
+                // end of kml root tag
+                writer.WriteEndElement(); //kml
+                writer.WriteEndDocument();
+                writer.Flush();
+                writer.Close();
+            }
+        }
+
+        /// <summary>
+        /// Save all waypoint from our Way as route in KML file
+        /// </summary>
+        /// <param name="way"></param>
+        /// <param name="writer"></param>
+        /// <param name="nf"></param>
+        private void saveWayPoints(GPS.Way way, XmlTextWriter writer, System.Globalization.NumberFormatInfo nf)
+        {
+            if (way.TotalPoints <= 2)
+                return;
+
+            writer.WriteStartElement("Style");
+            writer.WriteAttributeString("id", "routeStyle");
+            writer.WriteStartElement("LineStyle");
+            writer.WriteElementString("color", "CCFF7711");
+            writer.WriteElementString("width", "3");
+            writer.WriteEndElement();
+            writer.WriteEndElement();
+
+            writer.WriteStartElement("Folder");
+            writer.WriteElementString("name", "Routes");
+
+            writer.WriteStartElement("Placemark");
+            writer.WriteElementString("name", "Route");
+            writer.WriteElementString("styleUrl", "#routeStyle");
+            {//LineString - our track
+                writer.WriteStartElement("MultiGeometry");
+                writer.WriteStartElement("LineString");
+                writer.WriteElementString("tessellate", "1");
+                { //cordinates of our track
+                    writer.WriteStartElement("coordinates");
+
+                    foreach (ncGeo.WayBase.WayPoint wp in way.wayPoints)
+                    {
+                        string slon = wp.point.lon.ToString("F8", nf);
+                        string slat = wp.point.lat.ToString("F8", nf);
+                        string shei = wp.point.height.ToString("F2", nf);
+                        writer.WriteString(slon + "," + slat + "," + shei + " ");
+                    }
+                    writer.WriteEndElement();
+                }
+                writer.WriteEndElement(); //lineString
+                writer.WriteEndElement();
+            }
+            writer.WriteEndElement(); //placemark
+            writer.WriteEndElement();
+        }
         #endregion
 
         #region IFormatLoader Members
@@ -326,7 +536,7 @@ namespace GMView.TrackLoader
                     }
                 }
             }
-            catch (System.Exception ex)
+            catch (System.Exception)
             {
 
             }
@@ -346,6 +556,12 @@ namespace GMView.TrackLoader
         {
             throw new NotImplementedException("Export POI into KML files not implemented yet.");
         }
+
+        #endregion
+
+        #region ITrackLoader Members
+
+
 
         #endregion
     }

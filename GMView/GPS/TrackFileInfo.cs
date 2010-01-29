@@ -24,7 +24,13 @@ namespace GMView.GPS
         /// Type of the track file we are using. Usually it is like a file extension: GPX, KML ...
         ///
         /// </summary>
-        public string fileType;
+        private string fileType = "gpx";
+
+        public string FileType
+        {
+            get { return fileType; }
+            set { fileType = value; if (string.IsNullOrEmpty(fileType)) fileType = "gpx"; }
+        }
 
         /// <summary>
         /// Desired track color
@@ -36,6 +42,16 @@ namespace GMView.GPS
         /// Not null if we have opened xml document for our file or buffer
         /// </summary>
         public XmlDocument openedXml = null;
+
+        /// <summary>
+        /// Need to load POI while loading track or not?
+        /// </summary>
+        public bool needPOI = true;
+
+        /// <summary>
+        /// Group name for POIs, treat it like a root group
+        /// </summary>
+        public string poiParentGroupName = "Imported";
 
         /// <summary>
         /// Try to open document as xml and return this XmlDocument

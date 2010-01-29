@@ -326,9 +326,12 @@ namespace GMView.TrackLoader
             throw new NotImplementedException();
         }
 
-        public GPSTrack load(GMView.GPS.TrackFileInfo fi)
+        public GPSTrack load(GMView.GPS.TrackFileInfo fi, BookMarkFactory poiFact, Bookmarks.POIGroupFactory igroupFact)
         {
-            XmlDocument doc = null; 
+            XmlDocument doc = null;
+
+            poiFactory = poiFact;
+            groupFactory = igroupFact;
 
             try
             {
@@ -361,7 +364,7 @@ namespace GMView.TrackLoader
                     if (nodeval.Length > 7 && nodeval.Substring(0, 7) == "Track: ")
                         nodeval = nodeval.Substring(7);
 
-                    track.track_name = "Track: " + nodeval;
+                    track.track_name = nodeval;
                     track.wayObject.name = "Route: " + nodeval;
                     tname = nodeval;
                 }
@@ -372,14 +375,14 @@ namespace GMView.TrackLoader
                         string dirname = Path.GetDirectoryName(fi.fileOrBuffer);
                         tname = dirname.Substring(dirname.LastIndexOf(Path.DirectorySeparatorChar) + 1)
                               + Path.DirectorySeparatorChar + Path.GetFileNameWithoutExtension(fi.fileOrBuffer);
-                        track.track_name = "Track: " + tname;
+                        track.track_name = tname;
                         track.wayObject.name = "Route: " + Path.GetFileNameWithoutExtension(fi.fileOrBuffer);
                     }
                     else
                     {
                         tname = "GPX buffer " + DateTime.Now.ToShortDateString()
                             + " " + DateTime.Now.ToShortTimeString();
-                        track.track_name = "Track: " + tname;
+                        track.track_name = tname;
                         track.wayObject.name = "Route: " + tname;
                     }
                 }
@@ -404,15 +407,21 @@ namespace GMView.TrackLoader
 
                 nlist = doc.DocumentElement.SelectNodes("/gpx:gpx/gpx:wpt", nsm);
 
-                if (nlist.Count > 0)
+                if (fi.needPOI)
                 {
-                    subloadBookmarks(nlist, nsm, track.track_name);
+                    if (nlist.Count > 0)
+                    {
+                        subloadBookmarks(nlist, nsm, fi.poiParentGroupName + "/" + track.track_name);
+                    }
                 }
 
                 track.fileName = (fi.stype == GPS.TrackFileInfo.SourceType.FileName ? fi.fileOrBuffer
                     : tname + ".gpx");
                 track.calculateParameters();
                 track.lastNonZeroPos = track.lastData;
+
+                if (nlist.Count > 0 && track.way.TotalPoints < 3)
+                    findAndMarkWayPoints(track, nlist, nsm);
 
                 return track;
             }
@@ -421,6 +430,39 @@ namespace GMView.TrackLoader
                 doc = null;
             }
         }
+
+        /// <summary>
+        /// Find any way point and try to place it on the track
+        /// </summary>
+        /// <param name="track"></param>
+        /// <param name="nlist"></param>
+        /// <param name="nsm"></param>
+        private void findAndMarkWayPoints(GPSTrack track, XmlNodeList nlist, XmlNamespaceManager nsm)
+        {
+            double lon, lat;
+            try
+            {
+                ncGeo.FindNearestPointByDistance findctx = new ncGeo.FindNearestPointByDistance();
+
+                foreach (XmlNode xnode in nlist)
+                {
+                    lat = NMEACommand.getDouble(xnode.Attributes.GetNamedItem("lat").Value);
+                    lon = NMEACommand.getDouble(xnode.Attributes.GetNamedItem("lon").Value);
+                    findctx.init(lon, lat);
+                    track.findNearest(findctx);
+
+                    if (findctx.resultPoint != null && findctx.distance <= 0.01)
+                        findctx.resultPoint.Value.ptype = NMEA_LL.PointType.MWP;
+                }
+
+                track.calculateParameters();
+            }
+            catch (System.Exception)
+            {
+
+            }
+        }
+
 
         /// <summary>
         /// Loads one track point from GPX xml document
@@ -467,6 +509,166 @@ namespace GMView.TrackLoader
             track.trackPointData.AddLast(rmc);
         }
 
+        /// <summary>
+        /// Saves track and surrounding POIs into GPX file
+        /// </summary>
+        /// <param name="track"></param>
+        /// <param name="fi"></param>
+        /// <param name="poiFact"></param>
+        /// <param name="igroupFact"></param>
+        public void save(GPSTrack track, GMView.GPS.TrackFileInfo fi, BookMarkFactory poiFact, GMView.Bookmarks.POIGroupFactory igroupFact)
+        {
+            double minlon, minlat, maxlon, maxlat;
+            XmlTextWriter writer = null;
+            System.Globalization.CultureInfo cul = new System.Globalization.CultureInfo("");
+            System.Globalization.NumberFormatInfo nf = cul.NumberFormat;
+
+            lock (track)
+            {
+                writer = new XmlTextWriter(fi.fileOrBuffer, Encoding.UTF8);
+                writer.Formatting = Formatting.Indented;
+                writer.WriteStartDocument();
+                writer.WriteStartElement("gpx");
+                writer.WriteAttributeString("version", "1.1");
+                writer.WriteAttributeString("creator", track.who);
+                writer.WriteAttributeString("xmlns:xsi", @"http://www.w3.org/2001/XMLSchema-instance");
+                writer.WriteAttributeString("xmlns", @"http://www.topografix.com/GPX/1/1");
+                writer.WriteAttributeString("xsi:schemaLocation", @"http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd");
+
+                // metadata section
+                {
+                    writer.WriteStartElement("metadata");
+                    writer.WriteElementString("name", track.track_name);
+                    {
+                        writer.WriteStartElement("author");
+                        writer.WriteElementString("name", Program.opt.author);
+                        {
+                            writer.WriteStartElement("email");
+                            string email = Program.opt.email;
+                            writer.WriteAttributeString("id", email.Substring(0, email.IndexOf('@')));
+                            writer.WriteAttributeString("domain", email.Substring(email.IndexOf('@') + 1));
+                            writer.WriteEndElement(); // email
+                        }
+                        writer.WriteEndElement(); //author
+                    }
+
+                    writer.WriteElementString("desc", "GPX file was generated by " + track.who + " at " + Environment.MachineName);
+                    writer.WriteElementString("time", track.startTime.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"));
+                    writer.WriteElementString("copyright", "GNU FPL");
+                    {
+                        writer.WriteStartElement("bounds");
+                        track.getBounds(out minlon, out minlat, out maxlon, out maxlat);
+                        writer.WriteAttributeString("minlat", minlat.ToString("F8", nf));
+                        writer.WriteAttributeString("minlon", minlon.ToString("F8", nf));
+                        writer.WriteAttributeString("maxlat", maxlat.ToString("F8", nf));
+                        writer.WriteAttributeString("maxlon", maxlon.ToString("F8", nf));
+                        writer.WriteEndElement();
+                    }
+                    writer.WriteEndElement();
+                }
+                //track section
+                writer.WriteStartElement("trk");
+                writer.WriteElementString("name", track.track_name);
+                writer.WriteStartElement("extensions");
+                writer.WriteElementString("travel_time", track.travel_time_string);
+                writer.WriteElementString("travel_distance", track.distance.ToString("F2", nf));
+                writer.WriteEndElement();
+                writer.WriteStartElement("trkseg");
+
+                foreach (NMEA_LL tp in track.trackPointData)
+                {
+                    writer.WriteStartElement("trkpt");
+                    writer.WriteAttributeString("lon", tp.lon.ToString("F8", nf));
+                    writer.WriteAttributeString("lat", tp.lat.ToString("F8", nf));
+                    writer.WriteElementString("time", tp.utc_time.ToString("yyyy-MM-ddTHH:mm:ssZ"));
+                    writer.WriteElementString("type", tp.ptype.ToString());
+                    writer.WriteElementString("ele", tp.height.ToString("F3", nf));
+                    writer.WriteElementString("hdop", tp.HDOP.ToString("F1", nf));
+                    writer.WriteElementString("sat", tp.usedSats.ToString());
+                    if (tp.speed != 0 || tp.dir_angle != 0)
+                    {
+                        writer.WriteStartElement("extensions");
+                        writer.WriteElementString("vel", tp.speed.ToString("F2", nf));
+                        writer.WriteElementString("dir", tp.dir_angle.ToString("F1", nf));
+                        writer.WriteEndElement(); //extensions
+                    }
+                    writer.WriteEndElement(); //trkpt
+
+                    //if we have stay waypoint, then start new track segment
+                    if (tp.ptype == NMEA_LL.PointType.SWP)
+                    {
+                        writer.WriteEndElement(); //trkseg
+                        writer.WriteStartElement("trkseg");
+                    }
+
+                }
+
+                writer.WriteEndElement(); //trkseg
+
+                writer.WriteEndElement(); //trk
+
+                saveWayPoints(track.way, writer, nf);
+
+                { // save bookmarks if we have them in our region
+                    double delta_lon = (maxlon - minlon) / 25;
+                    double delta_lat = (maxlat - minlat) / 25;
+
+                    List<Bookmark> booklist = BookMarkFactory.singleton.getBookmarksByBounds(
+                        minlon - delta_lon, minlat - delta_lat, maxlon + delta_lon, maxlat + delta_lat);
+                    if (booklist.Count > 0)
+                    {
+                        foreach (Bookmark book in booklist)
+                        {
+                            writer.WriteStartElement("wpt");
+                            writer.WriteAttributeString("lon", book.lon.ToString("F8", nf));
+                            writer.WriteAttributeString("lat", book.lat.ToString("F8", nf));
+                            writer.WriteElementString("name", book.Name);
+                            writer.WriteElementString("desc", book.Description);
+                            writer.WriteElementString("cmt", book.Comment);
+                            writer.WriteElementString("sym", book.PtypeS);
+                            writer.WriteElementString("time", book.Created.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"));
+                            writer.WriteEndElement();
+                        }
+                    }
+                }
+
+                // end of gpx root tag
+                writer.WriteEndElement(); //gpx
+                writer.WriteEndDocument();
+                writer.Flush();
+                writer.Close();
+            }
+        }
+
+        /// <summary>
+        /// Save all waypoint from our Way as route in GPX file
+        /// </summary>
+        /// <param name="way"></param>
+        /// <param name="writer"></param>
+        /// <param name="nf"></param>
+        private void saveWayPoints(GPS.Way way, XmlTextWriter writer, System.Globalization.NumberFormatInfo nf)
+        {
+            if (way.TotalPoints <= 2)
+                return;
+
+            writer.WriteStartElement("rte");
+            writer.WriteElementString("name", way.name);
+            foreach (ncGeo.WayBase.WayPoint wp in way.wayPoints)
+            {
+                writer.WriteStartElement("rtept");
+                writer.WriteAttributeString("lon", wp.point.lon.ToString("F6", nf));
+                writer.WriteAttributeString("lat", wp.point.lat.ToString("F6", nf));
+                writer.WriteElementString("time", wp.point.utc_time.ToString("yyyy-MM-ddTHH:mm:ssZ"));
+                writer.WriteElementString("type", wp.ptype.ToString());
+                writer.WriteElementString("ele", wp.point.height.ToString("F3", nf));
+                writer.WriteElementString("hdop", wp.point.HDOP.ToString("F1", nf));
+                writer.WriteElementString("sat", wp.point.usedSats.ToString());
+
+                writer.WriteEndElement();
+            }
+            writer.WriteEndElement();
+        }
         #endregion
+
     }
 }

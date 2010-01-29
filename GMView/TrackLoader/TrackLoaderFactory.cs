@@ -67,7 +67,7 @@ namespace GMView.TrackLoader
             {
                 if(pair.Value.isOurFormat(fileInfo))
                 {
-                    fileInfo.fileType = pair.Key;
+                    fileInfo.FileType = pair.Key;
                     return pair.Value as IPOILoader;
                 }
             }
@@ -86,7 +86,7 @@ namespace GMView.TrackLoader
             {
                 if (pair.Value.isOurFormat(fileInfo))
                 {
-                    fileInfo.fileType = pair.Key;
+                    fileInfo.FileType = pair.Key;
                     return pair.Value as ITrackLoader;
                 }
             }

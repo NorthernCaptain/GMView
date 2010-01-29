@@ -358,28 +358,52 @@ namespace GMView
             return lst;
         }
 
-        public List<Bookmark> getBookmarksByBounds(double minlon, double minlat, double maxlon, double maxlat)
+        /// <summary>
+        /// Return a list of POI that are in the given bounds and have auto show flag switched on
+        /// </summary>
+        /// <param name="lon1"></param>
+        /// <param name="lat1"></param>
+        /// <param name="lon2"></param>
+        /// <param name="lat2"></param>
+        /// <returns></returns>
+        public List<Bookmark> getBookmarksByBounds(double lon1, double lat1, double lon2, double lat2)
         {
             List<Bookmark> blist = new List<Bookmark>();
-            foreach (KeyValuePair<string, Bookmark> pair in marks)
+
+            DBObj dbo = null;
+            try
             {
-                Bookmark bmark = pair.Value;
-                if (bmark.lon >= minlon && bmark.lat >= minlat
-                    && bmark.lon <= maxlon && bmark.lat <= maxlat)
+                dbo = new DBObj(@"select " + BookMarkFactory.poiSelectFields
+                    + "from poi, poi_type, poi_spatial where poi.id = poi_spatial.id "
+                    + "and poi_type.id = poi.type and poi_type.is_auto_show=1 "
+                    + "and poi_spatial.minLon>=@LON1 and poi_spatial.maxLon<=@LON2 "
+                    + "and poi_spatial.minLat>=@LAT1 and poi_spatial.maxLat<=@LAT2");
+
+                dbo.addFloatPar("@LON1", (lon1 < lon2 ? lon1 : lon2));
+                dbo.addFloatPar("@LON2", (lon1 < lon2 ? lon2 : lon1));
+                dbo.addFloatPar("@LAT1", (lat1 < lat2 ? lat1 : lat2));
+                dbo.addFloatPar("@LAT2", (lat1 < lat2 ? lat2 : lat1));
+
+                DbDataReader reader = dbo.cmd.ExecuteReader();
+                while (reader.Read())
                 {
-                    bool need_to_add = true;
-                    foreach (Bookmark blistbook in blist)
-                    {
-                        if (bmark.lon == blistbook.lon && bmark.lat == blistbook.lat)
-                        {
-                            need_to_add = false;
-                            break;
-                        }
-                    }
-                    if(need_to_add)
-                        blist.Add(bmark);
+                    //DO each item processing
+                    Bookmark poi = new Bookmark(reader);
+                    poi.IsAutoShow = true;
+                    blist.Add(poi);
                 }
             }
+            catch (System.Exception e)
+            {
+                Program.Log("POIBounds SQLError: " + e.ToString());
+
+            }
+            finally
+            {
+                if (dbo != null)
+                    dbo.Dispose();
+            }
+            
             return blist;
         }
 
@@ -390,10 +414,10 @@ namespace GMView
         /// <param name="fileInfo"></param>
         public void exportTo(GPS.TrackFileInfo fileInfo)
         {
-            TrackLoader.IPOILoader loader = TrackLoader.TrackLoaderFactory.singleton.getLoaderByName(fileInfo.fileType)
+            TrackLoader.IPOILoader loader = TrackLoader.TrackLoaderFactory.singleton.getLoaderByName(fileInfo.FileType)
                         as TrackLoader.IPOILoader;
             if (loader == null)
-                throw new ArgumentException("Wrong format for exporting: " + fileInfo.fileType);
+                throw new ArgumentException("Wrong format for exporting: " + fileInfo.FileType);
 
             Bookmarks.POIGroup root = groupFactory.rootGroup;
             List<Bookmark> childrenPOI = this.loadByParent(0, false);
@@ -416,172 +440,6 @@ namespace GMView
             if (onChanged != null)
                 onChanged(this);
             return count;
-        }
-
-        private int subloadBookmarksGPX(XmlNodeList nlist, XmlNamespaceManager nsm, string groupname)
-        {
-            int count = 0;
-            ncUtils.DBConnPool.singleton.beginThreadTransaction();
-            NMEA_RMC rmc = new NMEA_RMC();
-
-            if (string.IsNullOrEmpty(groupname))
-                groupname = "Imported";
-            
-            try
-            {
-                Bookmarks.POIGroup parentGroup = groupFactory.rootGroup.getSubGroupByPath(groupname);
-                foreach (XmlNode node in nlist)
-                {
-                    Bookmark bmark = new Bookmark();
-                    bmark.IsDbChange = false;
-
-                    bmark.lat = NMEACommand.getDouble(node.Attributes.GetNamedItem("lat").Value);
-                    bmark.lon = NMEACommand.getDouble(node.Attributes.GetNamedItem("lon").Value);
-
-                    XmlNode xnode = node.SelectSingleNode("./gpx:time", nsm);
-                    if (xnode != null)
-                    {
-                        try
-                        {
-                            rmc.utc_time = DateTime.Parse(xnode.InnerText).ToUniversalTime();
-                        }
-                        catch
-                        {
-                            rmc.utc_time = DateTime.MinValue.AddYears(2000).ToUniversalTime();
-                        }
-
-                    }
-                    else
-                        rmc.utc_time = DateTime.MinValue.AddYears(2000).ToUniversalTime();
-                    bmark.Created = rmc.utc_time.ToLocalTime();
-
-                    xnode = node.SelectSingleNode("./gpx:name", nsm);
-                    if (xnode == null)
-                        continue;
-                    bmark.Name = xnode.InnerText.Trim();
-
-                    xnode = node.SelectSingleNode("./gpx:desc", nsm);
-                    if (xnode != null)
-                        bmark.Description = xnode.InnerText.Trim();
-
-                    xnode = node.SelectSingleNode("./gpx:cmt", nsm);
-                    if (xnode != null)
-                        bmark.Comment = xnode.InnerText.Trim();
-
-                    //Empty description but non-empty comment
-                    if (string.IsNullOrEmpty(bmark.Description) &&
-                        !string.IsNullOrEmpty(bmark.Comment))
-                        bmark.Description = bmark.Comment;
-
-                    xnode = node.SelectSingleNode("./gpx:ele", nsm);
-                    if (xnode != null)
-                    {
-                        bmark.altitude = NMEACommand.getDouble(xnode.InnerText.Trim());
-                    }
-
-                    xnode = node.SelectSingleNode("./gpx:extensions/gpx:group", nsm);
-                    if (xnode != null)
-                    {
-                        bmark.group = xnode.InnerText.Trim();
-                    }
-
-                    xnode = node.SelectSingleNode("./gpx:sym", nsm);
-                    if (xnode != null)
-                    {
-                        bmark.PtypeS = xnode.InnerText.Trim();
-                    }
-
-                    bmark.IsDbChange = true;
-                    bmark.updateDB();
-
-                    bmark.addLinkDB(parentGroup.getSubGroupByPath(bmark.group));
-
-                    count++;
-                }
-            }
-            catch (System.Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-                ncUtils.DBConnPool.singleton.commitThreadTransaction();
-            }
-
-            if (onChanged != null)
-                onChanged(this);
-            return count;
-        }
-
-        private int subloadBookmarksKML(XmlNodeList nlist, XmlNamespaceManager nsm, string groupname)
-        {
-            int count = 0;
-            NMEA_RMC rmc = new NMEA_RMC();
-            double lon, lat, hei;
-            DateTime startTime = DateTime.Now;
-
-            ncUtils.DBConnPool.singleton.beginThreadTransaction();
-
-            if (string.IsNullOrEmpty(groupname))
-                groupname = "Imported";
-
-            try
-            {
-                Bookmarks.POIGroup parentGroup = groupFactory.rootGroup.getSubGroupByPath(groupname);
-                foreach (XmlNode node in nlist)
-                {
-                    XmlNode xnode = node.SelectSingleNode("./kml:Point/kml:coordinates", nsm);
-                    if (xnode != null)
-                    { //we have POI here, lets add it to our bookmarks
-                        if (!GPSTrack.splitKMLCoordTuple(xnode.InnerText, out lon, out lat, out hei))
-                            continue;
-                        Bookmark bmark = new Bookmark();
-                        bmark.IsDbChange = false;
-
-                        bmark.lon = lon;
-                        bmark.lat = lat;
-
-                        xnode = node.SelectSingleNode("./kml:name", nsm);
-                        if (xnode == null)
-                            continue;
-                        bmark.Name = xnode.InnerText;
-                        xnode = node.SelectSingleNode("./kml:description", nsm);
-                        if (xnode != null)
-                            bmark.Description = xnode.InnerText;
-
-                        bmark.IsDbChange = true;
-                        bmark.updateDB();
-
-                        bmark.addLinkDB(parentGroup);
-
-                        count++;
-                    }
-                }
-            }
-            catch (System.Exception)
-            {
-
-            }
-            finally
-            {
-                ncUtils.DBConnPool.singleton.commitThreadTransaction();
-            }
-
-            TimeSpan dTime = DateTime.Now - startTime;
-            Program.Log("Loaded " + count + " POI's in seconds: " + dTime.TotalSeconds.ToString("F3"));
-            if (onChanged != null)
-                onChanged(this);
-            return count;
-        }
-
-        internal void loadTemporaryBookmarks(string groupname, XmlNodeList nlist, XmlNamespaceManager nsm)
-        {
-            if (nlist.Count == 0)
-                return;
-            if (nlist.Item(0).LocalName == "Placemark")
-                subloadBookmarksKML(nlist, nsm, groupname);
-            else
-                subloadBookmarksGPX(nlist, nsm, groupname);
         }
 
         /// <summary>
