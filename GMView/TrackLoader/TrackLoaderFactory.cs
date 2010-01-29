@@ -39,6 +39,8 @@ namespace GMView.TrackLoader
         {
             trackLoaders.Add("gpx", new GPXLoader());
             trackLoaders.Add("kml", new KMLLoader());
+            trackLoaders.Add("nmea", new NMEALoader());
+            trackLoaders.Add("txt", new NMEALoader());
         }
 
         /// <summary>
@@ -67,6 +69,25 @@ namespace GMView.TrackLoader
                 {
                     fileInfo.fileType = pair.Key;
                     return pair.Value as IPOILoader;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Finds and returns TrackLoader object for the given file or buffer
+        /// Return null if not found
+        /// </summary>
+        /// <param name="fileInfo"></param>
+        /// <returns></returns>
+        public ITrackLoader getTrackLoader(GPS.TrackFileInfo fileInfo)
+        {
+            foreach (KeyValuePair<string, IFormatLoader> pair in trackLoaders)
+            {
+                if (pair.Value.isOurFormat(fileInfo))
+                {
+                    fileInfo.fileType = pair.Key;
+                    return pair.Value as ITrackLoader;
                 }
             }
             return null;

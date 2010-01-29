@@ -22,9 +22,153 @@ namespace GMView.TrackLoader
             throw new NotImplementedException();
         }
 
-        public GPSTrack load(GMView.GPS.TrackFileInfo info)
+        /// <summary>
+        /// Loads GPSTrack from Google Earth KML file. Throws an ApplicationException if something goes wrong
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        public GPSTrack load(GMView.GPS.TrackFileInfo fi)
         {
-            throw new NotImplementedException();
+            XmlDocument doc = fi.openXml();
+
+            XmlNamespaceManager nsm = new XmlNamespaceManager(doc.NameTable);
+            nsm.AddNamespace("xlink", "http://www.w3.org/1999/xlink");
+
+            if (doc.DocumentElement.Name != "kml")
+                throw new ApplicationException("Not a valid KML file! Could not find kml root tag.");
+
+            { //retrieve xmlns
+                XmlNode xnsnode = doc.DocumentElement.Attributes.GetNamedItem("xmlns");
+                if (xnsnode != null)
+                    nsm.AddNamespace("kml", xnsnode.Value);
+                else
+                {
+                    nsm.AddNamespace("kml", "");
+                }
+            }
+
+
+            GPSTrack track = new GPSTrack();
+
+            string tname;
+
+            if (fi.stype == GPS.TrackFileInfo.SourceType.FileName)
+            {
+                string dirname = Path.GetDirectoryName(fi.fileOrBuffer);
+                tname = dirname.Substring(dirname.LastIndexOf(Path.DirectorySeparatorChar) + 1)
+                      + Path.DirectorySeparatorChar + Path.GetFileNameWithoutExtension(fi.fileOrBuffer);
+                track.track_name = "Track: " + tname;
+                track.wayObject.name = "Route: " + Path.GetFileNameWithoutExtension(fi.fileOrBuffer);
+            }
+            else
+            {
+                tname = "KML buffer " + DateTime.Now.ToShortDateString()
+                    + " " + DateTime.Now.ToShortTimeString();
+                track.track_name = "Track: " + tname;
+                track.wayObject.name = "Route: " + tname;
+            }
+
+
+            XmlNode folder = selectKMLFolders(doc, nsm);
+            XmlNode titleNode = null;
+
+            if (folder == null)
+            {
+                throw new ApplicationException("This file does not have any tracks or routes! Check file content");
+            }
+
+            XmlNodeList nlist = folder.SelectNodes("./kml:Placemark", nsm);
+            string nodeval = "";
+            foreach (XmlNode xnode in nlist)
+            {
+
+                XmlNodeList coordlist;
+                coordlist = xnode.SelectNodes("./kml:LineString/kml:coordinates", nsm);
+                if (coordlist.Count == 0)
+                    coordlist = xnode.SelectNodes("./*/kml:LineString/kml:coordinates", nsm);
+                foreach (XmlNode cnode in coordlist)
+                {
+                    loadKMLPoints(track, cnode.InnerText);
+                    if (titleNode == null)
+                        titleNode = xnode.SelectSingleNode("./kml:name", nsm);
+                }
+            }
+
+            if (track.trackPointData.Count == 0)
+                throw new ApplicationException("This file does not have any tracks or routes! Check file content");
+            XmlNode docTitleNode = folder.SelectSingleNode("./kml:name", nsm);
+            if (docTitleNode != null)
+                titleNode = docTitleNode;
+
+            if (titleNode != null)
+            {
+                nodeval = titleNode.InnerText;
+                if (nodeval.Length > 7 && nodeval.Substring(0, 7) == "Track: ")
+                    nodeval = nodeval.Substring(7);
+                track.track_name = "Track: " + nodeval;
+                track.wayObject.name = "Route: " + nodeval;
+                tname = nodeval;
+            }
+
+            subloadBookmarks(nlist, nsm, track.track_name);
+
+            if (fi.stype == GPS.TrackFileInfo.SourceType.FileName)
+                track.fileName = fi.fileOrBuffer;
+            else
+                track.fileName = tname + ".kml";
+
+            track.calculateParameters();
+            track.lastNonZeroPos = track.lastData;
+
+            return track;
+        }
+
+        /// <summary>
+        /// Searches for Folder tags and return first folder that contains coordinates
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="nsm"></param>
+        /// <param name="track"></param>
+        /// <returns></returns>
+        private XmlNode selectKMLFolders(XmlDocument doc, XmlNamespaceManager nsm)
+        {
+            string nodeval = "";
+            XmlNodeList nlist = doc.DocumentElement.SelectNodes("//kml:Folder", nsm);
+            foreach (XmlNode xnode in nlist)
+            {
+                if (ncUtils.XmlHelper.xmltag(xnode, "./kml:Placemark/kml:LineString/kml:coordinates", nsm, ref nodeval)
+                    || ncUtils.XmlHelper.xmltag(xnode, "./kml:Placemark/*/kml:LineString/kml:coordinates", nsm, ref nodeval))
+                    return xnode;
+            }
+            XmlNode res = doc.DocumentElement.SelectSingleNode("./kml:Document", nsm);
+            if (res != null && (res.SelectSingleNode("./kml:Placemark/*/kml:LineString/kml:coordinates", nsm) != null
+                            || res.SelectSingleNode("./kml:Placemark/kml:LineString/kml:coordinates", nsm) != null))
+                return res;
+            return null;
+        }
+
+        private void loadKMLPoints(GPSTrack track, string nodeval)
+        {
+            double lon, lat, hei;
+            char[] sep = new char[] { ' ', '\n', '\r', '\t' };
+            string[] tuples = nodeval.Split(sep, StringSplitOptions.RemoveEmptyEntries);
+            DateTime now = DateTime.Now.ToUniversalTime();
+            foreach (string tuple in tuples)
+            {
+                if (splitKMLCoordTuple(tuple, out lon, out lat, out hei))
+                {
+                    NMEA_RMC rmc = new NMEA_RMC();
+                    rmc.lat = lat;
+                    rmc.lon = lon;
+                    rmc.height = hei;
+                    rmc.state = NMEACommand.Status.DataOK;
+                    rmc.utc_time = now;
+                    rmc.ptype = NMEA_LL.PointType.TP;
+
+                    track.trackPointData.AddLast(rmc);
+                    track.lastData = track.LastTrackPos = track.lastNonZeroPos = rmc;
+                }
+            }
         }
 
         #endregion
@@ -93,6 +237,13 @@ namespace GMView.TrackLoader
 
         #region IPOILoader Members
 
+        /// <summary>
+        /// Import POI into bookmarks group
+        /// </summary>
+        /// <param name="fi"></param>
+        /// <param name="intoFactory"></param>
+        /// <param name="groupFactory"></param>
+        /// <returns></returns>
         public int importPOIs(GMView.GPS.TrackFileInfo fi, BookMarkFactory intoFactory, 
                               GMView.Bookmarks.POIGroupFactory groupFactory)
         {
@@ -121,9 +272,13 @@ namespace GMView.TrackLoader
                 return 0;
             string gname = (fi.stype == GPS.TrackFileInfo.SourceType.FileName ?
                             Path.GetFileNameWithoutExtension(fi.fileOrBuffer) :
-                            "kml-buffer-" + DateTime.Now.ToShortDateString());
+                            "kml-buffer-" + DateTime.Now.ToShortDateString() +
+                            "-" + DateTime.Now.ToShortTimeString());
 
-            return subloadBookmarks(nlist, nsm, gname);
+            int count = subloadBookmarks(nlist, nsm, gname);
+            if (fi.stype == GPS.TrackFileInfo.SourceType.StringBuffer)
+                fi.fileOrBuffer = gname; //write our new name back to the buffer
+            return count;
         }
 
         private int subloadBookmarks(XmlNodeList nlist, XmlNamespaceManager nsm, string groupname)

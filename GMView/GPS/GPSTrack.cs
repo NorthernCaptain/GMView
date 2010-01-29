@@ -42,7 +42,13 @@ namespace GMView
         /// <summary>
         /// latest position saved in track
         /// </summary>
-        protected NMEA_LL lastTrackPos;
+        private NMEA_LL lastTrackPos;
+
+        public NMEA_LL LastTrackPos
+        {
+            get { return lastTrackPos; }
+            set { lastTrackPos = value; }
+        }
         /// <summary>
         /// last position with non-zero speed
         /// </summary>
@@ -457,11 +463,16 @@ namespace GMView
         public NMEA_LL lastData
         {
             get { return lastPos; }
+            set { lastPos = value; }
         }
 
+        /// <summary>
+        /// Get or set last speed position (non-zero speed)
+        /// </summary>
         public NMEA_LL lastNonZeroPos
         {
             get { return lastSpeedPos; }
+            set { lastSpeedPos = value;}
         }
 
         public override string ToString()
@@ -1188,22 +1199,13 @@ namespace GMView
         /// </summary>
         /// <param name="fname"></param>
         /// <returns></returns>
-        public static GPSTrack loadFromFile(string fname)
+        public static GPSTrack loadFrom(GPS.TrackFileInfo fi)
         {
-            System.IO.StreamReader reader;
-            reader = new System.IO.StreamReader(fname);
-            reader.ReadLine(); //skip ?xml? definition
-            string first_line = reader.ReadLine();
-            reader.Close();
-            if (first_line.Contains("gpx"))
-                return loadGPX(fname);
-            if (first_line.Contains("kml"))
-                return loadKML(fname, true);
-            if (first_line.Contains("$GP") || first_line.Contains("$PS"))
-                return loadNMEA(fname);
-            if (first_line.Contains("gps_track"))
-                return loadXml(fname);
-            throw new ApplicationException("Unknown file format! Could not load file: " + fname);
+            TrackLoader.ITrackLoader loader = TrackLoader.TrackLoaderFactory.singleton.getTrackLoader(fi);
+            if(loader == null)
+                throw new ApplicationException("Unknown file format! Could not load file: " 
+                    + (fi.stype == TrackFileInfo.SourceType.FileName ? fi.fileOrBuffer : "Clipboard buffer"));
+            return loader.load(fi);
         }
 
         /// <summary>
@@ -1211,11 +1213,11 @@ namespace GMView
         /// </summary>
         /// <param name="fname"></param>
         /// <returns>Return a list of tracks</returns>
-        public static List<GPSTrack> loadTracks(string fname)
+        public static List<GPSTrack> loadTracks(GPS.TrackFileInfo fi)
         {
             List<GPSTrack> gtlist = new List<GPSTrack>();
 
-            GPSTrack track = loadFromFile(fname);
+            GPSTrack track = loadFrom(fi);
             if (track.startTime.DayOfYear == track.endTime.DayOfYear)
             {
                 gtlist.Add(track);

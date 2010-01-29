@@ -94,6 +94,7 @@ namespace ncGeo
         NMEA_LL lastData
         {
             get;
+            set;
         }
 
         /// <summary>
@@ -102,6 +103,7 @@ namespace ncGeo
         NMEA_LL lastNonZeroPos
         {
             get;
+            set;
         }
 
         /// <summary>

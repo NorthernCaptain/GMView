@@ -1211,7 +1211,7 @@ namespace GMView
             GPSTrack gtr;
             try
             {
-                gtr = GPSTrack.loadFromFile(trackInfo.fileOrBuffer);
+                gtr = GPSTrack.loadFrom(trackInfo);
                 gtr.need_arrows = false;
                 gtr.trackMode = GPSTrack.TrackMode.ViewSaved;
                 gtr.map = mapo;
@@ -1261,7 +1261,8 @@ namespace GMView
 
                 try    
                 {
-                    List<GPSTrack> glist = GPSTrack.loadTracks(trackOpenFileDialog.FileName);
+                    List<GPSTrack> glist = GPSTrack.loadTracks(new GPS.TrackFileInfo(trackOpenFileDialog.FileName,
+                                                                GMView.GPS.TrackFileInfo.SourceType.FileName));
                     if (glist.Count > 1)
                     {
                         folderBrowserDialog.Description = "Your file was splitted into " + glist.Count + " tracks.\nDo you wish to save them into separate files?\nIf so then choose a folder.";
@@ -1628,10 +1629,21 @@ namespace GMView
                     string fname = trackOpenFileDialog.FileName;
                     int imported = BookMarkFactory.singleton.importFrom(new GPS.TrackFileInfo(fname, 
                                                             GPS.TrackFileInfo.SourceType.FileName));
-                    MessageBox.Show("Successfully loaded " + imported + " items from \n" +
-                    trackOpenFileDialog.FileName + "\ninto "+ Path.GetFileNameWithoutExtension(fname)
-                                    +" POI group", "POI loading results", 
-                                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    if (imported > 0)
+                    {
+                        MessageBox.Show("Successfully loaded " + imported + " items from \n" +
+                        trackOpenFileDialog.FileName + "\ninto " + Path.GetFileNameWithoutExtension(fname)
+                                        + " POI group", "POI loading results",
+                                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    }
+                    else
+                    {
+                        MessageBox.Show(
+                                (imported == 0 ? "There is no POI information in the file."
+                                : "Unrecognized format of the given file."), "POI loading results",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -1710,6 +1722,38 @@ namespace GMView
                 string clipbuffer = Clipboard.GetText();
 
                 loadTrack(new GPS.TrackFileInfo(clipbuffer, GPS.TrackFileInfo.SourceType.StringBuffer));
+            }
+        }
+
+        private void pastePOIFromClipboardToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Clipboard.ContainsText())
+            {
+                try
+                {
+                    GPS.TrackFileInfo info = new GPS.TrackFileInfo(Clipboard.GetText(),
+                                                 GPS.TrackFileInfo.SourceType.StringBuffer);
+                    int imported = BookMarkFactory.singleton.importFrom(info);
+                    if (imported > 0)
+                    {
+                        MessageBox.Show("Successfully loaded " + imported + " items from Clipboard\ninto '"
+                                + info.fileOrBuffer
+                                + "' POI group", "POI loading results",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show(
+                                (imported == 0 ? "There is no POI information in the clipboard."
+                                : "Unrecognized format of the input buffer."), "POI loading results",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Could not load POI from clipboard:\nReason:\n" +
+                        ex.ToString(), "Error loading POIs", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 

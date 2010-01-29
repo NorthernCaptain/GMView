@@ -411,7 +411,7 @@ namespace GMView
         {
             TrackLoader.IPOILoader loader = TrackLoader.TrackLoaderFactory.singleton.getPOILoader(fileInfo);
             if(loader == null)
-                return 0;
+                return -1;
             int count = loader.importPOIs(fileInfo, this, groupFactory);
             if (onChanged != null)
                 onChanged(this);

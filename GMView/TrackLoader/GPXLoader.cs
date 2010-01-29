@@ -91,10 +91,16 @@ namespace GMView.TrackLoader
             XmlNodeList nlist = doc.DocumentElement.SelectNodes("//gpx:wpt", nsm);
             if (nlist.Count == 0)
                 return 0;
+
             string gname = (fi.stype == GPS.TrackFileInfo.SourceType.FileName ?
                 Path.GetFileNameWithoutExtension(fi.fileOrBuffer) :
-                "gpx-buffer-" + DateTime.Now.ToShortDateString());
-            return subloadBookmarks(nlist, nsm, gname);
+                "gpx-buffer-" + DateTime.Now.ToShortDateString() +
+                "-" + DateTime.Now.ToShortTimeString());
+
+            int count = subloadBookmarks(nlist, nsm, gname);
+            if (fi.stype == GPS.TrackFileInfo.SourceType.StringBuffer)
+                fi.fileOrBuffer = gname;
+            return count;
         }
 
         /// <summary>
@@ -320,9 +326,145 @@ namespace GMView.TrackLoader
             throw new NotImplementedException();
         }
 
-        public GPSTrack load(GMView.GPS.TrackFileInfo info)
+        public GPSTrack load(GMView.GPS.TrackFileInfo fi)
         {
-            throw new NotImplementedException();
+            XmlDocument doc = null; 
+
+            try
+            {
+                doc = fi.openXml();
+
+                if (doc.DocumentElement.Name != "gpx")
+                    throw new ApplicationException("Not a valid GPX file! Could not find gpx root tag.");
+
+                XmlNamespaceManager nsm = new XmlNamespaceManager(doc.NameTable);
+
+                { //retrieve xmlns
+                    XmlNode xnsnode = doc.DocumentElement.Attributes.GetNamedItem("xmlns");
+                    if (xnsnode != null)
+                        nsm.AddNamespace("gpx", xnsnode.Value);
+                    else
+                    {
+                        nsm.AddNamespace("gpx", "");
+                    }
+                }
+
+
+                GPSTrack track = new GPSTrack();
+
+                string tname;
+
+                XmlNode node = doc.DocumentElement.SelectSingleNode("/gpx:gpx/gpx:metadata/gpx:name", nsm);
+                if (node != null)
+                {
+                    string nodeval = node.InnerText;
+                    if (nodeval.Length > 7 && nodeval.Substring(0, 7) == "Track: ")
+                        nodeval = nodeval.Substring(7);
+
+                    track.track_name = "Track: " + nodeval;
+                    track.wayObject.name = "Route: " + nodeval;
+                    tname = nodeval;
+                }
+                else
+                {
+                    if (fi.stype == GPS.TrackFileInfo.SourceType.FileName)
+                    {
+                        string dirname = Path.GetDirectoryName(fi.fileOrBuffer);
+                        tname = dirname.Substring(dirname.LastIndexOf(Path.DirectorySeparatorChar) + 1)
+                              + Path.DirectorySeparatorChar + Path.GetFileNameWithoutExtension(fi.fileOrBuffer);
+                        track.track_name = "Track: " + tname;
+                        track.wayObject.name = "Route: " + Path.GetFileNameWithoutExtension(fi.fileOrBuffer);
+                    }
+                    else
+                    {
+                        tname = "GPX buffer " + DateTime.Now.ToShortDateString()
+                            + " " + DateTime.Now.ToShortTimeString();
+                        track.track_name = "Track: " + tname;
+                        track.wayObject.name = "Route: " + tname;
+                    }
+                }
+
+                XmlNodeList nlist = doc.DocumentElement.SelectNodes("/gpx:gpx/gpx:trk/gpx:trkseg/gpx:trkpt", nsm);
+                foreach (XmlNode xnode in nlist)
+                {
+                    loadPoint(track, xnode, nsm);
+                }
+
+                if (nlist.Count == 0) //we don't have track in file, lets try route
+                {
+                    nlist = doc.DocumentElement.SelectNodes("/gpx:gpx/gpx:rte/gpx:rtept", nsm);
+                    foreach (XmlNode xnode in nlist)
+                    {
+                        loadPoint(track, xnode, nsm);
+                    }
+                }
+
+                if (track.trackPointData.Count == 0)
+                    throw new ApplicationException("This file does not have any tracks or routes! Check file content");
+
+                nlist = doc.DocumentElement.SelectNodes("/gpx:gpx/gpx:wpt", nsm);
+
+                if (nlist.Count > 0)
+                {
+                    subloadBookmarks(nlist, nsm, track.track_name);
+                }
+
+                track.fileName = (fi.stype == GPS.TrackFileInfo.SourceType.FileName ? fi.fileOrBuffer
+                    : tname + ".gpx");
+                track.calculateParameters();
+                track.lastNonZeroPos = track.lastData;
+
+                return track;
+            }
+            finally
+            {
+                doc = null;
+            }
+        }
+
+        /// <summary>
+        /// Loads one track point from GPX xml document
+        /// </summary>
+        /// <param name="xnode"></param>
+        /// <param name="nsm"></param>
+        private void loadPoint(GPSTrack track, XmlNode xnode, XmlNamespaceManager nsm)
+        {
+            NMEA_RMC rmc = new NMEA_RMC();
+            rmc.lat = NMEACommand.getDouble(xnode.Attributes.GetNamedItem("lat").Value);
+            rmc.lon = NMEACommand.getDouble(xnode.Attributes.GetNamedItem("lon").Value);
+
+            string sval = "";
+            if (ncUtils.XmlHelper.xmltag(xnode, "./gpx:time", nsm, ref sval))
+            {
+                try
+                {
+                    rmc.utc_time = DateTime.Parse(sval).ToUniversalTime();
+                }
+                catch
+                {
+                    rmc.utc_time = DateTime.MinValue.AddYears(2000).ToUniversalTime();
+                }
+
+            }
+            else
+                rmc.utc_time = DateTime.MinValue.AddYears(2000).ToUniversalTime();
+
+            if (ncUtils.XmlHelper.xmltag(xnode, "./gpx:ele", nsm, ref sval))
+                rmc.height = NMEACommand.getDouble(sval);
+            if (ncUtils.XmlHelper.xmltag(xnode, "./gpx:sat", nsm, ref sval))
+                rmc.usedSats = int.Parse(sval);
+            if (ncUtils.XmlHelper.xmltag(xnode, "./gpx:hdop", nsm, ref sval))
+                rmc.HDOP = NMEACommand.getDouble(sval);
+            if (ncUtils.XmlHelper.xmltag(xnode, "./*/gpx:vel", nsm, ref sval))
+                rmc.speed = NMEACommand.getDouble(sval);
+            if (ncUtils.XmlHelper.xmltag(xnode, "./*/gpx:dir", nsm, ref sval))
+                rmc.dir_angle = NMEACommand.getDouble(sval);
+            if (ncUtils.XmlHelper.xmltag(xnode, "./gpx:type", nsm, ref sval))
+                rmc.ptype = NMEA_LL.parsePointType(sval);
+
+            track.lastData = track.lastNonZeroPos = track.LastTrackPos = rmc;
+
+            track.trackPointData.AddLast(rmc);
         }
 
         #endregion
