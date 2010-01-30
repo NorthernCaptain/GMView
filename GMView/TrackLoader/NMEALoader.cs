@@ -14,9 +14,35 @@ namespace GMView.TrackLoader
     {
         #region ITrackLoader Members
 
-        public void preLoad(GMView.GPS.TrackFileInfo info)
+        /// <summary>
+        /// Open file, read it and calculate number of points into preloadTPointCount
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        public GMView.GPS.TrackFileInfo preLoad(GMView.GPS.TrackFileInfo info)
         {
-            throw new NotImplementedException();
+            TextReader reader = info.openReader();
+
+            if(reader == null)
+                return info;
+
+            string buf;
+
+            try
+            {
+                while ((buf = reader.ReadLine()) != null)
+                {
+                    if (buf.Substring(0, 6) == "$GPRMC")
+                    {
+                        info.preloadTPointCount++;
+                    }
+                }
+            }
+            finally
+            {
+                reader.Close();
+            }
+            return info;
         }
 
         /// <summary>
@@ -97,13 +123,7 @@ namespace GMView.TrackLoader
         {
             string first_line = string.Empty;
 
-            System.IO.TextReader reader;
-            if (fi.stype == GPS.TrackFileInfo.SourceType.FileName)
-            {
-                reader = new System.IO.StreamReader(fi.fileOrBuffer);
-            }
-            else
-                reader = new System.IO.StringReader(fi.fileOrBuffer);
+            System.IO.TextReader reader = fi.openReader();
 
             try
             {

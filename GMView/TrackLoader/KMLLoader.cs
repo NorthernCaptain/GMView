@@ -17,7 +17,7 @@ namespace GMView.TrackLoader
 
         #region ITrackLoader Members
 
-        public void preLoad(GMView.GPS.TrackFileInfo info)
+        public GMView.GPS.TrackFileInfo preLoad(GMView.GPS.TrackFileInfo info)
         {
             throw new NotImplementedException();
         }
@@ -34,22 +34,11 @@ namespace GMView.TrackLoader
             poiFactory = poiFact;
             groupFactory = igroupFact;
 
-            XmlNamespaceManager nsm = new XmlNamespaceManager(doc.NameTable);
-            nsm.AddNamespace("xlink", "http://www.w3.org/1999/xlink");
 
             if (doc.DocumentElement.Name != "kml")
                 throw new ApplicationException("Not a valid KML file! Could not find kml root tag.");
 
-            { //retrieve xmlns
-                XmlNode xnsnode = doc.DocumentElement.Attributes.GetNamedItem("xmlns");
-                if (xnsnode != null)
-                    nsm.AddNamespace("kml", xnsnode.Value);
-                else
-                {
-                    nsm.AddNamespace("kml", "");
-                }
-            }
-
+            XmlNamespaceManager nsm = ncUtils.XmlHelper.getNSMforDoc(doc, "kml");
 
             GPSTrack track = new GPSTrack();
 
@@ -389,13 +378,7 @@ namespace GMView.TrackLoader
         {
             string first_line = string.Empty;
 
-            System.IO.TextReader reader;
-            if (fi.stype == GPS.TrackFileInfo.SourceType.FileName)
-            {
-                reader = new System.IO.StreamReader(fi.fileOrBuffer);
-            }
-            else
-                reader = new System.IO.StringReader(fi.fileOrBuffer);
+            System.IO.TextReader reader = fi.openReader();
 
             try
             {
@@ -465,17 +448,7 @@ namespace GMView.TrackLoader
             if (doc.DocumentElement.Name != "kml")
                 throw new ApplicationException("Not a valid KML file! Could not find kml root tag.");
 
-            XmlNamespaceManager nsm = new XmlNamespaceManager(doc.NameTable);
-
-            { //retreive xmlns
-                XmlNode xnsnode = doc.DocumentElement.Attributes.GetNamedItem("xmlns");
-                if (xnsnode != null)
-                    nsm.AddNamespace("kml", xnsnode.Value);
-                else
-                {
-                    nsm.AddNamespace("kml", "");
-                }
-            }
+            XmlNamespaceManager nsm = ncUtils.XmlHelper.getNSMforDoc(doc, "kml");
 
             XmlNodeList nlist = doc.DocumentElement.SelectNodes("//kml:Placemark", nsm);
             if (nlist.Count == 0)
@@ -559,10 +532,5 @@ namespace GMView.TrackLoader
 
         #endregion
 
-        #region ITrackLoader Members
-
-
-
-        #endregion
     }
 }

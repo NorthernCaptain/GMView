@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 using System.Xml;
+using System.IO;
 
 namespace GMView.GPS
 {
@@ -10,7 +11,7 @@ namespace GMView.GPS
     /// Class for describing source of the track - file, string buffer.
     /// This class also contains info that we acquire from track file on pre-loading stage
     /// </summary>
-    public class TrackFileInfo
+    public class TrackFileInfo: IDisposable
     {
         /// <summary>
         /// Type of the source we are using
@@ -54,6 +55,30 @@ namespace GMView.GPS
         public string poiParentGroupName = "Imported";
 
         /// <summary>
+        /// Number of POIs in file, detected by preload method
+        /// 0 = no POI
+        /// -1 = POIs are there, but number of them is unrecognized
+        /// >0 = exact number of POIs
+        /// </summary>
+        public int preloadPOICount = 0;
+
+        /// <summary>
+        /// Number of points in the track inside the file
+        /// 0 = no track
+        /// -1 = track is there, but has unknown number of points
+        /// >0 = number of points
+        /// </summary>
+        public int preloadTPointCount = 0;
+
+        /// <summary>
+        /// Number of points in the route inside the file
+        /// 0 = no route in the file
+        /// -1 = route is there, but has unknown number of points
+        /// >0 = number of points
+        /// </summary>
+        public int preloadRouteCount = 0;
+
+        /// <summary>
         /// Try to open document as xml and return this XmlDocument
         /// </summary>
         /// <returns></returns>
@@ -75,6 +100,24 @@ namespace GMView.GPS
             }
 
             return openedXml;
+        }
+
+        /// <summary>
+        /// Opens and return TextReader for file or buffer stored in the class
+        /// </summary>
+        /// <returns></returns>
+        public TextReader openReader()
+        {
+            TextReader reader;
+
+            if (this.stype == SourceType.FileName)
+            {
+                reader = new System.IO.StreamReader(this.fileOrBuffer);
+            }
+            else
+                reader = new System.IO.StringReader(this.fileOrBuffer);
+
+            return reader;
         }
 
         /// <summary>
@@ -101,5 +144,15 @@ namespace GMView.GPS
             stype = itype;
             trackColor = icolor;
         }
+
+        #region IDisposable Members
+
+        public void Dispose()
+        {
+            if (openedXml != null)
+                openedXml = null;
+        }
+
+        #endregion
     }
 }

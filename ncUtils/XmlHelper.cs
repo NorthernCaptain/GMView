@@ -29,5 +29,42 @@ namespace ncUtils
             val = "";
             return false;
         }
+
+        /// <summary>
+        /// Creates XmlNamespaceManager for our document
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="defaultNamespace"></param>
+        /// <returns></returns>
+        public static XmlNamespaceManager getNSMforDoc(XmlDocument doc, string defaultNamespace)
+        {
+            XmlNamespaceManager nsm = new XmlNamespaceManager(doc.NameTable);
+
+            XmlNodeList xmlNameSpaceList = doc.SelectNodes(@"//namespace::*[not(. = ../../namespace::*)]");
+
+            bool setXmlNs = false;
+            foreach (XmlNode nsNode in xmlNameSpaceList)
+            {
+                if (nsNode.LocalName == "xmlns")
+                {
+                    nsm.AddNamespace(defaultNamespace, nsNode.Value);
+                    setXmlNs = true;
+                }
+                else
+                    nsm.AddNamespace(nsNode.LocalName, nsNode.Value);
+            }
+
+            if(!setXmlNs)
+            {
+               nsm.AddNamespace(defaultNamespace, "");
+            }
+
+            if (!nsm.HasNamespace("knw"))
+            {
+                nsm.AddNamespace("knw", @"http://xnc.jinr.ru/knowhere/xmlns/knw/1/0");
+            }
+
+            return nsm;
+        }
     }
 }

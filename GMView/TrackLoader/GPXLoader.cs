@@ -29,13 +29,7 @@ namespace GMView.TrackLoader
         {
             string first_line = string.Empty;
 
-            System.IO.TextReader reader;
-            if (fi.stype == GPS.TrackFileInfo.SourceType.FileName)
-            {
-                reader = new System.IO.StreamReader(fi.fileOrBuffer);
-            }
-            else
-                reader = new System.IO.StringReader(fi.fileOrBuffer);
+            System.IO.TextReader reader = fi.openReader();
 
             try
             {
@@ -76,17 +70,7 @@ namespace GMView.TrackLoader
             if (doc.DocumentElement.Name != "gpx")
                 throw new ApplicationException("Not a valid GPX file! Could not find gpx root tag.");
 
-            XmlNamespaceManager nsm = new XmlNamespaceManager(doc.NameTable);
-
-            { //retreive xmlns
-                XmlNode xnsnode = doc.DocumentElement.Attributes.GetNamedItem("xmlns");
-                if (xnsnode != null)
-                    nsm.AddNamespace("gpx", xnsnode.Value);
-                else
-                {
-                    nsm.AddNamespace("gpx", "");
-                }
-            }
+            XmlNamespaceManager nsm = ncUtils.XmlHelper.getNSMforDoc(doc, "gpx");
 
             XmlNodeList nlist = doc.DocumentElement.SelectNodes("//gpx:wpt", nsm);
             if (nlist.Count == 0)
@@ -172,7 +156,7 @@ namespace GMView.TrackLoader
                         bmark.altitude = NMEACommand.getDouble(xnode.InnerText.Trim());
                     }
 
-                    xnode = node.SelectSingleNode("./gpx:extensions/gpx:group", nsm);
+                    xnode = node.SelectSingleNode("./gpx:extensions/knw:group", nsm);
                     if (xnode != null)
                     {
                         bmark.group = xnode.InnerText.Trim();
@@ -232,6 +216,7 @@ namespace GMView.TrackLoader
             writer.WriteAttributeString("xmlns:xsi", @"http://www.w3.org/2001/XMLSchema-instance");
             writer.WriteAttributeString("xmlns", @"http://www.topografix.com/GPX/1/1");
             writer.WriteAttributeString("xsi:schemaLocation", @"http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd");
+            writer.WriteAttributeString("xmlns:knw", @"http://xnc.jinr.ru/knowhere/xmlns/knw/1/0");
 
             // metadata section
             {
@@ -299,7 +284,7 @@ namespace GMView.TrackLoader
                     writer.WriteElementString("time", book.Created.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"));
                     {
                         writer.WriteStartElement("extensions");
-                        writer.WriteElementString("group", currentGroupName);
+                        writer.WriteElementString("knw:group", currentGroupName);
                         writer.WriteEndElement();
                     }
                     writer.WriteEndElement();
@@ -321,9 +306,21 @@ namespace GMView.TrackLoader
 
         #region ITrackLoader Members
 
-        public void preLoad(GMView.GPS.TrackFileInfo info)
+        public GMView.GPS.TrackFileInfo preLoad(GMView.GPS.TrackFileInfo info)
         {
-            throw new NotImplementedException();
+            XmlDocument doc = null;
+
+            try
+            {
+                doc = info.openXml();
+
+                if (doc.DocumentElement.Name != "gpx")
+                    return info;
+            }
+            catch (SystemException)
+            {
+            }
+            return info;
         }
 
         public GPSTrack load(GMView.GPS.TrackFileInfo fi, BookMarkFactory poiFact, Bookmarks.POIGroupFactory igroupFact)
@@ -340,18 +337,7 @@ namespace GMView.TrackLoader
                 if (doc.DocumentElement.Name != "gpx")
                     throw new ApplicationException("Not a valid GPX file! Could not find gpx root tag.");
 
-                XmlNamespaceManager nsm = new XmlNamespaceManager(doc.NameTable);
-
-                { //retrieve xmlns
-                    XmlNode xnsnode = doc.DocumentElement.Attributes.GetNamedItem("xmlns");
-                    if (xnsnode != null)
-                        nsm.AddNamespace("gpx", xnsnode.Value);
-                    else
-                    {
-                        nsm.AddNamespace("gpx", "");
-                    }
-                }
-
+                XmlNamespaceManager nsm = ncUtils.XmlHelper.getNSMforDoc(doc, "gpx");
 
                 GPSTrack track = new GPSTrack();
 
@@ -534,6 +520,7 @@ namespace GMView.TrackLoader
                 writer.WriteAttributeString("xmlns:xsi", @"http://www.w3.org/2001/XMLSchema-instance");
                 writer.WriteAttributeString("xmlns", @"http://www.topografix.com/GPX/1/1");
                 writer.WriteAttributeString("xsi:schemaLocation", @"http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd");
+                writer.WriteAttributeString("xmlns:knw", @"http://xnc.jinr.ru/knowhere/xmlns/knw/1/0");
 
                 // metadata section
                 {
@@ -570,8 +557,8 @@ namespace GMView.TrackLoader
                 writer.WriteStartElement("trk");
                 writer.WriteElementString("name", track.track_name);
                 writer.WriteStartElement("extensions");
-                writer.WriteElementString("travel_time", track.travel_time_string);
-                writer.WriteElementString("travel_distance", track.distance.ToString("F2", nf));
+                writer.WriteElementString("knw:travel_time", track.travel_time_string);
+                writer.WriteElementString("knw:travel_distance", track.distance.ToString("F2", nf));
                 writer.WriteEndElement();
                 writer.WriteStartElement("trkseg");
 
@@ -588,8 +575,8 @@ namespace GMView.TrackLoader
                     if (tp.speed != 0 || tp.dir_angle != 0)
                     {
                         writer.WriteStartElement("extensions");
-                        writer.WriteElementString("vel", tp.speed.ToString("F2", nf));
-                        writer.WriteElementString("dir", tp.dir_angle.ToString("F1", nf));
+                        writer.WriteElementString("knw:vel", tp.speed.ToString("F2", nf));
+                        writer.WriteElementString("knw:dir", tp.dir_angle.ToString("F1", nf));
                         writer.WriteEndElement(); //extensions
                     }
                     writer.WriteEndElement(); //trkpt
