@@ -41,6 +41,7 @@ namespace GMView.TrackLoader
             trackLoaders.Add("kml", new KMLLoader());
             trackLoaders.Add("nmea", new NMEALoader());
             trackLoaders.Add("txt", new NMEALoader());
+            trackLoaders.Add("bmark", new OldBmarkLoader());
         }
 
         /// <summary>

@@ -15,6 +15,8 @@ namespace GMView.Forms
         private Bookmarks.POIGroupFactory groupFactory;
         private BookMarkFactory poiFactory;
 
+        private bool inInit = true;
+
         public EditBooks(BookMarkFactory ipoiFactory, Bookmarks.POIGroupFactory igroupFactory)
         {
             poiFactory = ipoiFactory;
@@ -22,11 +24,21 @@ namespace GMView.Forms
             InitializeComponent();
             fillGrid();
             fillTypeGrid();
+
+            {
+                Size siz = this.Size;
+                siz.Width = ncUtils.DBSetup.singleton.getInt(this.Name + ".width", siz.Width);
+                siz.Height = ncUtils.DBSetup.singleton.getInt(this.Name + ".height", siz.Height);
+                this.Size = siz;
+            }
+
+            inInit = false;
         }
 
         private Bookmarks.POITreeModel treeModel;
         private void fillGrid()
         {
+            autoShowCheck.Checked = Program.opt.poiAutoShow;
             treeModel = new Bookmarks.POITreeModel(groupFactory, treeView);
             treeView.Model = new SortedTreeModel(treeModel);
             SortedTreeModel model = treeView.Model as SortedTreeModel;
@@ -42,6 +54,13 @@ namespace GMView.Forms
             IEnumerator<TreeNodeAdv> ienum = treeView.AllNodes.GetEnumerator();
             ienum.MoveNext();
             ienum.Current.IsExpanded = true;
+
+            
+            foreach (TreeColumn col in treeView.Columns)
+            {
+                col.Width = ncUtils.DBSetup.singleton.getInt(treeView.Name + ".col." + col.Header + ".width",
+                                                            col.Width);
+            }            
         }
 
         private Bookmarks.POITypeTreeModel typeTreeModel;
@@ -459,6 +478,29 @@ namespace GMView.Forms
                     setTypeInfo(null);
                 }
             }
+        }
+
+        private void autoShowCheck_Click(object sender, EventArgs e)
+        {
+            Program.opt.poiAutoShow = autoShowCheck.Checked;
+        }
+
+        private void treeView_ColumnWidthChanged(object sender, TreeColumnEventArgs e)
+        {
+            if (inInit)
+                return;
+
+            ncUtils.DBSetup.singleton.setInt(treeView.Name + ".col." + e.Column.Header + ".width",
+                                             e.Column.Width);
+        }
+
+        private void EditBooks_ResizeEnd(object sender, EventArgs e)
+        {
+            if (inInit)
+                return;
+
+            ncUtils.DBSetup.singleton.setInt(this.Name + ".width", this.Size.Width);
+            ncUtils.DBSetup.singleton.setInt(this.Name + ".height", this.Size.Height);
         }
 
     }

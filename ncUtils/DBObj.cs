@@ -124,6 +124,24 @@ namespace ncUtils
         }
 
         /// <summary>
+        /// Execute query and return single scalar double
+        /// </summary>
+        /// <returns></returns>
+        public double executeFloatValue()
+        {
+            return (double)cmd.ExecuteScalar();
+        }
+
+        /// <summary>
+        /// Execute query and return single scalar DateTime
+        /// </summary>
+        /// <returns></returns>
+        public DateTime executeDateValue()
+        {
+            return (DateTime)cmd.ExecuteScalar();
+        }
+
+        /// <summary>
         /// Executes non-Select statement, i.e DML statement
         /// </summary>
         /// <returns></returns>

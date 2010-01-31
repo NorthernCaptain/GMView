@@ -258,6 +258,18 @@ namespace GMView
             }
         }
 
+
+        private bool isDisabled = false;
+
+        /// <summary>
+        /// Is this POI disabled or not
+        /// </summary>
+        public bool IsDisabled
+        {
+            get { return isDisabled; }
+            set { isDisabled = value; updateDB(); }
+        }
+
         public Bookmark()
         {
             ptype = Bookmarks.POITypeFactory.singleton().typeByName("unknown");
@@ -328,6 +340,7 @@ namespace GMView
             alt = reader.GetDouble(reader.GetOrdinal("ALT"));
             flags = reader.GetInt32(reader.GetOrdinal("FLAGS"));
             created = reader.GetDateTime(reader.GetOrdinal("CREATED"));
+            isDisabled = (reader.GetInt32(reader.GetOrdinal("IS_DISABLED")) == 1);
         }
 
         /// <summary>
@@ -366,9 +379,10 @@ namespace GMView
                 try
                 {
                     dbo = new DBObj("insert into poi (name, description, type, comments, "
-                                    + "lon, lat, alt, flags, icon, icon_cx, icon_cy, created) "
+                                    + "lon, lat, alt, flags, icon, icon_cx, icon_cy, created, is_disabled) "
                                     + "values (@NAME, @DESCRIPTION, @TYPE, @COMMENTS, "
-                                    + "@LON, @LAT, @ALT, @FLAGS, @ICON, @ICON_CX, @ICON_CY, @CREATED)");
+                                    + "@LON, @LAT, @ALT, @FLAGS, @ICON, @ICON_CX, @ICON_CY, @CREATED, "
+                                    + "@IS_DISABLED)");
 
                     dbo.addStringPar("@NAME", name);
                     dbo.addStringPar("@DESCRIPTION", description);
@@ -382,6 +396,7 @@ namespace GMView
                     dbo.addIntPar("@ICON_CX", iconfo.iconDeltaX);
                     dbo.addIntPar("@ICON_CY", iconfo.iconDeltaY);
                     dbo.addPar("@CREATED", DbType.DateTime, created);
+                    dbo.addIntPar("@IS_DISABLED", (isDisabled ? 1 : 0));
 
                     dbo.executeNonQuery();
 
@@ -415,7 +430,7 @@ namespace GMView
                 try
                 {
                     dbo = new DBObj("update poi set name=@NAME, description=@DESCRIPTION,"
-                                    + "type=@TYPE, comments=@COMMENTS, "
+                                    + "type=@TYPE, comments=@COMMENTS, is_disabled=@IS_DISABLED, "
                                     + "lon=@LON, lat=@LAT, alt=@ALT, flags=@FLAGS, "
                                     + "icon=@ICON, icon_cx=@ICON_CX, icon_cy=@ICON_CY "
                                     + "where id=@ID");
@@ -431,6 +446,7 @@ namespace GMView
                     dbo.addStringPar("@ICON", iconfo.iconName);
                     dbo.addIntPar("@ICON_CX", iconfo.iconDeltaX);
                     dbo.addIntPar("@ICON_CY", iconfo.iconDeltaY);
+                    dbo.addIntPar("@IS_DISABLED", (isDisabled ? 1 : 0));
 
                     dbo.addIntPar("@ID", id);
 

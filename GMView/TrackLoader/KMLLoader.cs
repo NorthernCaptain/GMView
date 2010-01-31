@@ -19,7 +19,40 @@ namespace GMView.TrackLoader
 
         public GMView.GPS.TrackFileInfo preLoad(GMView.GPS.TrackFileInfo info)
         {
-            throw new NotImplementedException();
+            XmlDocument doc = null;
+
+            try
+            {
+                doc = info.openXml();
+
+                if (doc.DocumentElement.Name != "kml")
+                    return info;
+
+                XmlNamespaceManager nsm = ncUtils.XmlHelper.getNSMforDoc(doc, "kml");
+
+                XmlNode folder = selectKMLFolders(doc, nsm);
+                XmlNode node = folder.SelectSingleNode("./kml:name", nsm);
+                if (node != null)
+                {
+                    info.preloadName = node.InnerText;
+                }
+                else
+                    info.preloadName = (info.stype == GPS.TrackFileInfo.SourceType.FileName ?
+                        Path.GetFileNameWithoutExtension(info.fileOrBuffer) : "kml-buffer");
+
+                XmlNodeList nlist = doc.DocumentElement.SelectNodes("//kml:Placemark/kml:LineString/kml:coordinates", nsm);
+                info.preloadTPointCount = nlist.Count;
+                nlist = doc.DocumentElement.SelectNodes("//kml:Placemark/*/kml:LineString/kml:coordinates", nsm);
+                info.preloadTPointCount += nlist.Count;
+
+
+                nlist = doc.DocumentElement.SelectNodes("//kml:Placemark/kml:Point/kml:coordinates", nsm);
+                info.preloadPOICount = nlist.Count;
+            }
+            catch (SystemException)
+            {
+            }
+            return info;
         }
 
         /// <summary>
@@ -532,5 +565,14 @@ namespace GMView.TrackLoader
 
         #endregion
 
+
+        #region ICloneable Members
+
+        public object Clone()
+        {
+            return new KMLLoader();
+        }
+
+        #endregion
     }
 }

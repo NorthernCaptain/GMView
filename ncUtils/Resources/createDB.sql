@@ -239,6 +239,7 @@ create table poi (id integer primary key autoincrement, name varchar(128) not nu
    lon float not null default 1, lat float not null default 0, alt float not null default 0, 
    flags integer default 0, icon varchar(64), icon_cx integer default 0, icon_cy integer default 0, 
    color integer, zoom_lvl integer default 0, created datetime default (datetime('now')),
+   is_disabled integer default 0, 
    foreign key (type) references poi_type (id) on delete set default);
 ---
 create index poi_name_idx on poi (name);
@@ -269,5 +270,9 @@ create index poi_grp_par_idx on poi_group_member (parent_id);
 insert into poi_group_member (parent_id, member_id, member_is_group) values (0, 1, 1);
 --- for unsorted
 insert into poi_group_member (parent_id, member_id, member_is_group) values (0, 2, 1);
-
+--- Setup table for storing different parameters by name
+create table setup (id integer primary key autoincrement, name varchar(128) not null,
+	intval integer, stringval varchar(512), floatval float, dateval datetime);
+---
+create index setup_name_idx on setup (name);
 --- End of file ---

@@ -79,6 +79,11 @@ namespace GMView.GPS
         public int preloadRouteCount = 0;
 
         /// <summary>
+        /// Name of the track extracted from file contents
+        /// </summary>
+        public string preloadName = string.Empty;
+
+        /// <summary>
         /// Try to open document as xml and return this XmlDocument
         /// </summary>
         /// <returns></returns>

@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="DBConnPool.cs" />
     <Compile Include="DBObj.cs" />
+    <Compile Include="DBSetup.cs" />
     <Compile Include="Glob.cs" />
     <Compile Include="GUIWorkerThread.cs" />
     <Compile Include="HistoryList.cs" />

@@ -375,6 +375,7 @@
     <Compile Include="TrackLoader\ITrackLoader.cs" />
     <Compile Include="TrackLoader\KMLLoader.cs" />
     <Compile Include="TrackLoader\NMEALoader.cs" />
+    <Compile Include="TrackLoader\OldBmarkLoader.cs" />
     <Compile Include="TrackLoader\TrackLoaderFactory.cs" />
     <Compile Include="Traffic\GoogleTraffic.cs" />
     <Compile Include="Traffic\YandexTraffic.cs" />

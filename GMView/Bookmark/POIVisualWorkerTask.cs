@@ -153,7 +153,7 @@ namespace GMView.Bookmarks
                 dbo = new DBObj(@"select " + BookMarkFactory.poiSelectFields
                     + "from poi, poi_type, poi_spatial where poi.id = poi_spatial.id "
                     + "and poi_type.id = poi.type and poi_type.is_auto_show=1 and poi_type.min_zoom_lvl<=@ZOOM "
-                    + "and poi_spatial.minLon>=@LON1 and poi_spatial.maxLon<=@LON2 "
+                    + "and poi.is_disabled = 0 and poi_spatial.minLon>=@LON1 and poi_spatial.maxLon<=@LON2 "
                     + "and poi_spatial.minLat>=@LAT1 and poi_spatial.maxLat<=@LAT2");
 
                 dbo.addIntPar("@ZOOM", zoom);

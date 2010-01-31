@@ -316,6 +316,25 @@ namespace GMView.TrackLoader
 
                 if (doc.DocumentElement.Name != "gpx")
                     return info;
+
+                XmlNamespaceManager nsm = ncUtils.XmlHelper.getNSMforDoc(doc, "gpx");
+
+                XmlNode node = doc.DocumentElement.SelectSingleNode("/gpx:gpx/gpx:metadata/gpx:name", nsm);
+                if (node != null)
+                {
+                    info.preloadName = node.InnerText;
+                } else
+                    info.preloadName = (info.stype == GPS.TrackFileInfo.SourceType.FileName ?
+                        Path.GetFileNameWithoutExtension(info.fileOrBuffer) : "gpx-buffer");
+
+                XmlNodeList nlist = doc.DocumentElement.SelectNodes("/gpx:gpx/gpx:trk/gpx:trkseg/gpx:trkpt", nsm);
+                info.preloadTPointCount = nlist.Count;
+
+                nlist = doc.DocumentElement.SelectNodes("/gpx:gpx/gpx:rte/gpx:rtept", nsm);
+                info.preloadRouteCount = nlist.Count;
+
+                nlist = doc.DocumentElement.SelectNodes("/gpx:gpx/gpx:wpt", nsm);
+                info.preloadPOICount = nlist.Count;
             }
             catch (SystemException)
             {
@@ -657,5 +676,14 @@ namespace GMView.TrackLoader
         }
         #endregion
 
+
+        #region ICloneable Members
+
+        public object Clone()
+        {
+            return new GPXLoader();
+        }
+
+        #endregion
     }
 }

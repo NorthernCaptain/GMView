@@ -255,6 +255,7 @@ namespace GMView
                             if (str.Length > 0)
                                 nightColor = Color.FromArgb(int.Parse(str));
                         }
+                        poiAutoShow = bool.Parse(reader.ReadLine());
                     }
                     catch (Exception ex)
                     {
@@ -379,6 +380,7 @@ namespace GMView
                     writer.WriteLine(gootrafhttp[i]);
                 }
                 writer.WriteLine(nightColor.ToArgb().ToString());
+                writer.WriteLine(poiAutoShow.ToString());
             }
             catch (Exception ex)
             {
@@ -805,5 +807,10 @@ namespace GMView
         public enum DynCenterType { StaticCenter, Forward34, Forward23, SpeedDriven };
         public DynCenterType dynamic_center = DynCenterType.SpeedDriven; //type of centering the map on the screen
         public bool showTraffic = false; //Show traffic on the roads or no
+
+        /// <summary>
+        /// Show POI automatically or not
+        /// </summary>
+        public bool poiAutoShow = true;
     }
 }

@@ -42,6 +42,11 @@ namespace GMView.TrackLoader
             {
                 reader.Close();
             }
+
+            if (info.stype == GPS.TrackFileInfo.SourceType.FileName)
+                info.preloadName = Path.GetFileNameWithoutExtension(info.fileOrBuffer);
+            else
+                info.preloadName = "nmea-buffer";
             return info;
         }
 
@@ -162,5 +167,14 @@ namespace GMView.TrackLoader
 
         #endregion
 
+
+        #region ICloneable Members
+
+        public object Clone()
+        {
+            return new NMEALoader();
+        }
+
+        #endregion
     }
 }

@@ -933,6 +933,7 @@ namespace GMView
 
             if (loader == null)
                 throw new ApplicationException("Could not find saving plugin for type: " + fi.FileType);
+            loader = loader.Clone() as TrackLoader.ITrackLoader;
             loader.save(this, fi, poiFact, groupFact);
             return fi;
         }

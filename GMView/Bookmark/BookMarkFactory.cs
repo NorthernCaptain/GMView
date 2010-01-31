@@ -447,7 +447,7 @@ namespace GMView
         /// </summary>
         public static readonly string poiSelectFields =
                     " poi.id, poi.name, poi.description, poi.comments, "
-                  + "poi.type, poi.lon, poi.lat, poi.alt, poi.flags, poi.created ";
+                  + "poi.type, poi.lon, poi.lat, poi.alt, poi.flags, poi.created, poi.is_disabled ";
         /// <summary>
         /// Loads all POI from DB that has given parent
         /// </summary>
