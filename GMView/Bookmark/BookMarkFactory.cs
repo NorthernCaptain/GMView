@@ -77,6 +77,7 @@ namespace GMView
         {
             Bookmarks.POITypeFactory.singleton();
             groupFactory = Bookmarks.POIGroupFactory.singleton();
+            groupFactory.PoiFactory = this;
         }
 
         [XmlArray("bookmarks"),
@@ -473,23 +474,21 @@ namespace GMView
 
                     Bookmark poi;
 
-                    if (needRegister)
+                    lock (locker)
                     {
-                        lock (locker)
+                        if (!loadedPOIs.TryGetValue(poi_id, out poi))
                         {
-                            if (!loadedPOIs.TryGetValue(poi_id, out poi))
+                            poi = new Bookmark(reader);
+                            if (needRegister)
                             {
-                                poi = new Bookmark(reader);
                                 register(poi);
+                                poi.Parent = pgroup;
                             }
-                            else
-                                poi.Owner = this;
                         }
+                        else
+                            poi.Owner = this;
                     }
-                    else
-                        poi = new Bookmark(reader);
 
-                    poi.Parent = pgroup;
                     pois.Add(poi);
                 }
                 if(needRegister)
@@ -592,6 +591,7 @@ namespace GMView
             visualWorker.taskCompleted += visualWorker_taskCompleted;
             mapo.onZoomChanged += mapo_onZoomChanged;
             mapo.onTileCenterChanged += mapo_onTileCenterChanged;
+            sendVisualWorkerTask();
         }
 
         /// <summary>
@@ -616,7 +616,7 @@ namespace GMView
         /// <summary>
         /// Creates a task for visualizing POI in auto show mode to be done in separate thread
         /// </summary>
-        private void sendVisualWorkerTask()
+        public void sendVisualWorkerTask()
         {
             if (visualWorker == null)
                 return;

@@ -55,12 +55,27 @@ namespace GMView.Forms
             ienum.MoveNext();
             ienum.Current.IsExpanded = true;
 
-            
-            foreach (TreeColumn col in treeView.Columns)
+            treeViewInit(treeView);
+            treeViewInit(treeViewPType);
+        }
+
+        private void treeViewInit(TreeViewAdv treeV)
+        {
+            TreeColumn[] cols = new TreeColumn[treeV.Columns.Count];
+            foreach (TreeColumn col in treeV.Columns)
             {
-                col.Width = ncUtils.DBSetup.singleton.getInt(treeView.Name + ".col." + col.Header + ".width",
+                int idx = ncUtils.DBSetup.singleton.getInt(treeV.Name + ".col." + col.Header + ".index",
+                                                            col.Index);
+                cols[idx] = col;
+            }
+
+            treeV.Columns.Clear();
+            foreach (TreeColumn col in cols)
+            {
+                treeV.Columns.Add(col);
+                col.Width = ncUtils.DBSetup.singleton.getInt(treeV.Name + ".col." + col.Header + ".width",
                                                             col.Width);
-            }            
+            }
         }
 
         private Bookmarks.POITypeTreeModel typeTreeModel;
@@ -483,6 +498,7 @@ namespace GMView.Forms
         private void autoShowCheck_Click(object sender, EventArgs e)
         {
             Program.opt.poiAutoShow = autoShowCheck.Checked;
+            poiFactory.sendVisualWorkerTask();
         }
 
         private void treeView_ColumnWidthChanged(object sender, TreeColumnEventArgs e)
@@ -501,6 +517,38 @@ namespace GMView.Forms
 
             ncUtils.DBSetup.singleton.setInt(this.Name + ".width", this.Size.Width);
             ncUtils.DBSetup.singleton.setInt(this.Name + ".height", this.Size.Height);
+        }
+
+        private void treeViewPType_ColumnWidthChanged(object sender, TreeColumnEventArgs e)
+        {
+            if (inInit)
+                return;
+
+            ncUtils.DBSetup.singleton.setInt(treeViewPType.Name + ".col." + e.Column.Header + ".width",
+                                             e.Column.Width);
+
+        }
+
+        private void treeViewPType_ColumnReordered(object sender, TreeColumnEventArgs e)
+        {
+            ncUtils.DBConnPool.singleton.beginThreadTransaction();
+            foreach (TreeColumn col in treeViewPType.Columns)
+            {
+                ncUtils.DBSetup.singleton.setInt(treeViewPType.Name + ".col." + col.Header + ".index",
+                                                 col.Index);
+            }
+            ncUtils.DBConnPool.singleton.commitThreadTransaction();
+        }
+
+        private void treeView_ColumnReordered(object sender, TreeColumnEventArgs e)
+        {
+            ncUtils.DBConnPool.singleton.beginThreadTransaction();
+            foreach (TreeColumn col in treeView.Columns)
+            {
+                ncUtils.DBSetup.singleton.setInt(treeView.Name + ".col." + col.Header + ".index",
+                                                 col.Index);
+            }
+            ncUtils.DBConnPool.singleton.commitThreadTransaction();
         }
 
     }

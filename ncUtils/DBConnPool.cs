@@ -26,6 +26,8 @@ namespace ncUtils
             SQLiteTransaction tran;
             SQLiteConnection conn;
 
+            public int count = 0;
+
             internal SQLiteConnection connection
             {
                 get { return conn; }
@@ -114,6 +116,7 @@ namespace ncUtils
                     threadTranList.Add(System.Threading.Thread.CurrentThread,
                         tData);
                 }
+                tData.count++;
                 return tData.transaction;
             }
         }
@@ -131,9 +134,13 @@ namespace ncUtils
                 if (tData == null)
                     return; //No transaction at all
 
-                tData.transaction.Commit();
-                tData.transaction.Dispose();
-                threadTranList.Remove(System.Threading.Thread.CurrentThread);
+                tData.count--;
+                if (tData.count <= 0)
+                {
+                    tData.transaction.Commit();
+                    tData.transaction.Dispose();
+                    threadTranList.Remove(System.Threading.Thread.CurrentThread);
+                }
             }
         }
 
@@ -150,9 +157,13 @@ namespace ncUtils
                 if (tData == null)
                     return; //No transaction at all
 
-                tData.transaction.Rollback();
-                tData.transaction.Dispose();
-                threadTranList.Remove(System.Threading.Thread.CurrentThread);
+                tData.count--;
+                if (tData.count <= 0)
+                {
+                    tData.transaction.Rollback();
+                    tData.transaction.Dispose();
+                    threadTranList.Remove(System.Threading.Thread.CurrentThread);
+                }
             }
         }
 

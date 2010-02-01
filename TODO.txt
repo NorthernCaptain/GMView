@@ -30,12 +30,13 @@ TODO list:
   loads it as a track, show on the map.
   Loading such routes from file now works, but we need load placemarks with point tag, not only as
   POI, but also as Waypoints on the track.
-  Add paste function for loading directly from GE.
+  Add paste function for loading directly from GE. [DONE 01.02.10 v1.7.0.0]
 
 - When loading track file again and again, do not import POIs - check for existence by coordinates
   and name.
   
 - Transactions in DB DML operations for each thread. This should speed up DB updates.
+  [DONE 01.02.10 v1.7.0.0]
 
 - Save track redesign. When we hit Record track, display dialog with From and Destination 
   text fields. Create and auto save this track into file 'From-Destination-YY-MM-DD.gpõ' into
@@ -59,7 +60,7 @@ TODO list:
     the track as we already did.
   * Refactor "display POIs on the screen" method. Do it in separate thread, load from database by
     a region, merge nearest into one multiPOI, then display prepared data on the screen in main
-    thread.
+    thread. (done but no multiPOI)
   * Quick POI search toolbar. Type name or type of the POI (just first letters) and see dropdown
     list of the POIs nearest to current location. Quickly change range of searching.
     Range of searching calculates according user preferences and current zoom level.
@@ -67,7 +68,8 @@ TODO list:
     hierarchy. Edit or delete POIs with multiselection mode. Managing groups (add, delete, edit).
   * Importing POIs from external files (KML, GPX), dialog for matching POI fields from file to our
     internal fields, choosing or changing types and more.
-
+    [Mostly DONE 01.02.10 v1.7.0.0]
+    
 - Night view mode. In a simple way we need just shade the map a little (draw semitransparent
   rectangle). In more complicated way - load map as 256 color pallete, change pallete colours and
   convert into 32 bit image for displaying. [DONE simple 03.11.09]

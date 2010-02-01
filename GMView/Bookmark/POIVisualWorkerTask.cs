@@ -144,6 +144,9 @@ namespace GMView.Bookmarks
 
             listToHide = factory.fillListToHide();
 
+            if (!Program.opt.poiAutoShow)
+                return;
+
             calculateLonLat();
 
             DBObj dbo = null;

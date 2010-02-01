@@ -39,6 +39,7 @@
             this.idCol = new Aga.Controls.Tree.TreeColumn();
             this.commentsCol = new Aga.Controls.Tree.TreeColumn();
             this.createdCol = new Aga.Controls.Tree.TreeColumn();
+            this.disabledCol = new Aga.Controls.Tree.TreeColumn();
             this.contextMenuStripForTree = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.addGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deletePOIOrGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,6 +56,7 @@
             this.nodeTextBox_Lon = new Aga.Controls.Tree.NodeControls.NodeTextBox();
             this.nodeTextBox_Lat = new Aga.Controls.Tree.NodeControls.NodeTextBox();
             this.nodeNumericUpDown_Alt = new Aga.Controls.Tree.NodeControls.NodeNumericUpDown();
+            this.nodeCheckBoxDisabled = new Aga.Controls.Tree.NodeControls.NodeCheckBox();
             this.autoShowCheck = new System.Windows.Forms.CheckBox();
             this.okBut = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -93,8 +95,6 @@
             this.PTnodeCheckBoxAuto = new Aga.Controls.Tree.NodeControls.NodeCheckBox();
             this.PTnodeIntegerTextBoxMinZ = new Aga.Controls.Tree.NodeControls.NodeIntegerTextBox();
             this.PTIconOpenDialog = new System.Windows.Forms.OpenFileDialog();
-            this.disabledCol = new Aga.Controls.Tree.TreeColumn();
-            this.nodeCheckBoxDisabled = new Aga.Controls.Tree.NodeControls.NodeCheckBox();
             this.contextMenuStripForTree.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -132,8 +132,7 @@
             this.treeView.GridLineStyle = ((Aga.Controls.Tree.GridLineStyle)((Aga.Controls.Tree.GridLineStyle.Horizontal | Aga.Controls.Tree.GridLineStyle.Vertical)));
             this.treeView.LineColor = System.Drawing.SystemColors.ControlDark;
             this.treeView.LoadOnDemand = true;
-            this.treeView.Location = new System.Drawing.Point(4, 4);
-            this.treeView.Margin = new System.Windows.Forms.Padding(4);
+            this.treeView.Location = new System.Drawing.Point(3, 3);
             this.treeView.Model = null;
             this.treeView.Name = "treeView";
             this.treeView.NodeControls.Add(this.nodeCheckBox_Shown);
@@ -151,7 +150,7 @@
             this.treeView.RowHeight = 19;
             this.treeView.SelectedNode = null;
             this.treeView.SelectionMode = Aga.Controls.Tree.TreeSelectionMode.MultiSameParent;
-            this.treeView.Size = new System.Drawing.Size(964, 480);
+            this.treeView.Size = new System.Drawing.Size(721, 388);
             this.treeView.TabIndex = 2;
             this.treeView.Text = "POI tree";
             this.treeView.UseColumns = true;
@@ -160,6 +159,7 @@
             this.treeView.ColumnClicked += new System.EventHandler<Aga.Controls.Tree.TreeColumnEventArgs>(this.treeView_ColumnClicked);
             this.treeView.ColumnWidthChanged += new System.EventHandler<Aga.Controls.Tree.TreeColumnEventArgs>(this.treeView_ColumnWidthChanged);
             this.treeView.DragDrop += new System.Windows.Forms.DragEventHandler(this.treeView_DragDrop);
+            this.treeView.ColumnReordered += new System.EventHandler<Aga.Controls.Tree.TreeColumnEventArgs>(this.treeView_ColumnReordered);
             this.treeView.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.treeView_ItemDrag);
             // 
             // treeColumn1
@@ -227,6 +227,12 @@
             this.createdCol.TooltipText = "Date created";
             this.createdCol.Width = 110;
             // 
+            // disabledCol
+            // 
+            this.disabledCol.Header = "Disabled";
+            this.disabledCol.SortOrder = System.Windows.Forms.SortOrder.None;
+            this.disabledCol.TooltipText = null;
+            // 
             // contextMenuStripForTree
             // 
             this.contextMenuStripForTree.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -235,31 +241,31 @@
             this.toolStripSeparator1,
             this.changeTypeOfPOIsToolStripMenuItem});
             this.contextMenuStripForTree.Name = "contextMenuStripForTree";
-            this.contextMenuStripForTree.Size = new System.Drawing.Size(230, 76);
+            this.contextMenuStripForTree.Size = new System.Drawing.Size(187, 76);
             // 
             // addGroupToolStripMenuItem
             // 
             this.addGroupToolStripMenuItem.Name = "addGroupToolStripMenuItem";
-            this.addGroupToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
+            this.addGroupToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.addGroupToolStripMenuItem.Text = "Add new group";
             this.addGroupToolStripMenuItem.Click += new System.EventHandler(this.addGroupToolStripMenuItem_Click);
             // 
             // deletePOIOrGroupToolStripMenuItem
             // 
             this.deletePOIOrGroupToolStripMenuItem.Name = "deletePOIOrGroupToolStripMenuItem";
-            this.deletePOIOrGroupToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
+            this.deletePOIOrGroupToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.deletePOIOrGroupToolStripMenuItem.Text = "Delete POI or group";
             this.deletePOIOrGroupToolStripMenuItem.Click += new System.EventHandler(this.deletePOIOrGroupToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(226, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(183, 6);
             // 
             // changeTypeOfPOIsToolStripMenuItem
             // 
             this.changeTypeOfPOIsToolStripMenuItem.Name = "changeTypeOfPOIsToolStripMenuItem";
-            this.changeTypeOfPOIsToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
+            this.changeTypeOfPOIsToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.changeTypeOfPOIsToolStripMenuItem.Text = "Change type of POIs";
             this.changeTypeOfPOIsToolStripMenuItem.Click += new System.EventHandler(this.changeTypeOfPOIsToolStripMenuItem_Click);
             // 
@@ -387,14 +393,20 @@
             this.nodeNumericUpDown_Alt.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nodeNumericUpDown_Alt.Trimming = System.Drawing.StringTrimming.EllipsisCharacter;
             // 
+            // nodeCheckBoxDisabled
+            // 
+            this.nodeCheckBoxDisabled.DataPropertyName = "IsDisabled";
+            this.nodeCheckBoxDisabled.EditEnabled = true;
+            this.nodeCheckBoxDisabled.LeftMargin = 0;
+            this.nodeCheckBoxDisabled.ParentColumn = this.disabledCol;
+            // 
             // autoShowCheck
             // 
             this.autoShowCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.autoShowCheck.AutoSize = true;
-            this.autoShowCheck.Location = new System.Drawing.Point(16, 540);
-            this.autoShowCheck.Margin = new System.Windows.Forms.Padding(4);
+            this.autoShowCheck.Location = new System.Drawing.Point(12, 439);
             this.autoShowCheck.Name = "autoShowCheck";
-            this.autoShowCheck.Size = new System.Drawing.Size(197, 21);
+            this.autoShowCheck.Size = new System.Drawing.Size(153, 17);
             this.autoShowCheck.TabIndex = 0;
             this.autoShowCheck.Text = "Auto show POI on the map";
             this.autoShowCheck.UseVisualStyleBackColor = true;
@@ -404,10 +416,9 @@
             // 
             this.okBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.okBut.Image = global::GMView.Properties.Resources.lamp_on;
-            this.okBut.Location = new System.Drawing.Point(867, 527);
-            this.okBut.Margin = new System.Windows.Forms.Padding(4);
+            this.okBut.Location = new System.Drawing.Point(650, 428);
             this.okBut.Name = "okBut";
-            this.okBut.Size = new System.Drawing.Size(99, 46);
+            this.okBut.Size = new System.Drawing.Size(74, 37);
             this.okBut.TabIndex = 1;
             this.okBut.Text = "OK";
             this.okBut.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -422,20 +433,18 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Location = new System.Drawing.Point(1, 2);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(980, 517);
+            this.tabControl1.Size = new System.Drawing.Size(735, 420);
             this.tabControl1.TabIndex = 3;
             // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.treeView);
-            this.tabPage1.Location = new System.Drawing.Point(4, 25);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(4);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage1.Size = new System.Drawing.Size(972, 488);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(727, 394);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Points of Interest";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -444,11 +453,10 @@
             // 
             this.tabPage2.Controls.Add(this.groupBox1);
             this.tabPage2.Controls.Add(this.treeViewPType);
-            this.tabPage2.Location = new System.Drawing.Point(4, 25);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage2.Size = new System.Drawing.Size(972, 488);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(727, 394);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Types";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -470,11 +478,9 @@
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(655, 7);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.groupBox1.Location = new System.Drawing.Point(491, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(304, 470);
+            this.groupBox1.Size = new System.Drawing.Size(228, 382);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Type info:";
@@ -482,10 +488,9 @@
             // PTdelTypeBut
             // 
             this.PTdelTypeBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.PTdelTypeBut.Location = new System.Drawing.Point(164, 391);
-            this.PTdelTypeBut.Margin = new System.Windows.Forms.Padding(4);
+            this.PTdelTypeBut.Location = new System.Drawing.Point(123, 318);
             this.PTdelTypeBut.Name = "PTdelTypeBut";
-            this.PTdelTypeBut.Size = new System.Drawing.Size(132, 32);
+            this.PTdelTypeBut.Size = new System.Drawing.Size(99, 26);
             this.PTdelTypeBut.TabIndex = 8;
             this.PTdelTypeBut.Text = "Delete Type";
             this.PTdelTypeBut.UseVisualStyleBackColor = true;
@@ -494,10 +499,9 @@
             // newTypeBut
             // 
             this.newTypeBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.newTypeBut.Location = new System.Drawing.Point(12, 391);
-            this.newTypeBut.Margin = new System.Windows.Forms.Padding(4);
+            this.newTypeBut.Location = new System.Drawing.Point(9, 318);
             this.newTypeBut.Name = "newTypeBut";
-            this.newTypeBut.Size = new System.Drawing.Size(132, 32);
+            this.newTypeBut.Size = new System.Drawing.Size(99, 26);
             this.newTypeBut.TabIndex = 8;
             this.newTypeBut.Text = "New Type";
             this.newTypeBut.UseVisualStyleBackColor = true;
@@ -506,10 +510,9 @@
             // cancelChangesBut
             // 
             this.cancelChangesBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.cancelChangesBut.Location = new System.Drawing.Point(164, 431);
-            this.cancelChangesBut.Margin = new System.Windows.Forms.Padding(4);
+            this.cancelChangesBut.Location = new System.Drawing.Point(123, 350);
             this.cancelChangesBut.Name = "cancelChangesBut";
-            this.cancelChangesBut.Size = new System.Drawing.Size(132, 32);
+            this.cancelChangesBut.Size = new System.Drawing.Size(99, 26);
             this.cancelChangesBut.TabIndex = 8;
             this.cancelChangesBut.Text = "Cancel";
             this.cancelChangesBut.UseVisualStyleBackColor = true;
@@ -519,10 +522,9 @@
             // 
             this.PTapplyBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.PTapplyBut.Enabled = false;
-            this.PTapplyBut.Location = new System.Drawing.Point(12, 431);
-            this.PTapplyBut.Margin = new System.Windows.Forms.Padding(4);
+            this.PTapplyBut.Location = new System.Drawing.Point(9, 350);
             this.PTapplyBut.Name = "PTapplyBut";
-            this.PTapplyBut.Size = new System.Drawing.Size(132, 32);
+            this.PTapplyBut.Size = new System.Drawing.Size(99, 26);
             this.PTapplyBut.TabIndex = 8;
             this.PTapplyBut.Text = "Apply changes";
             this.PTapplyBut.UseVisualStyleBackColor = true;
@@ -530,8 +532,7 @@
             // 
             // PTminZoomLvlNum
             // 
-            this.PTminZoomLvlNum.Location = new System.Drawing.Point(223, 302);
-            this.PTminZoomLvlNum.Margin = new System.Windows.Forms.Padding(4);
+            this.PTminZoomLvlNum.Location = new System.Drawing.Point(167, 245);
             this.PTminZoomLvlNum.Maximum = new decimal(new int[] {
             18,
             0,
@@ -543,7 +544,7 @@
             0,
             0});
             this.PTminZoomLvlNum.Name = "PTminZoomLvlNum";
-            this.PTminZoomLvlNum.Size = new System.Drawing.Size(73, 22);
+            this.PTminZoomLvlNum.Size = new System.Drawing.Size(55, 20);
             this.PTminZoomLvlNum.TabIndex = 7;
             this.PTminZoomLvlNum.Value = new decimal(new int[] {
             10,
@@ -554,10 +555,9 @@
             // PTquickAddCB
             // 
             this.PTquickAddCB.AutoSize = true;
-            this.PTquickAddCB.Location = new System.Drawing.Point(16, 261);
-            this.PTquickAddCB.Margin = new System.Windows.Forms.Padding(4);
+            this.PTquickAddCB.Location = new System.Drawing.Point(12, 212);
             this.PTquickAddCB.Name = "PTquickAddCB";
-            this.PTquickAddCB.Size = new System.Drawing.Size(178, 21);
+            this.PTquickAddCB.Size = new System.Drawing.Size(138, 17);
             this.PTquickAddCB.TabIndex = 6;
             this.PTquickAddCB.Text = "Use in Quick Add mode";
             this.PTquickAddCB.UseVisualStyleBackColor = true;
@@ -565,10 +565,9 @@
             // PTautoShowCB
             // 
             this.PTautoShowCB.AutoSize = true;
-            this.PTautoShowCB.Location = new System.Drawing.Point(16, 233);
-            this.PTautoShowCB.Margin = new System.Windows.Forms.Padding(4);
+            this.PTautoShowCB.Location = new System.Drawing.Point(12, 189);
             this.PTautoShowCB.Name = "PTautoShowCB";
-            this.PTautoShowCB.Size = new System.Drawing.Size(170, 21);
+            this.PTautoShowCB.Size = new System.Drawing.Size(132, 17);
             this.PTautoShowCB.TabIndex = 5;
             this.PTautoShowCB.Text = "Auto show on the map";
             this.PTautoShowCB.UseVisualStyleBackColor = true;
@@ -581,11 +580,9 @@
             this.groupBox2.Controls.Add(this.PTiconCXNum);
             this.groupBox2.Controls.Add(this.PTiconPic);
             this.groupBox2.Controls.Add(this.ChangeIconBut);
-            this.groupBox2.Location = new System.Drawing.Point(8, 119);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
+            this.groupBox2.Location = new System.Drawing.Point(6, 97);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox2.Size = new System.Drawing.Size(288, 106);
+            this.groupBox2.Size = new System.Drawing.Size(216, 86);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Icon:";
@@ -593,38 +590,34 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(104, 66);
-            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label5.Location = new System.Drawing.Point(78, 54);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(30, 17);
+            this.label5.Size = new System.Drawing.Size(24, 13);
             this.label5.TabIndex = 5;
             this.label5.Text = "CY:";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(104, 34);
-            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label4.Location = new System.Drawing.Point(78, 28);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(30, 17);
+            this.label4.Size = new System.Drawing.Size(24, 13);
             this.label4.TabIndex = 5;
             this.label4.Text = "CX:";
             // 
             // PTiconCYNum
             // 
-            this.PTiconCYNum.Location = new System.Drawing.Point(144, 64);
-            this.PTiconCYNum.Margin = new System.Windows.Forms.Padding(4);
+            this.PTiconCYNum.Location = new System.Drawing.Point(108, 52);
             this.PTiconCYNum.Name = "PTiconCYNum";
-            this.PTiconCYNum.Size = new System.Drawing.Size(65, 22);
+            this.PTiconCYNum.Size = new System.Drawing.Size(49, 20);
             this.PTiconCYNum.TabIndex = 4;
             this.PTiconCYNum.ValueChanged += new System.EventHandler(this.PTiconCXNum_ValueChanged);
             // 
             // PTiconCXNum
             // 
-            this.PTiconCXNum.Location = new System.Drawing.Point(144, 32);
-            this.PTiconCXNum.Margin = new System.Windows.Forms.Padding(4);
+            this.PTiconCXNum.Location = new System.Drawing.Point(108, 26);
             this.PTiconCXNum.Name = "PTiconCXNum";
-            this.PTiconCXNum.Size = new System.Drawing.Size(65, 22);
+            this.PTiconCXNum.Size = new System.Drawing.Size(49, 20);
             this.PTiconCXNum.TabIndex = 4;
             this.PTiconCXNum.ValueChanged += new System.EventHandler(this.PTiconCXNum_ValueChanged);
             // 
@@ -632,10 +625,9 @@
             // 
             this.PTiconPic.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.PTiconPic.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.PTiconPic.Location = new System.Drawing.Point(8, 23);
-            this.PTiconPic.Margin = new System.Windows.Forms.Padding(4);
+            this.PTiconPic.Location = new System.Drawing.Point(6, 19);
             this.PTiconPic.Name = "PTiconPic";
-            this.PTiconPic.Size = new System.Drawing.Size(85, 71);
+            this.PTiconPic.Size = new System.Drawing.Size(64, 58);
             this.PTiconPic.TabIndex = 2;
             this.PTiconPic.TabStop = false;
             this.PTiconPic.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PTiconPic_MouseDown);
@@ -643,10 +635,9 @@
             // 
             // ChangeIconBut
             // 
-            this.ChangeIconBut.Location = new System.Drawing.Point(220, 34);
-            this.ChangeIconBut.Margin = new System.Windows.Forms.Padding(4);
+            this.ChangeIconBut.Location = new System.Drawing.Point(165, 28);
             this.ChangeIconBut.Name = "ChangeIconBut";
-            this.ChangeIconBut.Size = new System.Drawing.Size(60, 46);
+            this.ChangeIconBut.Size = new System.Drawing.Size(45, 37);
             this.ChangeIconBut.TabIndex = 3;
             this.ChangeIconBut.Text = "Load";
             this.ChangeIconBut.UseVisualStyleBackColor = true;
@@ -654,47 +645,42 @@
             // 
             // PTdescrTB
             // 
-            this.PTdescrTB.Location = new System.Drawing.Point(8, 87);
-            this.PTdescrTB.Margin = new System.Windows.Forms.Padding(4);
+            this.PTdescrTB.Location = new System.Drawing.Point(6, 71);
             this.PTdescrTB.Name = "PTdescrTB";
-            this.PTdescrTB.Size = new System.Drawing.Size(287, 22);
+            this.PTdescrTB.Size = new System.Drawing.Size(216, 20);
             this.PTdescrTB.TabIndex = 1;
             // 
             // PTnameTB
             // 
-            this.PTnameTB.Location = new System.Drawing.Point(8, 39);
-            this.PTnameTB.Margin = new System.Windows.Forms.Padding(4);
+            this.PTnameTB.Location = new System.Drawing.Point(6, 32);
             this.PTnameTB.Name = "PTnameTB";
-            this.PTnameTB.Size = new System.Drawing.Size(287, 22);
+            this.PTnameTB.Size = new System.Drawing.Size(216, 20);
             this.PTnameTB.TabIndex = 1;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 304);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Location = new System.Drawing.Point(9, 247);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(186, 17);
+            this.label3.Size = new System.Drawing.Size(139, 13);
             this.label3.TabIndex = 0;
             this.label3.Text = "Minimum display zoom level:";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(8, 68);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Location = new System.Drawing.Point(6, 55);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(83, 17);
+            this.label2.Size = new System.Drawing.Size(63, 13);
             this.label2.TabIndex = 0;
             this.label2.Text = "Description:";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(8, 20);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(6, 16);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(85, 17);
+            this.label1.Size = new System.Drawing.Size(64, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Short name:";
             // 
@@ -716,8 +702,7 @@
             this.treeViewPType.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.treeViewPType.GridLineStyle = ((Aga.Controls.Tree.GridLineStyle)((Aga.Controls.Tree.GridLineStyle.Horizontal | Aga.Controls.Tree.GridLineStyle.Vertical)));
             this.treeViewPType.LineColor = System.Drawing.SystemColors.ControlDark;
-            this.treeViewPType.Location = new System.Drawing.Point(4, 7);
-            this.treeViewPType.Margin = new System.Windows.Forms.Padding(4);
+            this.treeViewPType.Location = new System.Drawing.Point(3, 6);
             this.treeViewPType.Model = null;
             this.treeViewPType.Name = "treeViewPType";
             this.treeViewPType.NodeControls.Add(this.PTnodeStateIcon);
@@ -730,11 +715,13 @@
             this.treeViewPType.SelectedNode = null;
             this.treeViewPType.ShowLines = false;
             this.treeViewPType.ShowPlusMinus = false;
-            this.treeViewPType.Size = new System.Drawing.Size(641, 469);
+            this.treeViewPType.Size = new System.Drawing.Size(482, 382);
             this.treeViewPType.TabIndex = 0;
             this.treeViewPType.Text = "Type view";
             this.treeViewPType.UseColumns = true;
             this.treeViewPType.SelectionChanged += new System.EventHandler(this.treeViewPType_SelectionChanged);
+            this.treeViewPType.ColumnWidthChanged += new System.EventHandler<Aga.Controls.Tree.TreeColumnEventArgs>(this.treeViewPType_ColumnWidthChanged);
+            this.treeViewPType.ColumnReordered += new System.EventHandler<Aga.Controls.Tree.TreeColumnEventArgs>(this.treeViewPType_ColumnReordered);
             // 
             // PTnameCol
             // 
@@ -829,28 +816,14 @@
             this.PTIconOpenDialog.FileName = "icon.png";
             this.PTIconOpenDialog.Title = "Choose icon for the type";
             // 
-            // disabledCol
-            // 
-            this.disabledCol.Header = "Disabled";
-            this.disabledCol.SortOrder = System.Windows.Forms.SortOrder.None;
-            this.disabledCol.TooltipText = null;
-            // 
-            // nodeCheckBoxDisabled
-            // 
-            this.nodeCheckBoxDisabled.DataPropertyName = "IsDisabled";
-            this.nodeCheckBoxDisabled.EditEnabled = true;
-            this.nodeCheckBoxDisabled.LeftMargin = 0;
-            this.nodeCheckBoxDisabled.ParentColumn = this.disabledCol;
-            // 
             // EditBooks
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(981, 576);
+            this.ClientSize = new System.Drawing.Size(736, 468);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.autoShowCheck);
             this.Controls.Add(this.okBut);
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "EditBooks";
             this.Text = "Points of interest";
             this.ResizeEnd += new System.EventHandler(this.EditBooks_ResizeEnd);

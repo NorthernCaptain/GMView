@@ -6,6 +6,7 @@ using System.Data.Common;
 
 namespace GMView.Bookmarks
 {
+
     /// <summary>
     /// Class holds and manages all POI Group objects. Read them from DB, but tree structure.
     /// </summary>
@@ -24,6 +25,17 @@ namespace GMView.Bookmarks
             return instance;
         }
 
+        private BookMarkFactory poiFactory;
+
+        /// <summary>
+        /// POI factory associated with this group factory
+        /// </summary>
+        public BookMarkFactory PoiFactory
+        {
+            get { return poiFactory; }
+            set { poiFactory = value; }
+        }
+
         private List<POIGroup> allGroups = new List<POIGroup>();
         private Dictionary<int, POIGroup> idGroups = new Dictionary<int, POIGroup>();
 
@@ -35,7 +47,6 @@ namespace GMView.Bookmarks
             get { return allGroups; }
             set { allGroups = value; }
         }
-
 
         private POIGroupFactory()
         {
@@ -51,7 +62,7 @@ namespace GMView.Bookmarks
             DBObj dbo = null;
             try
             {
-                dbo = new DBObj(@"select id, name, description from poi where is_group=1 order by name");
+                dbo = new DBObj(@"select id, name, description, is_disabled from poi where is_group=1 order by name");
                 DbDataReader reader = dbo.cmd.ExecuteReader();
                 while (reader.Read())
                 {

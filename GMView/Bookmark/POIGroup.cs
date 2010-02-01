@@ -80,6 +80,47 @@ namespace GMView.Bookmarks
             set { IsShown = value; }
         }
 
+
+        private bool isDisabled = false;
+
+        /// <summary>
+        /// Get or set disabled flag. On set do this recursively for all sub-items
+        /// </summary>
+        public bool IsDisabled
+        {
+            get { return isDisabled; }
+            set 
+            { 
+                isDisabled = value;
+                ncUtils.DBConnPool.singleton.beginThreadTransaction();
+                try
+                {
+                    List<Bookmark> pois = Owner.PoiFactory.loadByParent(this.id, false);
+                    if (pois != null)
+                    {
+                        foreach (Bookmark poi in pois)
+                        {
+                            poi.IsDisabled = value;
+                        }
+                    }
+
+                    if (children != null)
+                    {
+                        foreach (POIGroup sub in children)
+                        {
+                            sub.IsDisabled = value;
+                        }
+                    }
+                    updateDB();
+                }
+                finally
+                {
+                    ncUtils.DBConnPool.singleton.commitThreadTransaction();
+                }
+                
+            }
+        }
+
         public POIGroup()
         {
             icon = IconFactory.singleton.getIcon(POITypeFactory.singleton().typeById(1)).img;
@@ -103,6 +144,7 @@ namespace GMView.Bookmarks
             id = reader.GetInt32(0);
             name = reader.GetString(1);
             description = reader.GetString(2);
+            isDisabled = (reader.GetInt32(3) == 1);
             icon = IconFactory.singleton.getIcon(POITypeFactory.singleton().typeById(1)).img;
         }
 
@@ -139,9 +181,10 @@ namespace GMView.Bookmarks
                 DBObj dbo = null;
                 try
                 {
-                    dbo = new DBObj(@"update poi set name=@NAME, description=@DESCRIPTION where id=@ID");
+                    dbo = new DBObj(@"update poi set name=@NAME, description=@DESCRIPTION, is_disabled=@ISDISABLED where id=@ID");
                     dbo.addStringPar("@NAME", name);
                     dbo.addStringPar("@DESCRIPTION", description);
+                    dbo.addIntPar("@ISDISABLED", (isDisabled ? 1 : 0));
                     dbo.addIntPar("@ID", id);
                     dbo.executeNonQuery();
                 }
