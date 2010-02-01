@@ -94,7 +94,9 @@ namespace GMView.TrackLoader
 
                     bmark.Name = node.Attributes.GetNamedItem("name").Value;
 
-                    bmark.Description = node.Attributes.GetNamedItem("comment").Value;
+                    XmlNode xnode = node.SelectSingleNode("./old:comment", nsm);
+                    if (xnode != null)
+                        bmark.Description = xnode.InnerText.Trim();
 
                     bmark.group = node.Attributes.GetNamedItem("group_name").Value;
 
