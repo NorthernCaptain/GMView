@@ -534,6 +534,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ColorPicker\ColorPicker.csproj">
+      <Project>{BA8745B2-A8A9-45B1-958E-5B68F56AB267}</Project>
+      <Name>ColorPicker</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GMLBase\GMLBase.csproj">
       <Project>{C5C0008D-5D68-4BB9-9F54-D1AA723885E2}</Project>
       <Name>GMLBase</Name>
