@@ -1733,5 +1733,11 @@ namespace GMView
             }
         }
 
+        private void loadTrackToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Forms.TrackLoadDlg frm = new Forms.TrackLoadDlg();
+            frm.Visible = true;
+        }
+
     }
 }

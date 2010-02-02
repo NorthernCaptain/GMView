@@ -141,6 +141,7 @@
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.mouseOverTimer = new System.Windows.Forms.Timer(this.components);
             this.deltaCenterTimer = new System.Windows.Forms.Timer(this.components);
+            this.loadTrackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -450,7 +451,8 @@
             this.saveTrackMI,
             this.toolStripSeparator13,
             this.removeTracksMI,
-            this.toolStripSeparator14});
+            this.toolStripSeparator14,
+            this.loadTrackToolStripMenuItem});
             this.trackStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlText;
             this.trackStripMenuItem.Name = "trackStripMenuItem";
             resources.ApplyResources(this.trackStripMenuItem, "trackStripMenuItem");
@@ -1021,6 +1023,12 @@
             // 
             this.deltaCenterTimer.Interval = 75;
             // 
+            // loadTrackToolStripMenuItem
+            // 
+            this.loadTrackToolStripMenuItem.Name = "loadTrackToolStripMenuItem";
+            resources.ApplyResources(this.loadTrackToolStripMenuItem, "loadTrackToolStripMenuItem");
+            this.loadTrackToolStripMenuItem.Click += new System.EventHandler(this.loadTrackToolStripMenuItem_Click);
+            // 
             // GMViewForm
             // 
             resources.ApplyResources(this, "$this");
@@ -1163,6 +1171,7 @@
         private System.Windows.Forms.ToolStripMenuItem downloadTilesAlongTheTrackToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pasteTrackFromClipboardToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pastePOIFromClipboardToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadTrackToolStripMenuItem;
     }
 }
 

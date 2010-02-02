@@ -32,6 +32,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorPicker", "ColorPicker\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToolBox", "ToolBox\ToolBox.csproj", "{D937E1F4-1B9F-4567-B28E-EED24AA31C9C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ncFileControls", "ncFileControls\ncFileControls.csproj", "{99AB2396-4FD0-4100-822C-6A41C1D1CCCD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -162,6 +164,16 @@ Global
 		{D937E1F4-1B9F-4567-B28E-EED24AA31C9C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{D937E1F4-1B9F-4567-B28E-EED24AA31C9C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D937E1F4-1B9F-4567-B28E-EED24AA31C9C}.Release|Win32.ActiveCfg = Release|Any CPU
+		{99AB2396-4FD0-4100-822C-6A41C1D1CCCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99AB2396-4FD0-4100-822C-6A41C1D1CCCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99AB2396-4FD0-4100-822C-6A41C1D1CCCD}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{99AB2396-4FD0-4100-822C-6A41C1D1CCCD}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{99AB2396-4FD0-4100-822C-6A41C1D1CCCD}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{99AB2396-4FD0-4100-822C-6A41C1D1CCCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99AB2396-4FD0-4100-822C-6A41C1D1CCCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99AB2396-4FD0-4100-822C-6A41C1D1CCCD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{99AB2396-4FD0-4100-822C-6A41C1D1CCCD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{99AB2396-4FD0-4100-822C-6A41C1D1CCCD}.Release|Win32.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -169,6 +169,12 @@
     <Compile Include="Forms\TrackDestFrom.Designer.cs">
       <DependentUpon>TrackDestFrom.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\TrackLoadDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TrackLoadDlg.Designer.cs">
+      <DependentUpon>TrackLoadDlg.cs</DependentUpon>
+    </Compile>
     <Compile Include="Geo\GoogleGeo.cs" />
     <Compile Include="Geo\YandexGeo.cs" />
     <Compile Include="Dash\DashBoardContainer.cs" />
@@ -312,6 +318,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\TrackDestFrom.resx">
       <DependentUpon>TrackDestFrom.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TrackLoadDlg.resx">
+      <DependentUpon>TrackLoadDlg.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="GML\MapDrawControl.resx">
@@ -541,6 +551,10 @@
     <ProjectReference Include="..\GMLBase\GMLBase.csproj">
       <Project>{C5C0008D-5D68-4BB9-9F54-D1AA723885E2}</Project>
       <Name>GMLBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ncFileControls\ncFileControls.csproj">
+      <Project>{99AB2396-4FD0-4100-822C-6A41C1D1CCCD}</Project>
+      <Name>ncFileControls</Name>
     </ProjectReference>
     <ProjectReference Include="..\ncGeo\ncGeo.csproj">
       <Project>{D2746CB8-C982-4618-9A1B-603F49F69FD1}</Project>
