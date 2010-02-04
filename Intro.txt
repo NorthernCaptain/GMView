@@ -1,0 +1,11 @@
+
+      Welcome to Knowhere GPS and public mapping software.
+
+Know Where - is a GPS software with ability for viewing Goo maps, 
+downloading and caching them. Later you can browse your maps without 
+having Internet connection, use your GPS receiver for knowing 
+where you are now, recording tracks in GPS eXchange format.
+
+And more...
+
+Copyright © 2008-2010 by Leonid Khramov <LeonidTheKing@gmail.com>
