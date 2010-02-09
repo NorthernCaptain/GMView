@@ -75,18 +75,24 @@ namespace GMView.Forms
                 return;
             }
 
+            poiFactory.unregister(currentPOI);
+
+            currentPOI.IsShown = false;
+            currentPOI.Ptype = (POIType)poiTypeListBox.SelectedItem;
+
+            currentPOI.IsDbChange = false;
             currentPOI.Name = nameTb.Text;
             currentPOI.Description = descrTb.Text;
             currentPOI.Comment = commentTB.Text;
-            currentPOI.Ptype = (POIType) poiTypeListBox.SelectedItem;
             currentPOI.LongitudeS = lonTb.Text;
             currentPOI.LatitudeS = latTB.Text;
             currentPOI.altitude = (double)altTB.Value;
+            currentPOI.IsDbChange = true;
             currentPOI.updateDB();
 
-            poiFactory.unregister(currentPOI);
             poiFactory.register(currentPOI);
-            currentPOI.IsShown = true;
+            currentPOI.IsShownCentered = true;
+
             POIGroup parentGrp = (treeView.SelectedNode != null) ? treeView.SelectedNode.Tag as POIGroup : null;
             if (parentGrp == null)
                 parentGrp = groupFactory.rootGroup;

@@ -96,7 +96,7 @@ namespace ncUtils
         {
             double result = 0.0;
             char[] symb = new char[] { ',', '.', '\'', '°', '"' };
-            string[] parts = lon.Split(symb);
+            string[] parts = lon.Trim().Split(symb);
     
             if (parts.Length <= 2) // we have lon or lat in the format of degrees.fraction_of_degrees
             {

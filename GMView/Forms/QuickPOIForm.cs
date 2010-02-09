@@ -39,16 +39,18 @@ namespace GMView.Forms
 
         private void okBut_Click(object sender, EventArgs e)
         {
+            BookMarkFactory.singleton.unregister(mypoi);
+            mypoi.IsShown = false;
             currentType = poiTypeList.SelectedItem as POIType;
-            mypoi.qchangeType(poiType);
-            mypoi.updateDB();
+            mypoi.Ptype = poiType;
+
             Bookmarks.POIGroup pgroup = Bookmarks.POIGroupFactory.singleton().findByName("quick add");
             if (pgroup == null)
                 pgroup = Bookmarks.POIGroupFactory.singleton().rootGroup;
             mypoi.addLinkDB(pgroup);
             pgroup.addChild(mypoi);
-            BookMarkFactory.singleton.unregister(mypoi);
             BookMarkFactory.singleton.register(mypoi);
+            mypoi.IsShownCentered = true;
         }
     }
 }
