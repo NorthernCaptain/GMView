@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Drawing;
 
 namespace ncFileControls
 {
@@ -18,6 +19,41 @@ namespace ncFileControls
         {
             get { return name; }
             set { name = value; }
+        }
+
+        /// <summary>
+        /// Shows the display name of the file or directory entry
+        /// </summary>
+        public string DisplayName
+        {
+            get
+            {
+                return (isFile ? name : "[" + name + "]");
+            }
+            set
+            {
+                string newname = value.Replace('[', ' ').Replace(']', ' ').Trim();
+                name = newname;
+            }
+        }
+
+        /// <summary>
+        /// Return Icon of this type of file (dir only)
+        /// </summary>
+        public Bitmap IconImg
+        {
+            get
+            {
+                if (!isFile)
+                {
+                    if (name == "..")
+                        return Properties.Resources.updir2;
+
+                    return Properties.Resources.dir1;
+                }
+
+                return null;
+            }
         }
 
         private long size;

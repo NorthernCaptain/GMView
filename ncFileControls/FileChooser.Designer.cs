@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             this.toolBox = new Silver.UI.ToolBox();
             this.treeView = new Aga.Controls.Tree.TreeViewAdv();
-            this.dirCB = new System.Windows.Forms.ComboBox();
             this.fileNameCol = new Aga.Controls.Tree.TreeColumn();
             this.sizeCol = new Aga.Controls.Tree.TreeColumn();
             this.dateCol = new Aga.Controls.Tree.TreeColumn();
@@ -39,12 +38,14 @@
             this.nodeTextBoxName = new Aga.Controls.Tree.NodeControls.NodeTextBox();
             this.nodeTextBoxSize = new Aga.Controls.Tree.NodeControls.NodeTextBox();
             this.nodeTextBoxDate = new Aga.Controls.Tree.NodeControls.NodeTextBox();
+            this.dirCB = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.bookDirBut = new System.Windows.Forms.Button();
+            this.newDirBut = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // toolBox
@@ -84,6 +85,7 @@
             // 
             // treeView
             // 
+            this.treeView.AllowColumnReorder = true;
             this.treeView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
@@ -93,6 +95,8 @@
             this.treeView.Columns.Add(this.dateCol);
             this.treeView.DefaultToolTipProvider = null;
             this.treeView.DragDropMarkColor = System.Drawing.Color.Black;
+            this.treeView.GridLineStyle = ((Aga.Controls.Tree.GridLineStyle)((Aga.Controls.Tree.GridLineStyle.Horizontal | Aga.Controls.Tree.GridLineStyle.Vertical)));
+            this.treeView.Indent = 16;
             this.treeView.LineColor = System.Drawing.SystemColors.ControlDark;
             this.treeView.LoadOnDemand = true;
             this.treeView.Location = new System.Drawing.Point(154, 33);
@@ -102,28 +106,25 @@
             this.treeView.NodeControls.Add(this.nodeTextBoxName);
             this.treeView.NodeControls.Add(this.nodeTextBoxSize);
             this.treeView.NodeControls.Add(this.nodeTextBoxDate);
+            this.treeView.RowHeight = 20;
             this.treeView.SelectedNode = null;
+            this.treeView.ShowLines = false;
+            this.treeView.ShowPlusMinus = false;
             this.treeView.Size = new System.Drawing.Size(587, 382);
             this.treeView.TabIndex = 1;
             this.treeView.Text = "treeViewAdv1";
             this.treeView.UseColumns = true;
-            // 
-            // dirCB
-            // 
-            this.dirCB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.dirCB.FormattingEnabled = true;
-            this.dirCB.Location = new System.Drawing.Point(187, 3);
-            this.dirCB.Name = "dirCB";
-            this.dirCB.Size = new System.Drawing.Size(373, 24);
-            this.dirCB.TabIndex = 2;
+            this.treeView.ColumnClicked += new System.EventHandler<Aga.Controls.Tree.TreeColumnEventArgs>(this.treeView_ColumnClicked);
+            this.treeView.ColumnWidthChanged += new System.EventHandler<Aga.Controls.Tree.TreeColumnEventArgs>(this.treeView_ColumnWidthChanged);
+            this.treeView.DoubleClick += new System.EventHandler(this.treeView_DoubleClick);
+            this.treeView.ColumnReordered += new System.EventHandler<Aga.Controls.Tree.TreeColumnEventArgs>(this.treeView_ColumnReordered);
             // 
             // fileNameCol
             // 
             this.fileNameCol.Header = "Name";
             this.fileNameCol.MinColumnWidth = 100;
             this.fileNameCol.Sortable = true;
-            this.fileNameCol.SortOrder = System.Windows.Forms.SortOrder.None;
+            this.fileNameCol.SortOrder = System.Windows.Forms.SortOrder.Ascending;
             this.fileNameCol.TooltipText = null;
             this.fileNameCol.Width = 350;
             // 
@@ -154,7 +155,8 @@
             // 
             // nodeTextBoxName
             // 
-            this.nodeTextBoxName.DataPropertyName = "Name";
+            this.nodeTextBoxName.DataPropertyName = "DisplayName";
+            this.nodeTextBoxName.EditEnabled = true;
             this.nodeTextBoxName.IncrementalSearchEnabled = true;
             this.nodeTextBoxName.LeftMargin = 3;
             this.nodeTextBoxName.ParentColumn = this.fileNameCol;
@@ -181,6 +183,16 @@
             this.nodeTextBoxDate.Trimming = System.Drawing.StringTrimming.EllipsisCharacter;
             this.nodeTextBoxDate.UseCompatibleTextRendering = true;
             // 
+            // dirCB
+            // 
+            this.dirCB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.dirCB.FormattingEnabled = true;
+            this.dirCB.Location = new System.Drawing.Point(187, 3);
+            this.dirCB.Name = "dirCB";
+            this.dirCB.Size = new System.Drawing.Size(373, 24);
+            this.dirCB.TabIndex = 2;
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -189,16 +201,6 @@
             this.label1.Size = new System.Drawing.Size(30, 17);
             this.label1.TabIndex = 4;
             this.label1.Text = "Dir:";
-            // 
-            // button1
-            // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Image = global::ncFileControls.Properties.Resources.Folder;
-            this.button1.Location = new System.Drawing.Point(566, 3);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(27, 23);
-            this.button1.TabIndex = 3;
-            this.button1.UseVisualStyleBackColor = true;
             // 
             // comboBox1
             // 
@@ -240,6 +242,30 @@
             this.label3.TabIndex = 4;
             this.label3.Text = "Type:";
             // 
+            // bookDirBut
+            // 
+            this.bookDirBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.bookDirBut.FlatAppearance.BorderSize = 0;
+            this.bookDirBut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bookDirBut.Image = global::ncFileControls.Properties.Resources.bookAdd;
+            this.bookDirBut.Location = new System.Drawing.Point(566, 3);
+            this.bookDirBut.Name = "bookDirBut";
+            this.bookDirBut.Size = new System.Drawing.Size(27, 24);
+            this.bookDirBut.TabIndex = 3;
+            this.bookDirBut.UseVisualStyleBackColor = true;
+            // 
+            // newDirBut
+            // 
+            this.newDirBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.newDirBut.FlatAppearance.BorderSize = 0;
+            this.newDirBut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.newDirBut.Image = global::ncFileControls.Properties.Resources.newdir;
+            this.newDirBut.Location = new System.Drawing.Point(599, 3);
+            this.newDirBut.Name = "newDirBut";
+            this.newDirBut.Size = new System.Drawing.Size(27, 24);
+            this.newDirBut.TabIndex = 3;
+            this.newDirBut.UseVisualStyleBackColor = true;
+            // 
             // FileChooser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -249,7 +275,8 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.newDirBut);
+            this.Controls.Add(this.bookDirBut);
             this.Controls.Add(this.dirCB);
             this.Controls.Add(this.treeView);
             this.Controls.Add(this.toolBox);
@@ -272,11 +299,12 @@
         private Aga.Controls.Tree.NodeControls.NodeTextBox nodeTextBoxName;
         private Aga.Controls.Tree.NodeControls.NodeTextBox nodeTextBoxSize;
         private Aga.Controls.Tree.NodeControls.NodeTextBox nodeTextBoxDate;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button bookDirBut;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button newDirBut;
     }
 }

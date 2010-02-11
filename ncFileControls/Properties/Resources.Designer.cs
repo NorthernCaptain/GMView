@@ -60,9 +60,51 @@ namespace ncFileControls.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap bookAdd {
+            get {
+                object obj = ResourceManager.GetObject("bookAdd", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap dir1 {
+            get {
+                object obj = ResourceManager.GetObject("dir1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap dir2 {
+            get {
+                object obj = ResourceManager.GetObject("dir2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Folder {
             get {
                 object obj = ResourceManager.GetObject("Folder", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap newdir {
+            get {
+                object obj = ResourceManager.GetObject("newdir", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap updir1 {
+            get {
+                object obj = ResourceManager.GetObject("updir1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap updir2 {
+            get {
+                object obj = ResourceManager.GetObject("updir2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

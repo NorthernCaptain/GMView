@@ -44,6 +44,7 @@
     <Compile Include="FileChooser.Designer.cs">
       <DependentUpon>FileChooser.cs</DependentUpon>
     </Compile>
+    <Compile Include="FileGridSorter.cs" />
     <Compile Include="FileInfoNode.cs" />
     <Compile Include="FilePlainTreeModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -65,6 +66,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ncUtils\ncUtils.csproj">
+      <Project>{C3A3C585-F715-4A0C-8222-F87C82AEB7EA}</Project>
+      <Name>ncUtils</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ToolBox\ToolBox.csproj">
       <Project>{D937E1F4-1B9F-4567-B28E-EED24AA31C9C}</Project>
       <Name>ToolBox</Name>
@@ -76,6 +81,24 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Folder.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\updir2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dir1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dir2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\newdir.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\updir1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bookAdd.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

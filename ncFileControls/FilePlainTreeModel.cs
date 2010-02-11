@@ -46,6 +46,11 @@ namespace ncFileControls
                 return dirList;
             }
 
+            string uppath = Path.GetFullPath(Path.Combine(currentPath, ".."));
+            FileInfoNode fn = new FileInfoNode(new DirectoryInfo(uppath));
+            fn.Name = "..";
+            dirList.Add(fn);
+
             foreach (string dir in Directory.GetDirectories(path))
             {
                 FileInfoNode node = new FileInfoNode(new DirectoryInfo(dir));
@@ -60,6 +65,21 @@ namespace ncFileControls
             return dirList;
         }
 
+        public void changeDir(FileInfoNode dirEntry)
+        {
+            string oldpath = currentPath;
+            currentPath = Path.Combine(currentPath, dirEntry.Name);
+            currentPath = Path.GetFullPath(currentPath);
+
+            if (oldpath == currentPath && dirEntry.Name == "..")
+                currentPath = string.Empty;
+
+            currentFileList = fillFileList(currentPath);
+            if (StructureChanged != null)
+                StructureChanged(this, new TreePathEventArgs());
+        }
+
+
         #region ITreeModel Members
 
         public System.Collections.IEnumerable GetChildren(TreePath treePath)
@@ -73,7 +93,7 @@ namespace ncFileControls
 
         public bool IsLeaf(TreePath treePath)
         {
-            return (treePath.LastNode as FileInfoNode).IsFile;
+            return true;
         }
 
         public event EventHandler<TreeModelEventArgs> NodesChanged;
