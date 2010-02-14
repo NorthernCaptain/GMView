@@ -124,6 +124,12 @@ namespace ncFileControls
             set { isFile = value; }
         }
 
+
+        public FileInfoNode(string iname)
+        {
+            name = iname;
+        }
+
         /// <summary>
         /// Constructor from FileSystemInfo
         /// </summary>

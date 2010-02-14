@@ -40,12 +40,13 @@
             this.nodeTextBoxDate = new Aga.Controls.Tree.NodeControls.NodeTextBox();
             this.dirCB = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.fileTypeCB = new System.Windows.Forms.ComboBox();
+            this.fileCB = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.bookDirBut = new System.Windows.Forms.Button();
             this.newDirBut = new System.Windows.Forms.Button();
+            this.upDirBut = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // toolBox
@@ -114,10 +115,12 @@
             this.treeView.TabIndex = 1;
             this.treeView.Text = "treeViewAdv1";
             this.treeView.UseColumns = true;
+            this.treeView.SelectionChanged += new System.EventHandler(this.treeView_SelectionChanged);
             this.treeView.ColumnClicked += new System.EventHandler<Aga.Controls.Tree.TreeColumnEventArgs>(this.treeView_ColumnClicked);
             this.treeView.ColumnWidthChanged += new System.EventHandler<Aga.Controls.Tree.TreeColumnEventArgs>(this.treeView_ColumnWidthChanged);
             this.treeView.DoubleClick += new System.EventHandler(this.treeView_DoubleClick);
             this.treeView.ColumnReordered += new System.EventHandler<Aga.Controls.Tree.TreeColumnEventArgs>(this.treeView_ColumnReordered);
+            this.treeView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.treeView_KeyDown);
             // 
             // fileNameCol
             // 
@@ -187,11 +190,16 @@
             // 
             this.dirCB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.dirCB.DropDownHeight = 200;
+            this.dirCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.dirCB.DropDownWidth = 500;
             this.dirCB.FormattingEnabled = true;
+            this.dirCB.IntegralHeight = false;
             this.dirCB.Location = new System.Drawing.Point(187, 3);
             this.dirCB.Name = "dirCB";
-            this.dirCB.Size = new System.Drawing.Size(373, 24);
+            this.dirCB.Size = new System.Drawing.Size(455, 24);
             this.dirCB.TabIndex = 2;
+            this.dirCB.SelectionChangeCommitted += new System.EventHandler(this.dirCB_SelectionChangeCommitted);
             // 
             // label1
             // 
@@ -202,25 +210,25 @@
             this.label1.TabIndex = 4;
             this.label1.Text = "Dir:";
             // 
-            // comboBox1
+            // fileTypeCB
             // 
-            this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+            this.fileTypeCB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(204, 451);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(537, 24);
-            this.comboBox1.TabIndex = 5;
+            this.fileTypeCB.FormattingEnabled = true;
+            this.fileTypeCB.Location = new System.Drawing.Point(204, 451);
+            this.fileTypeCB.Name = "fileTypeCB";
+            this.fileTypeCB.Size = new System.Drawing.Size(537, 24);
+            this.fileTypeCB.TabIndex = 5;
             // 
-            // comboBox2
+            // fileCB
             // 
-            this.comboBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+            this.fileCB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(204, 421);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(537, 24);
-            this.comboBox2.TabIndex = 5;
+            this.fileCB.FormattingEnabled = true;
+            this.fileCB.Location = new System.Drawing.Point(204, 421);
+            this.fileCB.Name = "fileCB";
+            this.fileCB.Size = new System.Drawing.Size(537, 24);
+            this.fileCB.TabIndex = 5;
             // 
             // label2
             // 
@@ -248,7 +256,7 @@
             this.bookDirBut.FlatAppearance.BorderSize = 0;
             this.bookDirBut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bookDirBut.Image = global::ncFileControls.Properties.Resources.bookAdd;
-            this.bookDirBut.Location = new System.Drawing.Point(566, 3);
+            this.bookDirBut.Location = new System.Drawing.Point(681, 2);
             this.bookDirBut.Name = "bookDirBut";
             this.bookDirBut.Size = new System.Drawing.Size(27, 24);
             this.bookDirBut.TabIndex = 3;
@@ -260,21 +268,35 @@
             this.newDirBut.FlatAppearance.BorderSize = 0;
             this.newDirBut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.newDirBut.Image = global::ncFileControls.Properties.Resources.newdir;
-            this.newDirBut.Location = new System.Drawing.Point(599, 3);
+            this.newDirBut.Location = new System.Drawing.Point(714, 2);
             this.newDirBut.Name = "newDirBut";
             this.newDirBut.Size = new System.Drawing.Size(27, 24);
             this.newDirBut.TabIndex = 3;
             this.newDirBut.UseVisualStyleBackColor = true;
             // 
+            // upDirBut
+            // 
+            this.upDirBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.upDirBut.FlatAppearance.BorderSize = 0;
+            this.upDirBut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.upDirBut.Image = global::ncFileControls.Properties.Resources.updir2;
+            this.upDirBut.Location = new System.Drawing.Point(648, 3);
+            this.upDirBut.Name = "upDirBut";
+            this.upDirBut.Size = new System.Drawing.Size(27, 24);
+            this.upDirBut.TabIndex = 3;
+            this.upDirBut.UseVisualStyleBackColor = true;
+            this.upDirBut.Click += new System.EventHandler(this.upDirBut_Click);
+            // 
             // FileChooser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.comboBox2);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.fileCB);
+            this.Controls.Add(this.fileTypeCB);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.upDirBut);
             this.Controls.Add(this.newDirBut);
             this.Controls.Add(this.bookDirBut);
             this.Controls.Add(this.dirCB);
@@ -301,10 +323,11 @@
         private Aga.Controls.Tree.NodeControls.NodeTextBox nodeTextBoxDate;
         private System.Windows.Forms.Button bookDirBut;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.ComboBox fileTypeCB;
+        private System.Windows.Forms.ComboBox fileCB;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button newDirBut;
+        private System.Windows.Forms.Button upDirBut;
     }
 }

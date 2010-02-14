@@ -23,6 +23,24 @@ namespace ncFileControls
             InitializeComponent();
             toolBox.AddTab("Common places");
             toolBox.AddTab("My places");
+            mainModel = new FilePlainTreeModel(treeView);
+            mainModel.DirectoryChanged += mainModel_DirectoryChanged;
+        }
+
+        /// <summary>
+        /// Event raises when directory was changed. Refill our widgets
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void mainModel_DirectoryChanged(object sender, EventArgs e)
+        {
+            List<string> contents = mainModel.getRolledDir(mainModel.CurrentPath);
+            dirCB.Items.Clear();
+            dirCB.Items.AddRange(contents.ToArray());
+            dirCB.SelectedIndex = contents.Count - 1;
+
+            fileCB.Items.Clear();
+            fileCB.SelectedText = String.Empty;
         }
 
         protected override void OnLoad(EventArgs e)
@@ -35,7 +53,6 @@ namespace ncFileControls
         /// </summary>
         private void initTree()
         {
-            mainModel = new FilePlainTreeModel(treeView);
             SortedTreeModel smodel = new SortedTreeModel(mainModel);
             treeView.Model = smodel;
             smodel.Comparer = new FileGridSorter("Name", SortOrder.Ascending);
@@ -77,7 +94,36 @@ namespace ncFileControls
             {
                 FileInfoNode node = treeView.SelectedNode.Tag as FileInfoNode;
                 if (node != null && !node.IsFile)
-                    mainModel.changeDir(node);
+                {
+                    changeCurrentDir(node);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Changes current dir to the given sub-entry or upper dir
+        /// </summary>
+        /// <param name="node"></param>
+        private void changeCurrentDir(FileInfoNode node)
+        {
+            string lastEntry = mainModel.changeDir(node);
+            if (!string.IsNullOrEmpty(lastEntry))
+            {
+                foreach (TreeNodeAdv tnode in treeView.AllNodes)
+                {
+                    FileInfoNode nfo = tnode.Tag as FileInfoNode;
+                    if (nfo.Name.Equals(lastEntry))
+                    {
+                        treeView.SelectedNode = tnode;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                IEnumerator<TreeNodeAdv> allnodes = treeView.AllNodes.GetEnumerator();
+                allnodes.MoveNext();
+                treeView.SelectedNode = allnodes.Current;
             }
         }
 
@@ -121,5 +167,76 @@ namespace ncFileControls
             ncUtils.DBSetup.singleton.setInt(this.Name + ".tree.col." + e.Column.Header + ".width",
                                              e.Column.Width);
         }
+
+        private void dirCB_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            mainModel.CurrentPath = dirCB.SelectedItem.ToString();
+        }
+
+        /// <summary>
+        /// Raises when selection is changed in the tree view. Sets the current file and fires
+        /// fileSelectionChanged Event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void treeView_SelectionChanged(object sender, EventArgs e)
+        {
+            fileCB.Text = null;
+            currentFileInfo = null;
+
+            if (treeView.SelectedNode != null)
+            {
+                FileInfoNode nfo = treeView.SelectedNode.Tag as FileInfoNode;
+                if (nfo != null && nfo.IsFile)
+                {
+                    fileCB.Text = nfo.Name;
+                    currentFileInfo = nfo;
+                }
+            }
+
+            if (fileSelectionChanged != null)
+                fileSelectionChanged(this, null);
+        }
+
+        private FileInfoNode currentFileInfo = null;
+        /// <summary>
+        /// Event that fires if current selected file changed to another one.
+        /// </summary>
+        public event EventHandler fileSelectionChanged;
+
+        /// <summary>
+        /// Gets the current selected file with a full path to it.
+        /// </summary>
+        public string SelectedFile
+        {
+            get
+            {
+                if (currentFileInfo == null)
+                    return null;
+
+                return Path.Combine(mainModel.CurrentPath, currentFileInfo.Name);
+            }
+        }
+
+        /// <summary>
+        /// Process key press events inside tree view
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void treeView_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                treeView_DoubleClick(sender, e);
+                e.Handled = true;
+            }
+        }
+
+        private void upDirBut_Click(object sender, EventArgs e)
+        {
+            if(!string.IsNullOrEmpty(mainModel.CurrentPath))
+                changeCurrentDir(new FileInfoNode(".."));
+        }
+
     }
 }
