@@ -39,7 +39,7 @@ namespace ColorPicker
 		public EyedropColorPicker()
 		{
 			this.DoubleBuffered = true;
-			m_icon = new Bitmap(typeof(EyedropColorPicker), "Resources.eyedropper.bmp");
+			m_icon = Properties.Resources.eyedropper;
 			m_icon.MakeTransparent(Color.Magenta);
 		}
 		RectangleF ImageRect

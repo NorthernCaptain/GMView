@@ -402,6 +402,7 @@
     <Content Include="gmview_icon.ICO" />
     <Content Include="icon_main.ico" />
     <None Include="Resources\trackmenu.png" />
+    <None Include="Resources\MapLayers.png" />
     <Content Include="Satellite.ico" />
     <None Include="Resources\helpKeys.htm" />
     <None Include="Resources\dot_small_auto.png" />

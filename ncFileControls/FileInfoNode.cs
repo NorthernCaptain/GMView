@@ -37,6 +37,8 @@ namespace ncFileControls
             }
         }
 
+        private Bitmap icon = null;
+
         /// <summary>
         /// Return Icon of this type of file (dir only)
         /// </summary>
@@ -44,15 +46,7 @@ namespace ncFileControls
         {
             get
             {
-                if (!isFile)
-                {
-                    if (name == "..")
-                        return Properties.Resources.updir2;
-
-                    return Properties.Resources.dir1;
-                }
-
-                return null;
+                return icon;
             }
         }
 
@@ -147,6 +141,10 @@ namespace ncFileControls
             if (dir != null)
             {
                 fillFromDir(dir);
+                if (name == "..")
+                    icon = Properties.Resources.updir2;
+                else
+                    icon = Properties.Resources.dir1;
                 return;
             }
         }
@@ -154,6 +152,10 @@ namespace ncFileControls
         public FileInfoNode(DriveInfo finfo)
         {
             fillDriveInfo(finfo);
+            if (finfo.DriveType == DriveType.CDRom)
+                icon = Properties.Resources.cdrom_unmount;
+            else
+                icon = Properties.Resources.hdd_linux_mount;
         }
 
 

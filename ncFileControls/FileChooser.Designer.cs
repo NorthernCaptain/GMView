@@ -66,7 +66,7 @@
             this.toolBox.ItemSelectedColor = System.Drawing.Color.White;
             this.toolBox.ItemSelectedTextColor = System.Drawing.SystemColors.ControlText;
             this.toolBox.ItemSpacing = 2;
-            this.toolBox.LargeItemSize = new System.Drawing.Size(64, 64);
+            this.toolBox.LargeItemSize = new System.Drawing.Size(100, 96);
             this.toolBox.LayoutDelay = 10;
             this.toolBox.Location = new System.Drawing.Point(3, 3);
             this.toolBox.Name = "toolBox";
@@ -74,7 +74,7 @@
             this.toolBox.SelectAllTextWhileRenaming = true;
             this.toolBox.SelectedTabIndex = -1;
             this.toolBox.ShowOnlyOneItemPerRow = false;
-            this.toolBox.Size = new System.Drawing.Size(145, 472);
+            this.toolBox.Size = new System.Drawing.Size(105, 472);
             this.toolBox.SmallItemSize = new System.Drawing.Size(32, 32);
             this.toolBox.TabHeight = 18;
             this.toolBox.TabHoverTextColor = System.Drawing.SystemColors.ControlText;
@@ -83,6 +83,7 @@
             this.toolBox.TabSelectedTextColor = System.Drawing.SystemColors.ControlText;
             this.toolBox.TabSpacing = 1;
             this.toolBox.UseItemColorInRename = false;
+            this.toolBox.ItemSelectionChanged += new Silver.UI.ItemSelectionChangedHandler(this.toolBox_ItemSelectionChanged);
             // 
             // treeView
             // 
@@ -100,7 +101,7 @@
             this.treeView.Indent = 16;
             this.treeView.LineColor = System.Drawing.SystemColors.ControlDark;
             this.treeView.LoadOnDemand = true;
-            this.treeView.Location = new System.Drawing.Point(154, 33);
+            this.treeView.Location = new System.Drawing.Point(114, 32);
             this.treeView.Model = null;
             this.treeView.Name = "treeView";
             this.treeView.NodeControls.Add(this.nodeStateIcon);
@@ -111,7 +112,7 @@
             this.treeView.SelectedNode = null;
             this.treeView.ShowLines = false;
             this.treeView.ShowPlusMinus = false;
-            this.treeView.Size = new System.Drawing.Size(587, 382);
+            this.treeView.Size = new System.Drawing.Size(627, 382);
             this.treeView.TabIndex = 1;
             this.treeView.Text = "treeViewAdv1";
             this.treeView.UseColumns = true;
@@ -195,16 +196,16 @@
             this.dirCB.DropDownWidth = 500;
             this.dirCB.FormattingEnabled = true;
             this.dirCB.IntegralHeight = false;
-            this.dirCB.Location = new System.Drawing.Point(187, 3);
+            this.dirCB.Location = new System.Drawing.Point(147, 2);
             this.dirCB.Name = "dirCB";
-            this.dirCB.Size = new System.Drawing.Size(455, 24);
+            this.dirCB.Size = new System.Drawing.Size(495, 24);
             this.dirCB.TabIndex = 2;
             this.dirCB.SelectionChangeCommitted += new System.EventHandler(this.dirCB_SelectionChangeCommitted);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(151, 6);
+            this.label1.Location = new System.Drawing.Point(111, 5);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(30, 17);
             this.label1.TabIndex = 4;
@@ -215,9 +216,9 @@
             this.fileTypeCB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.fileTypeCB.FormattingEnabled = true;
-            this.fileTypeCB.Location = new System.Drawing.Point(204, 451);
+            this.fileTypeCB.Location = new System.Drawing.Point(164, 450);
             this.fileTypeCB.Name = "fileTypeCB";
-            this.fileTypeCB.Size = new System.Drawing.Size(537, 24);
+            this.fileTypeCB.Size = new System.Drawing.Size(577, 24);
             this.fileTypeCB.TabIndex = 5;
             // 
             // fileCB
@@ -225,16 +226,16 @@
             this.fileCB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.fileCB.FormattingEnabled = true;
-            this.fileCB.Location = new System.Drawing.Point(204, 421);
+            this.fileCB.Location = new System.Drawing.Point(164, 420);
             this.fileCB.Name = "fileCB";
-            this.fileCB.Size = new System.Drawing.Size(537, 24);
+            this.fileCB.Size = new System.Drawing.Size(577, 24);
             this.fileCB.TabIndex = 5;
             // 
             // label2
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(154, 424);
+            this.label2.Location = new System.Drawing.Point(114, 423);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(34, 17);
             this.label2.TabIndex = 4;
@@ -244,7 +245,7 @@
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(154, 454);
+            this.label3.Location = new System.Drawing.Point(114, 453);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(44, 17);
             this.label3.TabIndex = 4;
@@ -256,7 +257,7 @@
             this.bookDirBut.FlatAppearance.BorderSize = 0;
             this.bookDirBut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bookDirBut.Image = global::ncFileControls.Properties.Resources.bookAdd;
-            this.bookDirBut.Location = new System.Drawing.Point(681, 2);
+            this.bookDirBut.Location = new System.Drawing.Point(683, 2);
             this.bookDirBut.Name = "bookDirBut";
             this.bookDirBut.Size = new System.Drawing.Size(27, 24);
             this.bookDirBut.TabIndex = 3;
@@ -268,9 +269,9 @@
             this.newDirBut.FlatAppearance.BorderSize = 0;
             this.newDirBut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.newDirBut.Image = global::ncFileControls.Properties.Resources.newdir;
-            this.newDirBut.Location = new System.Drawing.Point(714, 2);
+            this.newDirBut.Location = new System.Drawing.Point(716, 2);
             this.newDirBut.Name = "newDirBut";
-            this.newDirBut.Size = new System.Drawing.Size(27, 24);
+            this.newDirBut.Size = new System.Drawing.Size(25, 24);
             this.newDirBut.TabIndex = 3;
             this.newDirBut.UseVisualStyleBackColor = true;
             // 
@@ -280,7 +281,7 @@
             this.upDirBut.FlatAppearance.BorderSize = 0;
             this.upDirBut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.upDirBut.Image = global::ncFileControls.Properties.Resources.updir2;
-            this.upDirBut.Location = new System.Drawing.Point(648, 3);
+            this.upDirBut.Location = new System.Drawing.Point(650, 2);
             this.upDirBut.Name = "upDirBut";
             this.upDirBut.Size = new System.Drawing.Size(27, 24);
             this.upDirBut.TabIndex = 3;

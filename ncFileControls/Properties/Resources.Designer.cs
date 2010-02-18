@@ -67,6 +67,20 @@ namespace ncFileControls.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap cdrom_unmount {
+            get {
+                object obj = ResourceManager.GetObject("cdrom_unmount", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap desktop {
+            get {
+                object obj = ResourceManager.GetObject("desktop", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap dir1 {
             get {
                 object obj = ResourceManager.GetObject("dir1", resourceCulture);
@@ -81,9 +95,44 @@ namespace ncFileControls.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap document {
+            get {
+                object obj = ResourceManager.GetObject("document", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Folder {
             get {
                 object obj = ResourceManager.GetObject("Folder", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap folder_home2 {
+            get {
+                object obj = ResourceManager.GetObject("folder_home2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap folder_html {
+            get {
+                object obj = ResourceManager.GetObject("folder_html", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap hdd_linux_mount {
+            get {
+                object obj = ResourceManager.GetObject("hdd_linux_mount", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Layers {
+            get {
+                object obj = ResourceManager.GetObject("Layers", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

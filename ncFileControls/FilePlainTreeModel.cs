@@ -23,17 +23,7 @@ namespace ncFileControls
             get { return currentPath; }
             set 
             {
-                string newDir = value;
-                if (newDir.Equals(currentPath))
-                    return;
-                currentPath = newDir;
-
-                currentFileList = fillFileList(currentPath);
-                if (StructureChanged != null)
-                    StructureChanged(this, new TreePathEventArgs());
-
-                if (DirectoryChanged != null)
-                    DirectoryChanged(this, new EventArgs());
+                setDir(value);
             }
         }
 
@@ -132,9 +122,12 @@ namespace ncFileControls
         /// <param name="newDir"></param>
         public void setDir(string newDir)
         {
-            newDir = Path.GetFullPath(newDir);
-            if (newDir.Equals(currentPath))
-                return;
+            if (!string.IsNullOrEmpty(newDir))
+            {
+                //newDir = Path.GetFullPath(newDir);
+                if (newDir.Equals(currentPath))
+                    return;
+            }
             currentPath = newDir;
 
             currentFileList = fillFileList(currentPath);
@@ -162,6 +155,12 @@ namespace ncFileControls
 
             path = Path.GetFullPath(path);
             string[] contents = path.Split(Path.DirectorySeparatorChar);
+
+            for (int j = 0; j < contents.Length;j++ )
+            {
+                if(!string.IsNullOrEmpty(contents[j]))
+                    contents[j] += Path.DirectorySeparatorChar;
+            }
 
             rolled.Add(contents[0]);
             string pathpart = contents[0];

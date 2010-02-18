@@ -10,7 +10,12 @@ namespace ColorPicker
 	{
 		static public ImageList GetToolbarImageList(Type type, string resourceName, Size imageSize, Color transparentColor)
 		{
-			System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(type, resourceName);
+			System.Drawing.Bitmap bitmap;
+            if (resourceName == "colorbarIndicators.bmp")
+                bitmap = ColorPicker.Properties.Resources.colorbarIndicators;
+            else
+                bitmap = ColorPicker.Properties.Resources.popupcontainerbuttons;
+
 			ImageList imageList = new ImageList();
 			imageList.ImageSize = imageSize;
 			imageList.TransparentColor = transparentColor;
@@ -36,7 +41,7 @@ namespace ColorPicker
 		{
 			Type t = typeof(SelectorImages);
 			if (m_imageList == null)
-				m_imageList = ImagesUtil.GetToolbarImageList(t, "Resources.colorbarIndicators.bmp", new Size(12, 12), Color.Magenta);
+				m_imageList = ImagesUtil.GetToolbarImageList(t, "colorbarIndicators.bmp", new Size(12, 12), Color.Magenta);
 			return m_imageList;
 		}
 		static public Image Image(eIndexes index)
@@ -57,7 +62,7 @@ namespace ColorPicker
 		{
 			Type t = typeof(SelectorImages);
 			if (m_imageList == null)
-				m_imageList = ImagesUtil.GetToolbarImageList(t, "Resources.popupcontainerbuttons.bmp", new Size(16, 16), Color.Magenta);
+				m_imageList = ImagesUtil.GetToolbarImageList(t, "popupcontainerbuttons.bmp", new Size(16, 16), Color.Magenta);
 			return m_imageList;
 		}
 		static public Image Image(eIndexes index)

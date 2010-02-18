@@ -21,10 +21,10 @@ namespace ncFileControls
         public FileChooser()
         {
             InitializeComponent();
-            toolBox.AddTab("Common places");
-            toolBox.AddTab("My places");
             mainModel = new FilePlainTreeModel(treeView);
             mainModel.DirectoryChanged += mainModel_DirectoryChanged;
+
+            initToolbox();
         }
 
         /// <summary>
@@ -41,6 +41,7 @@ namespace ncFileControls
 
             fileCB.Items.Clear();
             fileCB.SelectedText = String.Empty;
+            toolBox.SelectedTab.SelectedItemIndex = -1;
         }
 
         protected override void OnLoad(EventArgs e)
@@ -75,6 +76,32 @@ namespace ncFileControls
             
             
             inInit = false;
+        }
+
+        /// <summary>
+        /// Initializes toolbox with common places
+        /// </summary>
+        private void initToolbox()
+        {
+            toolBox.AddTab("Common places");
+            toolBox.AddTab("My places");
+
+            ImageList largeImlist = new ImageList();
+            toolBox.LargeImageList = largeImlist;
+            largeImlist.Images.Add(ncFileControls.Properties.Resources.folder_home2);
+            largeImlist.Images.Add(ncFileControls.Properties.Resources.document);
+            largeImlist.Images.Add(ncFileControls.Properties.Resources.desktop);
+            largeImlist.ImageSize = new System.Drawing.Size(64, 64);
+            largeImlist.ColorDepth = ColorDepth.Depth32Bit;
+
+            toolBox[0].AddItem("My Computer", 0, 0, false, new CommonDirs.MyComputerBook());
+            toolBox[0].AddItem("My Documents", 1, 1, false, new CommonDirs.MyDocumentsBook());
+            toolBox[0].AddItem("Desktop", 2, 2, false, new CommonDirs.MyDesktopBook());
+            toolBox[0].View = Silver.UI.ViewMode.LargeIcons;
+            toolBox[0].ShowOnlyOneItemPerRow = true;
+
+            toolBox.SelectedTabIndex = 0;
+            toolBox.SelectedTab.SelectedItemIndex = 0;
         }
 
         private FilePlainTreeModel mainModel;
@@ -125,6 +152,18 @@ namespace ncFileControls
                 allnodes.MoveNext();
                 treeView.SelectedNode = allnodes.Current;
             }
+        }
+
+        /// <summary>
+        /// Set current directory to the given path
+        /// </summary>
+        /// <param name="dir"></param>
+        private void setCurrentDir(string dir)
+        {
+            mainModel.setDir(dir);
+            IEnumerator<TreeNodeAdv> allnodes = treeView.AllNodes.GetEnumerator();
+            allnodes.MoveNext();
+            treeView.SelectedNode = allnodes.Current;
         }
 
         private void treeView_ColumnClicked(object sender, TreeColumnEventArgs e)
@@ -219,6 +258,29 @@ namespace ncFileControls
         }
 
         /// <summary>
+        /// Is some file selected or not. If selected then use SelectedFile to retrieve full file name.
+        /// </summary>
+        public bool isSelected
+        {
+            get { return currentFileInfo != null; }
+        }
+
+        /// <summary>
+        /// Adds new place bookmark into the toolbox
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="img"></param>
+        /// <param name="place"></param>
+        public void addCommonPlace(string name, Bitmap img, IDirBookmark place)
+        {
+            int idx = toolBox.LargeImageList.Images.Count;
+            toolBox.LargeImageList.Images.Add(img);
+            int selectedIdx = toolBox.SelectedTab.SelectedItemIndex;
+            toolBox[0].AddItem(name, idx, idx, false, place);
+            toolBox.SelectedTab.SelectedItemIndex = selectedIdx;
+        }
+
+        /// <summary>
         /// Process key press events inside tree view
         /// </summary>
         /// <param name="sender"></param>
@@ -236,6 +298,13 @@ namespace ncFileControls
         {
             if(!string.IsNullOrEmpty(mainModel.CurrentPath))
                 changeCurrentDir(new FileInfoNode(".."));
+        }
+
+        private void toolBox_ItemSelectionChanged(Silver.UI.ToolBoxItem sender, EventArgs e)
+        {
+            IDirBookmark dirBook = sender.Object as IDirBookmark;
+            if (dirBook != null)
+                setCurrentDir(dirBook.directory);
         }
 
     }

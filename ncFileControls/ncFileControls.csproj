@@ -38,6 +38,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommonDirs.cs" />
     <Compile Include="FileChooser.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -47,6 +48,7 @@
     <Compile Include="FileGridSorter.cs" />
     <Compile Include="FileInfoNode.cs" />
     <Compile Include="FilePlainTreeModel.cs" />
+    <Compile Include="IDirBookmark.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -99,6 +101,27 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\bookAdd.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Layers.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\desktop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\document.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folder_home2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folder_html.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\hdd_linux_mount.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cdrom_unmount.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
