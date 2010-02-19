@@ -19,6 +19,7 @@ namespace GMView.Forms
         {
             this.DrawMode = DrawMode.OwnerDrawFixed;
             this.ItemHeight = heightItem;
+            this.DropDownStyle = ComboBoxStyle.DropDownList;
         }
 
         /// <summary>
@@ -55,18 +56,23 @@ namespace GMView.Forms
         protected override void OnDrawItem(DrawItemEventArgs e)
         {
             e.DrawBackground();
-            if (this.DesignMode || e.Index < 0)
+            if (this.DesignMode)
             {
                 base.OnDrawItem(e);
                 return;
             }
+
+            int idx = e.Index;
+
+            if (idx < 0)
+                idx = this.SelectedIndex < 0 ? 0 : this.SelectedIndex;
 
             if (delta_y == -1)
             {
                 delta_y = (int)(heightItem - e.Font.GetHeight(e.Graphics)) / 2;
             }
 
-            POIType pi = Items[e.Index] as POIType;
+            POIType pi = Items[idx] as POIType;
 
             if(pi != null)
             {
@@ -76,12 +82,23 @@ namespace GMView.Forms
                         e.Bounds.Top + (heightItem - dot.real_hei) / 2, dot.real_len, dot.real_hei);
             }
 
-            e.Graphics.DrawString(Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor),
+            e.Graphics.DrawString(Items[idx].ToString(), e.Font, new SolidBrush(e.ForeColor),
                 e.Bounds.Left + delta_x, e.Bounds.Top + delta_y);
 
             if(this.ItemHeight != heightItem)
                 this.ItemHeight = heightItem;
             e.DrawFocusRectangle();
+        }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // POITypeComboBox
+            // 
+            this.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ResumeLayout(false);
+
         }
     }
 }

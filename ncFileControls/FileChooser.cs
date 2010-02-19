@@ -112,7 +112,7 @@ namespace ncFileControls
         public string DirectoryPath
         {
             get { return mainModel.CurrentPath; }
-            set { mainModel.CurrentPath = value; }
+            set { setCurrentDir(value); }
         }
 
         private void treeView_DoubleClick(object sender, EventArgs e)

@@ -127,8 +127,10 @@ namespace ncFileControls
                 //newDir = Path.GetFullPath(newDir);
                 if (newDir.Equals(currentPath))
                     return;
+                currentPath = newDir;
             }
-            currentPath = newDir;
+            else
+                currentPath = string.Empty;
 
             currentFileList = fillFileList(currentPath);
             if (StructureChanged != null)

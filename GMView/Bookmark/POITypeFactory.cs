@@ -65,8 +65,11 @@ namespace GMView.Bookmarks
         /// <returns></returns>
         public POIType typeById(int id)
         {
-            return idTypes[id];
+            POIType ptype = null;
+            idTypes.TryGetValue(id, out ptype);
+            return ptype;
         }
+
         /// <summary>
         /// Private constructor, that loads POI types from DB
         /// </summary>

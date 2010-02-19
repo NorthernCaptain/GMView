@@ -26,6 +26,26 @@ namespace GMView.Forms
             InitializeComponent();
             fileChooser.addCommonPlace("GPS Tracks and Waypoints", Properties.Resources.MapLayers,
                                         new GPSTrackAndWaypointsBook());
+            poiTypeComboBox.loadList(false);
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            int ptypeId = ncUtils.DBSetup.singleton.getInt(this.Name + ".poiType.id", 1);
+            Bookmarks.POIType ptype = Bookmarks.POITypeFactory.singleton().typeById(ptypeId);
+            if (ptype != null)
+                poiTypeComboBox.SelectedItem = ptype;
+
+            fileChooser.DirectoryPath = ncUtils.DBSetup.singleton.getString(this.Name + ".filechooser.dir", string.Empty);
+        }
+
+        private void TrackLoadDlg_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Bookmarks.POIType ptype = poiTypeComboBox.SelectedItem as Bookmarks.POIType;
+            if (ptype != null)
+                ncUtils.DBSetup.singleton.setInt(this.Name + ".poiType.id", ptype.Id);
+            ncUtils.DBSetup.singleton.setString(this.Name + ".filechooser.dir", fileChooser.DirectoryPath);
         }
     }
 }
