@@ -15,6 +15,8 @@ namespace GMView.TrackLoader
         private Bookmarks.POIGroupFactory groupFactory;
         private BookMarkFactory poiFactory;
 
+        private Bookmarks.POIType defaultPOIType = null;
+
         #region ITrackLoader Members
 
         public GMView.GPS.TrackFileInfo preLoad(GMView.GPS.TrackFileInfo info)
@@ -66,6 +68,7 @@ namespace GMView.TrackLoader
 
             poiFactory = poiFact;
             groupFactory = igroupFact;
+            defaultPOIType = fi.defaultPOIType;
 
 
             if (doc.DocumentElement.Name != "kml")
@@ -477,6 +480,7 @@ namespace GMView.TrackLoader
 
             poiFactory = intoFactory;
             this.groupFactory = groupFactory;
+            defaultPOIType = fi.defaultPOIType;
 
             if (doc.DocumentElement.Name != "kml")
                 throw new ApplicationException("Not a valid KML file! Could not find kml root tag.");
@@ -532,6 +536,8 @@ namespace GMView.TrackLoader
                         xnode = node.SelectSingleNode("./kml:description", nsm);
                         if (xnode != null)
                             bmark.Description = xnode.InnerText;
+                        if (defaultPOIType != null)
+                            bmark.Ptype = defaultPOIType;
 
                         bmark.IsDbChange = true;
                         bmark.updateDB();

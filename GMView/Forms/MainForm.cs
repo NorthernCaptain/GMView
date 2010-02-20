@@ -941,11 +941,13 @@ namespace GMView
                     {
                         opt.autosavefile = destForm.trackName;
                         gtrack.fileName = opt.autosavefile;
+                        gtrack.track_name = destForm.trackName;
                     }
                     else
                     {
                         opt.autosavefile = "auto-" + DateTime.Now.ToString("yyyy-MM-dd_HHmm");
                         gtrack.fileName = opt.autosavefile;
+                        gtrack.track_name = "Auto generated at " + DateTime.Now.ToString("yyyy-MM-dd_HHmm");
                     }
                     destForm.Dispose();
                 }
@@ -1249,20 +1251,12 @@ namespace GMView
         /// <param name="e"></param>
         private void loadTrackSB_Click(object sender, EventArgs e)
         {
-            if (trackOpenFileDialog.ShowDialog() == DialogResult.OK)
+            Forms.TrackLoadDlg openDlg = new Forms.TrackLoadDlg();
+            if (openDlg.ShowDialog() == DialogResult.OK)
             {
-                Color base_color = Color.Orange;
-                if (trackColorDialog.ShowDialog() == DialogResult.OK)
-                {
-                    base_color = trackColorDialog.Color;
-                }
-                else
-                    return;
-
                 try    
                 {
-                    List<GPSTrack> glist = GPSTrack.loadTracks(new GPS.TrackFileInfo(trackOpenFileDialog.FileName,
-                                                                GMView.GPS.TrackFileInfo.SourceType.FileName));
+                    List<GPSTrack> glist = GPSTrack.loadTracks(openDlg.FileInfo);
                     if (glist.Count > 1)
                     {
                         folderBrowserDialog.Description = "Your file was splitted into " + glist.Count + " tracks.\nDo you wish to save them into separate files?\nIf so then choose a folder.";
@@ -1279,6 +1273,8 @@ namespace GMView
                             }
                         }
                     }
+
+                    Color base_color = openDlg.FileInfo.trackColor;
 
                     foreach (GPSTrack gtr in glist)
                     {
@@ -1311,6 +1307,7 @@ namespace GMView
                         ex.ToString(), "Error loading track", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+            openDlg.Dispose();
         }
 
         /// <summary>
@@ -1731,12 +1728,6 @@ namespace GMView
                         ex.ToString(), "Error loading POIs", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-        }
-
-        private void loadTrackToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Forms.TrackLoadDlg frm = new Forms.TrackLoadDlg();
-            frm.Visible = true;
         }
 
     }

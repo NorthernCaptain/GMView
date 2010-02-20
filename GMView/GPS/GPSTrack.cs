@@ -994,7 +994,8 @@ namespace GMView
             List<GPSTrack> gtlist = new List<GPSTrack>();
 
             GPSTrack track = loadFrom(fi, BookMarkFactory.singleton, Bookmarks.POIGroupFactory.singleton());
-            if (track.startTime.DayOfYear == track.endTime.DayOfYear)
+            if (fi.needTrackSplitting == false 
+                || track.startTime.DayOfYear == track.endTime.DayOfYear)
             {
                 gtlist.Add(track);
                 return gtlist;

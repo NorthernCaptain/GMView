@@ -139,29 +139,6 @@ namespace GMView
         {
             return null;
 
-            FileStream fs;
-            try
-            {
-                fs = new FileStream(fname, FileMode.Open);
-            }
-            catch
-            {
-                return null;
-            }
-            try
-            {
-                XmlSerializer xser = new XmlSerializer(typeof(BookMarkFactory));
-                BookMarkFactory factory = (BookMarkFactory)xser.Deserialize(fs);
-                return factory;
-            }
-            catch
-            {
-                return null;
-            }
-            finally
-            {
-                fs.Close();
-            }
         }
 
         public void saveXml()

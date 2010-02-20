@@ -33,6 +33,19 @@ namespace GMView.GPS
             set { fileType = value; if (string.IsNullOrEmpty(fileType)) fileType = "gpx"; }
         }
 
+        public string FileName
+        {
+            get
+            {
+                return fileOrBuffer;
+            }
+            set
+            {
+            	fileOrBuffer = value;
+                Dispose();
+            }
+        }
+
         /// <summary>
         /// Desired track color
         /// </summary>
@@ -50,9 +63,16 @@ namespace GMView.GPS
         public bool needPOI = true;
 
         /// <summary>
+        /// Do we need to split one track into many if we have different dates
+        /// </summary>
+        public bool needTrackSplitting = false;
+
+        /// <summary>
         /// Group name for POIs, treat it like a root group
         /// </summary>
         public string poiParentGroupName = "Imported";
+
+        public Bookmarks.POIType defaultPOIType = null;
 
         /// <summary>
         /// Number of POIs in file, detected by preload method
@@ -123,6 +143,11 @@ namespace GMView.GPS
                 reader = new System.IO.StringReader(this.fileOrBuffer);
 
             return reader;
+        }
+
+
+        public TrackFileInfo()
+        {
         }
 
         /// <summary>

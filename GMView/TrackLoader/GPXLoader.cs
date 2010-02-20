@@ -66,6 +66,7 @@ namespace GMView.TrackLoader
 
             poiFactory = intoFactory;
             this.groupFactory = groupFactory;
+            defaultPOIType = fi.defaultPOIType;
 
             if (doc.DocumentElement.Name != "gpx")
                 throw new ApplicationException("Not a valid GPX file! Could not find gpx root tag.");
@@ -161,6 +162,9 @@ namespace GMView.TrackLoader
                     {
                         bmark.group = xnode.InnerText.Trim();
                     }
+
+                    if (defaultPOIType != null)
+                        bmark.Ptype = defaultPOIType;
 
                     xnode = node.SelectSingleNode("./gpx:sym", nsm);
                     if (xnode != null)
@@ -304,6 +308,8 @@ namespace GMView.TrackLoader
 
         #endregion
 
+        private Bookmarks.POIType defaultPOIType = null;
+
         #region ITrackLoader Members
 
         public GMView.GPS.TrackFileInfo preLoad(GMView.GPS.TrackFileInfo info)
@@ -348,6 +354,7 @@ namespace GMView.TrackLoader
 
             poiFactory = poiFact;
             groupFactory = igroupFact;
+            defaultPOIType = fi.defaultPOIType;
 
             try
             {

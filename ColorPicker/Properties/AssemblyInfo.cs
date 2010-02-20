@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("ColorPicker")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Color choosing dialogs and widgets")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Sky Robotics Inc.")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("ColorPicker")]
-[assembly: AssemblyCopyright("Copyright © Sky Robotics Inc. 2010")]
+[assembly: AssemblyCopyright("Copyright. 2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

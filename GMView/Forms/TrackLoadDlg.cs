@@ -27,6 +27,53 @@ namespace GMView.Forms
             fileChooser.addCommonPlace("GPS Tracks and Waypoints", Properties.Resources.MapLayers,
                                         new GPSTrackAndWaypointsBook());
             poiTypeComboBox.loadList(false);
+
+            fileChooser.fileSelectionChanged += new EventHandler(fileChooser_fileSelectionChanged);
+        }
+
+        private GPS.TrackFileInfo fileInfo = new GPS.TrackFileInfo();
+
+        /// <summary>
+        /// Gets or sets file information about selected track file
+        /// </summary>
+        public GPS.TrackFileInfo FileInfo
+        {
+            get { return fileInfo; }
+            set { fileInfo = value; }
+        }
+
+        void fileChooser_fileSelectionChanged(object sender, EventArgs e)
+        {
+            if (fileChooser.SelectedFile == null)
+            {
+                clearDialogInfo();
+                okBut.Enabled = false;
+                return;
+            }
+            fileInfo = createFileInfo();
+            TrackLoader.ITrackLoader loader = TrackLoader.TrackLoaderFactory.singleton.getTrackLoader(fileInfo);
+            if (loader != null)
+            {
+                doPreLoad(loader, fileInfo);
+                okBut.Enabled = true;
+            }
+            else
+                clearDialogInfo();
+        }
+
+        /// <summary>
+        /// Creates file information filled from the dialog settings and file chooser
+        /// </summary>
+        /// <returns></returns>
+        private GPS.TrackFileInfo createFileInfo()
+        {
+            GPS.TrackFileInfo fileInfo;
+            fileInfo = new GPS.TrackFileInfo(fileChooser.SelectedFile, GPS.TrackFileInfo.SourceType.FileName,
+                                             trackColorPicker.SelectedItem);
+            fileInfo.needPOI = needPOICB.Checked;
+            fileInfo.needTrackSplitting = splitTrackCB.Checked;
+
+            return fileInfo;
         }
 
         protected override void OnLoad(EventArgs e)
@@ -38,6 +85,10 @@ namespace GMView.Forms
                 poiTypeComboBox.SelectedItem = ptype;
 
             fileChooser.DirectoryPath = ncUtils.DBSetup.singleton.getString(this.Name + ".filechooser.dir", string.Empty);
+
+            trackColorPicker.SelectedItem = Color.FromArgb(ncUtils.Glob.rnd.Next(180) + 40,
+                                                            ncUtils.Glob.rnd.Next(180) + 40,
+                                                            ncUtils.Glob.rnd.Next(180) + 40);
         }
 
         private void TrackLoadDlg_FormClosing(object sender, FormClosingEventArgs e)
@@ -47,5 +98,35 @@ namespace GMView.Forms
                 ncUtils.DBSetup.singleton.setInt(this.Name + ".poiType.id", ptype.Id);
             ncUtils.DBSetup.singleton.setString(this.Name + ".filechooser.dir", fileChooser.DirectoryPath);
         }
+
+        private void doPreLoad( TrackLoader.ITrackLoader loader, GPS.TrackFileInfo fileInfo )
+        {
+            loader.preLoad(fileInfo);
+            trackNameTb.Text = fileInfo.preloadName;
+            trackPointsLbl.Text = fileInfo.preloadTPointCount.ToString();
+            poisLbl.Text = fileInfo.preloadPOICount.ToString();
+            routePointsLbl.Text = fileInfo.preloadRouteCount.ToString();
+            POIGroupBox.Enabled = (fileInfo.preloadPOICount > 0);
+        }
+
+        private void clearDialogInfo()
+        {
+            trackNameTb.Text = string.Empty;
+            trackPointsLbl.Text = "-";
+            poisLbl.Text = "-";
+            routePointsLbl.Text = "-";
+            POIGroupBox.Enabled = true;
+        }
+
+        private void okBut_Click(object sender, EventArgs e)
+        {
+            //fileInfo = createFileInfo();
+            fileInfo.needPOI = needPOICB.Checked;
+            fileInfo.needTrackSplitting = splitTrackCB.Checked;
+            fileInfo.trackColor = trackColorPicker.SelectedItem;
+            fileInfo.defaultPOIType = poiTypeComboBox.SelectedItem as Bookmarks.POIType;
+            DialogResult = DialogResult.OK;
+        }
+
     }
 }
