@@ -260,6 +260,15 @@ namespace Silver.UI
         }
 
         [Category("ToolBoxTab"), Browsable(false), XmlIgnore]
+        public Silver.UI.ToolBoxItemCollection Items
+        {
+            get
+            {
+                return _toolItems;
+            }
+        }
+
+        [Category("ToolBoxTab"), Browsable(false), XmlIgnore]
         public Rectangle ItemArea
         {
             get{return _itemArea;}
@@ -388,7 +397,7 @@ namespace Silver.UI
             get{return _selItemIndex;}
             set
             {
-                if(null != _toolItems && value != _selItemIndex && -1 != value && value < _toolItems.Count)
+                if(null != _toolItems && value != _selItemIndex && value < _toolItems.Count)
                 {
                     _oldSelItemIndex = _selItemIndex;
 
@@ -399,7 +408,8 @@ namespace Silver.UI
 
                     _selItemIndex = value;
 
-                    _toolItems[_selItemIndex].Selected = true;
+                    if (-1 != _selItemIndex)
+                        _toolItems[_selItemIndex].Selected = true;
                     _parent.Invalidate(_itemArea);
                 }
             }

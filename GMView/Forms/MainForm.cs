@@ -1612,7 +1612,7 @@ namespace GMView
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Could not export POIs:\n" + trackOpenFileDialog.FileName + "\nReason:\n" +
+                    MessageBox.Show("Could not export POIs:\n" + trackSaveFileDialog.FileName + "\nReason:\n" +
                         ex.ToString(), "Error exporting POIs", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }

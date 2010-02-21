@@ -40,6 +40,19 @@ namespace GMView.Forms
                 currentTrack = value;
                 trackNameTb.Text = currentTrack.track_name;
                 FileName = currentTrack.fileName;
+                trackPointsNumLbl.Text = currentTrack.countPoints.ToString();
+
+                double minlat, minlon, maxlat, maxlon;
+
+                currentTrack.getBounds(out minlon, out minlat, out maxlon, out maxlat);
+
+                double delta_lon = (maxlon - minlon) / 25;
+                double delta_lat = (maxlat - minlat) / 25;
+
+                List<Bookmark> booklist = BookMarkFactory.singleton.getBookmarksByBounds(
+                    minlon - delta_lon, minlat - delta_lat, maxlon + delta_lon, maxlat + delta_lat);
+
+                poiNumLbl.Text = booklist.Count.ToString();
             }
         }
 

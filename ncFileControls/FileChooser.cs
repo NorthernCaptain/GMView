@@ -18,12 +18,32 @@ namespace ncFileControls
     {
         private bool inInit = true;
 
+        internal class MyPlace : IDirBookmark
+        {
+            string dirName;
+            string name;
+
+            internal MyPlace(string iname, string idir)
+            {
+                name = iname;
+                dirName = idir;
+            }
+
+            #region IDirBookmark Members
+
+            public string directory
+            {
+                get { return dirName; }
+            }
+
+            #endregion
+        }
+
         public FileChooser()
         {
             InitializeComponent();
             mainModel = new FilePlainTreeModel(treeView);
             mainModel.DirectoryChanged += mainModel_DirectoryChanged;
-
             initToolbox();
         }
 
@@ -48,6 +68,26 @@ namespace ncFileControls
         {
             base.OnLoad(e);
             initTree();
+
+            for (int i = 0; i < 4; i++)
+            {
+                string pname = ncUtils.DBSetup.singleton.getString(this.Name + ".toolbox.myplace.name." + i.ToString(),
+                    null);
+                if (pname == null)
+                    continue;
+
+                string pdir = ncUtils.DBSetup.singleton.getString(this.Name + ".toolbox.myplace.dir." + i.ToString(),
+                    null);
+                toolBox[1].AddItem(pname, 3, 3, false, new MyPlace(pname, pdir));
+            }
+
+            toolBox[1].View = Silver.UI.ViewMode.LargeIcons;
+            toolBox[1].ShowOnlyOneItemPerRow = true;
+
+            toolBox.SelectedTabIndex = 1;
+            toolBox.SelectedTab.SelectedItemIndex = -1;
+            toolBox.SelectedTabIndex = 0;
+            toolBox.SelectedTab.SelectedItemIndex = -1;
         }
         /// <summary>
         /// Initialize tree and create main model for browsing directories
@@ -83,6 +123,7 @@ namespace ncFileControls
         /// </summary>
         private void initToolbox()
         {
+            toolBox.Size = new Size(105, toolBox.Size.Height);
             toolBox.AddTab("Common places");
             toolBox.AddTab("My places");
 
@@ -91,6 +132,7 @@ namespace ncFileControls
             largeImlist.Images.Add(ncFileControls.Properties.Resources.folder_home2);
             largeImlist.Images.Add(ncFileControls.Properties.Resources.document);
             largeImlist.Images.Add(ncFileControls.Properties.Resources.desktop);
+            largeImlist.Images.Add(ncFileControls.Properties.Resources.folder_html);
             largeImlist.ImageSize = new System.Drawing.Size(64, 64);
             largeImlist.ColorDepth = ColorDepth.Depth32Bit;
 
@@ -99,9 +141,6 @@ namespace ncFileControls
             toolBox[0].AddItem("Desktop", 2, 2, false, new CommonDirs.MyDesktopBook());
             toolBox[0].View = Silver.UI.ViewMode.LargeIcons;
             toolBox[0].ShowOnlyOneItemPerRow = true;
-
-            toolBox.SelectedTabIndex = 0;
-            toolBox.SelectedTab.SelectedItemIndex = 0;
         }
 
         private FilePlainTreeModel mainModel;
@@ -343,6 +382,42 @@ namespace ncFileControls
 
         private void fileCB_KeyPress(object sender, KeyPressEventArgs e)
         {
+        }
+
+        private void newDirBut_Click(object sender, EventArgs e)
+        {
+            AskNameForm dirnameDlg = new AskNameForm("Create new directory", "Enter new folder name:");
+            dirnameDlg.SelectedText = "New folder";
+            dirnameDlg.StartPosition = FormStartPosition.CenterScreen;
+
+            if (dirnameDlg.ShowDialog() == DialogResult.OK)
+            {
+
+            }
+        }
+
+        private void bookDirBut_Click(object sender, EventArgs e)
+        {
+            AskNameForm dirnameDlg = new AskNameForm("Add 'My place' bookmark", "Enter new bookmark name:");
+            string text = FilePlainTreeModel.getLastPathEntry(mainModel.CurrentPath);
+            if (!string.IsNullOrEmpty(text))
+                text = text.ToUpper()[0] + text.Substring(1);
+
+            dirnameDlg.SelectedText = text;
+            dirnameDlg.StartPosition = FormStartPosition.CenterScreen;
+
+            if (dirnameDlg.ShowDialog() == DialogResult.OK)
+            {
+                int idx = toolBox[1].ItemCount;
+
+                toolBox[1].AddItem(dirnameDlg.SelectedText, 3, 3, false,
+                    new MyPlace(dirnameDlg.SelectedText, mainModel.CurrentPath));
+
+                ncUtils.DBSetup.singleton.setString(this.Name + ".toolbox.myplace.name." + idx.ToString(),
+                                                    dirnameDlg.SelectedText);
+                ncUtils.DBSetup.singleton.setString(this.Name + ".toolbox.myplace.dir." + idx.ToString(),
+                                                    mainModel.CurrentPath);
+            }
         }
 
     }

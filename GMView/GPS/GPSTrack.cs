@@ -18,7 +18,7 @@ namespace GMView
     public class GPSTrack: IGPSTrack, ISprite, IDisposable
     {
         protected string name = "Track: Current track";
-        protected string filename = "track1.gtr";
+        protected string filename = "track1.gpx";
 
         /// <summary>
         /// Draw staff

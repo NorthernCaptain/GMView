@@ -459,11 +459,12 @@ namespace GMView
                             if (needRegister)
                             {
                                 register(poi);
-                                poi.Parent = pgroup;
                             }
                         }
                         else
                             poi.Owner = this;
+
+                        poi.Parent = pgroup;
                     }
 
                     pois.Add(poi);

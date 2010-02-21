@@ -563,11 +563,100 @@ namespace GMView.TrackLoader
             return count;
         }
 
-        public void exportPOIs(GMView.GPS.TrackFileInfo fileInfo, BookMarkFactory pFactory, 
+        public void exportPOIs(GMView.GPS.TrackFileInfo fileInfo, BookMarkFactory pFactory,
                                LinkedList<GMView.Bookmarks.POIGroup> groups, List<Bookmark> poilist,
                                GMView.Bookmarks.POIGroup parentGroup)
         {
-            throw new NotImplementedException("Export POI into KML files not implemented yet.");
+            XmlTextWriter writer = null;
+            System.Globalization.CultureInfo cul = new System.Globalization.CultureInfo("");
+            System.Globalization.NumberFormatInfo nf = cul.NumberFormat;
+
+            poiFactory = pFactory;
+
+            writer = new XmlTextWriter(fileInfo.fileOrBuffer, Encoding.UTF8);
+            writer.Formatting = Formatting.Indented;
+            writer.WriteStartDocument();
+            writer.WriteStartElement("kml");
+            writer.WriteAttributeString("xmlns", @"http://earth.google.com/kml/2.0");
+
+            { //document
+                writer.WriteStartElement("Document");
+                writer.WriteElementString("name", "Points of interest");
+
+                writer.WriteStartElement("Style");
+                writer.WriteAttributeString("id", "trackStyle");
+                writer.WriteStartElement("LineStyle");
+                writer.WriteElementString("color", "F03399FF");
+                writer.WriteElementString("width", "4");
+                writer.WriteEndElement();
+                writer.WriteEndElement();
+
+                {
+                    writer.WriteStartElement("Folder");
+                    writer.WriteElementString("name", "Places");
+
+                    saveListToKML(writer, groups, poilist, parentGroup, nf);
+
+                    writer.WriteEndElement();
+                }
+
+                writer.WriteEndElement();
+            }
+
+            // end of kml root tag
+            writer.WriteEndElement(); //kml
+            writer.WriteEndDocument();
+            writer.Flush();
+            writer.Close();
+        }
+
+        /// <summary>
+        /// Recursively saves all pois into xml document
+        /// </summary>
+        /// <param name="writer"></param>
+        /// <param name="groups"></param>
+        /// <param name="pois"></param>
+        /// <param name="parentGroup"></param>
+        /// <param name="nf"></param>
+        private void saveListToKML(XmlTextWriter writer,
+                                    LinkedList<Bookmarks.POIGroup> groups,
+                                    List<Bookmark> pois, Bookmarks.POIGroup parentGroup,
+                                    System.Globalization.NumberFormatInfo nf)
+        {
+            string currentGroupName = null;
+            if (parentGroup == null)
+                parentGroup = groupFactory.rootGroup;
+
+            if (pois != null)
+            {
+                foreach (Bookmark book in pois)
+                {
+                    if (currentGroupName == null)
+                    {
+                        currentGroupName = (book.Parent as Bookmarks.POIGroup).getPathTill(parentGroup);
+                    }
+
+                    writer.WriteStartElement("Placemark");
+                    writer.WriteElementString("name", book.Name);
+                    writer.WriteElementString("description", book.Description);
+                    writer.WriteStartElement("Point");
+                    writer.WriteElementString("coordinates", book.lon.ToString("F8", nf)
+                        + "," + book.lat.ToString("F8", nf) + "," + book.alt.ToString("F1", nf));
+                    writer.WriteEndElement();
+                    writer.WriteEndElement();
+                    
+                }
+            }
+
+            if (groups != null)
+            {
+                foreach (Bookmarks.POIGroup node in groups)
+                {
+                    List<Bookmark> childrenPOI = poiFactory.loadByParent(node.Id, false);
+                    saveListToKML(writer, node.Children, childrenPOI,
+                                    parentGroup, nf);
+                }
+            }
         }
 
         #endregion

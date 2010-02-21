@@ -195,23 +195,12 @@ namespace GMView.TrackLoader
             return count;
         }
 
-
-        public void exportPOIs(GPS.TrackFileInfo fileInfo, BookMarkFactory pFactory, 
-                                LinkedList<Bookmarks.POIGroup> groups,
-                                List<Bookmark> poilist, Bookmarks.POIGroup parentGroup)
+        /// <summary>
+        /// Writes GPX header and metadata
+        /// </summary>
+        /// <param name="writer"></param>
+        private void writeHeader(GPS.TrackFileInfo fileInfo, XmlTextWriter writer)
         {
-            poiFactory = pFactory;
-            groupFactory = parentGroup.Owner;
-
-            XmlTextWriter writer = null;
-            System.Globalization.CultureInfo cul = new System.Globalization.CultureInfo("");
-            System.Globalization.NumberFormatInfo nf = cul.NumberFormat;
-
-            if (fileInfo.stype == GPS.TrackFileInfo.SourceType.FileName)
-                writer = new XmlTextWriter(fileInfo.fileOrBuffer, Encoding.UTF8);
-            else
-                writer = new XmlTextWriter(new StringWriter());
-
             writer.Formatting = Formatting.Indented;
             writer.WriteStartDocument();
             writer.WriteStartElement("gpx");
@@ -244,6 +233,25 @@ namespace GMView.TrackLoader
                 writer.WriteElementString("copyright", "GNU FPL");
                 writer.WriteEndElement();
             }
+        }
+
+        public void exportPOIs(GPS.TrackFileInfo fileInfo, BookMarkFactory pFactory, 
+                                LinkedList<Bookmarks.POIGroup> groups,
+                                List<Bookmark> poilist, Bookmarks.POIGroup parentGroup)
+        {
+            poiFactory = pFactory;
+            groupFactory = parentGroup.Owner;
+
+            XmlTextWriter writer = null;
+            System.Globalization.CultureInfo cul = new System.Globalization.CultureInfo("");
+            System.Globalization.NumberFormatInfo nf = cul.NumberFormat;
+
+            if (fileInfo.stype == GPS.TrackFileInfo.SourceType.FileName)
+                writer = new XmlTextWriter(fileInfo.fileOrBuffer, Encoding.UTF8);
+            else
+                writer = new XmlTextWriter(new StringWriter());
+
+            writeHeader(fileInfo, writer);
 
             saveListToGPX(writer, groups, poilist, parentGroup, nf);
 
