@@ -9,7 +9,7 @@ namespace ncFileControls
     /// <summary>
     /// Class provides model for plain directory display
     /// </summary>
-    class FilePlainTreeModel: ITreeModel
+    class FilePlainTreeModel: ITreeModel, IDirBookmark
     {
         private TreeViewAdv parentView;
 
@@ -63,12 +63,14 @@ namespace ncFileControls
             {
                 FileInfoNode node = new FileInfoNode(new DirectoryInfo(dir));
                 dirList.Add(node);
+                node.ParentPath = this;
             }
 
             foreach (string fname in Directory.GetFiles(path, fileFilter))
             {
                 FileInfoNode node = new FileInfoNode(new FileInfo(fname));
                 dirList.Add(node);
+                node.ParentPath = this;
             }
             return dirList;
         }
@@ -89,6 +91,23 @@ namespace ncFileControls
                 return null;
 
             return contents[contents.Length - 1];
+        }
+
+
+        /// <summary>
+        /// Find file entry in the current file list (filters applied) and return this entry
+        /// or null on failure.
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        public FileInfoNode findFileEntry(string file)
+        {
+            foreach (FileInfoNode node in currentFileList)
+            {
+                if (node.Name.Equals(file))
+                    return node;
+            }
+            return null;
         }
 
         /// <summary>
@@ -212,6 +231,15 @@ namespace ncFileControls
         public event EventHandler<TreeModelEventArgs> NodesRemoved;
 
         public event EventHandler<TreePathEventArgs> StructureChanged;
+
+        #endregion
+
+        #region IDirBookmark Members
+
+        public string directory
+        {
+            get { return currentPath; }
+        }
 
         #endregion
     }

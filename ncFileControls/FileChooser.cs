@@ -255,6 +255,37 @@ namespace ncFileControls
 
                 return Path.Combine(mainModel.CurrentPath, currentFileInfo.Name);
             }
+            set
+            {
+                if (value == null)
+                {
+                    setCurrentDir(string.Empty);
+                    return;
+                }
+
+                string path = Path.GetDirectoryName(value);
+                string file = Path.GetFileName(value);
+
+                setCurrentDir(path);
+                FileInfoNode node = mainModel.findFileEntry(file);
+                if (node == null)
+                {
+                    currentFileInfo = new FileInfoNode(file);
+                }
+                else
+                {
+                    currentFileInfo = node;
+                }
+
+                foreach (TreeNodeAdv tnode in treeView.AllNodes)
+                {
+                    if (tnode.Tag == node)
+                    {
+                        treeView.SelectedNode = tnode;
+                        break;
+                    }
+                }
+            }
         }
 
         /// <summary>

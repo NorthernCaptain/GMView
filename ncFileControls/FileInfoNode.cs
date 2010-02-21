@@ -21,6 +21,15 @@ namespace ncFileControls
             set { name = value; }
         }
 
+
+        private IDirBookmark parentPath = null;
+
+        public IDirBookmark ParentPath
+        {
+            get { return parentPath; }
+            set { parentPath = value; }
+        }
+
         /// <summary>
         /// Shows the display name of the file or directory entry
         /// </summary>
@@ -33,7 +42,23 @@ namespace ncFileControls
             set
             {
                 string newname = value.Replace('[', ' ').Replace(']', ' ').Trim();
-                name = newname;
+                if (name != newname && parentPath != null)
+                {
+                    string path1 = Path.Combine(parentPath.directory, name);
+                    string path2 = Path.Combine(parentPath.directory, newname);
+
+                    try
+                    {
+                        if (isFile)
+                            File.Move(path1, path2);
+                        else
+                            Directory.Move(path1, path2);
+                        name = newname;
+                    }
+                    catch (System.Exception)
+                    {                    	
+                    }
+                }
             }
         }
 
@@ -122,6 +147,7 @@ namespace ncFileControls
         public FileInfoNode(string iname)
         {
             name = iname;
+            extension = Path.GetExtension(iname);
         }
 
         /// <summary>
