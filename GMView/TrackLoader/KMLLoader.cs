@@ -309,6 +309,7 @@ namespace GMView.TrackLoader
 
                     track.getBounds(out minlon, out minlat, out maxlon, out maxlat);
 
+                    if(fi.needPOI)
                     { // save bookmarks if we have them in our region
                         double delta_lon = (maxlon - minlon) / 5;
                         double delta_lat = (maxlat - minlat) / 5;

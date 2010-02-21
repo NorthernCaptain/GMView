@@ -126,6 +126,8 @@ namespace GMView
             }
             else
             {
+                Forms.TrackSaveDlg saveDlg = new Forms.TrackSaveDlg();
+
                 try
                 {
                     string fname = track.fileName;
@@ -133,7 +135,7 @@ namespace GMView
                     if (!string.IsNullOrEmpty(dirname))
                         fname = System.IO.Path.Combine(dirname,
                             System.IO.Path.GetFileNameWithoutExtension(fname) + ".gpx");
-                    trackSaveFileDialog.FileName = fname;
+                    saveDlg.CurrentTrack = track;
                 }
                 catch (System.Exception)
                 {
@@ -142,14 +144,24 @@ namespace GMView
                 trackSaveFileDialog.DefaultExt = "gpx";
                 trackSaveFileDialog.Title = "Save track to a file";
                 trackSaveFileDialog.Filter = "GPX unified files|*.gpx|KML google earth files|*.kml|All files|*.*";
-                if (trackSaveFileDialog.ShowDialog() == DialogResult.OK)
+
+                if (saveDlg.ShowDialog() == DialogResult.OK)
                 {
-                    GPS.TrackFileInfo fi = new GPS.TrackFileInfo(trackSaveFileDialog.FileName,
-                                                GPS.TrackFileInfo.SourceType.FileName);
+                    GPS.TrackFileInfo fi = saveDlg.FileInfo;
+                    if(fi == null)
+                    {
+                        MessageBox.Show("Error: no file information supplied! Enter file name, please.", "Error",
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    if (!string.IsNullOrEmpty(fi.preloadName))
+                        track.track_name = fi.preloadName;
+
                     if (!string.IsNullOrEmpty(System.IO.Path.GetExtension(fi.fileOrBuffer)))
                         fi.FileType = System.IO.Path.GetExtension(fi.fileOrBuffer).Remove(0, 1).ToLower();
                     track.save(fi, BookMarkFactory.singleton, Bookmarks.POIGroupFactory.singleton());
                 }
+                saveDlg.Dispose();
             }
         }
 

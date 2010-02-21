@@ -10,7 +10,7 @@ namespace GMView.Forms
 {
     public partial class TrackLoadDlg : Form
     {
-        class GPSTrackAndWaypointsBook : ncFileControls.IDirBookmark
+        internal class GPSTrackAndWaypointsBook : ncFileControls.IDirBookmark
         {
             #region IDirBookmark Members
 
@@ -24,6 +24,7 @@ namespace GMView.Forms
         public TrackLoadDlg()
         {
             InitializeComponent();
+
             fileChooser.addCommonPlace("GPS Tracks and Waypoints", Properties.Resources.MapLayers,
                                         new GPSTrackAndWaypointsBook());
             poiTypeComboBox.loadList(false);
@@ -79,6 +80,11 @@ namespace GMView.Forms
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            Size siz = this.Size;
+            siz.Width = ncUtils.DBSetup.singleton.getInt(this.Name + ".size.width", siz.Width);
+            siz.Height = ncUtils.DBSetup.singleton.getInt(this.Name + ".size.height", siz.Height);
+            this.Size = siz;
+
             int ptypeId = ncUtils.DBSetup.singleton.getInt(this.Name + ".poiType.id", 1);
             Bookmarks.POIType ptype = Bookmarks.POITypeFactory.singleton().typeById(ptypeId);
             if (ptype != null)
@@ -126,6 +132,14 @@ namespace GMView.Forms
             fileInfo.trackColor = trackColorPicker.SelectedItem;
             fileInfo.defaultPOIType = poiTypeComboBox.SelectedItem as Bookmarks.POIType;
             DialogResult = DialogResult.OK;
+        }
+
+        private void TrackLoadDlg_ResizeEnd(object sender, EventArgs e)
+        {
+            ncUtils.DBConnPool.singleton.beginThreadTransaction();
+            ncUtils.DBSetup.singleton.setInt(this.Name + ".size.width", this.Size.Width);
+            ncUtils.DBSetup.singleton.setInt(this.Name + ".size.height", this.Size.Height);
+            ncUtils.DBConnPool.singleton.commitThreadTransaction();
         }
 
     }

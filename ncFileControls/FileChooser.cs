@@ -250,9 +250,9 @@ namespace ncFileControls
         {
             get
             {
-                if (currentFileInfo == null)
+                if (string.IsNullOrEmpty(fileCB.Text))
                     return null;
-
+                currentFileInfo = new FileInfoNode(fileCB.Text);
                 return Path.Combine(mainModel.CurrentPath, currentFileInfo.Name);
             }
             set
@@ -271,11 +271,14 @@ namespace ncFileControls
                 if (node == null)
                 {
                     currentFileInfo = new FileInfoNode(file);
+                    currentFileInfo.ParentPath = mainModel;
                 }
                 else
                 {
                     currentFileInfo = node;
                 }
+
+                fileCB.Text = file;
 
                 foreach (TreeNodeAdv tnode in treeView.AllNodes)
                 {
@@ -336,6 +339,10 @@ namespace ncFileControls
             IDirBookmark dirBook = sender.Object as IDirBookmark;
             if (dirBook != null)
                 setCurrentDir(dirBook.directory);
+        }
+
+        private void fileCB_KeyPress(object sender, KeyPressEventArgs e)
+        {
         }
 
     }

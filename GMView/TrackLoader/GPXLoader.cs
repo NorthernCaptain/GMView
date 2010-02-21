@@ -622,6 +622,7 @@ namespace GMView.TrackLoader
 
                 saveWayPoints(track.way, writer, nf);
 
+                if(fi.needPOI)
                 { // save bookmarks if we have them in our region
                     double delta_lon = (maxlon - minlon) / 25;
                     double delta_lat = (maxlat - minlat) / 25;

@@ -175,6 +175,12 @@
     <Compile Include="Forms\TrackLoadDlg.Designer.cs">
       <DependentUpon>TrackLoadDlg.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\TrackSaveDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TrackSaveDlg.Designer.cs">
+      <DependentUpon>TrackSaveDlg.cs</DependentUpon>
+    </Compile>
     <Compile Include="Geo\GoogleGeo.cs" />
     <Compile Include="Geo\YandexGeo.cs" />
     <Compile Include="Dash\DashBoardContainer.cs" />
@@ -326,6 +332,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\TrackLoadDlg.resx">
       <DependentUpon>TrackLoadDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TrackSaveDlg.resx">
+      <DependentUpon>TrackSaveDlg.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="GML\MapDrawControl.resx">

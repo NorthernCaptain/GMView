@@ -484,7 +484,15 @@ namespace GMView
         public string track_name
         {
             get { return name; }
-            set { name = "Track: " + value; textInfo.fill_all_info(this); }
+            set 
+            { 
+                if(!value.StartsWith("Track:"))
+                    name = "Track: " + value; 
+                else
+                    name = value;
+
+                textInfo.fill_all_info(this); 
+            }
         }
         #endregion
 

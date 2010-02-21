@@ -58,19 +58,20 @@
             this.dirCB.DropDownWidth = 500;
             this.dirCB.FormattingEnabled = true;
             this.dirCB.IntegralHeight = false;
-            this.dirCB.Location = new System.Drawing.Point(150, 2);
-            this.dirCB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.dirCB.Location = new System.Drawing.Point(135, 2);
+            this.dirCB.Margin = new System.Windows.Forms.Padding(2);
             this.dirCB.Name = "dirCB";
-            this.dirCB.Size = new System.Drawing.Size(491, 24);
+            this.dirCB.Size = new System.Drawing.Size(346, 21);
             this.dirCB.TabIndex = 2;
             this.dirCB.SelectionChangeCommitted += new System.EventHandler(this.dirCB_SelectionChangeCommitted);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(114, 6);
+            this.label1.Location = new System.Drawing.Point(108, 6);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(30, 17);
+            this.label1.Size = new System.Drawing.Size(23, 13);
             this.label1.TabIndex = 4;
             this.label1.Text = "Dir:";
             // 
@@ -79,10 +80,10 @@
             this.fileTypeCB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.fileTypeCB.FormattingEnabled = true;
-            this.fileTypeCB.Location = new System.Drawing.Point(164, 450);
-            this.fileTypeCB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.fileTypeCB.Location = new System.Drawing.Point(152, 366);
+            this.fileTypeCB.Margin = new System.Windows.Forms.Padding(2);
             this.fileTypeCB.Name = "fileTypeCB";
-            this.fileTypeCB.Size = new System.Drawing.Size(577, 24);
+            this.fileTypeCB.Size = new System.Drawing.Size(405, 21);
             this.fileTypeCB.TabIndex = 5;
             // 
             // fileCB
@@ -90,19 +91,21 @@
             this.fileCB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.fileCB.FormattingEnabled = true;
-            this.fileCB.Location = new System.Drawing.Point(164, 420);
-            this.fileCB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.fileCB.Location = new System.Drawing.Point(152, 341);
+            this.fileCB.Margin = new System.Windows.Forms.Padding(2);
             this.fileCB.Name = "fileCB";
-            this.fileCB.Size = new System.Drawing.Size(577, 24);
+            this.fileCB.Size = new System.Drawing.Size(405, 21);
             this.fileCB.TabIndex = 5;
+            this.fileCB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.fileCB_KeyPress);
             // 
             // label2
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(114, 423);
+            this.label2.Location = new System.Drawing.Point(111, 344);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(34, 17);
+            this.label2.Size = new System.Drawing.Size(26, 13);
             this.label2.TabIndex = 4;
             this.label2.Text = "File:";
             // 
@@ -110,9 +113,10 @@
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(114, 453);
+            this.label3.Location = new System.Drawing.Point(111, 369);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(44, 17);
+            this.label3.Size = new System.Drawing.Size(34, 13);
             this.label3.TabIndex = 4;
             this.label3.Text = "Type:";
             // 
@@ -122,10 +126,10 @@
             this.bookDirBut.FlatAppearance.BorderSize = 0;
             this.bookDirBut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bookDirBut.Image = global::ncFileControls.Properties.Resources.bookAdd;
-            this.bookDirBut.Location = new System.Drawing.Point(683, 2);
-            this.bookDirBut.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.bookDirBut.Location = new System.Drawing.Point(512, 2);
+            this.bookDirBut.Margin = new System.Windows.Forms.Padding(2);
             this.bookDirBut.Name = "bookDirBut";
-            this.bookDirBut.Size = new System.Drawing.Size(27, 25);
+            this.bookDirBut.Size = new System.Drawing.Size(20, 20);
             this.bookDirBut.TabIndex = 3;
             this.bookDirBut.UseVisualStyleBackColor = true;
             // 
@@ -135,10 +139,10 @@
             this.newDirBut.FlatAppearance.BorderSize = 0;
             this.newDirBut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.newDirBut.Image = global::ncFileControls.Properties.Resources.newdir;
-            this.newDirBut.Location = new System.Drawing.Point(716, 2);
-            this.newDirBut.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.newDirBut.Location = new System.Drawing.Point(537, 2);
+            this.newDirBut.Margin = new System.Windows.Forms.Padding(2);
             this.newDirBut.Name = "newDirBut";
-            this.newDirBut.Size = new System.Drawing.Size(25, 25);
+            this.newDirBut.Size = new System.Drawing.Size(19, 20);
             this.newDirBut.TabIndex = 3;
             this.newDirBut.UseVisualStyleBackColor = true;
             // 
@@ -148,10 +152,10 @@
             this.upDirBut.FlatAppearance.BorderSize = 0;
             this.upDirBut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.upDirBut.Image = global::ncFileControls.Properties.Resources.updir2;
-            this.upDirBut.Location = new System.Drawing.Point(651, 2);
-            this.upDirBut.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.upDirBut.Location = new System.Drawing.Point(488, 2);
+            this.upDirBut.Margin = new System.Windows.Forms.Padding(2);
             this.upDirBut.Name = "upDirBut";
-            this.upDirBut.Size = new System.Drawing.Size(27, 25);
+            this.upDirBut.Size = new System.Drawing.Size(20, 20);
             this.upDirBut.TabIndex = 3;
             this.upDirBut.UseVisualStyleBackColor = true;
             this.upDirBut.Click += new System.EventHandler(this.upDirBut_Click);
@@ -172,8 +176,8 @@
             this.treeView.Indent = 16;
             this.treeView.LineColor = System.Drawing.SystemColors.ControlDark;
             this.treeView.LoadOnDemand = true;
-            this.treeView.Location = new System.Drawing.Point(114, 32);
-            this.treeView.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.treeView.Location = new System.Drawing.Point(111, 26);
+            this.treeView.Margin = new System.Windows.Forms.Padding(2);
             this.treeView.Model = null;
             this.treeView.Name = "treeView";
             this.treeView.NodeControls.Add(this.nodeStateIcon);
@@ -184,7 +188,7 @@
             this.treeView.SelectedNode = null;
             this.treeView.ShowLines = false;
             this.treeView.ShowPlusMinus = false;
-            this.treeView.Size = new System.Drawing.Size(628, 382);
+            this.treeView.Size = new System.Drawing.Size(447, 311);
             this.treeView.TabIndex = 1;
             this.treeView.Text = "treeViewAdv1";
             this.treeView.UseColumns = true;
@@ -278,14 +282,14 @@
             this.toolBox.ItemSpacing = 2;
             this.toolBox.LargeItemSize = new System.Drawing.Size(100, 96);
             this.toolBox.LayoutDelay = 10;
-            this.toolBox.Location = new System.Drawing.Point(3, 2);
-            this.toolBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.toolBox.Location = new System.Drawing.Point(2, 2);
+            this.toolBox.Margin = new System.Windows.Forms.Padding(2);
             this.toolBox.Name = "toolBox";
             this.toolBox.ScrollDelay = 60;
             this.toolBox.SelectAllTextWhileRenaming = true;
             this.toolBox.SelectedTabIndex = -1;
             this.toolBox.ShowOnlyOneItemPerRow = false;
-            this.toolBox.Size = new System.Drawing.Size(105, 473);
+            this.toolBox.Size = new System.Drawing.Size(105, 384);
             this.toolBox.SmallItemSize = new System.Drawing.Size(32, 32);
             this.toolBox.TabHeight = 18;
             this.toolBox.TabHoverTextColor = System.Drawing.SystemColors.ControlText;
@@ -298,7 +302,7 @@
             // 
             // FileChooser
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.fileCB);
             this.Controls.Add(this.fileTypeCB);
@@ -311,9 +315,9 @@
             this.Controls.Add(this.dirCB);
             this.Controls.Add(this.treeView);
             this.Controls.Add(this.toolBox);
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "FileChooser";
-            this.Size = new System.Drawing.Size(744, 478);
+            this.Size = new System.Drawing.Size(558, 388);
             this.ResumeLayout(false);
             this.PerformLayout();
 
