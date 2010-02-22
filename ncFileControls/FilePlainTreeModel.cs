@@ -66,13 +66,23 @@ namespace ncFileControls
                 node.ParentPath = this;
             }
 
-            foreach (string fname in Directory.GetFiles(path, fileFilter))
+            foreach (string fname in Directory.GetFiles(path, fileFilter.Filter))
             {
                 FileInfoNode node = new FileInfoNode(new FileInfo(fname));
                 dirList.Add(node);
                 node.ParentPath = this;
             }
             return dirList;
+        }
+
+        /// <summary>
+        /// Reread list of files for the current directory
+        /// </summary>
+        public void refresh()
+        {
+            currentFileList = fillFileList(currentPath);
+            if (StructureChanged != null)
+                StructureChanged(this, new TreePathEventArgs());
         }
 
         /// <summary>
@@ -197,12 +207,12 @@ namespace ncFileControls
 
         public event EventHandler<EventArgs> DirectoryChanged;
 
-        private string fileFilter = "*";
+        private FileFilter fileFilter = new FileFilter("all files", "*.*");
 
         /// <summary>
         /// Gets or sets current file filter
         /// </summary>
-        public string FileFilter
+        public FileFilter FileFilter
         {
             get { return fileFilter; }
             set { fileFilter = value; }

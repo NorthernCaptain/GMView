@@ -17,6 +17,9 @@ namespace GMView.TrackLoader
 
         private Bookmarks.POIType defaultPOIType = null;
 
+        private static readonly ncFileControls.FileFilter kmlFilter = 
+                        new ncFileControls.FileFilter("Google Earth KML files (*.kml)", "*.kml");
+
         #region ITrackLoader Members
 
         public GMView.GPS.TrackFileInfo preLoad(GMView.GPS.TrackFileInfo info)
@@ -407,6 +410,18 @@ namespace GMView.TrackLoader
             writer.WriteEndElement(); //placemark
             writer.WriteEndElement();
         }
+
+        public ncFileControls.FileFilter trackLoadFileFilter()
+        {
+            return kmlFilter;
+        }
+
+        public ncFileControls.FileFilter trackSaveFileFilter()
+        {
+            return kmlFilter;
+        }
+
+
         #endregion
 
         #region IFormatLoader Members
@@ -659,6 +674,17 @@ namespace GMView.TrackLoader
             }
         }
 
+        public ncFileControls.FileFilter poiLoadFileFilter()
+        {
+            return kmlFilter;
+        }
+
+        public ncFileControls.FileFilter poiSaveFileFilter()
+        {
+            return kmlFilter;
+        }
+
+
         #endregion
 
 
@@ -670,5 +696,7 @@ namespace GMView.TrackLoader
         }
 
         #endregion
+
+
     }
 }

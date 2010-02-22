@@ -191,5 +191,33 @@ namespace GMView.TrackLoader
         }
 
         #endregion
+
+        #region ITrackLoader Members
+
+        public ncFileControls.FileFilter trackLoadFileFilter()
+        {
+            return null;
+        }
+
+        public ncFileControls.FileFilter trackSaveFileFilter()
+        {
+            return null;
+        }
+
+        #endregion
+
+        #region IPOILoader Members
+
+        public ncFileControls.FileFilter poiLoadFileFilter()
+        {
+            return new ncFileControls.FileFilter("Old fashioned Knowhere POI file (*.xml)", "*.xml");
+        }
+
+        public ncFileControls.FileFilter poiSaveFileFilter()
+        {
+            return null;
+        }
+
+        #endregion
     }
 }

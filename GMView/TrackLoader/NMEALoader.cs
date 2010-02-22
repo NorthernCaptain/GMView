@@ -176,5 +176,35 @@ namespace GMView.TrackLoader
         }
 
         #endregion
+
+        #region ITrackLoader Members
+
+        private static readonly ncFileControls.FileFilter nmeaFilter =
+                    new ncFileControls.FileFilter("Plain NMEA text files (*.txt)", "*.txt");
+        public ncFileControls.FileFilter trackLoadFileFilter()
+        {
+            return nmeaFilter;
+        }
+
+        public ncFileControls.FileFilter trackSaveFileFilter()
+        {
+            return null;
+        }
+
+        #endregion
+
+        #region IPOILoader Members
+
+        public ncFileControls.FileFilter poiLoadFileFilter()
+        {
+            return null;
+        }
+
+        public ncFileControls.FileFilter poiSaveFileFilter()
+        {
+            return null;
+        }
+
+        #endregion
     }
 }

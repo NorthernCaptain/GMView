@@ -45,6 +45,82 @@ namespace GMView.TrackLoader
         }
 
         /// <summary>
+        /// Gets a list of file filters for loading tracks
+        /// </summary>
+        /// <returns></returns>
+        public List<ncFileControls.FileFilter> getTrackLoadFilters()
+        {
+            List<ncFileControls.FileFilter> filters = new List<ncFileControls.FileFilter>();
+            foreach (IFormatLoader fldr in trackLoaders.Values)
+            {
+                ITrackLoader ldr = fldr as ITrackLoader;
+                if (ldr.trackLoadFileFilter() == null)
+                    continue;
+                if (filters.Contains(ldr.trackLoadFileFilter()))
+                    continue;
+                filters.Add(ldr.trackLoadFileFilter());
+            }
+            return filters;
+        }
+
+        /// <summary>
+        /// Gets a list of file filters for saving tracks
+        /// </summary>
+        /// <returns></returns>
+        public List<ncFileControls.FileFilter> getTrackSaveFilters()
+        {
+            List<ncFileControls.FileFilter> filters = new List<ncFileControls.FileFilter>();
+            foreach (IFormatLoader fldr in trackLoaders.Values)
+            {
+                ITrackLoader ldr = fldr as ITrackLoader;
+                if (ldr.trackSaveFileFilter() == null)
+                    continue;
+                if (filters.Contains(ldr.trackSaveFileFilter()))
+                    continue;
+                filters.Add(ldr.trackSaveFileFilter());
+            }
+            return filters;
+        }
+
+        /// <summary>
+        /// Gets a list of file filters for loading pois
+        /// </summary>
+        /// <returns></returns>
+        public List<ncFileControls.FileFilter> getPOILoadFilters()
+        {
+            List<ncFileControls.FileFilter> filters = new List<ncFileControls.FileFilter>();
+            foreach (IFormatLoader fldr in trackLoaders.Values)
+            {
+                IPOILoader ldr = fldr as IPOILoader;
+                if (ldr.poiLoadFileFilter() == null)
+                    continue;
+                if (filters.Contains(ldr.poiLoadFileFilter()))
+                    continue;
+                filters.Add(ldr.poiLoadFileFilter());
+            }
+            return filters;
+        }
+
+        /// <summary>
+        /// Gets a list of file filters for saving pois
+        /// </summary>
+        /// <returns></returns>
+        public List<ncFileControls.FileFilter> getPOISaveFilters()
+        {
+            List<ncFileControls.FileFilter> filters = new List<ncFileControls.FileFilter>();
+            foreach (IFormatLoader fldr in trackLoaders.Values)
+            {
+                IPOILoader ldr = fldr as IPOILoader;
+                if (ldr.poiSaveFileFilter() == null)
+                    continue;
+                if (filters.Contains(ldr.poiSaveFileFilter()))
+                    continue;
+                filters.Add(ldr.poiSaveFileFilter());
+            }
+            return filters;
+        }
+
+        /// <summary>
         /// Return loader by a given name
         /// </summary>
         /// <param name="name"></param>

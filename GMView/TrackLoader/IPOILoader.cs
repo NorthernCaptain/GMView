@@ -7,6 +7,17 @@ namespace GMView.TrackLoader
     public interface IPOILoader: IFormatLoader
     {
         /// <summary>
+        /// Gets the file filter for poi loading from the file
+        /// </summary>
+        /// <returns></returns>
+        ncFileControls.FileFilter poiLoadFileFilter();
+
+        /// <summary>
+        /// Gets the file filter for saving pois or null if save is not supported
+        /// </summary>
+        /// <returns></returns>
+        ncFileControls.FileFilter poiSaveFileFilter();
+        /// <summary>
         /// Import POIs from File into the bookmark factory and create subgroups
         /// in the groupFactory.
         /// Return number of imported POIs

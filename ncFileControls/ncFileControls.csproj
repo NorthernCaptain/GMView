@@ -51,6 +51,7 @@
     <Compile Include="FileChooser.Designer.cs">
       <DependentUpon>FileChooser.cs</DependentUpon>
     </Compile>
+    <Compile Include="FileFilter.cs" />
     <Compile Include="FileGridSorter.cs" />
     <Compile Include="FileInfoNode.cs" />
     <Compile Include="FilePlainTreeModel.cs" />

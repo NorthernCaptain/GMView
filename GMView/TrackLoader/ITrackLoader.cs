@@ -11,6 +11,18 @@ namespace GMView.TrackLoader
     public interface ITrackLoader: IFormatLoader
     {
         /// <summary>
+        /// Gets the loading file filter for track or null if loading does not supported
+        /// </summary>
+        /// <returns></returns>
+        ncFileControls.FileFilter trackLoadFileFilter();
+
+        /// <summary>
+        /// Gets the saving file filter for the track or null
+        /// </summary>
+        /// <returns></returns>
+        ncFileControls.FileFilter trackSaveFileFilter();
+
+        /// <summary>
         /// Do pre-loading of the file and fills infomation in FileInfo object
         /// </summary>
         /// <param name="info"></param>

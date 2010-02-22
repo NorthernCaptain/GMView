@@ -39,12 +39,64 @@ namespace ncFileControls
             #endregion
         }
 
+        private List<FileFilter> fileFilters = new List<FileFilter>();
+
+        /// <summary>
+        /// Gets a list of file filters used in File chooser
+        /// </summary>
+        public List<FileFilter> FileFilters
+        {
+            get { return fileFilters; }
+        }
+
+        /// <summary>
+        /// Adds new file filter to the list of filters to use.
+        /// </summary>
+        /// <param name="filter"></param>
+        public void addFileFilter(FileFilter filter)
+        {
+            fileFilters.Add(filter);
+
+            fileTypeCB.Items.Clear();
+            fileTypeCB.Items.AddRange(fileFilters.ToArray());
+            fileTypeCB.SelectedIndex = 0;
+        }
+
+        /// <summary>
+        /// Gets or sets current file filter
+        /// </summary>
+        public FileFilter currentFilter
+        {
+            get
+            {
+                return mainModel.FileFilter;
+            }
+
+            set
+            {
+                foreach (FileFilter flt in fileFilters)
+                {
+                    if (flt.Filter.Equals(value.Filter))
+                    {
+                        mainModel.FileFilter = flt;
+                        fileTypeCB.SelectedItem = flt;
+                        return;
+                    }
+                }
+                addFileFilter(value);
+
+                fileTypeCB.SelectedItem = value;
+                mainModel.FileFilter = value;
+            }
+        }
+
         public FileChooser()
         {
             InitializeComponent();
             mainModel = new FilePlainTreeModel(treeView);
             mainModel.DirectoryChanged += mainModel_DirectoryChanged;
             initToolbox();
+            addFileFilter(new FileFilter("All files (*.*)", "*.*"));
         }
 
         /// <summary>
@@ -418,6 +470,12 @@ namespace ncFileControls
                 ncUtils.DBSetup.singleton.setString(this.Name + ".toolbox.myplace.dir." + idx.ToString(),
                                                     mainModel.CurrentPath);
             }
+        }
+
+        private void fileTypeCB_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            mainModel.FileFilter = fileTypeCB.SelectedItem as FileFilter;
+            mainModel.refresh();
         }
 
     }

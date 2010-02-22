@@ -78,12 +78,14 @@
             // 
             this.fileTypeCB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.fileTypeCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.fileTypeCB.FormattingEnabled = true;
             this.fileTypeCB.Location = new System.Drawing.Point(203, 450);
             this.fileTypeCB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.fileTypeCB.Name = "fileTypeCB";
             this.fileTypeCB.Size = new System.Drawing.Size(539, 24);
             this.fileTypeCB.TabIndex = 5;
+            this.fileTypeCB.SelectedIndexChanged += new System.EventHandler(this.fileTypeCB_SelectedIndexChanged);
             // 
             // fileCB
             // 

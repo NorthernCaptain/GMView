@@ -23,6 +23,12 @@ namespace GMView.TrackLoader
 
         }
 
+        /// <summary>
+        /// File filter for GPX files
+        /// </summary>
+        private static readonly ncFileControls.FileFilter gpxFilter = 
+                new ncFileControls.FileFilter("GPS eXchange Format GPX files (*.gpx)", "*.gpx");
+
         #region IPOILoader Members
 
         public bool isOurFormat(GMView.GPS.TrackFileInfo fi)
@@ -50,6 +56,16 @@ namespace GMView.TrackLoader
                 reader.Close();
             }
             return false;
+        }
+
+        public ncFileControls.FileFilter poiLoadFileFilter()
+        {
+            return gpxFilter;
+        }
+
+        public ncFileControls.FileFilter poiSaveFileFilter()
+        {
+            return gpxFilter;
         }
 
         /// <summary>
@@ -690,6 +706,17 @@ namespace GMView.TrackLoader
             }
             writer.WriteEndElement();
         }
+
+        public ncFileControls.FileFilter trackLoadFileFilter()
+        {
+            return gpxFilter;
+        }
+
+        public ncFileControls.FileFilter trackSaveFileFilter()
+        {
+            return gpxFilter;
+        }
+
         #endregion
 
 
@@ -701,5 +728,6 @@ namespace GMView.TrackLoader
         }
 
         #endregion
+
     }
 }
