@@ -620,8 +620,11 @@ namespace GMView.TrackLoader
                     writer.WriteElementString("time", tp.utc_time.ToString("yyyy-MM-ddTHH:mm:ssZ"));
                     writer.WriteElementString("type", tp.ptype.ToString());
                     writer.WriteElementString("ele", tp.height.ToString("F3", nf));
-                    writer.WriteElementString("hdop", tp.HDOP.ToString("F1", nf));
-                    writer.WriteElementString("sat", tp.usedSats.ToString());
+                    if (tp.usedSats > 3)
+                    {
+                        writer.WriteElementString("hdop", tp.HDOP.ToString("F1", nf));
+                        writer.WriteElementString("sat", tp.usedSats.ToString());
+                    }
                     if (tp.speed != 0 || tp.dir_angle != 0)
                     {
                         writer.WriteStartElement("extensions");

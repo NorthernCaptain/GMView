@@ -30,10 +30,11 @@ namespace GMView.Forms
             poiTypeComboBox.loadList(false);
 
             fileChooser.fileSelectionChanged += new EventHandler(fileChooser_fileSelectionChanged);
-            fileChooser.addFileFilter(new ncFileControls.FileFilter("GPS eXchange Format GPX files (*.gpx)", "*.gpx"));
-            fileChooser.addFileFilter(new ncFileControls.FileFilter("Google Earth KML files (*.kml)", "*.kml"));
-            fileChooser.addFileFilter(new ncFileControls.FileFilter("Plain NMEA text files (*.nmea)", "*.nmea"));
-            fileChooser.addFileFilter(new ncFileControls.FileFilter("Plain NMEA text files (*.txt)", "*.txt"));
+            List<ncFileControls.FileFilter> filters = TrackLoader.TrackLoaderFactory.singleton.getTrackLoadFilters();
+            foreach (ncFileControls.FileFilter flt in filters)
+            {
+                fileChooser.addFileFilter(flt);
+            }
         }
 
         private GPS.TrackFileInfo fileInfo = new GPS.TrackFileInfo();

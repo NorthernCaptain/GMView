@@ -341,9 +341,11 @@ namespace ncFileControls
         {
             get
             {
-                if (string.IsNullOrEmpty(fileCB.Text))
+                string fname = fileCB.Text;
+                if (string.IsNullOrEmpty(fname))
                     return null;
-                currentFileInfo = new FileInfoNode(fileCB.Text);
+
+                currentFileInfo = new FileInfoNode(fname);
                 return Path.Combine(mainModel.CurrentPath, currentFileInfo.Name);
             }
             set

@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.IO;
 
 namespace GMView.Forms
 {
@@ -16,6 +17,11 @@ namespace GMView.Forms
             fileChooser.addCommonPlace("GPS Tracks and Waypoints", Properties.Resources.MapLayers,
                                         new TrackLoadDlg.GPSTrackAndWaypointsBook());
 
+            List<ncFileControls.FileFilter> filters = TrackLoader.TrackLoaderFactory.singleton.getTrackSaveFilters();
+            foreach (ncFileControls.FileFilter flt in filters)
+            {
+                fileChooser.addFileFilter(flt);
+            }
         }
 
         protected override void OnLoad(EventArgs e)
@@ -84,6 +90,20 @@ namespace GMView.Forms
                 if(string.IsNullOrEmpty(fname))
                     return null;
 
+                string ext = Path.GetExtension(fname);
+                try
+                {
+                    if (string.IsNullOrEmpty(ext))
+                    {
+                        string defExt = Path.GetExtension(fileChooser.currentFilter.Filter);
+                        fname = Path.ChangeExtension(fname, (defExt.Equals(".*") ? ".gpx" : defExt));
+                    }
+                }
+                catch (System.Exception)
+                {
+
+                }
+
                 if (string.IsNullOrEmpty(System.IO.Path.GetExtension(fname)))
                     fname += ".gpx";
                 GPS.TrackFileInfo nfo = new GPS.TrackFileInfo(fname, GPS.TrackFileInfo.SourceType.FileName);
@@ -103,7 +123,22 @@ namespace GMView.Forms
                     "File name required", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            if(System.IO.Directory.Exists(fname))
+
+            string ext = Path.GetExtension(fname);
+            try
+            {
+                if (string.IsNullOrEmpty(ext))
+                {
+                    string defExt = Path.GetExtension(fileChooser.currentFilter.Filter);
+                    fname = Path.ChangeExtension(fname, (defExt.Equals(".*") ? ".gpx" : defExt));
+                }
+            }
+            catch (System.Exception)
+            {
+
+            }
+
+            if (System.IO.Directory.Exists(fname))
             {
                 MessageBox.Show("You selected directory, please, specify a file name!",
                     "File name required", MessageBoxButtons.OK, MessageBoxIcon.Error);

@@ -42,6 +42,8 @@ namespace GMView.TrackLoader
             trackLoaders.Add("nmea", new NMEALoader());
             trackLoaders.Add("txt", new NMEALoader());
             trackLoaders.Add("bmark", new OldBmarkLoader());
+            trackLoaders.Add("plt", new OZIPltLoader());
+            trackLoaders.Add("wpt", new OZIWptLoader());
         }
 
         /// <summary>
@@ -54,6 +56,7 @@ namespace GMView.TrackLoader
             foreach (IFormatLoader fldr in trackLoaders.Values)
             {
                 ITrackLoader ldr = fldr as ITrackLoader;
+                if (ldr == null) continue;
                 if (ldr.trackLoadFileFilter() == null)
                     continue;
                 if (filters.Contains(ldr.trackLoadFileFilter()))
@@ -73,6 +76,7 @@ namespace GMView.TrackLoader
             foreach (IFormatLoader fldr in trackLoaders.Values)
             {
                 ITrackLoader ldr = fldr as ITrackLoader;
+                if (ldr == null) continue;
                 if (ldr.trackSaveFileFilter() == null)
                     continue;
                 if (filters.Contains(ldr.trackSaveFileFilter()))
@@ -92,6 +96,7 @@ namespace GMView.TrackLoader
             foreach (IFormatLoader fldr in trackLoaders.Values)
             {
                 IPOILoader ldr = fldr as IPOILoader;
+                if (ldr == null) continue;
                 if (ldr.poiLoadFileFilter() == null)
                     continue;
                 if (filters.Contains(ldr.poiLoadFileFilter()))
@@ -111,6 +116,7 @@ namespace GMView.TrackLoader
             foreach (IFormatLoader fldr in trackLoaders.Values)
             {
                 IPOILoader ldr = fldr as IPOILoader;
+                if (ldr == null) continue;
                 if (ldr.poiSaveFileFilter() == null)
                     continue;
                 if (filters.Contains(ldr.poiSaveFileFilter()))
