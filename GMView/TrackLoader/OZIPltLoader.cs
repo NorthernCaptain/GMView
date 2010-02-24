@@ -160,8 +160,7 @@ namespace GMView.TrackLoader
 
         public void save(GPSTrack track, GMView.GPS.TrackFileInfo fi, BookMarkFactory poiFact, GMView.Bookmarks.POIGroupFactory igroupFact)
         {
-            System.Globalization.CultureInfo cul = new System.Globalization.CultureInfo("");
-            System.Globalization.NumberFormatInfo nf = cul.NumberFormat;
+            System.Globalization.NumberFormatInfo nf = ncUtils.Glob.numformat;
 
             lock (track)
             {
@@ -224,7 +223,7 @@ namespace GMView.TrackLoader
             return date;
         }
 
-        internal string toDelphiTime(DateTime date, System.Globalization.NumberFormatInfo nf)
+        internal static string toDelphiTime(DateTime date, System.Globalization.NumberFormatInfo nf)
         {
             DateTime start = new DateTime(1899, 12, 30, 0, 0, 0, DateTimeKind.Utc);
             TimeSpan delta = date - start;

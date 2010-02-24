@@ -446,7 +446,17 @@ namespace ncFileControls
 
             if (dirnameDlg.ShowDialog() == DialogResult.OK)
             {
+                try
+                {
+                    mainModel.makeDir(dirnameDlg.SelectedText);
 
+                }
+                catch (System.Exception ex)
+                {
+                    MessageBox.Show("Error in creating directory with name '" + dirnameDlg.SelectedText
+                        + "'\nDetails:\n" + ex.Message, "Error creating directory", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
             }
         }
 

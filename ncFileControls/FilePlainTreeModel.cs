@@ -86,6 +86,17 @@ namespace ncFileControls
         }
 
         /// <summary>
+        /// Creates a subdirectory in the currentPath
+        /// </summary>
+        /// <param name="newdir"></param>
+        public void makeDir(string newdir)
+        {
+            string fullpath = Path.Combine(currentPath, newdir);
+            Directory.CreateDirectory(fullpath);
+            refresh();
+        }
+
+        /// <summary>
         /// Return last entry of the given path
         /// </summary>
         /// <param name="path"></param>
