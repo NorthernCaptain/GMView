@@ -14,10 +14,10 @@ AppSupportURL=http://xnc.jinr.ru/knowhere
 AppUpdatesURL=http://xnc.jinr.ru/knowhere
 DefaultDirName={pf}\Knowhere
 DefaultGroupName=Knowhere
-LicenseFile=C:\Documents and Settings\leo\Мои документы\Visual Studio 2008\Projects\GMView\License.txt
-InfoBeforeFile=C:\Documents and Settings\leo\Мои документы\Visual Studio 2008\Projects\GMView\Intro.txt
-InfoAfterFile=C:\Documents and Settings\leo\Мои документы\Visual Studio 2008\Projects\GMView\TODO.txt
-OutputDir=C:\Documents and Settings\leo\Мои документы\Visual Studio 2008\Projects\GMView\Debug
+LicenseFile=License.txt
+InfoBeforeFile=Intro.txt
+InfoAfterFile=TODO.txt
+OutputDir=Debug
 OutputBaseFilename=knowhere-setup
 Compression=lzma/ultra64
 SolidCompression=yes
@@ -30,28 +30,29 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Documents and Settings\leo\Мои документы\Visual Studio 2008\Projects\GMView\Debug\Knowhere.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Documents and Settings\leo\Мои документы\Visual Studio 2008\Projects\GMView\Debug\data\*"; DestDir: "{app}\data"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Documents and Settings\leo\Мои документы\Visual Studio 2008\Projects\GMView\Debug\XnGFLWrap.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Documents and Settings\leo\Мои документы\Visual Studio 2008\Projects\GMView\Debug\Aga.Controls.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Documents and Settings\leo\Мои документы\Visual Studio 2008\Projects\GMView\Debug\ColorPicker.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Documents and Settings\leo\Мои документы\Visual Studio 2008\Projects\GMView\Debug\exiftool.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Documents and Settings\leo\Мои документы\Visual Studio 2008\Projects\GMView\Debug\GMLBase.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Documents and Settings\leo\Мои документы\Visual Studio 2008\Projects\GMView\Debug\GMLDirect3D.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Documents and Settings\leo\Мои документы\Visual Studio 2008\Projects\GMView\Debug\GMLgdiPlus.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Documents and Settings\leo\Мои документы\Visual Studio 2008\Projects\GMView\Debug\GMLOpenGL.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Documents and Settings\leo\Мои документы\Visual Studio 2008\Projects\GMView\Debug\libgfl311.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Documents and Settings\leo\Мои документы\Visual Studio 2008\Projects\GMView\Debug\libgfle311.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Documents and Settings\leo\Мои документы\Visual Studio 2008\Projects\GMView\Debug\ncGeo.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Documents and Settings\leo\Мои документы\Visual Studio 2008\Projects\GMView\Debug\ncUtils.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Documents and Settings\leo\Мои документы\Visual Studio 2008\Projects\GMView\Debug\System.Data.SQLite.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Documents and Settings\leo\Мои документы\Visual Studio 2008\Projects\GMView\Debug\System.Data.SQLite.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Documents and Settings\leo\Мои документы\Visual Studio 2008\Projects\GMView\Debug\Tao.OpenGl.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Documents and Settings\leo\Мои документы\Visual Studio 2008\Projects\GMView\Debug\Tao.OpenGl.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Documents and Settings\leo\Мои документы\Visual Studio 2008\Projects\GMView\Debug\Tao.Platform.Windows.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Documents and Settings\leo\Мои документы\Visual Studio 2008\Projects\GMView\Debug\Tao.Platform.Windows.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Documents and Settings\leo\Мои документы\Visual Studio 2008\Projects\GMView\Debug\ToolBox.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Documents and Settings\leo\Мои документы\Visual Studio 2008\Projects\GMView\Debug\XnGFL.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Debug\Knowhere.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Debug\data\*"; DestDir: "{app}\data"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "Debug\XnGFLWrap.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Debug\Aga.Controls.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Debug\ColorPicker.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Debug\exiftool.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Debug\GMLBase.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Debug\GMLDirect3D.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Debug\GMLgdiPlus.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Debug\GMLOpenGL.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Debug\libgfl311.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Debug\libgfle311.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Debug\ncGeo.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Debug\ncUtils.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Debug\ncFileControls.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Debug\System.Data.SQLite.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Debug\System.Data.SQLite.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Debug\Tao.OpenGl.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Debug\Tao.OpenGl.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Debug\Tao.Platform.Windows.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Debug\Tao.Platform.Windows.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Debug\ToolBox.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Debug\XnGFL.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
@@ -62,6 +63,8 @@ Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\Knowhere"; Filenam
 
 [Run]
 Filename: "{app}\Knowhere.exe"; Description: "{cm:LaunchProgram,Knowhere}"; Flags: nowait postinstall skipifsilent; WorkingDir: "{app}"
+
+
 
 
 
