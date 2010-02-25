@@ -100,14 +100,23 @@ namespace GMView.Forms
             trackColorPicker.SelectedItem = Color.FromArgb(ncUtils.Glob.rnd.Next(180) + 40,
                                                             ncUtils.Glob.rnd.Next(180) + 40,
                                                             ncUtils.Glob.rnd.Next(180) + 40);
+
+            showTrackInfoCB.Checked = 
+                (ncUtils.DBSetup.singleton.getInt(this.Name + ".showInfo.checked", 1) == 0 ? false : true);
+            needPOICB.Checked =
+                (ncUtils.DBSetup.singleton.getInt(this.Name + ".needPOI.checked", 0) == 0 ? false : true);
         }
 
         private void TrackLoadDlg_FormClosing(object sender, FormClosingEventArgs e)
         {
             Bookmarks.POIType ptype = poiTypeComboBox.SelectedItem as Bookmarks.POIType;
+            ncUtils.DBConnPool.singleton.beginThreadTransaction();
             if (ptype != null)
                 ncUtils.DBSetup.singleton.setInt(this.Name + ".poiType.id", ptype.Id);
             ncUtils.DBSetup.singleton.setString(this.Name + ".filechooser.dir", fileChooser.DirectoryPath);
+            ncUtils.DBSetup.singleton.setInt(this.Name + ".showInfo.checked", showTrackInfoCB.Checked ? 1 : 0);
+            ncUtils.DBSetup.singleton.setInt(this.Name + ".needPOI.checked", needPOICB.Checked ? 1 : 0);
+            ncUtils.DBConnPool.singleton.commitThreadTransaction();
         }
 
         private void doPreLoad( TrackLoader.ITrackLoader loader, GPS.TrackFileInfo fileInfo )
@@ -135,7 +144,9 @@ namespace GMView.Forms
             fileInfo.needPOI = needPOICB.Checked;
             fileInfo.needTrackSplitting = splitTrackCB.Checked;
             fileInfo.trackColor = trackColorPicker.SelectedItem;
+            fileInfo.showInfoForm = showTrackInfoCB.Checked;
             fileInfo.defaultPOIType = poiTypeComboBox.SelectedItem as Bookmarks.POIType;
+
             DialogResult = DialogResult.OK;
         }
 
@@ -145,6 +156,11 @@ namespace GMView.Forms
             ncUtils.DBSetup.singleton.setInt(this.Name + ".size.width", this.Size.Width);
             ncUtils.DBSetup.singleton.setInt(this.Name + ".size.height", this.Size.Height);
             ncUtils.DBConnPool.singleton.commitThreadTransaction();
+        }
+
+        private void TrackLoadDlg_Load(object sender, EventArgs e)
+        {
+
         }
 
     }

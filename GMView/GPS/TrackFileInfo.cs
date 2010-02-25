@@ -104,6 +104,10 @@ namespace GMView.GPS
         public string preloadName = string.Empty;
 
         /// <summary>
+        /// Show information form after track loading or not?
+        /// </summary>
+        public bool showInfoForm = true;
+        /// <summary>
         /// Try to open document as xml and return this XmlDocument
         /// </summary>
         /// <returns></returns>
@@ -137,7 +141,7 @@ namespace GMView.GPS
 
             if (this.stype == SourceType.FileName)
             {
-                reader = new System.IO.StreamReader(this.fileOrBuffer);
+                reader = new System.IO.StreamReader(this.fileOrBuffer, Encoding.Default);
             }
             else
                 reader = new System.IO.StringReader(this.fileOrBuffer);

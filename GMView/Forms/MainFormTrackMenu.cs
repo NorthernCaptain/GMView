@@ -165,5 +165,17 @@ namespace GMView
             }
         }
 
+        private void removeTrackToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GPSTrack track = followTrackList.SelectedItem as GPSTrack;
+            if (track == null)
+            {
+                MessageBox.Show("Select the track in the combobox first, then repeat the action.",
+                                "Wrong track selected",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            gtrform_OnRemoveByTrack(track);
+        }
     }
 }

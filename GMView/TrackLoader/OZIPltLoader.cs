@@ -86,7 +86,7 @@ namespace GMView.TrackLoader
             System.IO.TextReader reader;
             if (fi.stype == GPS.TrackFileInfo.SourceType.FileName)
             {
-                reader = new System.IO.StreamReader(fi.fileOrBuffer);
+                reader = new System.IO.StreamReader(fi.fileOrBuffer, Encoding.Default);
                 string dirname = Path.GetDirectoryName(fi.fileOrBuffer);
                 tname = dirname.Substring(dirname.LastIndexOf(Path.DirectorySeparatorChar) + 1)
                       + Path.DirectorySeparatorChar + Path.GetFileNameWithoutExtension(fi.fileOrBuffer);
@@ -191,6 +191,8 @@ namespace GMView.TrackLoader
                         buf.Append(rmc.utc_time.ToShortTimeString());
                         writer.WriteLine(buf.ToString());
                     }
+
+                    writer.Close();
                 } 
             }
         }

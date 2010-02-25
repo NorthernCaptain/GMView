@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using ncGeo;
+using System.IO;
 
 namespace GMView.TrackLoader
 {
@@ -108,9 +109,69 @@ namespace GMView.TrackLoader
             return count;
         }
 
-        public void exportPOIs(GMView.GPS.TrackFileInfo fileInfo, BookMarkFactory pFactory, LinkedList<GMView.Bookmarks.POIGroup> groups, List<Bookmark> poilist, GMView.Bookmarks.POIGroup parentGroup)
+        public void exportPOIs(GMView.GPS.TrackFileInfo fi, BookMarkFactory pFactory, LinkedList<GMView.Bookmarks.POIGroup> groups, List<Bookmark> poilist, GMView.Bookmarks.POIGroup parentGroup)
         {
-            throw new NotImplementedException();
+            count = 1;
+            using (StreamWriter writer = new StreamWriter(fi.fileOrBuffer, false, Encoding.Default))
+            {
+                writer.WriteLine("OziExplorer Waypoint File Version 1.1");
+                writer.WriteLine("WGS 84");
+                writer.WriteLine("Reserved 2");
+                writer.WriteLine("Reserved 3");
+
+                saveListToWPT(writer, groups, poilist, pFactory, ncUtils.Glob.numformat);
+
+                writer.Close();
+            }
+
+        }
+
+        private int count = 0;
+        /// <summary>
+        /// Recursively saves all pois and subgroups
+        /// </summary>
+        /// <param name="writer"></param>
+        /// <param name="groups"></param>
+        /// <param name="pois"></param>
+        private void saveListToWPT(TextWriter writer,
+                                   LinkedList<Bookmarks.POIGroup> groups,
+                                   List<Bookmark> pois, BookMarkFactory poiFactory,
+                                   System.Globalization.NumberFormatInfo nf)
+        {
+            if (pois != null)
+            {
+                foreach (Bookmark book in pois)
+                {
+                    StringBuilder buf = new StringBuilder(count.ToString());
+
+                    buf.Append(',');
+                    buf.Append(book.Name.Replace(',', ' '));
+                    buf.Append(',');
+                    buf.Append(book.latitude.ToString("F6", nf));
+                    buf.Append(',');
+                    buf.Append(book.longitude.ToString("F6", nf));
+                    buf.Append(',');
+                    buf.Append(OZIPltLoader.toDelphiTime(book.Created, nf));
+                    buf.Append(",0,1,3,0,65535,");
+                    if(!string.IsNullOrEmpty(book.Description))                        
+                        buf.Append(book.Description.Replace(',', ' ').Replace('\n','.'));
+                    buf.Append(",0,0,0,");
+                    buf.Append((book.altitude / OZIPltLoader.feet2m).ToString("F3", nf));
+                    buf.Append(",6,0,17");
+
+                    writer.WriteLine(buf.ToString());
+                    count++;
+                }
+            }
+
+            if (groups != null)
+            {
+                foreach (Bookmarks.POIGroup node in groups)
+                {
+                    List<Bookmark> childrenPOI = poiFactory.loadByParent(node.Id, false);
+                    saveListToWPT(writer, node.Children, childrenPOI, poiFactory, nf);
+                }
+            }
         }
 
 

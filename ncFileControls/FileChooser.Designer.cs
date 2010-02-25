@@ -47,6 +47,8 @@
             this.nodeTextBoxSize = new Aga.Controls.Tree.NodeControls.NodeTextBox();
             this.nodeTextBoxDate = new Aga.Controls.Tree.NodeControls.NodeTextBox();
             this.toolBox = new Silver.UI.ToolBox();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // dirCB
@@ -58,66 +60,73 @@
             this.dirCB.DropDownWidth = 500;
             this.dirCB.FormattingEnabled = true;
             this.dirCB.IntegralHeight = false;
-            this.dirCB.Location = new System.Drawing.Point(180, 2);
+            this.dirCB.Location = new System.Drawing.Point(173, 2);
             this.dirCB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dirCB.Name = "dirCB";
-            this.dirCB.Size = new System.Drawing.Size(460, 24);
+            this.dirCB.Size = new System.Drawing.Size(573, 24);
             this.dirCB.TabIndex = 2;
             this.dirCB.SelectionChangeCommitted += new System.EventHandler(this.dirCB_SelectionChangeCommitted);
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(144, 7);
+            this.label1.Location = new System.Drawing.Point(123, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(30, 17);
+            this.label1.Size = new System.Drawing.Size(30, 26);
             this.label1.TabIndex = 4;
             this.label1.Text = "Dir:";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // fileTypeCB
             // 
-            this.fileTypeCB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+            this.fileTypeCB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel1.SetColumnSpan(this.fileTypeCB, 4);
             this.fileTypeCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.fileTypeCB.FormattingEnabled = true;
-            this.fileTypeCB.Location = new System.Drawing.Point(203, 450);
+            this.fileTypeCB.Location = new System.Drawing.Point(173, 561);
             this.fileTypeCB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.fileTypeCB.Name = "fileTypeCB";
-            this.fileTypeCB.Size = new System.Drawing.Size(539, 24);
+            this.fileTypeCB.Size = new System.Drawing.Size(657, 24);
             this.fileTypeCB.TabIndex = 5;
             this.fileTypeCB.SelectedIndexChanged += new System.EventHandler(this.fileTypeCB_SelectedIndexChanged);
             // 
             // fileCB
             // 
-            this.fileCB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+            this.fileCB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel1.SetColumnSpan(this.fileCB, 4);
             this.fileCB.FormattingEnabled = true;
-            this.fileCB.Location = new System.Drawing.Point(203, 420);
+            this.fileCB.Location = new System.Drawing.Point(173, 535);
             this.fileCB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.fileCB.Name = "fileCB";
-            this.fileCB.Size = new System.Drawing.Size(539, 24);
+            this.fileCB.Size = new System.Drawing.Size(657, 24);
             this.fileCB.TabIndex = 5;
             this.fileCB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.fileCB_KeyPress);
             // 
             // label2
             // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(148, 423);
+            this.label2.Location = new System.Drawing.Point(123, 533);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(34, 17);
+            this.label2.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.label2.Size = new System.Drawing.Size(34, 20);
             this.label2.TabIndex = 4;
             this.label2.Text = "File:";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label3
             // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(148, 454);
+            this.label3.Location = new System.Drawing.Point(123, 559);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(44, 17);
+            this.label3.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.label3.Size = new System.Drawing.Size(44, 20);
             this.label3.TabIndex = 4;
             this.label3.Text = "Type:";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // bookDirBut
             // 
@@ -125,10 +134,10 @@
             this.bookDirBut.FlatAppearance.BorderSize = 0;
             this.bookDirBut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bookDirBut.Image = global::ncFileControls.Properties.Resources.bookAdd;
-            this.bookDirBut.Location = new System.Drawing.Point(683, 2);
+            this.bookDirBut.Location = new System.Drawing.Point(780, 2);
             this.bookDirBut.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.bookDirBut.Name = "bookDirBut";
-            this.bookDirBut.Size = new System.Drawing.Size(27, 25);
+            this.bookDirBut.Size = new System.Drawing.Size(22, 22);
             this.bookDirBut.TabIndex = 3;
             this.bookDirBut.UseVisualStyleBackColor = true;
             this.bookDirBut.Click += new System.EventHandler(this.bookDirBut_Click);
@@ -139,10 +148,10 @@
             this.newDirBut.FlatAppearance.BorderSize = 0;
             this.newDirBut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.newDirBut.Image = global::ncFileControls.Properties.Resources.newdir;
-            this.newDirBut.Location = new System.Drawing.Point(716, 2);
+            this.newDirBut.Location = new System.Drawing.Point(808, 2);
             this.newDirBut.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.newDirBut.Name = "newDirBut";
-            this.newDirBut.Size = new System.Drawing.Size(25, 25);
+            this.newDirBut.Size = new System.Drawing.Size(22, 22);
             this.newDirBut.TabIndex = 3;
             this.newDirBut.UseVisualStyleBackColor = true;
             this.newDirBut.Click += new System.EventHandler(this.newDirBut_Click);
@@ -153,10 +162,10 @@
             this.upDirBut.FlatAppearance.BorderSize = 0;
             this.upDirBut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.upDirBut.Image = global::ncFileControls.Properties.Resources.updir2;
-            this.upDirBut.Location = new System.Drawing.Point(651, 2);
+            this.upDirBut.Location = new System.Drawing.Point(752, 2);
             this.upDirBut.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.upDirBut.Name = "upDirBut";
-            this.upDirBut.Size = new System.Drawing.Size(27, 25);
+            this.upDirBut.Size = new System.Drawing.Size(22, 22);
             this.upDirBut.TabIndex = 3;
             this.upDirBut.UseVisualStyleBackColor = true;
             this.upDirBut.Click += new System.EventHandler(this.upDirBut_Click);
@@ -171,13 +180,14 @@
             this.treeView.Columns.Add(this.fileNameCol);
             this.treeView.Columns.Add(this.sizeCol);
             this.treeView.Columns.Add(this.dateCol);
+            this.tableLayoutPanel1.SetColumnSpan(this.treeView, 5);
             this.treeView.DefaultToolTipProvider = null;
             this.treeView.DragDropMarkColor = System.Drawing.Color.Black;
             this.treeView.GridLineStyle = ((Aga.Controls.Tree.GridLineStyle)((Aga.Controls.Tree.GridLineStyle.Horizontal | Aga.Controls.Tree.GridLineStyle.Vertical)));
             this.treeView.Indent = 16;
             this.treeView.LineColor = System.Drawing.SystemColors.ControlDark;
             this.treeView.LoadOnDemand = true;
-            this.treeView.Location = new System.Drawing.Point(148, 32);
+            this.treeView.Location = new System.Drawing.Point(123, 28);
             this.treeView.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.treeView.Model = null;
             this.treeView.Name = "treeView";
@@ -189,7 +199,7 @@
             this.treeView.SelectedNode = null;
             this.treeView.ShowLines = false;
             this.treeView.ShowPlusMinus = false;
-            this.treeView.Size = new System.Drawing.Size(595, 382);
+            this.treeView.Size = new System.Drawing.Size(707, 503);
             this.treeView.TabIndex = 1;
             this.treeView.Text = "treeViewAdv1";
             this.treeView.UseColumns = true;
@@ -268,8 +278,9 @@
             // 
             this.toolBox.AllowDrop = true;
             this.toolBox.AllowSwappingByDragDrop = true;
-            this.toolBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.toolBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.toolBox.InitialScrollDelay = 500;
             this.toolBox.ItemBackgroundColor = System.Drawing.Color.Empty;
             this.toolBox.ItemBorderColor = System.Drawing.Color.Empty;
@@ -286,11 +297,12 @@
             this.toolBox.Location = new System.Drawing.Point(3, 2);
             this.toolBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.toolBox.Name = "toolBox";
+            this.tableLayoutPanel1.SetRowSpan(this.toolBox, 4);
             this.toolBox.ScrollDelay = 60;
             this.toolBox.SelectAllTextWhileRenaming = true;
             this.toolBox.SelectedTabIndex = -1;
             this.toolBox.ShowOnlyOneItemPerRow = false;
-            this.toolBox.Size = new System.Drawing.Size(140, 473);
+            this.toolBox.Size = new System.Drawing.Size(114, 581);
             this.toolBox.SmallItemSize = new System.Drawing.Size(32, 32);
             this.toolBox.TabHeight = 18;
             this.toolBox.TabHoverTextColor = System.Drawing.SystemColors.ControlText;
@@ -301,26 +313,48 @@
             this.toolBox.UseItemColorInRename = false;
             this.toolBox.ItemSelectionChanged += new Silver.UI.ItemSelectionChangedHandler(this.toolBox_ItemSelectionChanged);
             // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 6;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+            this.tableLayoutPanel1.Controls.Add(this.toolBox, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.fileTypeCB, 2, 3);
+            this.tableLayoutPanel1.Controls.Add(this.fileCB, 2, 2);
+            this.tableLayoutPanel1.Controls.Add(this.newDirBut, 5, 0);
+            this.tableLayoutPanel1.Controls.Add(this.bookDirBut, 4, 0);
+            this.tableLayoutPanel1.Controls.Add(this.label3, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.upDirBut, 3, 0);
+            this.tableLayoutPanel1.Controls.Add(this.label2, 1, 2);
+            this.tableLayoutPanel1.Controls.Add(this.dirCB, 2, 0);
+            this.tableLayoutPanel1.Controls.Add(this.label1, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.treeView, 1, 1);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 4;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(833, 585);
+            this.tableLayoutPanel1.TabIndex = 6;
+            // 
             // FileChooser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.fileCB);
-            this.Controls.Add(this.fileTypeCB);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.upDirBut);
-            this.Controls.Add(this.newDirBut);
-            this.Controls.Add(this.bookDirBut);
-            this.Controls.Add(this.dirCB);
-            this.Controls.Add(this.treeView);
-            this.Controls.Add(this.toolBox);
+            this.Controls.Add(this.tableLayoutPanel1);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "FileChooser";
-            this.Size = new System.Drawing.Size(744, 478);
+            this.Size = new System.Drawing.Size(833, 585);
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -344,5 +378,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button newDirBut;
         private System.Windows.Forms.Button upDirBut;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
     }
 }

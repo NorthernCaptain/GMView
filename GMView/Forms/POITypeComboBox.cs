@@ -64,6 +64,9 @@ namespace GMView.Forms
 
             int idx = e.Index;
 
+            if (idx >= Items.Count)
+                return;
+
             if (idx < 0)
                 idx = this.SelectedIndex < 0 ? 0 : this.SelectedIndex;
 
@@ -72,21 +75,28 @@ namespace GMView.Forms
                 delta_y = (int)(heightItem - e.Font.GetHeight(e.Graphics)) / 2;
             }
 
-            POIType pi = Items[idx] as POIType;
-
-            if(pi != null)
+            try
             {
-                ImageDot dot = GMView.IconFactory.singleton.getIcon(pi);
-                if (dot != null)
-                    e.Graphics.DrawImage(dot.img, e.Bounds.Left + (delta_x - dot.real_len) / 2,
-                        e.Bounds.Top + (heightItem - dot.real_hei) / 2, dot.real_len, dot.real_hei);
+                POIType pi = Items[idx] as POIType;
+
+                if (pi != null)
+                {
+                    ImageDot dot = GMView.IconFactory.singleton.getIcon(pi);
+                    if (dot != null)
+                        e.Graphics.DrawImage(dot.img, e.Bounds.Left + (delta_x - dot.real_len) / 2,
+                            e.Bounds.Top + (heightItem - dot.real_hei) / 2, dot.real_len, dot.real_hei);
+                }
+
+                e.Graphics.DrawString(Items[idx].ToString(), e.Font, new SolidBrush(e.ForeColor),
+                    e.Bounds.Left + delta_x, e.Bounds.Top + delta_y);
+
+                if (this.ItemHeight != heightItem)
+                    this.ItemHeight = heightItem;
             }
+            catch (System.Exception)
+            {
 
-            e.Graphics.DrawString(Items[idx].ToString(), e.Font, new SolidBrush(e.ForeColor),
-                e.Bounds.Left + delta_x, e.Bounds.Top + delta_y);
-
-            if(this.ItemHeight != heightItem)
-                this.ItemHeight = heightItem;
+            }
             e.DrawFocusRectangle();
         }
 

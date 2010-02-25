@@ -1293,7 +1293,8 @@ namespace GMView
                         repaintMap();
 
                         GPSTrackFactory.singleton.addTrack(gtr);
-                        GPSTrackFactory.singleton.infoForm(gtr).Visible = true;
+                        if(openDlg.FileInfo.showInfoForm)
+                            GPSTrackFactory.singleton.infoForm(gtr).Visible = true;
                         GPSTrackFactory.singleton.rebuildMenuStrip(trackStripMenuItem.DropDown.Items);
 
                         opt.gps_follow_map = false;
@@ -1346,6 +1347,11 @@ namespace GMView
             GPSTrackFactory.singleton.rebuildMenuStrip(trackStripMenuItem.DropDown.Items);
             gtrform_onRemoveAll(to_remove);
             repaintMap();
+        }
+
+        void gtrform_OnRemoveByTrack(GPSTrack track)
+        {
+            gtrform_onRemove(GPSTrackFactory.singleton.infoForm(track));
         }
 
         /// <summary>
