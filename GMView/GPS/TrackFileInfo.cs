@@ -107,6 +107,22 @@ namespace GMView.GPS
         /// Show information form after track loading or not?
         /// </summary>
         public bool showInfoForm = true;
+
+        /// <summary>
+        /// Enum for defining type of swapping field in POI loading
+        /// </summary>
+        public enum POISwapNamesType { NoChanges, SwapNameDesc, SwapNameComment, SwapDescComment };
+
+        /// <summary>
+        /// Need to swap Name and with whom
+        /// </summary>
+        public POISwapNamesType nameSwap = POISwapNamesType.NoChanges;
+
+        /// <summary>
+        /// Need swap Desc and with whom
+        /// </summary>
+        public POISwapNamesType descSwap = POISwapNamesType.NoChanges;
+
         /// <summary>
         /// Try to open document as xml and return this XmlDocument
         /// </summary>

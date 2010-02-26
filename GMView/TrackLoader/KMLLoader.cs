@@ -145,7 +145,7 @@ namespace GMView.TrackLoader
             if (fi.needPOI)
             {
                 if(nlist.Count > 0)
-                    subloadBookmarks(nlist, nsm, fi.poiParentGroupName + "/" + track.track_name);
+                    subloadBookmarks(fi, nlist, nsm, fi.poiParentGroupName + "/" + track.track_name);
             }
 
             if (fi.stype == GPS.TrackFileInfo.SourceType.FileName)
@@ -511,13 +511,13 @@ namespace GMView.TrackLoader
                             "kml-buffer-" + DateTime.Now.ToShortDateString() +
                             "-" + DateTime.Now.ToShortTimeString());
 
-            int count = subloadBookmarks(nlist, nsm, gname);
+            int count = subloadBookmarks(fi, nlist, nsm, gname);
             if (fi.stype == GPS.TrackFileInfo.SourceType.StringBuffer)
                 fi.fileOrBuffer = gname; //write our new name back to the buffer
             return count;
         }
 
-        private int subloadBookmarks(XmlNodeList nlist, XmlNamespaceManager nsm, string groupname)
+        private int subloadBookmarks(GPS.TrackFileInfo fi, XmlNodeList nlist, XmlNamespaceManager nsm, string groupname)
         {
             int count = 0;
             NMEA_RMC rmc = new NMEA_RMC();
@@ -555,6 +555,7 @@ namespace GMView.TrackLoader
                         if (defaultPOIType != null)
                             bmark.Ptype = defaultPOIType;
 
+                        bmark.swapFields(fi);
                         bmark.IsDbChange = true;
                         bmark.updateDB();
 

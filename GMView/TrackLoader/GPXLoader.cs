@@ -98,7 +98,7 @@ namespace GMView.TrackLoader
                 "gpx-buffer-" + DateTime.Now.ToShortDateString() +
                 "-" + DateTime.Now.ToShortTimeString());
 
-            int count = subloadBookmarks(nlist, nsm, gname);
+            int count = subloadBookmarks(fi, nlist, nsm, gname);
             if (fi.stype == GPS.TrackFileInfo.SourceType.StringBuffer)
                 fi.fileOrBuffer = gname;
             return count;
@@ -111,7 +111,7 @@ namespace GMView.TrackLoader
         /// <param name="nsm"></param>
         /// <param name="groupname"></param>
         /// <returns></returns>
-        private int subloadBookmarks(XmlNodeList nlist, XmlNamespaceManager nsm, string groupname)
+        private int subloadBookmarks(GPS.TrackFileInfo fi, XmlNodeList nlist, XmlNamespaceManager nsm, string groupname)
         {
             int count = 0;
             NMEA_RMC rmc = new NMEA_RMC();
@@ -188,6 +188,7 @@ namespace GMView.TrackLoader
                         bmark.PtypeS = xnode.InnerText.Trim();
                     }
 
+                    bmark.swapFields(fi);
                     bmark.IsDbChange = true;
                     bmark.updateDB();
 
@@ -447,7 +448,7 @@ namespace GMView.TrackLoader
                 {
                     if (nlist.Count > 0)
                     {
-                        subloadBookmarks(nlist, nsm, fi.poiParentGroupName + "/" + track.track_name);
+                        subloadBookmarks(fi, nlist, nsm, fi.poiParentGroupName + "/" + track.track_name);
                     }
                 }
 

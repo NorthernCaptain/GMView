@@ -39,7 +39,7 @@ namespace GMView.TrackLoader
                 "bmark-buffer-" + DateTime.Now.ToShortDateString() +
                 "-" + DateTime.Now.ToShortTimeString());
 
-            int count = subloadBookmarks(nlist, nsm, gname);
+            int count = subloadBookmarks(fi, nlist, nsm, gname);
             if (fi.stype == GPS.TrackFileInfo.SourceType.StringBuffer)
                 fi.fileOrBuffer = gname;
             return count;
@@ -53,7 +53,7 @@ namespace GMView.TrackLoader
         /// <param name="nsm"></param>
         /// <param name="groupname"></param>
         /// <returns></returns>
-        private int subloadBookmarks(XmlNodeList nlist, XmlNamespaceManager nsm, string groupname)
+        private int subloadBookmarks(GPS.TrackFileInfo fi, XmlNodeList nlist, XmlNamespaceManager nsm, string groupname)
         {
             int count = 0;
             NMEA_RMC rmc = new NMEA_RMC();
@@ -100,6 +100,7 @@ namespace GMView.TrackLoader
 
                     bmark.group = node.Attributes.GetNamedItem("group_name").Value;
 
+                    bmark.swapFields(fi);
                     bmark.IsDbChange = true;
                     bmark.updateDB();
 

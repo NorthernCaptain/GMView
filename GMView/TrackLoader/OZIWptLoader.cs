@@ -84,6 +84,7 @@ namespace GMView.TrackLoader
                         if (fi.defaultPOIType != null)
                             bmark.Ptype = fi.defaultPOIType;
 
+                        bmark.swapFields(fi);
                         bmark.IsDbChange = true;
                         bmark.updateDB();
 
@@ -199,6 +200,28 @@ namespace GMView.TrackLoader
             return false;
         }
 
+
+        public GMView.GPS.TrackFileInfo preLoad(GMView.GPS.TrackFileInfo fi)
+        {
+            using (System.IO.TextReader reader = fi.openReader())
+            {
+                string buf = reader.ReadLine();
+                if (!buf.StartsWith("OziExplorer Waypoint File Version 1"))
+                    return fi;
+                reader.ReadLine();
+                reader.ReadLine();
+                reader.ReadLine();
+
+                fi.preloadPOICount = 0;
+                while ((buf = reader.ReadLine()) != null)
+                {
+                    fi.preloadPOICount++;
+                }
+                reader.Close();
+            }
+            return fi;
+        }
+
         #endregion
 
         #region ICloneable Members
@@ -209,5 +232,6 @@ namespace GMView.TrackLoader
         }
 
         #endregion
+
     }
 }

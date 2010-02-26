@@ -23,12 +23,6 @@ namespace GMView.TrackLoader
         ncFileControls.FileFilter trackSaveFileFilter();
 
         /// <summary>
-        /// Do pre-loading of the file and fills infomation in FileInfo object
-        /// </summary>
-        /// <param name="info"></param>
-        GMView.GPS.TrackFileInfo preLoad(GPS.TrackFileInfo info);
-
-        /// <summary>
         /// Loads data from file supplied by FileInfo and return GPSTrack
         /// </summary>
         /// <param name="info"></param>

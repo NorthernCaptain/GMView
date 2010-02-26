@@ -670,6 +670,42 @@ namespace GMView
             return sid;
         }
 
+        /// <summary>
+        /// Swap name, description, comment fields according to infomation in info
+        /// </summary>
+        /// <param name="info"></param>
+        public void swapFields(GPS.TrackFileInfo info)
+        {
+            switch (info.nameSwap)
+            {
+                case GMView.GPS.TrackFileInfo.POISwapNamesType.SwapNameDesc:
+                    if (!string.IsNullOrEmpty(description))
+                    {
+                        string tmp = description;
+                        description = name;
+                        name = tmp;
+                    }
+                    break;
+                case GMView.GPS.TrackFileInfo.POISwapNamesType.SwapNameComment:
+                    if (!string.IsNullOrEmpty(comment))
+                    {
+                        string tmp = comment;
+                        comment = name;
+                        name = tmp;
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            if (info.descSwap != GPS.TrackFileInfo.POISwapNamesType.NoChanges)
+            {
+                string tmp = description;
+                description = comment;
+                comment = tmp;
+            }
+        }
+
         #region IPOIBase Members
 
         [XmlIgnore]

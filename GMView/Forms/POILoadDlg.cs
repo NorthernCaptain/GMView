@@ -8,33 +8,20 @@ using System.Windows.Forms;
 
 namespace GMView.Forms
 {
-    public partial class TrackLoadDlg : Form
+    public partial class POILoadDlg : Form
     {
-        internal class GPSTrackAndWaypointsBook : ncFileControls.IDirBookmark
-        {
-            #region IDirBookmark Members
-
-            public string directory
-            {
-                get { return Program.opt.default_track_dir; }
-            }
-            #endregion
-        }
-
-        public TrackLoadDlg()
+        public POILoadDlg()
         {
             InitializeComponent();
-
             fileChooser.addCommonPlace("GPS Tracks and Waypoints", Properties.Resources.MapLayers,
-                                        new GPSTrackAndWaypointsBook());
+                                        new GMView.Forms.TrackLoadDlg.GPSTrackAndWaypointsBook());
             fileChooser.fileSelectionChanged += new EventHandler(fileChooser_fileSelectionChanged);
-            List<ncFileControls.FileFilter> filters = TrackLoader.TrackLoaderFactory.singleton.getTrackLoadFilters();
+            List<ncFileControls.FileFilter> filters = TrackLoader.TrackLoaderFactory.singleton.getPOILoadFilters();
             foreach (ncFileControls.FileFilter flt in filters)
             {
                 fileChooser.addFileFilter(flt);
             }
         }
-
         private GPS.TrackFileInfo fileInfo = new GPS.TrackFileInfo();
 
         /// <summary>
@@ -55,7 +42,7 @@ namespace GMView.Forms
                 return;
             }
             fileInfo = createFileInfo();
-            TrackLoader.ITrackLoader loader = TrackLoader.TrackLoaderFactory.singleton.getTrackLoader(fileInfo);
+            TrackLoader.IPOILoader loader = TrackLoader.TrackLoaderFactory.singleton.getPOILoader(fileInfo);
             if (loader != null)
             {
                 doPreLoad(loader, fileInfo);
@@ -74,8 +61,7 @@ namespace GMView.Forms
             GPS.TrackFileInfo fileInfo;
             fileInfo = new GPS.TrackFileInfo(fileChooser.SelectedFile, GPS.TrackFileInfo.SourceType.FileName);
 
-            trackPoiLoadControl.setInfoInto(fileInfo);
-            trackLoadControl.setInfoInto(fileInfo);
+            poiLoadControl.setInfoInto(fileInfo);
 
             return fileInfo;
         }
@@ -88,56 +74,46 @@ namespace GMView.Forms
             siz.Height = ncUtils.DBSetup.singleton.getInt(this.Name + ".size.height", siz.Height);
             this.Size = siz;
 
+            poiLoadControl.NeedPOICB.Enabled = false;
+            poiLoadControl.NeedPOICB.Checked = true;
             fileChooser.DirectoryPath = ncUtils.DBSetup.singleton.getString(this.Name + ".filechooser.dir", string.Empty);
 
         }
 
-        private void TrackLoadDlg_FormClosing(object sender, FormClosingEventArgs e)
+        private void POILoadDlg_FormClosing(object sender, FormClosingEventArgs e)
         {
             ncUtils.DBConnPool.singleton.beginThreadTransaction();
-            trackPoiLoadControl.saveState();
-            trackLoadControl.saveState();
+            poiLoadControl.saveState();
             ncUtils.DBSetup.singleton.setString(this.Name + ".filechooser.dir", fileChooser.DirectoryPath);
             ncUtils.DBConnPool.singleton.commitThreadTransaction();
         }
 
-        private void doPreLoad( TrackLoader.ITrackLoader loader, GPS.TrackFileInfo fileInfo )
+        private void doPreLoad(TrackLoader.IPOILoader loader, GPS.TrackFileInfo fileInfo)
         {
             loader.preLoad(fileInfo);
-            trackLoadControl.FileInfo = fileInfo;
-            trackPoiLoadControl.FileInfo = fileInfo;
-
-            trackPoiLoadControl.Enabled = (fileInfo.preloadPOICount > 0);
+            poiLoadControl.FileInfo = fileInfo;
         }
 
         private void clearDialogInfo()
         {
-            trackLoadControl.FileInfo = null;
-            trackPoiLoadControl.FileInfo = null;
-            trackPoiLoadControl.Enabled = true;
+            poiLoadControl.FileInfo = null;
         }
 
         private void okBut_Click(object sender, EventArgs e)
         {
             //fileInfo = createFileInfo();
 
-            trackPoiLoadControl.setInfoInto(fileInfo);
-            trackLoadControl.setInfoInto(fileInfo);
+            poiLoadControl.setInfoInto(fileInfo);
 
             DialogResult = DialogResult.OK;
         }
 
-        private void TrackLoadDlg_ResizeEnd(object sender, EventArgs e)
+        private void POILoadDlg_ResizeEnd(object sender, EventArgs e)
         {
             ncUtils.DBConnPool.singleton.beginThreadTransaction();
             ncUtils.DBSetup.singleton.setInt(this.Name + ".size.width", this.Size.Width);
             ncUtils.DBSetup.singleton.setInt(this.Name + ".size.height", this.Size.Height);
             ncUtils.DBConnPool.singleton.commitThreadTransaction();
-        }
-
-        private void TrackLoadDlg_Load(object sender, EventArgs e)
-        {
-
         }
 
     }

@@ -1626,17 +1626,17 @@ namespace GMView
 
         private void importPOIMI_Click(object sender, EventArgs e)
         {
-            if (trackOpenFileDialog.ShowDialog() == DialogResult.OK)
+            Forms.POILoadDlg poiLoadDlg = new Forms.POILoadDlg();
+            if (poiLoadDlg.ShowDialog() == DialogResult.OK)
             {
+                string fname = poiLoadDlg.FileInfo.FileName;
                 try
                 {
-                    string fname = trackOpenFileDialog.FileName;
-                    int imported = BookMarkFactory.singleton.importFrom(new GPS.TrackFileInfo(fname, 
-                                                            GPS.TrackFileInfo.SourceType.FileName));
+                    int imported = BookMarkFactory.singleton.importFrom(poiLoadDlg.FileInfo);
                     if (imported > 0)
                     {
                         MessageBox.Show("Successfully loaded " + imported + " items from \n" +
-                        trackOpenFileDialog.FileName + "\ninto " + Path.GetFileNameWithoutExtension(fname)
+                        Path.GetFileName(fname) + "\ninto " + Path.GetFileNameWithoutExtension(poiLoadDlg.FileInfo.fileOrBuffer)
                                         + " POI group", "POI loading results",
                                         MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -1651,11 +1651,11 @@ namespace GMView
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Could not load waypoints:\n" + trackOpenFileDialog.FileName + "\nReason:\n" +
+                    MessageBox.Show("Could not load waypoints:\n" + fname + "\nReason:\n" +
                         ex.ToString(), "Error loading POIs", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-
+            poiLoadDlg.Dispose();
         }
 
         #endregion

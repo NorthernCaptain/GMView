@@ -16,5 +16,12 @@ namespace GMView.TrackLoader
         /// <returns></returns>
         bool isOurFormat(GPS.TrackFileInfo info);
 
+        /// <summary>
+        /// Do pre-loading of the file and fills infomation in FileInfo object
+        /// </summary>
+        /// <param name="info"></param>
+        GMView.GPS.TrackFileInfo preLoad(GPS.TrackFileInfo info);
+
+
     }
 }
