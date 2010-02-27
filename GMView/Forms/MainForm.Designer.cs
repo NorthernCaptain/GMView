@@ -72,6 +72,7 @@
             this.toolStripSeparator14 = new System.Windows.Forms.ToolStripSeparator();
             this.poiMI = new System.Windows.Forms.ToolStripMenuItem();
             this.addPOIMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator24 = new System.Windows.Forms.ToolStripSeparator();
             this.editPOIMI = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.exportPOIMI = new System.Windows.Forms.ToolStripMenuItem();
@@ -143,7 +144,6 @@
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.mouseOverTimer = new System.Windows.Forms.Timer(this.components);
             this.deltaCenterTimer = new System.Windows.Forms.Timer(this.components);
-            this.toolStripSeparator24 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -529,6 +529,11 @@
             resources.ApplyResources(this.addPOIMI, "addPOIMI");
             this.addPOIMI.Name = "addPOIMI";
             this.addPOIMI.Click += new System.EventHandler(this.addBookMI_Click);
+            // 
+            // toolStripSeparator24
+            // 
+            this.toolStripSeparator24.Name = "toolStripSeparator24";
+            resources.ApplyResources(this.toolStripSeparator24, "toolStripSeparator24");
             // 
             // editPOIMI
             // 
@@ -1041,11 +1046,6 @@
             // deltaCenterTimer
             // 
             this.deltaCenterTimer.Interval = 75;
-            // 
-            // toolStripSeparator24
-            // 
-            this.toolStripSeparator24.Name = "toolStripSeparator24";
-            resources.ApplyResources(this.toolStripSeparator24, "toolStripSeparator24");
             // 
             // GMViewForm
             // 

@@ -7,7 +7,7 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{15166F53-F7D6-453D-82FA-547403D62793}
 AppName=Knowhere
-AppVerName=Knowhere 1.8.0.0
+AppVerName=Knowhere 1.8.0.1
 AppPublisher=Northern Captain Software. (c) 2010
 AppPublisherURL=http://xnc.jinr.ru/knowhere
 AppSupportURL=http://xnc.jinr.ru/knowhere
@@ -56,13 +56,15 @@ Source: "Debug\XnGFL.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{group}\Knowhere v 1.8.0.0"; Filename: "{app}\Knowhere.exe"; WorkingDir: "{app}"
 Name: "{group}\{cm:UninstallProgram,Knowhere}"; Filename: "{uninstallexe}"
+Name: "{group}\Knowhere 1.8.0.1"; Filename: "{app}\Knowhere.exe"; WorkingDir: "{app}"
 Name: "{commondesktop}\Knowhere"; Filename: "{app}\Knowhere.exe"; Tasks: desktopicon; WorkingDir: "{app}"
 Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\Knowhere"; Filename: "{app}\Knowhere.exe"; Tasks: quicklaunchicon; WorkingDir: "{app}"
 
 [Run]
 Filename: "{app}\Knowhere.exe"; Description: "{cm:LaunchProgram,Knowhere}"; Flags: nowait postinstall skipifsilent; WorkingDir: "{app}"
+
+
 
 
 

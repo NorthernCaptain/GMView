@@ -1530,6 +1530,7 @@ namespace GMView
             Bookmark mypoi = new Bookmark(lon, lat, alt);
             BookMarkFactory.singleton.register(mypoi);
             mypoi.IsShown = true;
+            mypoi.IsAutoShow = false;
             repaintMap();
 
             GML.tranEnd();

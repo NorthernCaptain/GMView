@@ -84,8 +84,8 @@ namespace GMView.Forms
         {
             base.OnLoad(e);
             Size siz = this.Size;
-            siz.Width = ncUtils.DBSetup.singleton.getInt(this.Name + ".size.width", siz.Width);
-            siz.Height = ncUtils.DBSetup.singleton.getInt(this.Name + ".size.height", siz.Height);
+            siz.Width = ncUtils.DBSetup.singleton.getInt(this.Name + ".size.width", siz.Width+1);
+            siz.Height = ncUtils.DBSetup.singleton.getInt(this.Name + ".size.height", siz.Height+1);
             this.Size = siz;
 
             fileChooser.DirectoryPath = ncUtils.DBSetup.singleton.getString(this.Name + ".filechooser.dir", string.Empty);

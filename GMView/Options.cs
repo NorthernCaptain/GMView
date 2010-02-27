@@ -643,10 +643,10 @@ namespace GMView
         public int mini_delta_zoom = -2;
         public Point mini_position = new Point(0, 0);
         public Size mini_size = new Size(350,250);
-        public bool show_mini_map = true;
+        public bool show_mini_map = false;
         public bool show_zoom_panel = false;
         public string[] command_line_args;
-        public bool dash_right_side = false;
+        public bool dash_right_side = true;
         public object glEmptyTexture;
 
         public GML.GMLType useGML = GML.GMLType.openGL;

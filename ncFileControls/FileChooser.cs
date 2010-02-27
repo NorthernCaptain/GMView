@@ -121,6 +121,9 @@ namespace ncFileControls
             base.OnLoad(e);
             initTree();
 
+            toolBox[1].View = Silver.UI.ViewMode.LargeIcons;
+            toolBox[1].ShowOnlyOneItemPerRow = true;
+
             for (int i = 0; i < 4; i++)
             {
                 string pname = ncUtils.DBSetup.singleton.getString(this.Name + ".toolbox.myplace.name." + i.ToString(),
@@ -133,8 +136,6 @@ namespace ncFileControls
                 toolBox[1].AddItem(pname, 3, 3, false, new MyPlace(pname, pdir));
             }
 
-            toolBox[1].View = Silver.UI.ViewMode.LargeIcons;
-            toolBox[1].ShowOnlyOneItemPerRow = true;
 
             toolBox.SelectedTabIndex = 1;
             toolBox.SelectedTab.SelectedItemIndex = -1;
@@ -188,11 +189,13 @@ namespace ncFileControls
             largeImlist.ImageSize = new System.Drawing.Size(64, 64);
             largeImlist.ColorDepth = ColorDepth.Depth32Bit;
 
+            toolBox[0].View = Silver.UI.ViewMode.LargeIcons;
+            toolBox[0].ShowOnlyOneItemPerRow = true;
             toolBox[0].AddItem("My Computer", 0, 0, false, new CommonDirs.MyComputerBook());
             toolBox[0].AddItem("My Documents", 1, 1, false, new CommonDirs.MyDocumentsBook());
             toolBox[0].AddItem("Desktop", 2, 2, false, new CommonDirs.MyDesktopBook());
-            toolBox[0].View = Silver.UI.ViewMode.LargeIcons;
-            toolBox[0].ShowOnlyOneItemPerRow = true;
+            if (toolBox.Visible)
+                toolBox.Invalidate();
         }
 
         private FilePlainTreeModel mainModel;
@@ -404,7 +407,7 @@ namespace ncFileControls
             toolBox.LargeImageList.Images.Add(img);
             int selectedIdx = toolBox.SelectedTab.SelectedItemIndex;
             toolBox[0].AddItem(name, idx, idx, false, place);
-            toolBox.SelectedTab.SelectedItemIndex = selectedIdx;
+            toolBox.SelectedTab.SelectedItemIndex = -1;
         }
 
         /// <summary>
@@ -463,7 +466,7 @@ namespace ncFileControls
         private void bookDirBut_Click(object sender, EventArgs e)
         {
             AskNameForm dirnameDlg = new AskNameForm("Add 'My place' bookmark", "Enter new bookmark name:");
-            string text = FilePlainTreeModel.getLastPathEntry(mainModel.CurrentPath);
+            string text = FilePlainTreeModel.getLastPathEntry(mainModel.CurrentPath).Replace('_',' ');
             if (!string.IsNullOrEmpty(text))
                 text = text.ToUpper()[0] + text.Substring(1);
 

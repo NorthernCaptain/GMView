@@ -17,20 +17,25 @@ TODO list:
     * Last WP
     * Whole track
   
-- Add altitute to the GPS dashboard. [DONE 25.12.09]
+- Add altitute to the GPS dashboard. 
+  [DONE 25.12.09]
 
 - Follow track mode. Add estimated time calculation to the nearest point and to the finish point.
-  Take average speed from the recording track. [DONE 02.11.09]
+  Take average speed from the recording track. 
+  [DONE 02.11.09]
   
 - Reassing F1 hotkey and implement Keys Help page for display hotkeys and actions, also there could
   be second page with description of the toolbar buttons and menus.
-  We need help system :) [DONE 03.11.09]
+  We need help system :) 
+  [DONE 03.11.09]
   
 - Import track from clipboard buffer. Add Paste function that will paste data from clipboard and 
   loads it as a track, show on the map.
   Loading such routes from file now works, but we need load placemarks with point tag, not only as
   POI, but also as Waypoints on the track.
-  Add paste function for loading directly from GE. [DONE 01.02.10 v1.7.0.0]
+  Add paste function for loading track directly from GE. 
+  Add paste function for importing POI from GE.
+  [DONE 01.02.10 v1.7.0.0]
 
 - When loading track file again and again, do not import POIs - check for existence by coordinates
   and name.
@@ -41,13 +46,14 @@ TODO list:
 - Save track redesign. When we hit Record track, display dialog with From and Destination 
   text fields. Create and auto save this track into file 'From-Destination-YY-MM-DD.gpõ' into
   tracks directory.
-  Think about continuing of autosaved track if we crashed and restarted. [PARTLY DONE]
+  [DONE 03.02.10 v1.7.0.0]
   
 - Load track dialog redesign. Merge file choosing dialog with track color assign dialog and add 
   new tab about track loading options. Options include - loading POI or not, merge multiple tracks
   if they are in the file and more.
   As alternative way - dialog that display only files in directory set in setup. Display additional 
   information + a key to open standard file choosing dialog.
+  [DONE 27.02.10 v1.8.0.1]
   
 - Points of interest (bookmarks). Complete refactoring and redesing.
   * Add more fields to the POI: POI type, short name, descriprion, comments, tags, group, show_in_menu
@@ -72,16 +78,19 @@ TODO list:
     
 - Night view mode. In a simple way we need just shade the map a little (draw semitransparent
   rectangle). In more complicated way - load map as 256 color pallete, change pallete colours and
-  convert into 32 bit image for displaying. [DONE simple 03.11.09]
+  convert into 32 bit image for displaying. 
+  [DONE simple 03.11.09]
   
 - Bug in drawing tracks. If point of the track goes off screen the we could see garbage lines.
   And lines do not see shifted center, as the result track could disappear on the part of the
-  screen. [DONE 03.11.09]
+  screen. 
+  [DONE 03.11.09]
   
 - Download mode: downloading tiles along the given path + some range in km around the track.
   [DONE 06.01.10]
 
 - Save/load track in PLT (OziExplorer) format.
+  [DONE 25.02.10 v 1.8.0.0]
 
 - Map generation for OziExplorer. Select region of the map, display result picture size (what is the max size?).
   Generate one large image with selected rectangle and zoom level + generate calibration map (ozi .map file)
@@ -182,3 +191,4 @@ Walking
 
 Zoo
 More to be found...
+[DONE 06.02.10 v1.7.0.0]
