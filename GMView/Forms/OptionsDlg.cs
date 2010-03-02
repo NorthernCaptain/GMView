@@ -61,7 +61,14 @@ namespace GMView
             gootrfTb2.Text = Program.opt.gootrafhttp[1];
             gootrfTb3.Text = Program.opt.gootrafhttp[2];
             useGPSCb.Checked = Program.opt.use_gps;
-            miniZoomSpin.Value = (decimal)Program.opt.mini_delta_zoom;
+            try
+            {
+                miniZoomSpin.Value = (decimal)Program.opt.mini_delta_zoom;
+            }
+            catch (System.Exception ex)
+            {
+            	
+            }
             switch (Program.opt.useGML)
             {
                 case GML.GMLType.simpleGDI:
@@ -75,24 +82,59 @@ namespace GMView
                     break;
             }
 
-            zeroSpeedSB.Value = (decimal)Program.opt.zero_speed;
-            avgSpeedSB.Value = (decimal)Program.opt.manual_avg_speed;
+            try
+            {
+                zeroSpeedSB.Value = (decimal)Program.opt.zero_speed;
+            }
+            catch (System.Exception ex)
+            {
+            	
+            }
+            try
+            {
+                avgSpeedSB.Value = (decimal)Program.opt.manual_avg_speed;
+            }
+            catch (System.Exception ex)
+            {
+            	
+            }
             loadWithMTCB.Checked = Program.opt.load_with_mt;
             fullnameTB.Text = Program.opt.author;
             emailTB.Text = Program.opt.email;
             trackDirTB.Text = Program.opt.default_track_dir;
             autosaveCB.Checked = Program.opt.do_autosave;
             showInMilesCb.Checked = Program.opt.km_or_miles > 1.1 ? true : false;
-            divDistSB.Value = (decimal)Program.opt.split_by_distance;
+            try
+            {
+                divDistSB.Value = (decimal)Program.opt.split_by_distance;
+            }
+            catch (System.Exception ex)
+            {
+            	
+            }
             splitDaysCB.Checked = Program.opt.split_by_date;
             dashRightCB.Checked = Program.opt.dash_right_side;
             emulateGPSCb.Checked = Program.opt.emulate_gps;
             emuFileTB.Text = Program.opt.emu_nmea_file;
             dynCenterCB.SelectedIndex = (int)Program.opt.dynamic_center;
             nightColor = Program.opt.nightColor;
-            colorDlg.Color = nightColor;
+            try
+            {
+                colorDlg.Color = nightColor;
+            }
+            catch (System.Exception ex)
+            {
+            	
+            }
             nightColorTB.Text = (nightColor.ToArgb() & 0xfffff).ToString("X6");
-            opacitySpin.Value = (nightColor.ToArgb() >> 24) * 100 / 255;
+            try
+            {
+                opacitySpin.Value = (nightColor.ToArgb() >> 24) * 100 / 255;
+            }
+            catch (System.Exception ex)
+            {
+            	
+            }
         }
 
         private void CancelBut_Click(object sender, EventArgs e)

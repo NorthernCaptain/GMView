@@ -100,6 +100,9 @@ namespace GMView.TrackLoader
 
                     bmark.group = node.Attributes.GetNamedItem("group_name").Value;
 
+                    if (fi.defaultPOIType != null)
+                        bmark.Ptype = fi.defaultPOIType;
+
                     bmark.swapFields(fi);
                     bmark.IsDbChange = true;
                     bmark.updateDB();
@@ -169,7 +172,8 @@ namespace GMView.TrackLoader
 
         public GMView.GPS.TrackFileInfo preLoad(GMView.GPS.TrackFileInfo info)
         {
-            throw new NotImplementedException();
+            info.preloadPOICount = 1;
+            return info;
         }
 
         public GPSTrack load(GMView.GPS.TrackFileInfo info, BookMarkFactory poiFact, GMView.Bookmarks.POIGroupFactory igroupFact)
