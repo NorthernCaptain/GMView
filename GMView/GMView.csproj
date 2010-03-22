@@ -443,8 +443,8 @@
     <Compile Include="TrackLoader\OZIPltLoader.cs" />
     <Compile Include="TrackLoader\OZIWptLoader.cs" />
     <Compile Include="TrackLoader\TrackLoaderFactory.cs" />
-    <Compile Include="TrackLoader\Traffic\GoogleTraffic.cs" />
-    <Compile Include="TrackLoader\Traffic\YandexTraffic.cs" />
+    <Compile Include="Traffic\GoogleTraffic.cs" />
+    <Compile Include="Traffic\YandexTraffic.cs" />
     <Compile Include="UserPosition.cs" />
     <Compile Include="UserSelectionArea.cs" />
     <Compile Include="GPS\Way.cs" />
