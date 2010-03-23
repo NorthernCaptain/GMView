@@ -36,7 +36,7 @@ namespace GMView.TrackLoader
                 XmlNamespaceManager nsm = ncUtils.XmlHelper.getNSMforDoc(doc, "kml");
 
                 XmlNode folder = selectKMLFolders(doc, nsm);
-                XmlNode node = folder.SelectSingleNode("./kml:name", nsm);
+                XmlNode node = (folder != null ? folder.SelectSingleNode("./kml:name", nsm) : null);
                 if (node != null)
                 {
                     info.preloadName = node.InnerText;
