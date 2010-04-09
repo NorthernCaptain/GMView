@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Net;
+using System.Drawing;
 
 namespace GMView
 {
@@ -16,6 +17,7 @@ namespace GMView
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             opt.onChanged +=new Options.OnChangedDelegate(OptionsOnChanged);
+            do_test3();
             opt.command_line_args = args;
             frm = new GMViewForm();
             Application.ApplicationExit += new EventHandler(Application_ApplicationExit);
@@ -28,6 +30,26 @@ namespace GMView
                 onShutdown();
         }
 
+        static void do_test3()
+        {
+            GoogleGeo google = new GoogleGeo();
+            EniroGeo eniro = new EniroGeo();
+
+            double lon, lat;
+
+            google.zoomLevel = 15;
+            eniro.zoomLevel = 15;
+
+            Point xy1 = new Point(2222080, 1220096);
+
+            google.getLonLatByXY(xy1, out lon, out lat);
+
+            Point xy2;
+
+            eniro.getXYByLonLat(lon, lat, out xy2);
+
+
+        }
         static void do_test1()
         {
             GoogleGeo google = new GoogleGeo();

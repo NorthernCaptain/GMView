@@ -205,6 +205,7 @@
     <Compile Include="Forms\TrackSaveDlg.Designer.cs">
       <DependentUpon>TrackSaveDlg.cs</DependentUpon>
     </Compile>
+    <Compile Include="Geo\EniroGeo.cs" />
     <Compile Include="Geo\GoogleGeo.cs" />
     <Compile Include="Geo\YandexGeo.cs" />
     <Compile Include="Dash\DashBoardContainer.cs" />
