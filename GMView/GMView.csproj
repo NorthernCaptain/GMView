@@ -441,6 +441,7 @@
     <Compile Include="TrackLoader\KMLLoader.cs" />
     <Compile Include="TrackLoader\NMEALoader.cs" />
     <Compile Include="TrackLoader\OldBmarkLoader.cs" />
+    <Compile Include="TrackLoader\OziMapExporter.cs" />
     <Compile Include="TrackLoader\OZIPltLoader.cs" />
     <Compile Include="TrackLoader\OZIWptLoader.cs" />
     <Compile Include="TrackLoader\TrackLoaderFactory.cs" />

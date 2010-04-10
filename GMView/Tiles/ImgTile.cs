@@ -422,7 +422,7 @@ namespace GMView
             fname = fname.Replace("{X}", x_idx.ToString()).Replace("{Y}", y_idx.ToString()).Replace("{Z}", zoom_lvl.ToString());
             fname = fname.Replace("{Zi}", (Program.opt.max_zoom_lvl - zoom_lvl).ToString());
             fname = fname.Replace("{TRSQ}", getTRSQ(x_idx, y_idx, zoom_lvl));
-            fname = fname.Replace("{Yi}", ((1 << zoom_lvl) - y_idx).ToString());
+
             if (type == MapTileType.SatMap || type == MapTileType.YandexSat)
                 fname = fname.Replace("{EXT}", "jpg");
             else
@@ -464,7 +464,7 @@ namespace GMView
             fname = fname.Replace("{X}", x_idx.ToString()).Replace("{Y}", y_idx.ToString()).Replace("{Z}", zoom_lvl.ToString());
             fname = fname.Replace("{Zi}", (Program.opt.max_zoom_lvl - zoom_lvl).ToString());
             fname = fname.Replace("{TRSQ}", getTRSQ(x_idx, y_idx, zoom_lvl));
-            fname = fname.Replace("{Yi}", ((1 << zoom_lvl) - y_idx).ToString());
+        
             if (tile_type == MapTileType.SatMap || tile_type == MapTileType.YandexSat)
                 fname = fname.Replace("{EXT}", "jpg");
             else
@@ -482,7 +482,7 @@ namespace GMView
             fname = fname.Replace("{X}", x_idx.ToString()).Replace("{Y}", y_idx.ToString()).Replace("{Z}", zoom_lvl.ToString());
             fname = fname.Replace("{Zi}", (Program.opt.max_zoom_lvl - zoom_lvl).ToString());
             fname = fname.Replace("{TRSQ}", getTRSQ(x_idx, y_idx, zoom_lvl));
-            fname = fname.Replace("{Yi}", ((1 << zoom_lvl) - y_idx).ToString());
+           
             if (tile_type == MapTileType.SatMap || tile_type == MapTileType.YandexSat)
                 fname = fname.Replace("{EXT}", "jpg");
             else

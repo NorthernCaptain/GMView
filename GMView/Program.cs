@@ -17,7 +17,6 @@ namespace GMView
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             opt.onChanged +=new Options.OnChangedDelegate(OptionsOnChanged);
-            do_test3();
             opt.command_line_args = args;
             frm = new GMViewForm();
             Application.ApplicationExit += new EventHandler(Application_ApplicationExit);

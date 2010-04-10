@@ -53,6 +53,7 @@ namespace GMView
             if (zlvl >= Program.opt.max_zoom_lvl)
                 return;
 
+            createOziBut.Enabled = true;
             common_init();
         }
 
@@ -76,6 +77,7 @@ namespace GMView
             if (zlvl >= Program.opt.max_zoom_lvl)
                 return;
 
+            createOziBut.Enabled = false;
             common_init();
         }
 
@@ -115,6 +117,9 @@ namespace GMView
                 case MapTileType.OSMMapnik:
                     needOSMCB.Checked = true;
                     break;
+                case MapTileType.OSMRenderer:
+                    needOSMRendCB.Checked = true;
+                    break;
                 default:
                     break;
             }
@@ -135,7 +140,6 @@ namespace GMView
             lon2 = (double)toLonNT.Value;
             lat2 = (double)toLatNT.Value;
 
-
             loadqueue.tiles.Clear();
 
             List<ncGeo.MapTileType> checkedTypes = new List<ncGeo.MapTileType>();
@@ -152,6 +156,9 @@ namespace GMView
                 checkedTypes.Add(ncGeo.MapTileType.YandexMap);
             if (needOSMCB.Checked)
                 checkedTypes.Add(ncGeo.MapTileType.OSMMapnik);
+            if (needOSMRendCB.Checked)
+                checkedTypes.Add(ncGeo.MapTileType.OSMRenderer);
+
 
             force = forceDownloadCB.Checked;
 
@@ -222,21 +229,6 @@ namespace GMView
             recalcParams();
         }
 
-        private void needSatCb_CheckedChanged(object sender, EventArgs e)
-        {
-            recalcParams();
-        }
-
-        private void needStreetCb_CheckedChanged(object sender, EventArgs e)
-        {
-            recalcParams();
-        }
-
-        private void needTerrainCb_CheckedChanged(object sender, EventArgs e)
-        {
-            recalcParams();
-        }
-
         private void okBut_Click(object sender, EventArgs e)
         {
             if (loadqueue.tiles.Count == 0)
@@ -265,6 +257,31 @@ namespace GMView
                     recalcParams();
                     loadqueue.type = ImgCollector.LoadTask.Type.copyTask;
                     loadqueue.copyTo = folderBrowserDialog.SelectedPath;
+                    mapo.schedDownloadTask(loadqueue);
+                    loadqueue = null;
+                    this.Dispose();
+                }
+            }
+        }
+
+        private void oziImageBut_Click(object sender, EventArgs e)
+        {
+            if (loadqueue.tiles.Count == 0)
+            {
+                MessageBox.Show("There is nothing to create. You need to select at least one tile.", "Nothing to do");
+            }
+            else
+            {
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    recalcParams();
+                    loadqueue.type = ImgCollector.LoadTask.Type.imageMerge;
+                    loadqueue.copyTo = saveFileDialog.FileName;
+                    loadqueue.oziexp = new TrackLoader.OziMapExporter(loadqueue.copyTo,
+                                                                      (double)fromLonNT.Value,
+                                                                      (double)fromLatNT.Value,
+                                                                      (double)toLonNT.Value,
+                                                                      (double)toLatNT.Value);
                     mapo.schedDownloadTask(loadqueue);
                     loadqueue = null;
                     this.Dispose();

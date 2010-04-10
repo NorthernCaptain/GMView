@@ -21,11 +21,13 @@ namespace GMView
         /// </summary>
         public class LoadTask
         {
-            public enum Type { loadTask, copyTask };
+            public enum Type { loadTask, copyTask, imageMerge };
             public Queue<ImgTile>   tiles;
             public MapObject mapo;
             public Type type = Type.loadTask;
             public string copyTo = null;
+            public TrackLoader.OziMapExporter oziexp = null;
+
             public LoadTask(MapObject imapo)
             {
                 mapo = imapo;
@@ -205,6 +207,9 @@ namespace GMView
                         case LoadTask.Type.copyTask:
                             copyTile(tile, task);
                             break;
+                        case LoadTask.Type.imageMerge:
+                            task.oziexp.processOneTile(tile);
+                            break;
                         default:
                             break;
                     }
@@ -212,6 +217,9 @@ namespace GMView
                     if (onSchedLoadProgress != null)
                         onSchedLoadProgress(tile, (totals - task.tiles.Count) * 100.0 / totals);
                 }
+
+                if(task.oziexp != null)
+                    task.oziexp.writeImage();
 
                 if (onSchedFinishLoad != null)
                     onSchedFinishLoad();
