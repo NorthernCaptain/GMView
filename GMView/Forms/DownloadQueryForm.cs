@@ -266,6 +266,7 @@ namespace GMView
 
         private void oziImageBut_Click(object sender, EventArgs e)
         {
+            recalcParams();
             if (loadqueue.tiles.Count == 0)
             {
                 MessageBox.Show("There is nothing to create. You need to select at least one tile.", "Nothing to do");
@@ -274,7 +275,6 @@ namespace GMView
             {
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    recalcParams();
                     loadqueue.type = ImgCollector.LoadTask.Type.imageMerge;
                     loadqueue.copyTo = saveFileDialog.FileName;
                     loadqueue.oziexp = new TrackLoader.OziMapExporter(loadqueue.copyTo,
