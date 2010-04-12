@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.needOSMRendCB = new System.Windows.Forms.CheckBox();
             this.needOSMCB = new System.Windows.Forms.CheckBox();
             this.needYamapCB = new System.Windows.Forms.CheckBox();
             this.needTerrainCb = new System.Windows.Forms.CheckBox();
@@ -62,7 +63,6 @@
             this.forceDownloadCB = new System.Windows.Forms.CheckBox();
             this.modeLbl = new System.Windows.Forms.Label();
             this.createOziBut = new System.Windows.Forms.Button();
-            this.needOSMRendCB = new System.Windows.Forms.CheckBox();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -85,19 +85,31 @@
             this.groupBox1.Controls.Add(this.needSatCb);
             this.groupBox1.Controls.Add(this.needMapCb);
             this.groupBox1.Location = new System.Drawing.Point(213, 31);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox1.Size = new System.Drawing.Size(137, 231);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Map Type:";
             // 
+            // needOSMRendCB
+            // 
+            this.needOSMRendCB.AutoSize = true;
+            this.needOSMRendCB.Location = new System.Drawing.Point(8, 194);
+            this.needOSMRendCB.Margin = new System.Windows.Forms.Padding(4);
+            this.needOSMRendCB.Name = "needOSMRendCB";
+            this.needOSMRendCB.Size = new System.Drawing.Size(125, 21);
+            this.needOSMRendCB.TabIndex = 4;
+            this.needOSMRendCB.Text = "OSM Renderer";
+            this.needOSMRendCB.UseVisualStyleBackColor = true;
+            this.needOSMRendCB.CheckedChanged += new System.EventHandler(this.needMapCb_CheckedChanged);
+            // 
             // needOSMCB
             // 
             this.needOSMCB.AutoSize = true;
             this.needOSMCB.Location = new System.Drawing.Point(8, 165);
-            this.needOSMCB.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.needOSMCB.Margin = new System.Windows.Forms.Padding(4);
             this.needOSMCB.Name = "needOSMCB";
             this.needOSMCB.Size = new System.Drawing.Size(61, 21);
             this.needOSMCB.TabIndex = 4;
@@ -109,7 +121,7 @@
             // 
             this.needYamapCB.AutoSize = true;
             this.needYamapCB.Location = new System.Drawing.Point(8, 137);
-            this.needYamapCB.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.needYamapCB.Margin = new System.Windows.Forms.Padding(4);
             this.needYamapCB.Name = "needYamapCB";
             this.needYamapCB.Size = new System.Drawing.Size(77, 21);
             this.needYamapCB.TabIndex = 4;
@@ -121,7 +133,7 @@
             // 
             this.needTerrainCb.AutoSize = true;
             this.needTerrainCb.Location = new System.Drawing.Point(8, 108);
-            this.needTerrainCb.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.needTerrainCb.Margin = new System.Windows.Forms.Padding(4);
             this.needTerrainCb.Name = "needTerrainCb";
             this.needTerrainCb.Size = new System.Drawing.Size(76, 21);
             this.needTerrainCb.TabIndex = 4;
@@ -133,7 +145,7 @@
             // 
             this.needStreetCb.AutoSize = true;
             this.needStreetCb.Location = new System.Drawing.Point(8, 80);
-            this.needStreetCb.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.needStreetCb.Margin = new System.Windows.Forms.Padding(4);
             this.needStreetCb.Name = "needStreetCb";
             this.needStreetCb.Size = new System.Drawing.Size(104, 21);
             this.needStreetCb.TabIndex = 3;
@@ -145,7 +157,7 @@
             // 
             this.needSatCb.AutoSize = true;
             this.needSatCb.Location = new System.Drawing.Point(8, 52);
-            this.needSatCb.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.needSatCb.Margin = new System.Windows.Forms.Padding(4);
             this.needSatCb.Name = "needSatCb";
             this.needSatCb.Size = new System.Drawing.Size(80, 21);
             this.needSatCb.TabIndex = 2;
@@ -157,7 +169,7 @@
             // 
             this.needMapCb.AutoSize = true;
             this.needMapCb.Location = new System.Drawing.Point(8, 23);
-            this.needMapCb.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.needMapCb.Margin = new System.Windows.Forms.Padding(4);
             this.needMapCb.Name = "needMapCb";
             this.needMapCb.Size = new System.Drawing.Size(57, 21);
             this.needMapCb.TabIndex = 1;
@@ -181,19 +193,21 @@
             "9",
             "8 (least)"});
             this.zoomCheckList.Location = new System.Drawing.Point(8, 16);
-            this.zoomCheckList.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.zoomCheckList.Margin = new System.Windows.Forms.Padding(4);
             this.zoomCheckList.Name = "zoomCheckList";
             this.zoomCheckList.Size = new System.Drawing.Size(119, 191);
             this.zoomCheckList.TabIndex = 1;
+            this.zoomCheckList.SelectedIndexChanged += new System.EventHandler(this.needMapCb_CheckedChanged);
+            this.zoomCheckList.DoubleClick += new System.EventHandler(this.needMapCb_CheckedChanged);
             // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.allNoneCB);
             this.groupBox2.Controls.Add(this.zoomCheckList);
             this.groupBox2.Location = new System.Drawing.Point(213, 270);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox2.Size = new System.Drawing.Size(137, 268);
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
@@ -205,7 +219,7 @@
             this.allNoneCB.Checked = true;
             this.allNoneCB.CheckState = System.Windows.Forms.CheckState.Checked;
             this.allNoneCB.Location = new System.Drawing.Point(9, 234);
-            this.allNoneCB.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.allNoneCB.Margin = new System.Windows.Forms.Padding(4);
             this.allNoneCB.Name = "allNoneCB";
             this.allNoneCB.Size = new System.Drawing.Size(83, 21);
             this.allNoneCB.TabIndex = 2;
@@ -227,9 +241,9 @@
             this.groupBox3.Controls.Add(this.label2);
             this.groupBox3.Controls.Add(this.label1);
             this.groupBox3.Location = new System.Drawing.Point(4, 31);
-            this.groupBox3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox3.Size = new System.Drawing.Size(201, 210);
             this.groupBox3.TabIndex = 3;
             this.groupBox3.TabStop = false;
@@ -240,7 +254,7 @@
             this.followTrackCB.AutoSize = true;
             this.followTrackCB.Enabled = false;
             this.followTrackCB.Location = new System.Drawing.Point(12, 144);
-            this.followTrackCB.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.followTrackCB.Margin = new System.Windows.Forms.Padding(4);
             this.followTrackCB.Name = "followTrackCB";
             this.followTrackCB.Size = new System.Drawing.Size(104, 21);
             this.followTrackCB.TabIndex = 11;
@@ -280,7 +294,7 @@
             // nearbyNT
             // 
             this.nearbyNT.Location = new System.Drawing.Point(131, 172);
-            this.nearbyNT.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.nearbyNT.Margin = new System.Windows.Forms.Padding(4);
             this.nearbyNT.Maximum = new decimal(new int[] {
             180,
             0,
@@ -309,7 +323,7 @@
             0,
             65536});
             this.toLatNT.Location = new System.Drawing.Point(88, 112);
-            this.toLatNT.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.toLatNT.Margin = new System.Windows.Forms.Padding(4);
             this.toLatNT.Maximum = new decimal(new int[] {
             180,
             0,
@@ -333,7 +347,7 @@
             0,
             65536});
             this.toLonNT.Location = new System.Drawing.Point(88, 80);
-            this.toLonNT.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.toLonNT.Margin = new System.Windows.Forms.Padding(4);
             this.toLonNT.Maximum = new decimal(new int[] {
             180,
             0,
@@ -357,7 +371,7 @@
             0,
             65536});
             this.fromLatNT.Location = new System.Drawing.Point(88, 48);
-            this.fromLatNT.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.fromLatNT.Margin = new System.Windows.Forms.Padding(4);
             this.fromLatNT.Maximum = new decimal(new int[] {
             180,
             0,
@@ -381,7 +395,7 @@
             0,
             65536});
             this.fromLonNT.Location = new System.Drawing.Point(88, 17);
-            this.fromLonNT.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.fromLonNT.Margin = new System.Windows.Forms.Padding(4);
             this.fromLonNT.Maximum = new decimal(new int[] {
             180,
             0,
@@ -423,9 +437,9 @@
             this.groupBox4.Controls.Add(this.label6);
             this.groupBox4.Controls.Add(this.label5);
             this.groupBox4.Location = new System.Drawing.Point(4, 247);
-            this.groupBox4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox4.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox4.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox4.Size = new System.Drawing.Size(201, 94);
             this.groupBox4.TabIndex = 2;
             this.groupBox4.TabStop = false;
@@ -474,7 +488,7 @@
             // cancelBut
             // 
             this.cancelBut.Location = new System.Drawing.Point(15, 504);
-            this.cancelBut.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cancelBut.Margin = new System.Windows.Forms.Padding(4);
             this.cancelBut.Name = "cancelBut";
             this.cancelBut.Size = new System.Drawing.Size(180, 34);
             this.cancelBut.TabIndex = 4;
@@ -485,7 +499,7 @@
             // okBut
             // 
             this.okBut.Location = new System.Drawing.Point(15, 378);
-            this.okBut.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.okBut.Margin = new System.Windows.Forms.Padding(4);
             this.okBut.Name = "okBut";
             this.okBut.Size = new System.Drawing.Size(180, 34);
             this.okBut.TabIndex = 5;
@@ -496,7 +510,7 @@
             // copyToBut
             // 
             this.copyToBut.Location = new System.Drawing.Point(15, 420);
-            this.copyToBut.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.copyToBut.Margin = new System.Windows.Forms.Padding(4);
             this.copyToBut.Name = "copyToBut";
             this.copyToBut.Size = new System.Drawing.Size(180, 34);
             this.copyToBut.TabIndex = 5;
@@ -513,7 +527,7 @@
             // 
             this.forceDownloadCB.AutoSize = true;
             this.forceDownloadCB.Location = new System.Drawing.Point(19, 349);
-            this.forceDownloadCB.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.forceDownloadCB.Margin = new System.Windows.Forms.Padding(4);
             this.forceDownloadCB.Name = "forceDownloadCB";
             this.forceDownloadCB.Size = new System.Drawing.Size(130, 21);
             this.forceDownloadCB.TabIndex = 6;
@@ -541,18 +555,6 @@
             this.createOziBut.UseVisualStyleBackColor = true;
             this.createOziBut.Click += new System.EventHandler(this.oziImageBut_Click);
             // 
-            // needOSMRendCB
-            // 
-            this.needOSMRendCB.AutoSize = true;
-            this.needOSMRendCB.Location = new System.Drawing.Point(8, 194);
-            this.needOSMRendCB.Margin = new System.Windows.Forms.Padding(4);
-            this.needOSMRendCB.Name = "needOSMRendCB";
-            this.needOSMRendCB.Size = new System.Drawing.Size(125, 21);
-            this.needOSMRendCB.TabIndex = 4;
-            this.needOSMRendCB.Text = "OSM Renderer";
-            this.needOSMRendCB.UseVisualStyleBackColor = true;
-            this.needOSMRendCB.CheckedChanged += new System.EventHandler(this.needMapCb_CheckedChanged);
-            // 
             // saveFileDialog
             // 
             this.saveFileDialog.DefaultExt = "png";
@@ -574,7 +576,7 @@
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "DownloadQueryForm";

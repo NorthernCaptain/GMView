@@ -357,7 +357,8 @@ namespace GMView
             goohttp = goohttp.Replace("{X}", x_idx.ToString()).Replace("{Y}", y_idx.ToString()).Replace("{Z}", (zoom_lvl - 1).ToString());
             goohttp = goohttp.Replace("{Zi}", (Program.opt.max_zoom_lvl - zoom_lvl).ToString());
             goohttp = goohttp.Replace("{Yi}", ((1 << (zoom_lvl-1)) - 1 - y_idx).ToString());
-            goohttp = goohttp.Replace("{TRSQ}", getTRSQ(x_idx, y_idx, zoom_lvl));
+            if(goohttp.IndexOf("{TRSQ}")>0)
+                goohttp = goohttp.Replace("{TRSQ}", getTRSQ(x_idx, y_idx, zoom_lvl));
             
             if (goohttp.IndexOf("{Timet}") > 0)
             {

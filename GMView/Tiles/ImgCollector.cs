@@ -208,6 +208,7 @@ namespace GMView
                             copyTile(tile, task);
                             break;
                         case LoadTask.Type.imageMerge:
+                            loadTile(tile, task);
                             task.oziexp.processOneTile(tile);
                             break;
                         default:

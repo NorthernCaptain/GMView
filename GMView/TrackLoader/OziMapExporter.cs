@@ -213,7 +213,7 @@ namespace GMView.TrackLoader
                         );
                 writer.WriteLine("MM1B,{0}", 
                             (ncGeo.CommonGeo.getDistanceByLonLat2(lon1, lat1, lon2, lat2)/
-                             Math.Sqrt((xy2.X - xy1.X)*(xy2.X - xy1.X) + (xy2.Y - xy1.Y)*(xy2.X - xy1.X))).ToString("F6", CultureInfo.InvariantCulture));
+                             Math.Sqrt((xy2.X - xy1.X)*(xy2.X - xy1.X) + (xy2.Y - xy1.Y)*(xy2.X - xy1.X))*1000.0).ToString("F6", CultureInfo.InvariantCulture));
                 writer.WriteLine("MOP,Map Open Position,{0},{1}", (xy2.X - xy1.X +1)/2, (xy2.Y - xy1.Y +1)/2);
                 writer.WriteLine("IWH,Map Image Width/Height,{0},{1}", xy2.X - xy1.X + 1, xy2.Y - xy1.Y + 1);
 
