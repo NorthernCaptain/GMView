@@ -122,14 +122,7 @@ namespace GMView
 
         void backHistoryPos_Key(object sender, KeyEventArgs e)
         {
-            if (!pos_stack.empty())
-            {
-                PositionStack.PositionInfo pinfo = pos_stack.pop();
-                pos_stack_fwd.push(new PositionStack.PositionInfo(upos.Lon, upos.Lat, mapo.zoom, opt.mapType));
-                upos.setLonLat(pinfo.lon, pinfo.lat);
-                mapo.CenterMapLonLat(pinfo.lon, pinfo.lat);
-                repaintMap();
-            }
+            naviMode.backHistoryPosition();
         }
 
         void gpsInfoView_Key(object sender, KeyEventArgs e)
@@ -209,7 +202,7 @@ namespace GMView
         const int delta_x_move = 60;
         const int delta_y_move = 60;
 
-        void moveMapUp_Key(object sender, KeyEventArgs e)
+        internal void moveMapUp_Key(object sender, KeyEventArgs e)
         {
             Point pt = new Point(0, delta_y_move);
             pt = GML.translateToScene(pt);
@@ -222,7 +215,7 @@ namespace GMView
                 repaintMap();
         }
 
-        void moveMapDown_Key(object sender, KeyEventArgs e)
+        internal void moveMapDown_Key(object sender, KeyEventArgs e)
         {
             Point pt = new Point(0, -delta_y_move);
             pt = GML.translateToScene(pt);
@@ -235,7 +228,7 @@ namespace GMView
                 repaintMap();
         }
 
-        void moveMapLeft_Key(object sender, KeyEventArgs e)
+        internal void moveMapLeft_Key(object sender, KeyEventArgs e)
         {
             mapo.MoveMapByScreenPoint(GML.translateToScene(new Point(delta_x_move, 0)));
             if (gpsFollowMapTBut.Checked)
@@ -246,7 +239,7 @@ namespace GMView
                 repaintMap();
         }
 
-        void moveMapRight_Key(object sender, KeyEventArgs e)
+        internal void moveMapRight_Key(object sender, KeyEventArgs e)
         {
             mapo.MoveMapByScreenPoint(GML.translateToScene(new Point(-delta_x_move, 0)));
             if (gpsFollowMapTBut.Checked)

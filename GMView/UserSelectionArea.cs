@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace GMView
 {
-    class UserSelectionArea: ISprite
+    public class UserSelectionArea: ISprite
     {
         protected Point start_p;
         protected Point end_p;

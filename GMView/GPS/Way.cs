@@ -36,6 +36,8 @@ namespace GMView.GPS
         {
             Point startP = mapo.start_real_xy;
             int wx, wy;
+            int oldwx = 99999999;
+            int oldwy = 99999999;
             ImageDot imd;
             double angle = Program.opt.angle;
 
@@ -45,6 +47,13 @@ namespace GMView.GPS
 
                 wx = wp.x - startP.X;
                 wy = wp.y - startP.Y;
+
+                if (Math.Abs(oldwx - wx) < 8 &&
+                    Math.Abs(oldwy - wy) < 8 && 
+                    wp.ptype != NMEA_LL.PointType.ENDTP)
+                    continue;
+                oldwy = wy;
+                oldwx = wx;
 
                 GML.device.pushMatrix();
                 GML.device.translate( wx - centerx, centery - wy, 0);

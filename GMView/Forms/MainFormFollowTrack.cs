@@ -20,6 +20,18 @@ namespace GMView
 
             initFollowTrackList(GPSTrackFactory.singleton);
             GPSTrackFactory.singleton.onTrackListChanged += initFollowTrackList;
+            GPSTrackFactory.singleton.onCurrentTrackChanged += followTrackList_onCurrentTrackChanged;
+        }
+
+        void followTrackList_onCurrentTrackChanged(GPSTrack gtrack)
+        {
+            if(gtrack != null && followTrackList.Items.Count > 0)
+            {
+                int idx = followTrackList.Items.IndexOf(gtrack);
+                if (idx < 0)
+                    return;
+                followTrackList.SelectedIndex = idx;
+            }
         }
 
         /// <summary>
@@ -60,7 +72,9 @@ namespace GMView
             {
                 followConnect.reverseDir = reverseFollowerToolStripMenuItem.Checked;
                 followConnect.follower = (followTrackToolStripMenuItem.Checked ? track : null);
-                infoMessage("Set follower to " + ((followTrackToolStripMenuItem.Checked == false || track == null) ? "None" : track.ToString()));
+                infoMessage("Set follower to " 
+                    + ((followTrackToolStripMenuItem.Checked == false || track == null) 
+                    ? "None" : track.ToString()));
             }
             catch (System.Exception ex)
             {

@@ -8,34 +8,14 @@ namespace GMView
 {
     partial class GMViewForm
     {
-        private GPSTrack manual_track;
+        private UIHelper.ManualTrackMode manualMode;
 
         private void initManualTrackMode()
         {
-            manual_track = new GPSTrack(mapo);
-            manual_track.trackMode = GPSTrack.TrackMode.ViewSaved;
-            manual_track.need_arrows = false;
-            manual_track.track_name = "Manual track";
-            mapo.addSub(manual_track);
-
-            onMTrackLeftClick += new onMouseActionDelegate(GMViewForm_onMTrackLeftClick);
-            onMTrackRightClick += new onMouseActionDelegate(GMViewForm_onMTrackRightClick);
+            manualMode = new UIHelper.ManualTrackMode(this, drawPane);
+            modes[(int)UserAction.ManualTrack] = manualMode;
+            manualMode.manualTrack = null; //creates new manual track
         }
 
-        void GMViewForm_onMTrackRightClick(Point mouse_p)
-        {
-            manual_track.delLastPoint();
-            repaintMap();
-        }
-
-        void GMViewForm_onMTrackLeftClick(Point mouse_p)
-        {
-            double lon, lat;
-            mapo.getLonLatByVisibleXY(mouse_p, out lon, out lat);
-            ncGeo.NMEA_LL nmea_ll = new NMEA_RMC(lon, lat, ncGeo.NMEA_LL.PointType.MWP);
-            manual_track.addManualPoint(nmea_ll);
-            manual_track.show();
-            repaintMap();
-        }
     }
 }

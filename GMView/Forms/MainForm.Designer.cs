@@ -140,7 +140,6 @@
             this.trackOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.trackColorDialog = new System.Windows.Forms.ColorDialog();
             this.autoClearTimer = new System.Windows.Forms.Timer(this.components);
-            this.runOnceTimer = new System.Windows.Forms.Timer(this.components);
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.mouseOverTimer = new System.Windows.Forms.Timer(this.components);
             this.deltaCenterTimer = new System.Windows.Forms.Timer(this.components);
@@ -1028,12 +1027,6 @@
             this.autoClearTimer.Interval = 300000;
             this.autoClearTimer.Tick += new System.EventHandler(this.autoClearTimer_Tick);
             // 
-            // runOnceTimer
-            // 
-            this.runOnceTimer.Enabled = true;
-            this.runOnceTimer.Interval = 1000;
-            this.runOnceTimer.Tick += new System.EventHandler(this.runOnceTimer_Tick);
-            // 
             // folderBrowserDialog
             // 
             this.folderBrowserDialog.RootFolder = System.Environment.SpecialFolder.Personal;
@@ -1139,7 +1132,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
         private System.Windows.Forms.ToolStripMenuItem removeTracksMI;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator14;
-        private System.Windows.Forms.Timer runOnceTimer;
         private System.Windows.Forms.ToolStripMenuItem toolsMI;
         private System.Windows.Forms.ToolStripMenuItem rebuildAllMI;
         private System.Windows.Forms.ToolStripMenuItem rebuildMapTypeMI;
@@ -1170,7 +1162,6 @@
         private System.Windows.Forms.ToolStripMenuItem showZoomMI;
         private System.Windows.Forms.TableLayoutPanel mainPanel;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
-        private System.Windows.Forms.Timer mouseOverTimer;
         private System.Windows.Forms.Timer deltaCenterTimer;
         private System.Windows.Forms.ToolStripButton trafficTbut;
         private System.Windows.Forms.ToolStripMenuItem GeoTagMI;
@@ -1192,6 +1183,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator23;
         private System.Windows.Forms.ToolStripMenuItem removeTrackToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator24;
+        internal System.Windows.Forms.Timer mouseOverTimer;
     }
 }
 

@@ -7,32 +7,31 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using ncGeo;
+using GMView.UIHelper;
 
 namespace GMView
 {
-    enum UserAction { Unknown, Navigate, Zoom, SelectArea, ManualTrack };
+    enum UserAction { Unknown, Navigate, Zoom, SelectArea, ManualTrack, MaxUserAction };
 
     public partial class GMViewForm : Form
     {
-        private MapObject mapo;
-        private MapObject minimapo;
-        private MapForm miniform;
+        internal MapObject mapo;
+        internal MapObject minimapo;
+        internal MapForm miniform;
 
         private Options opt;
 
         private UserAction mode = UserAction.Unknown;
-        private UserPosition upos;
-        private UserPosition upos_mini;
-
-        private UserSelectionArea uselection;
-        private UserSelectionArea uzoomarea;
+        private MouseBaseProc[] modes = new MouseBaseProc[(int)UserAction.MaxUserAction];
+        private UIHelper.NavigateMode naviMode;
+        private UIHelper.MouseBaseProc currentMode;
 
         private NMEAThread nmea_thread;
         private SatelliteCollection satellites;
         private SatelliteForm satForm;
         private int com_lamp_state = 0;
 
-        private GPSTrack gtrack;
+        internal GPSTrack gtrack;
         private GPSTrack gtrack_mini;
 
         public LogWin logWin = new LogWin();
@@ -40,8 +39,6 @@ namespace GMView
         private DateTime lastRepaint = DateTime.Now;
         private UserControl drawPane;
 
-        private List<MethodInvoker> runOnce = new List<MethodInvoker>();
-        private List<MethodInvoker> runOnceClone = new List<MethodInvoker>();
         private Forms.IntroForm intro;
 
         private DashBoardContainer boards;
@@ -49,12 +46,9 @@ namespace GMView
         private TrackInfoDash trackdash;
         private MiniTilesDash zoomdash;
 
-        private PositionStack pos_stack = new PositionStack(50);
-        private PositionStack pos_stack_fwd = new PositionStack(50);
-
         private bool inAutoScroll = false;
 
-        private GPS.TrackPositionInformer trackinformer;
+        internal GPS.TrackPositionInformer trackinformer;
         private CenterPositioning centerPos = null;
 
         private XnGFL.ExifViewControl geoTagger;
@@ -112,7 +106,6 @@ namespace GMView
             gtrack_mini.need_arrows = false;
             satForm = new SatelliteForm(-140, 5, satellites); //-1,3
             trackinformer = new GMView.GPS.TrackPositionInformer(mapo);
-            this.onNaviRightUp += trackinformer.doAction;
 
             InitializeComponent();
 
@@ -121,16 +114,8 @@ namespace GMView
             ((IGML)this.drawPane).onResizeGML += new EventHandler(GMViewForm_onResizeGML);
             ((IGML)this.drawPane).onRenderGML += new EventHandler(GMViewForm_onRenderGML);
             ((IGML)this.drawPane).onCurrentGML += new EventHandler(GMViewForm_onCurrentGML);
-            this.drawPane.MouseMove += new System.Windows.Forms.MouseEventHandler(this.drawPane_MouseMove);
-            this.drawPane.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.drawPane_MouseDoubleClick);
-            this.drawPane.MouseClick += new System.Windows.Forms.MouseEventHandler(this.drawPane_MouseClick);
-            this.drawPane.MouseDown += new System.Windows.Forms.MouseEventHandler(this.drawPane_MouseDown);
-            this.drawPane.MouseUp += new System.Windows.Forms.MouseEventHandler(this.drawPane_MouseUp);
-            this.drawPane.MouseLeave += new EventHandler(drawPane_MouseLeave);
-            this.drawPane.MouseHover += new EventHandler(drawPane_MouseHover);
+
             this.drawPane.Dock = DockStyle.Fill;
-            //this.Controls.Add(drawPane);
-            //this.toolStripContainer1.ContentPanel.Controls.Add(drawPane);
             this.mainPanel.Controls.Add(drawPane, 0, 0);
             this.Text = Options.program_full_name + " v." + Options.program_version;
 
@@ -146,29 +131,6 @@ namespace GMView
 
             initMap();
 
-            //onNaviLeftClick += new onMouseActionDelegate(GMViewForm_onNaviLeftClick);
-            onNaviLeftMove += new onMouseActionDelegate(mapo.MoveMapByScreenPoint);
-            onNaviLeftDoubleClick += new onMouseActionDelegate(GMViewForm_onNaviLeftClick); //was zoomIn
-
-            onSelectLeftDown += new onMouseActionDelegate(uselection.setStartXY);
-            onSelectLeftMove += new onMouseActionDelegate(uselection.setDeltaXY);
-            onSelectLeftUp += new onMouseActionDelegate(uselection.setEndXY);
-
-            onZoomLeftDown += new onMouseActionDelegate(uzoomarea.setStartXY);
-            onZoomLeftMove += new onMouseActionDelegate(uzoomarea.setDeltaXY);
-            onZoomLeftUp += new onMouseActionDelegate(uzoomarea.setEndXY);
-
-            onLeaveNaviMode += new MethodInvoker(upos.hide);
-            onEnterNaviMode += new MethodInvoker(upos.show);
-
-            onLeaveSelectMode += new MethodInvoker(uselection.hide);
-            onEnterSelectMode += new MethodInvoker(uselection.show);
-            onEnterSelectMode += new MethodInvoker(uselection.reset);
-
-            onLeaveZoomMode += new MethodInvoker(uzoomarea.hide);
-            onEnterZoomMode += new MethodInvoker(uzoomarea.show);
-            onEnterZoomMode += new MethodInvoker(uzoomarea.reset);
-
             nmea_thread.start();
 
             if (opt.gps_follow_map)
@@ -180,8 +142,6 @@ namespace GMView
                 miniMapMI.Checked = true;
                 showMiniMap();
             }
-
-            upos_mini.show();
 
             changeMode(UserAction.Navigate);
 
@@ -225,11 +185,18 @@ namespace GMView
         {
             GML.device = (IGML)sender;
             gtrack.initGLData();
-            manual_track.initGLData();
             satForm.initGLData();
-            upos.initGLData();
 
-            runMeOnce(new MethodInvoker(repaintMap), 1000);
+            foreach (MouseBaseProc modep in modes)
+            {
+                if (modep != null)
+                {
+                    modep.Boards = boards;
+                    modep.initGL();
+                }
+            }
+
+            RunMeOnce.singleton.runMeOnce(new MethodInvoker(repaintMap), 1000);
         }
 
         void GMViewForm_onCurrentGML(object sender, EventArgs e)
@@ -239,21 +206,12 @@ namespace GMView
 
         private void initMap()
         {
-            upos = opt.newUserPosition(mapo, TextureFactory.singleton.getImg(TextureFactory.TexAlias.ArrowsLarge));
-            upos_mini = new UserPosition(minimapo, TextureFactory.singleton.getImg(TextureFactory.TexAlias.ArrowSmall));
-
-            uselection = opt.newUserSelectionArea(mapo);
-            uzoomarea = opt.newUserSelectionArea(mapo);
-            uzoomarea.setColor(Color.DarkOrange);
+            initModes();
 
             wind_rose = new WindRose();
             mapo.addSub(wind_rose);
-            mapo.addSub(upos);
-            mapo.addSub(uselection);
-            mapo.addSub(uzoomarea);
             mapo.addSub(gtrack);
 
-            minimapo.addSub(upos_mini);
             minimapo.addSub(gtrack_mini);
 
             opt.onChanged += new Options.OnChangedDelegate(opt_onChanged);
@@ -307,9 +265,6 @@ namespace GMView
                 catch { }
             };
 
-            uselection.onAreaSelection += new UserSelectionArea.OnAreaSelectionDelegate(newDownloadArea);
-            uzoomarea.onAreaSelection += new UserSelectionArea.OnAreaSelectionDelegate(newZoomInArea);
-
         }
 
         void initGLData(object sender, EventArgs e)
@@ -321,6 +276,15 @@ namespace GMView
 
             createDashBoards();
 
+            foreach(MouseBaseProc modep in modes)
+            {
+                if(modep != null)
+                {
+                    modep.Boards = boards;
+                    modep.initGL();
+                }
+            }
+
             if (opt.command_line_args.Length > 0)
                 loadTrack(new GPS.TrackFileInfo(opt.command_line_args[0].ToString(), 
                                             GPS.TrackFileInfo.SourceType.FileName));
@@ -328,7 +292,6 @@ namespace GMView
                 GPSTrackFactory.singleton.currentTrack = gtrack;
 
             GPSTrackFactory.singleton.addTrack(gtrack);
-            GPSTrackFactory.singleton.addTrack(manual_track);
             GPSTrackFactory.singleton.rebuildMenuStrip(trackStripMenuItem.DropDown.Items);
 
             FrameTimer.singleton.onUpdated += new EventHandler(frametimer_onUpdated);
@@ -346,6 +309,17 @@ namespace GMView
         }
 
         /// <summary>
+        /// Initializes user navigation modes
+        /// </summary>
+        private void initModes()
+        {
+            naviMode = new NavigateMode(this, drawPane);
+            modes[(int)UserAction.Navigate] = naviMode;
+            modes[(int)UserAction.Zoom] = new ZoomAreaMode(this, drawPane);
+            modes[(int)UserAction.SelectArea] = new DownloadAreaMode(this, drawPane);
+        }
+
+        /// <summary>
         /// Called when state of the dashboard has been changed, moves center position accordingly
         /// </summary>
         private void onDashboardStateChanged()
@@ -359,7 +333,7 @@ namespace GMView
             base.OnLoad(e);
             ImgCacheManager.singleton.control = this;
             ImgCacheManager.singleton.updateVisualForced();
-            upos.setLonLat(mapo.centerPos.lon, mapo.centerPos.lat);
+            naviMode.upos.setLonLat(mapo.centerPos.lon, mapo.centerPos.lat);
             intro.hideIntro();
             intro.Dispose();
             intro = null;
@@ -381,7 +355,7 @@ namespace GMView
             boards.setVisibleSize(drawPane.ClientSize);
             boards.onStateChanged += onDashboardStateChanged;
 
-            zoomdash = new MiniTilesDash(mapo, upos);
+            zoomdash = new MiniTilesDash(mapo, naviMode.upos);
             zoomdash.onCenterMapXY += new MiniTilesDash.onCenterMapXYDelegate(idash_onCenterMapXY);
             zoomdash.mode = DashMode.Normal;
             zoomdash.onZoomIn += this.zoomIn;
@@ -427,7 +401,7 @@ namespace GMView
             if (mapo.zoom != zoom)
                 return;
 
-            pos_stack.push(mapo.centerPos);
+            naviMode.backPush(mapo.centerPos);
             mapo.CenterMapAbsXY(new Point(x, y));
             repaintMap();
             miniform.doSync = true;
@@ -557,10 +531,10 @@ namespace GMView
         /// </summary>
         /// <param name="lon"></param>
         /// <param name="lat"></param>
-        private void centerMapLonLat(double lon, double lat)
+        internal void centerMapLonLat(double lon, double lat)
         {
-            upos.setLonLat(lon, lat);
-            upos_mini.setLonLat(lon, lat);
+            naviMode.upos.setLonLat(lon, lat);
+            naviMode.upos_mini.setLonLat(lon, lat);
             mapo.CenterMapLonLat(lon, lat);
             repaintMap();
             miniform.repaintMap();
@@ -573,100 +547,24 @@ namespace GMView
 
         private void changeMode(UserAction newmode)
         {
+            MouseBaseProc oldone = currentMode;
+
             if (newmode == mode)
                 return;
-            switch (mode)
+
+            if (currentMode != null)
+                currentMode.modeLeave();
+
+            currentMode = modes[(int)newmode];
+
+            if(currentMode != null)
             {
-                case UserAction.Navigate:
-                    if (onLeaveNaviMode != null)
-                        onLeaveNaviMode();
-                    break;
-                case UserAction.Zoom:
-                    if (onLeaveZoomMode != null)
-                        onLeaveZoomMode();
-                    break;
-                case UserAction.SelectArea:
-                    if (onLeaveSelectMode != null)
-                        onLeaveSelectMode();
-                    break;
-                case UserAction.ManualTrack:
-                    if (onLeaveMTrackMode != null)
-                        onLeaveMTrackMode();
-                    break;
-                default:
-                    break;
+                currentMode.modeEnter(oldone);
+                modeSLbl.Text = currentMode.name();
             }
 
             mode = newmode;
 
-            switch (mode)
-            {
-                case UserAction.Navigate:
-                    GPSTrackFactory.singleton.currentTrack = gtrack;
-                    if (onEnterNaviMode != null)
-                        onEnterNaviMode();
-                    modeSLbl.Text = "Navigate mode";
-                    break;
-                case UserAction.Zoom:
-                    if (onEnterZoomMode != null)
-                        onEnterZoomMode();
-                    modeSLbl.Text = "Zoom mode";
-                    break;
-                case UserAction.SelectArea:
-                    if (onEnterSelectMode != null)
-                        onEnterSelectMode();
-                    modeSLbl.Text = "Download mode";
-                    break;
-                case UserAction.ManualTrack:
-                    GPSTrackFactory.singleton.currentTrack = manual_track;
-                    if (onEnterMTrackMode != null)
-                        onEnterMTrackMode();
-                    modeSLbl.Text = "Track edit mode";
-                    break;
-                default:
-                    break;
-            }
-            repaintMap();
-        }
-
-        private void newDownloadArea(double lon1, double lat1, double lon2, double lat2)
-        {
-            DownloadQueryForm frm = new DownloadQueryForm(mapo);
-            frm.init(lon1, lat1, lon2, lat2);
-            frm.Show();
-        }
-
-        private void newZoomInArea(double lon1, double lat1, double lon2, double lat2)
-        {
-            double center_lon, center_lat;
-            Size sz = drawPane.Size;
-            sz.Width = (sz.Width + opt.image_len - 1) / opt.image_len;
-            sz.Height = (sz.Height + opt.image_hei - 1) / opt.image_hei;
-
-            center_lat = (lat1 + lat2) / 2;
-            center_lon = (lon1 + lon2) / 2;
-
-            int z_idx;
-            BaseGeo geo = opt.getGeoSystem();
-            for (z_idx = opt.cur_zoom_lvl + 1; z_idx <= opt.max_zoom_lvl; z_idx++)
-            {
-                Point xy1, xy2;
-                geo.getNXNYByLonLat(lon1, lat1, z_idx, out xy1);
-                geo.getNXNYByLonLat(lon2, lat2, z_idx, out xy2);
-
-                if ((xy2.X - xy1.X) >= sz.Width ||
-                    (xy2.Y - xy1.Y) >= sz.Height)
-                {
-                    break; //we found our zoom level
-                }
-            }
-            if (z_idx > opt.cur_zoom_lvl && z_idx <= opt.max_zoom_lvl)
-            {
-                mapo.CenterMapLonLat(center_lon, center_lat);
-                opt.cur_zoom_lvl = z_idx;
-                mapo.ZoomMapCentered(opt.cur_zoom_lvl);
-            }
-            uzoomarea.reset();
             repaintMap();
         }
 
@@ -840,12 +738,12 @@ namespace GMView
                 zoomSBut.Checked = false;
                 selectRectDownSBut.Checked = false;
                 viewSBut.Checked = false;
-                if (manual_track.countPoints > 0)
+                if (manualMode.manualTrack.countPoints > 0)
                 {
                     if(MessageBox.Show("Continue editing current track?\n\nYes - will continue current track\nNo - clear previous track and start new one", "Record track",
                                         MessageBoxButtons.YesNo,
                                         MessageBoxIcon.Question) == DialogResult.No)
-                        manual_track.resetTrackData();
+                        manualMode.resetTrack();
                     infoMessage("'Manual edit track' is ON");
                 }
             }
@@ -879,8 +777,8 @@ namespace GMView
             NMEA_LL nmeall = gtrack.lastData;
             if (nmeall == null)
                 return;
-            upos.setLonLat(nmeall.lon, nmeall.lat);
-            upos_mini.setLonLat(nmeall.lon, nmeall.lat);
+            naviMode.upos.setLonLat(nmeall.lon, nmeall.lat);
+            naviMode.upos_mini.setLonLat(nmeall.lon, nmeall.lat);
             mapo.CenterMapLonLat(nmeall.lon, nmeall.lat);
             repaintMap();
         }
@@ -1177,15 +1075,6 @@ namespace GMView
             miniMapTimer.Stop();
         }
 
-        void GMViewForm_onNaviLeftClick(Point mouse_p)
-        {
-            pos_stack.push(new PositionStack.PositionInfo(upos.Lon, upos.Lat, mapo.zoom, opt.mapType));
-            upos.setVisXY(mouse_p);
-            upos_mini.setLonLat(upos.Lon, upos.Lat);
-            mapo.CenterMapLonLat(upos.Lon, upos.Lat);
-            miniform.repaintMap();
-        }
-
 
         #region GPSTrack various handlers
         /// <summary>
@@ -1197,7 +1086,7 @@ namespace GMView
         {
             GPSTrack track = gtrack;
             if (mode == UserAction.ManualTrack)
-                track = manual_track;
+                track = manualMode.manualTrack;
 
             saveTrackWithDialog(track);
         }
@@ -1362,7 +1251,7 @@ namespace GMView
         void gtrform_onRemoveAll(GPSTrackInfoForm to_remove)
         {
             if (to_remove.track == gtrack ||
-                to_remove.track == manual_track)
+                to_remove.track == manualMode.manualTrack)
                 return;
 
             to_remove.track.hide();
@@ -1406,7 +1295,7 @@ namespace GMView
         {
             GPSTrackFactory.singleton.clearTracks(gtrform_onRemoveAll);
             GPSTrackFactory.singleton.addTrack(gtrack);
-            GPSTrackFactory.singleton.addTrack(manual_track);
+            GPSTrackFactory.singleton.addTrack(manualMode.manualTrack);
             GPSTrackFactory.singleton.rebuildMenuStrip(trackStripMenuItem.DropDown.Items);
             repaintMap();
             GPSTrackFactory.singleton.currentTrack = gtrack;
@@ -1420,26 +1309,6 @@ namespace GMView
             mapo.autoClear(100); //clear all tiles except those which were used in last 100 updates
             logWin.autoClear(3000); //clear after 3000 debug lines
             Program.Log("Auto-cleaning event: done");
-        }
-
-        private void runOnceTimer_Tick(object sender, EventArgs e)
-        {
-            List<MethodInvoker> tmp = runOnce;
-            runOnce = runOnceClone;
-            runOnceClone = tmp;
-            runOnceTimer.Stop();
-            foreach (MethodInvoker meth in runOnceClone)
-                meth();
-            runOnceClone.Clear();
-        }
-
-        private void runMeOnce(MethodInvoker meth, int msec)
-        {
-            if (runOnceTimer.Enabled)
-                runOnceTimer.Stop();
-            runOnceTimer.Interval = msec;
-            runOnce.Add(meth);
-            runOnceTimer.Start();
         }
 
         private void rebuildAllMI_Click(object sender, EventArgs e)
@@ -1464,12 +1333,7 @@ namespace GMView
 
         private void forwardSBut_Click(object sender, EventArgs e)
         {
-            if (!pos_stack_fwd.empty())
-            {
-                pos_stack.push(new PositionStack.PositionInfo(upos.Lon, upos.Lat, mapo.zoom, opt.mapType));
-                PositionStack.PositionInfo pinfo = pos_stack_fwd.pop();
-                centerMapLonLat(pinfo.lon, pinfo.lat);
-            }
+            naviMode.fwdHistoryPosition();
         }
 
         private void showBlockFNameMI_Click(object sender, EventArgs e)
@@ -1521,8 +1385,8 @@ namespace GMView
             }
             else
             {
-                lon = upos.Lon;
-                lat = upos.Lat;
+                lon = naviMode.upos.Lon;
+                lat = naviMode.upos.Lat;
                 alt = 0;
                 centerMapLonLat(lon, lat);
             }
@@ -1663,10 +1527,10 @@ namespace GMView
 
         private void mouseOverTimer_Tick(object sender, EventArgs e)
         {
-            trackinformer.doAction(GML.translateAbsToScene(mouse_last_p));
+            trackinformer.doAction(GML.translateAbsToScene(currentMode.mouse_last_p));
         }
 
-        private void trackInformerStop()
+        internal void trackInformerStop()
         {
             mouseOverTimer.Stop();
             trackinformer.hide();
@@ -1735,6 +1599,13 @@ namespace GMView
                         ex.ToString(), "Error loading POIs", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+        }
+
+        internal void setOnClickLonLat(double lon, double lat)
+        {
+            lonlatSLab.Text = "Lat: " + lat.ToString("F3") + " Lon: " + lon.ToString("F3");
+            if (onClickLonLat != null)
+                onClickLonLat(lon, lat);
         }
 
     }

@@ -447,6 +447,12 @@
     <Compile Include="TrackLoader\TrackLoaderFactory.cs" />
     <Compile Include="Traffic\GoogleTraffic.cs" />
     <Compile Include="Traffic\YandexTraffic.cs" />
+    <Compile Include="UIHelper\DownloadAreaMode.cs" />
+    <Compile Include="UIHelper\ManualTrackMode.cs" />
+    <Compile Include="UIHelper\MouseBaseProc.cs" />
+    <Compile Include="UIHelper\NavigateMode.cs" />
+    <Compile Include="UIHelper\RunMeOnce.cs" />
+    <Compile Include="UIHelper\ZoomAreaMode.cs" />
     <Compile Include="UserPosition.cs" />
     <Compile Include="UserSelectionArea.cs" />
     <Compile Include="GPS\Way.cs" />

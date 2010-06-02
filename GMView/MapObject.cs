@@ -504,6 +504,7 @@ namespace GMView
         /// <param name="xy"></param>
         public void CenterMapAbsXY(Point xy)
         {
+            max_piece = 2 << (_zoom_lvl - 1);
             int max_x = max_piece * Program.opt.image_len;
             if (xy.X < 0 || xy.Y < 0 ||
                 xy.X >= max_x || xy.Y >= max_x)
