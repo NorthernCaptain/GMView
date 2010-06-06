@@ -617,7 +617,7 @@ namespace GMView
             }
             reducedAddLast(trackData.Last);
             travel_avg_speed = distance / trav_time.TotalHours;
-            if (mode == TrackMode.ViewSaved)
+            if (mode == TrackMode.ViewSaved && trackData.Count > 1)
                 way.markWay(lastPos, distance_km, NMEA_LL.PointType.ENDTP);
             textInfo.fill_all_info(this);
         }

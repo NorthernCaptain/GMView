@@ -13,6 +13,27 @@ namespace GMView.UIHelper
     {
         private GPSTrack manual_track;
 
+        private ContextMenuStrip contextMenu;
+
+        private List<LinkedListNode<ncGeo.NMEA_LL>> selected = new List<LinkedListNode<ncGeo.NMEA_LL>>();
+
+        /// <summary>
+        /// Current stage of dragging. NoDrag means that drag is not started yet
+        /// </summary>
+        protected DragStage dragEnabled = DragStage.NoDrag;
+
+        /// <summary>
+        /// Stages of the drag process
+        /// </summary>
+        protected enum DragStage {  
+                                    NoDrag, 
+                                    Dragging, 
+                                    Ignore, 
+                                    NewAreaSelection, 
+                                    AddAreaSelection, 
+                                    SubtractAreaSelection 
+                                 };
+
         public GPSTrack manualTrack
         {
             get { return manual_track; }
@@ -46,12 +67,40 @@ namespace GMView.UIHelper
             drawPane = dPane;
             areaselection = Program.opt.newUserSelectionArea(mainform.mapo);
             areaselection.onAreaSelection += areaselection_onAreaSelection;
+
+            contextMenu = new ContextMenuStrip();
+            contextMenu.Closed += new ToolStripDropDownClosedEventHandler(contextMenu_Closed);
+            contextMenu.Opening += new System.ComponentModel.CancelEventHandler(contextMenu_Opening);
         }
 
-        void areaselection_onAreaSelection(double lon1, double lat1, double lon2, double lat2)
-        {
-            List<LinkedListNode<ncGeo.NMEA_LL>> selected = new List<LinkedListNode<ncGeo.NMEA_LL>>();
+        void contextMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {           
+            contextMenu.Items.Clear();
+            contextMenu.Items.Add(new ToolStripLabel(selected.Count.ToString() + " points selected"));
+            contextMenu.Items.Add("-");
+            contextMenu.Items.Add(new ToolStripMenuItem("Delete points", null, deleteSelectedPoints));
+            contextMenu.Items.Add("Extract into new track");
+            contextMenu.Items.Add(new ToolStripMenuItem("Add point in between", null, addPointsInBetween));
+            contextMenu.Items.Add("-");
+            contextMenu.Items.Add(new ToolStripMenuItem("Reset selection", null, resetSelection));
+            contextMenu.Items.Add(new ToolStripMenuItem("Continue selection", null, continueSelection));
+            e.Cancel = false;
+        }
 
+        void contextMenu_Closed(object sender, ToolStripDropDownClosedEventArgs e)
+        {
+            areaselection.reset();
+        }
+
+        /// <summary>
+        /// Called after we finished selecting the area and need to process this area
+        /// </summary>
+        /// <param name="lon1"></param>
+        /// <param name="lat1"></param>
+        /// <param name="lon2"></param>
+        /// <param name="lat2"></param>
+        void areaselection_onAreaSelection(double lon1, double lat1, double lon2, double lat2)
+        {            
             LinkedListNode<ncGeo.NMEA_LL> currentPointNode = manual_track.trackPointData.First;
 
             while(currentPointNode != null)
@@ -61,41 +110,101 @@ namespace GMView.UIHelper
                     currentPointNode.Value.lat <= lat1 &&
                     currentPointNode.Value.lat >= lat2)
                 {
-                    selected.Add(currentPointNode);
-                    if(currentPointNode.Value.ptype != ncGeo.NMEA_LL.PointType.TP)
+                    if (altPressed)
                     {
-                        currentPointNode.Value.prevPtype = currentPointNode.Value.ptype;
-                        currentPointNode.Value.ptype = ncGeo.NMEA_LL.PointType.MARKWP;
+                        if (currentPointNode.Value.ptype == ncGeo.NMEA_LL.PointType.MARKWP)
+                        {
+                            currentPointNode.Value.ptype = currentPointNode.Value.prevPtype;
+                        }
+                        selected.Remove(currentPointNode);
+                    }
+                    else
+                    {
+
+                        if (!selected.Contains(currentPointNode))
+                            selected.Add(currentPointNode);
                     }
                 }
                 currentPointNode = currentPointNode.Next;
             }
 
-            if(selected.Count == 0)
+            markSelection();
+
+            areaselection.reset();
+            if (controlPressed == false && altPressed == false)
+                contextMenu.Show(drawPane, mouse_release_p);
+        }
+
+        /// <summary>
+        /// Marks selected points with MARKWP for highlighting on the map
+        /// </summary>
+        private void markSelection()
+        {
+            foreach (LinkedListNode<ncGeo.NMEA_LL> currentPointNode in selected)
             {
-                areaselection.reset();
+                if (currentPointNode.Value.ptype != ncGeo.NMEA_LL.PointType.TP
+                    && currentPointNode.Value.ptype != ncGeo.NMEA_LL.PointType.MARKWP)
+                {
+                    currentPointNode.Value.prevPtype = currentPointNode.Value.ptype;
+                    currentPointNode.Value.ptype = ncGeo.NMEA_LL.PointType.MARKWP;
+                }
             }
-            else
+        }
+
+        /// <summary>
+        /// Delete selected points from the track
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private void deleteSelectedPoints(object sender, EventArgs args)
+        {
+            manual_track.deleteSelectedPoints(selected);
+            manual_track.updateVisual();
+            selectionReset();
+            GML.repaint();
+        }
+
+        private void resetSelection(object sender, EventArgs args)
+        {
+            selectionReset();
+            areaselection.reset();
+        }
+
+        private void continueSelection(object sender, EventArgs args)
+        {
+            markSelection();
+            GML.repaint();
+        }
+
+        /// <summary>
+        /// Goes through selected points, find pairs (two connected points) and
+        /// adds new point in between.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private void addPointsInBetween(object sender, EventArgs args)
+        {
+            bool added = false;
+
+            foreach (LinkedListNode<ncGeo.NMEA_LL> pointNode in selected)
             {
-                if(MessageBox.Show("You have selected " + selected.Count + " points on the track.\nDo you want to DELETE them?",
-                    "Confirm deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
-                    == DialogResult.Yes)
+                if (pointNode.Next != null &&
+                    selected.Contains(pointNode.Next))
                 {
-                    manual_track.deleteSelectedPoints(selected);
-                    manual_track.updateVisual();
-                    selected.Clear();
+                    double lon = (pointNode.Value.lon + pointNode.Next.Value.lon)/2.0;
+                    double lat = (pointNode.Value.lat + pointNode.Next.Value.lat) / 2.0;
+                    ncGeo.NMEA_LL nmea_ll = new NMEA_RMC(lon, lat, ncGeo.NMEA_LL.PointType.MWP);
+                    pointNode.List.AddAfter(pointNode, nmea_ll);
+                    added = true;
                 }
-                else
-                {
-                    foreach (LinkedListNode<ncGeo.NMEA_LL> pt in selected)
-                    {
-                        if(pt.Value.ptype == ncGeo.NMEA_LL.PointType.MARKWP)
-                            pt.Value.ptype = pt.Value.prevPtype;
-                    }
-                }
-                areaselection.reset();
-                GML.repaint();
             }
+            if (added)
+            {
+                manual_track.calculateParameters();
+                manual_track.updateVisual();
+            }
+            selectionReset();
+            GML.repaint();
         }
 
         public override void initGL()
@@ -116,6 +225,7 @@ namespace GMView.UIHelper
         {
             base.modeLeave();
             mainform.mapo.delSub(areaselection);
+            selectionReset();
         }
 
         /// <summary>
@@ -130,11 +240,12 @@ namespace GMView.UIHelper
         {
             double lon, lat;
             Point lastxy = mouse_last_p;
+            Point pxy;
 
             switch (dragEnabled)
             {
                 case DragStage.NoDrag:
-                    if(controlPressed)
+                    if(controlPressed || altPressed)
                     {
                         startSelection(xy);
                         break;
@@ -145,11 +256,11 @@ namespace GMView.UIHelper
                     manual_track.findNearest(ctx);
                     if (ctx.resultPoint == null)
                     {
-                        dragEnabled = MouseBaseProc.DragStage.Ignore;
+                        dragEnabled = DragStage.Ignore;
                         break;
                     }
-                    mainform.mapo.getVisibleXYByLonLat(ctx.resultPoint.Value.lon, ctx.resultPoint.Value.lat, out xy);
-                    if (Math.Abs(lastxy.X - xy.X) < 20 && Math.Abs(lastxy.Y - xy.Y) <= drag_start_delta * 2)
+                    mainform.mapo.getVisibleXYByLonLat(ctx.resultPoint.Value.lon, ctx.resultPoint.Value.lat, out pxy);
+                    if (Math.Abs(lastxy.X - pxy.X) < 20 && Math.Abs(lastxy.Y - pxy.Y) <= drag_start_delta * 2)
                     {
                         dragEnabled = DragStage.Dragging;
                         dragPoint = ctx.resultPoint;
@@ -159,7 +270,7 @@ namespace GMView.UIHelper
                         GML.repaint();
                     }
                     else
-                        dragEnabled = MouseBaseProc.DragStage.Ignore;
+                        startSelection(xy);                        
                     break;
                 case DragStage.Dragging:
                     lastxy = GML.translateAbsToScene(lastxy);
@@ -167,7 +278,7 @@ namespace GMView.UIHelper
                     manual_track.updatePointPosition(dragPoint, lon, lat);
                     GML.repaint();
                     break;
-                case MouseBaseProc.DragStage.Second:
+                case DragStage.NewAreaSelection:
                     areaselection.setDeltaXY(xy);
                     GML.repaint();
                     break;
@@ -188,15 +299,14 @@ namespace GMView.UIHelper
             
             switch(drag)
             {
-                case MouseBaseProc.DragStage.Dragging:
+                case DragStage.Dragging:
                     dragPoint.Value.ptype = original_ptype;
                     manual_track.calculateParameters();
                     manual_track.updateVisual();
                     GML.repaint();
                     return true;
-                case MouseBaseProc.DragStage.Second:
-                    areaselection.setEndXY(xy);
-                    GML.repaint();
+                case DragStage.NewAreaSelection:
+                    finishAreaSelection(xy);
                     break;
                 default:
                     if (Math.Abs(mouse_press_p.X - mouse_release_p.X) > drag_start_delta ||
@@ -256,7 +366,33 @@ namespace GMView.UIHelper
             areaselection.setStartXY(lastxy);
             areaselection.setDeltaXY(xy);
             GML.repaint();
-            dragEnabled = MouseBaseProc.DragStage.Second;
+            dragEnabled = DragStage.NewAreaSelection;
+ //           if (controlPressed == false && altPressed == false)
+//                selectionReset();
+        }
+
+        /// <summary>
+        /// Clear the selection list
+        /// </summary>
+        private void selectionReset()
+        {
+            foreach (LinkedListNode<ncGeo.NMEA_LL> pt in selected)
+            {
+                if (pt.Value.ptype == ncGeo.NMEA_LL.PointType.MARKWP)
+                    pt.Value.ptype = pt.Value.prevPtype;
+            }
+            selected.Clear();
+            GML.repaint();
+        }
+
+        /// <summary>
+        /// Called when we finished selecting the area
+        /// </summary>
+        /// <param name="xy"></param>
+        private void finishAreaSelection(Point xy)
+        {
+            areaselection.setEndXY(xy);
+            GML.repaint();
         }
 
     }

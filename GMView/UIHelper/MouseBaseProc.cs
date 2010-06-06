@@ -81,15 +81,6 @@ namespace GMView.UIHelper
         protected const int drag_start_delta = 6;
         
         /// <summary>
-        /// Current stage of dragging. NoDrag means that drag is not started yet
-        /// </summary>
-        protected DragStage dragEnabled = DragStage.NoDrag;
-
-        /// <summary>
-        /// Stages of the drag process
-        /// </summary>
-        protected enum DragStage { NoDrag, Dragging, Ignore, Second};
-        /// <summary>
         /// Actual mouse event arguments
         /// </summary>
         protected MouseEventArgs eargs;
