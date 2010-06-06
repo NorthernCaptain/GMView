@@ -65,6 +65,8 @@ namespace ncGeo
         public double dir_angle = 0.0;
         [XmlAttribute("type")]
         public PointType ptype = PointType.TP;
+        [XmlIgnore]
+        public PointType prevPtype = PointType.TP;
 
         const double dir_len = 60.0;
         const double dir_right_len = 35.0;
@@ -74,6 +76,8 @@ namespace ncGeo
         public Point dir_xy = new Point();
         [XmlIgnore]
         public Point dir_right_xy = new Point();
+        [XmlIgnore]
+        public int draw_idx = -1;
 
         public NMEA_LL()
             : base()

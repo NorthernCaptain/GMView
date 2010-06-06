@@ -57,12 +57,38 @@ namespace GMView.UIHelper
         /// <summary>
         /// Various mouse positions in different stages
         /// </summary>
-        internal Point mouse_start_p = new Point();
-        internal Point mouse_delta_p = new Point();
-        internal Point mouse_press_p = new Point();
-        internal Point mouse_release_p = new Point();
+        protected Point mouse_start_p = new Point();
+        protected Point mouse_delta_p = new Point();
+        protected Point mouse_press_p = new Point();
+        protected Point mouse_release_p = new Point();
         internal Point mouse_last_p = new Point();
 
+        protected bool shiftPressed = false;
+        protected bool controlPressed = false;
+        protected bool altPressed = false;
+
+        /// <summary>
+        /// Last mouse down pressed time in ticks
+        /// </summary>
+        protected long mouse_down_ticks;
+        /// <summary>
+        /// Number of milliseconds we consider as normal click, not more.
+        /// </summary>
+        protected const long normal_click_time = 500; //not more that 500 millis (half a second)
+        /// <summary>
+        /// Number of pixels mouse should move to start dragging
+        /// </summary>
+        protected const int drag_start_delta = 6;
+        
+        /// <summary>
+        /// Current stage of dragging. NoDrag means that drag is not started yet
+        /// </summary>
+        protected DragStage dragEnabled = DragStage.NoDrag;
+
+        /// <summary>
+        /// Stages of the drag process
+        /// </summary>
+        protected enum DragStage { NoDrag, Dragging, Ignore, Second};
         /// <summary>
         /// Actual mouse event arguments
         /// </summary>
@@ -93,6 +119,7 @@ namespace GMView.UIHelper
             drawPane.MouseDown += doMouseDown;
             drawPane.MouseMove += doMouseMove;
             drawPane.MouseLeave += doMouseLeave;
+            drawPane.MouseWheel += doMouseWheel;
         }
 
         /// <summary>
@@ -106,6 +133,7 @@ namespace GMView.UIHelper
             drawPane.MouseDown -= doMouseDown;
             drawPane.MouseMove -= doMouseMove;
             drawPane.MouseLeave -= doMouseLeave;
+            drawPane.MouseWheel -= doMouseWheel;
         }
 
         /// <summary>
@@ -125,6 +153,11 @@ namespace GMView.UIHelper
         /// <returns>Return true, if event was processed</returns>
         protected virtual bool onMouseMove(Point xy)
         {
+            if (mouse_last_p.Y < autoScrollDelta || mouse_last_p.Y > drawPane.Size.Height - autoScrollDelta ||
+                mouse_last_p.X < autoScrollDelta || mouse_last_p.X > drawPane.Size.Width - autoScrollDelta)
+                autoScrollStart();
+            else
+                autoScrollStop();            
             return false;
         }
 
@@ -166,6 +199,18 @@ namespace GMView.UIHelper
 
         protected virtual bool onMouseDoubleClickTranslated(Point xy)
         {
+            return false;
+        }
+
+        protected virtual bool onMouseWheelUp()
+        {
+            mainform.zoomOut();
+            return false;
+        }
+
+        protected virtual bool onMouseWheelDown()
+        {
+            mainform.zoomIn();
             return false;
         }
 
@@ -250,6 +295,7 @@ namespace GMView.UIHelper
         private void doMouseMove(object sender, MouseEventArgs e)
         {
             eargs = e;
+            fillModifiers();
             mouse_last_p.X = e.X;
             mouse_last_p.Y = e.Y;
             if (e.Button == MouseButtons.Left)
@@ -257,8 +303,8 @@ namespace GMView.UIHelper
                 Point mouse_cur_p = new Point(e.X, e.Y);
                 mouse_delta_p.X = mouse_cur_p.X - mouse_start_p.X;
                 mouse_delta_p.Y = mouse_cur_p.Y - mouse_start_p.Y;
-                if (mouse_delta_p.X > 8 || mouse_delta_p.X < -8 ||
-                    mouse_delta_p.Y > 8 || mouse_delta_p.Y < -8)
+                if (mouse_delta_p.X > drag_start_delta || mouse_delta_p.X < -drag_start_delta ||
+                    mouse_delta_p.Y > drag_start_delta || mouse_delta_p.Y < -drag_start_delta)
                 {
                     mouse_start_p = mouse_cur_p;
                     Program.Log("drawPane - mouse drag at pos: " + e.X + ", " + e.Y);
@@ -268,9 +314,9 @@ namespace GMView.UIHelper
                         return;
                     }
 
-                    if(onMouseMoveTranslated(GML.translateToScene(mouse_delta_p)))
-                        return;
                     if (onMouseMove(mouse_delta_p))
+                        return;
+                    if (onMouseMoveTranslated(GML.translateToScene(mouse_delta_p)))
                         return;
                 }
             }
@@ -289,9 +335,11 @@ namespace GMView.UIHelper
         private void doMouseDown(object sender, MouseEventArgs e)
         {
             eargs = e;
+            fillModifiers();
             mouse_press_p.X = e.X;
             mouse_press_p.Y = e.Y;
             mainform.miniform.doSync = false;
+            mouse_down_ticks = DateTime.Now.Ticks;
             GML.tranBegin();
             try
             {
@@ -331,6 +379,7 @@ namespace GMView.UIHelper
         private void doMouseUp(object sender, MouseEventArgs e)
         {
             eargs = e;
+            fillModifiers();
             mouse_release_p.X = e.X;
             mouse_release_p.Y = e.Y;
             mainform.miniform.doSync = false;
@@ -369,7 +418,7 @@ namespace GMView.UIHelper
                 mouse_release_p.X = e.X;
                 mouse_release_p.Y = e.Y;
                 if (System.Math.Abs(mouse_press_p.X - mouse_release_p.X) +
-                    System.Math.Abs(mouse_press_p.Y - mouse_release_p.Y) < 8)
+                    System.Math.Abs(mouse_press_p.Y - mouse_release_p.Y) < drag_start_delta)
                 {
                     if (boards.mouseClick(mouse_release_p))
                     {
@@ -405,6 +454,19 @@ namespace GMView.UIHelper
 
         }
 
+        private void doMouseWheel(object sender, MouseEventArgs e)
+        {
+            eargs = e;
+
+            if (e.Delta != 0)
+            {
+                if (e.Delta > 0)
+                    onMouseWheelUp();
+                else
+                    onMouseWheelDown();
+            }
+        }
+
         /// <summary>
         /// Return the name of the mode
         /// </summary>
@@ -412,6 +474,23 @@ namespace GMView.UIHelper
         public virtual string name()
         {
             return "base mode";
+        }
+
+        /// <summary>
+        /// Gets the time in millisecond since the given time til now
+        /// </summary>
+        /// <param name="sinceWhen"></param>
+        /// <returns></returns>
+        protected long getDeltaMillis(long sinceWhenTicks)
+        {
+            return (DateTime.Now.Ticks - sinceWhenTicks) / 10000L;
+        }
+
+        private void fillModifiers()
+        {
+            shiftPressed = (Control.ModifierKeys & Keys.Shift) == Keys.Shift;
+            controlPressed = (Control.ModifierKeys & Keys.Control) == Keys.Control;
+            altPressed = (Control.ModifierKeys & Keys.Alt) == Keys.Alt;
         }
     }
 }

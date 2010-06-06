@@ -101,11 +101,8 @@
             this.selectRectDownSBut = new System.Windows.Forms.ToolStripButton();
             this.pinMarkSBut = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
-            this.latSTb = new System.Windows.Forms.ToolStripTextBox();
-            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
-            this.lonSTb = new System.Windows.Forms.ToolStripTextBox();
             this.setLLBut = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator25 = new System.Windows.Forms.ToolStripSeparator();
             this.mapTypeSCombo = new System.Windows.Forms.ToolStripComboBox();
             this.trafficTbut = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
@@ -664,11 +661,8 @@
             this.selectRectDownSBut,
             this.pinMarkSBut,
             this.toolStripSeparator2,
-            this.toolStripLabel2,
-            this.latSTb,
-            this.toolStripLabel1,
-            this.lonSTb,
             this.setLLBut,
+            this.toolStripSeparator25,
             this.mapTypeSCombo,
             this.trafficTbut,
             this.toolStripSeparator3,
@@ -716,7 +710,7 @@
             this.viewSBut.Image = global::GMView.Properties.Resources.contexthelp;
             resources.ApplyResources(this.viewSBut, "viewSBut");
             this.viewSBut.Name = "viewSBut";
-            this.viewSBut.CheckedChanged += new System.EventHandler(this.viewSBut_CheckedChanged);
+            this.viewSBut.Click += new System.EventHandler(this.viewSBut_CheckedChanged);
             // 
             // zoomSBut
             // 
@@ -725,7 +719,7 @@
             this.zoomSBut.Image = global::GMView.Properties.Resources.viewmagfit;
             resources.ApplyResources(this.zoomSBut, "zoomSBut");
             this.zoomSBut.Name = "zoomSBut";
-            this.zoomSBut.CheckedChanged += new System.EventHandler(this.zoomSBut_CheckedChanged);
+            this.zoomSBut.Click += new System.EventHandler(this.zoomSBut_CheckedChanged);
             // 
             // selectRectDownSBut
             // 
@@ -734,7 +728,7 @@
             this.selectRectDownSBut.Image = global::GMView.Properties.Resources.wp;
             resources.ApplyResources(this.selectRectDownSBut, "selectRectDownSBut");
             this.selectRectDownSBut.Name = "selectRectDownSBut";
-            this.selectRectDownSBut.CheckedChanged += new System.EventHandler(this.selectRectDownSBut_CheckedChanged);
+            this.selectRectDownSBut.Click += new System.EventHandler(this.selectRectDownSBut_CheckedChanged);
             // 
             // pinMarkSBut
             // 
@@ -750,36 +744,18 @@
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             resources.ApplyResources(this.toolStripSeparator2, "toolStripSeparator2");
             // 
-            // toolStripLabel2
-            // 
-            this.toolStripLabel2.Name = "toolStripLabel2";
-            this.toolStripLabel2.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
-            resources.ApplyResources(this.toolStripLabel2, "toolStripLabel2");
-            // 
-            // latSTb
-            // 
-            this.latSTb.Name = "latSTb";
-            resources.ApplyResources(this.latSTb, "latSTb");
-            // 
-            // toolStripLabel1
-            // 
-            this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
-            resources.ApplyResources(this.toolStripLabel1, "toolStripLabel1");
-            // 
-            // lonSTb
-            // 
-            this.lonSTb.Name = "lonSTb";
-            resources.ApplyResources(this.lonSTb, "lonSTb");
-            this.lonSTb.TextChanged += new System.EventHandler(this.lonSTb_TextChanged);
-            // 
             // setLLBut
             // 
             this.setLLBut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.setLLBut.Image = global::GMView.Properties.Resources.reload;
+            this.setLLBut.Image = global::GMView.Properties.Resources.geotag_16;
             resources.ApplyResources(this.setLLBut, "setLLBut");
             this.setLLBut.Name = "setLLBut";
             this.setLLBut.Click += new System.EventHandler(this.setLLBut_Click);
+            // 
+            // toolStripSeparator25
+            // 
+            this.toolStripSeparator25.Name = "toolStripSeparator25";
+            resources.ApplyResources(this.toolStripSeparator25, "toolStripSeparator25");
             // 
             // mapTypeSCombo
             // 
@@ -953,18 +929,21 @@
             // 
             // zoomToStartToolStripMenuItem
             // 
+            this.zoomToStartToolStripMenuItem.Image = global::GMView.Properties.Resources.startmark;
             this.zoomToStartToolStripMenuItem.Name = "zoomToStartToolStripMenuItem";
             resources.ApplyResources(this.zoomToStartToolStripMenuItem, "zoomToStartToolStripMenuItem");
             this.zoomToStartToolStripMenuItem.Click += new System.EventHandler(this.zoomToStartToolStripMenuItem_Click);
             // 
             // zoomToFinishToolStripMenuItem
             // 
+            this.zoomToFinishToolStripMenuItem.Image = global::GMView.Properties.Resources.finishmark;
             this.zoomToFinishToolStripMenuItem.Name = "zoomToFinishToolStripMenuItem";
             resources.ApplyResources(this.zoomToFinishToolStripMenuItem, "zoomToFinishToolStripMenuItem");
             this.zoomToFinishToolStripMenuItem.Click += new System.EventHandler(this.zoomToFinishToolStripMenuItem_Click);
             // 
             // showInfoWindowToolStripMenuItem
             // 
+            this.showInfoWindowToolStripMenuItem.Image = global::GMView.Properties.Resources.help;
             this.showInfoWindowToolStripMenuItem.Name = "showInfoWindowToolStripMenuItem";
             resources.ApplyResources(this.showInfoWindowToolStripMenuItem, "showInfoWindowToolStripMenuItem");
             this.showInfoWindowToolStripMenuItem.Click += new System.EventHandler(this.showInfoWindowToolStripMenuItem_Click);
@@ -1085,10 +1064,6 @@
         private System.Windows.Forms.ToolStripButton viewSBut;
         private System.Windows.Forms.ToolStripButton zoomSBut;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
-        private System.Windows.Forms.ToolStripTextBox lonSTb;
-        private System.Windows.Forms.ToolStripLabel toolStripLabel2;
-        private System.Windows.Forms.ToolStripTextBox latSTb;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton setLLBut;
@@ -1184,6 +1159,7 @@
         private System.Windows.Forms.ToolStripMenuItem removeTrackToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator24;
         internal System.Windows.Forms.Timer mouseOverTimer;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator25;
     }
 }
 

@@ -53,6 +53,11 @@ namespace GMView.UIHelper
             return true;
         }
 
+        protected override bool onMouseMove(Point xy)
+        {
+            return false; //we do not need autoscrolling
+        }
+
         protected override bool onMouseMoveNoBut(Point xy)
         {
             mainform.mouseOverTimer.Stop();

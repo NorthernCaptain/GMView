@@ -4,7 +4,11 @@ using System.Text;
 
 namespace ncGeo
 {
-    public class FindNearestPointByDistance : IFindPoint
+    /// <summary>
+    /// Context for finding nearest point by distance, but we search only visible points,
+    /// i.e those having draw_idx >=0
+    /// </summary>
+    public class FindNearestPointByVisibleDistance: IFindPoint
     {
         /// <summary>
         /// point on the surface - we need to find track point nearest to the given coords.
@@ -21,12 +25,12 @@ namespace ncGeo
         private LinkedListNode<NMEA_LL> nearest;
         private IGPSTrack gtrack;
 
-        public FindNearestPointByDistance(double ilon, double ilat)
+        public FindNearestPointByVisibleDistance(double ilon, double ilat)
         {
             init(ilon, ilat);
         }
 
-        public FindNearestPointByDistance()
+        public FindNearestPointByVisibleDistance()
         {
             init(0, 0);
         }
@@ -53,6 +57,9 @@ namespace ncGeo
 
         public void checkPoint(LinkedListNode<NMEA_LL> pointNode)
         {
+            if (pointNode.Value.draw_idx < 0)
+                return;
+
             double dist = CommonGeo.getDistanceByLonLat2(lon, lat,
                             pointNode.Value.lon,
                             pointNode.Value.lat);
@@ -91,7 +98,7 @@ namespace ncGeo
 
         public object Clone()
         {
-            FindNearestPointByDistance clone = new FindNearestPointByDistance(lon, lat);
+            FindNearestPointByVisibleDistance clone = new FindNearestPointByVisibleDistance(lon, lat);
             clone.gtrack = gtrack;
             clone.nearest = nearest;
             clone.distance = distance;
@@ -104,7 +111,7 @@ namespace ncGeo
 
         public int CompareTo(object obj)
         {
-            FindNearestPointByDistance second = obj as FindNearestPointByDistance;
+            FindNearestPointByVisibleDistance second = obj as FindNearestPointByVisibleDistance;
             if (second == null)
                 throw new ArgumentException("Argument is not a FindNearestPointByDistance");
 

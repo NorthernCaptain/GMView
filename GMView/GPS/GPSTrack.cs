@@ -506,7 +506,7 @@ namespace GMView
 
         private void reducedAdd(LinkedListNode<NMEA_LL> point)
         {
-            if (reduced_running_count >= reduced_max_step)
+            if (reduced_running_count >= reduced_max_step || point.Value.ptype != NMEA_LL.PointType.TP)
             {
                 reducedTrackData.Add(point);
                 reduced_running_count = 0;
@@ -521,6 +521,14 @@ namespace GMView
                 reducedTrackData.Add(point);
         }
 
+        /// <summary>
+        /// Removes last point from reduced list of points needed by quick search
+        /// </summary>
+        private void reducedRemoveLast()
+        {
+            if (reducedTrackData.Count > 0)
+                reducedTrackData.RemoveAt(reducedTrackData.Count - 1);
+        }
         /// <summary>
         /// Find point on the track using provided find point context
         /// </summary>
@@ -565,21 +573,22 @@ namespace GMView
         /// </summary>
         public void calculateParameters()
         {
-            if (trackData.Count == 0)
-                return;
-
             way.clear();
-
             trav_time = endTime - startTime;
             if (trav_time.TotalHours < 0.0)
                 trav_time = startTime - endTime;
 
             distance = 0.0;
             travel_max_speed = 0.0;
+
+            reducedReset();
+
+            if (trackData.Count == 0)
+                return;
+
             NMEA_LL first_nm = trackData.First.Value;
             first_nm.ptype = NMEA_LL.PointType.STARTP;
             way.add(first_nm, 0.0);
-            reducedReset();
             LinkedListNode<NMEA_LL> linked_nm = trackData.First;
             while(linked_nm != null && linked_nm.Value != null)
             {
@@ -612,6 +621,7 @@ namespace GMView
                 way.markWay(lastPos, distance_km, NMEA_LL.PointType.ENDTP);
             textInfo.fill_all_info(this);
         }
+
 
         /// <summary>
         /// Process new data from GPS receiver. Do it in the receiver thread, not in the main one.
@@ -738,6 +748,15 @@ namespace GMView
 
         const int delta_inv = 10;
 
+        /// <summary>
+        /// Recalculates all visual information for the track, i.e. screen coordinates 
+        /// of the track and waypoints
+        /// </summary>
+        public void updateVisual()
+        {
+            updateOnZoomChange(mapo.zoom, mapo.zoom);
+        }
+
         public void updateOnZoomChange(int old_zoom, int new_zoom)
         {
             lock (this)
@@ -764,18 +783,25 @@ namespace GMView
 
             mapo.getXYByLonLat(trackData.First.Value.lon, trackData.First.Value.lat, out lastP);
             drawPoints.Add(lastP);
+            trackData.First.Value.draw_idx = 0;
 
-            foreach (NMEA_LL point in trackData)
+            LinkedListNode<NMEA_LL> pointNode = trackData.First.Next;
+            while(pointNode != null)
             {
+                NMEA_LL point = pointNode.Value;
                 mapo.getXYByLonLat(point.lon, point.lat, out curP);
-                if ((Math.Abs(curP.X - lastP.X) < delta_inv  && Math.Abs(curP.Y - lastP.Y) < delta_inv))
+                if ((Math.Abs(curP.X - lastP.X) < delta_inv && Math.Abs(curP.Y - lastP.Y) < delta_inv)
+                    && pointNode.Next != null)
+                {
+                    point.draw_idx = -1;
+                    pointNode = pointNode.Next;
                     continue;
-
+                }
+                point.draw_idx = drawPoints.Count;
                 drawPoints.Add(curP);
                 lastP = curP;
+                pointNode = pointNode.Next;
             }
-            mapo.getXYByLonLat(trackData.Last.Value.lon, trackData.Last.Value.lat, out lastP);
-            drawPoints.Add(lastP);
 
             way.updateXY(mapo.geosystem);
         }
@@ -783,6 +809,44 @@ namespace GMView
         #endregion
 
         #region Manual track operations
+
+        /// <summary>
+        /// Deletes a list of points from the track.
+        /// </summary>
+        /// <param name="selected"></param>
+        public void deleteSelectedPoints(List<LinkedListNode<NMEA_LL>> selected)
+        {
+            foreach (LinkedListNode<ncGeo.NMEA_LL> pt in selected)
+            {
+                pt.List.Remove(pt);
+            }
+
+            lastPos = (trackData.Last != null ? trackData.Last.Value : null);
+            lastSpeedPos = lastPos;
+            calculateParameters();
+        }
+
+        /// <summary>
+        /// Updates position of the given point on the track to the given lon, lat coordinates.
+        /// Also updates visible on-screen xy coordinates for point and for waypoint
+        /// </summary>
+        /// <param name="pointNode"></param>
+        /// <param name="newlon"></param>
+        /// <param name="newlat"></param>
+        public void updatePointPosition(LinkedListNode<NMEA_LL> pointNode, double newlon, double newlat)
+        {
+            NMEA_LL point = pointNode.Value;
+            point.lon = newlon;
+            point.lat = newlat;
+
+            if(point.draw_idx >= 0)
+            {
+                Point xy;
+                mapo.getXYByLonLat(newlon, newlat, out xy);
+                drawPoints[point.draw_idx] = xy;
+            }
+        }
+
         /// <summary>
         /// Marks last track point with the given type
         /// </summary>
@@ -874,7 +938,9 @@ namespace GMView
                 return;
             NMEA_LL point = trackData.Last.Value;
             trackData.Remove(point);
-            if (trackData.Count == 0)
+            reducedRemoveLast();
+            int count = trackData.Count;
+            if (count == 0)
             {
                 lastTrackPos = lastPos = lastSpeedPos = null;
                 distance_km = 0.0;
@@ -885,6 +951,8 @@ namespace GMView
             else
             {
                 lastTrackPos = lastPos = lastSpeedPos = trackData.Last.Value;
+                lastPos.ptype = (count == 1 ? NMEA_LL.PointType.STARTP : NMEA_LL.PointType.ENDTP);
+
                 Way.WayPoint wp = way.delLastFromWay(point);
                 if (wp != null)
                 {
@@ -910,11 +978,16 @@ namespace GMView
                                                               nmea_ll.lon, nmea_ll.lat);
                 travel_avg_speed = Program.opt.manual_avg_speed;
                 travel_time = TimeSpan.FromHours(distance_km / travel_avg_speed);
+                if (trackData.Last.Value.ptype == NMEA_LL.PointType.ENDTP)
+                {
+                    trackData.Last.Value.ptype = NMEA_LL.PointType.MWP;
+                }
             }
             else
                 nmea_ll.ptype = NMEA_LL.PointType.STARTP;
             lastTrackPos = lastPos = lastSpeedPos = nmea_ll;
             trackData.AddLast(lastTrackPos);
+            reducedAddLast(trackData.Last);
             way.add(nmea_ll, distance_km);
             way.recalc_last_waypoint(mapo.geosystem);
             updateOnZoomChangeNoLock(-1, -1);

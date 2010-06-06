@@ -181,6 +181,12 @@
     <Compile Include="Forms\SelectPOITypeForm.Designer.cs">
       <DependentUpon>SelectPOITypeForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\SetLonLatForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SetLonLatForm.Designer.cs">
+      <DependentUpon>SetLonLatForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\TrackDestFrom.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -363,6 +369,10 @@
       <DependentUpon>SelectPOITypeForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SetLonLatForm.resx">
+      <DependentUpon>SetLonLatForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\TrackDestFrom.resx">
       <DependentUpon>TrackDestFrom.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -467,6 +477,7 @@
     <Content Include="icon_main.ico" />
     <None Include="Resources\trackmenu.png" />
     <None Include="Resources\MapLayers.png" />
+    <None Include="Resources\geotag_16.png" />
     <Content Include="Satellite.ico" />
     <None Include="Resources\helpKeys.htm" />
     <None Include="Resources\dot_small_auto.png" />

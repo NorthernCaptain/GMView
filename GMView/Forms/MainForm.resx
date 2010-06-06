@@ -628,7 +628,7 @@
     <value>0</value>
   </data>
   <metadata name="toolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>3, 26</value>
+    <value>3, 24</value>
   </metadata>
   <data name="toolStrip.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>None</value>
@@ -708,30 +708,6 @@
   <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 26</value>
   </data>
-  <data name="toolStripLabel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>34, 23</value>
-  </data>
-  <data name="toolStripLabel2.Text" xml:space="preserve">
-    <value>Lat:</value>
-  </data>
-  <data name="toolStripLabel2.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleRight</value>
-  </data>
-  <data name="latSTb.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 26</value>
-  </data>
-  <data name="toolStripLabel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 23</value>
-  </data>
-  <data name="toolStripLabel1.Text" xml:space="preserve">
-    <value>Lon:</value>
-  </data>
-  <data name="toolStripLabel1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleRight</value>
-  </data>
-  <data name="lonSTb.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 26</value>
-  </data>
   <data name="setLLBut.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
@@ -742,7 +718,10 @@
     <value>setLLTBut</value>
   </data>
   <data name="setLLBut.ToolTipText" xml:space="preserve">
-    <value>Center Map on given Lon/Lat</value>
+    <value>Set lon/lat and center map on the given position</value>
+  </data>
+  <data name="toolStripSeparator25.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 26</value>
   </data>
   <data name="mapTypeSCombo.Items" xml:space="preserve">
     <value>Map only</value>
@@ -1009,7 +988,7 @@
     <value>3, 24</value>
   </data>
   <data name="toolStrip.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1077, 26</value>
+    <value>849, 26</value>
   </data>
   <data name="toolStrip.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1565,35 +1544,17 @@
   <data name="&gt;&gt;toolStripSeparator2.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolStripLabel2.Name" xml:space="preserve">
-    <value>toolStripLabel2</value>
-  </data>
-  <data name="&gt;&gt;toolStripLabel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;latSTb.Name" xml:space="preserve">
-    <value>latSTb</value>
-  </data>
-  <data name="&gt;&gt;latSTb.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripTextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripLabel1.Name" xml:space="preserve">
-    <value>toolStripLabel1</value>
-  </data>
-  <data name="&gt;&gt;toolStripLabel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lonSTb.Name" xml:space="preserve">
-    <value>lonSTb</value>
-  </data>
-  <data name="&gt;&gt;lonSTb.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripTextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;setLLBut.Name" xml:space="preserve">
     <value>setLLBut</value>
   </data>
   <data name="&gt;&gt;setLLBut.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator25.Name" xml:space="preserve">
+    <value>toolStripSeparator25</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator25.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;mapTypeSCombo.Name" xml:space="preserve">
     <value>mapTypeSCombo</value>

@@ -43,6 +43,7 @@
     <Compile Include="CommonGeo.cs" />
     <Compile Include="FindNearestPointByDistance.cs" />
     <Compile Include="FindNearestPointByTime.cs" />
+    <Compile Include="FindNearestPointByVisibleDistance.cs" />
     <Compile Include="IFindPoint.cs" />
     <Compile Include="IGeoCoord.cs" />
     <Compile Include="IGPSTrack.cs" />

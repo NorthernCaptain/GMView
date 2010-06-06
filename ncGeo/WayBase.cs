@@ -28,7 +28,12 @@ namespace ncGeo
             public int num = 1;
             public int x, y;
             public NMEA_LL point;
-            public NMEA_LL.PointType ptype = NMEA_LL.PointType.TP;
+            public NMEA_LL.PointType ptype
+            {
+                get { return point.ptype; }
+                set { point.ptype = value; }
+            }
+
             public double distance_from_prev = 0;
             public TimeSpan time_from_prev;
             public double distance_to_next = 0;

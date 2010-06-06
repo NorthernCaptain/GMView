@@ -124,8 +124,6 @@ namespace GMView
 
             mapo.SetVisibleSize(drawPane.Size);
             mapo.CenterMapLonLat(opt.lon, opt.lat);
-            lonSTb.Text = opt.lon.ToString();
-            latSTb.Text = opt.lat.ToString();
             mapTypeSCombo.SelectedIndex = (int)opt.mapType;
             windRoseMI.Checked = opt.show_wind_rose;
 
@@ -580,7 +578,7 @@ namespace GMView
             repaintMap();
         }
 
-        private void zoomIn()
+        internal void zoomIn()
         {
             if (opt.cur_zoom_lvl == opt.max_zoom_lvl)
                 return;
@@ -600,7 +598,7 @@ namespace GMView
             repaintMap();
         }
 
-        private void zoomOut()
+        internal void zoomOut()
         {
             if (opt.cur_zoom_lvl == 1)
                 return;
@@ -639,18 +637,23 @@ namespace GMView
             opt.Save();
         }
 
-        private void lonSTb_TextChanged(object sender, EventArgs e)
-        {
-            Program.Log("LonTb Text is: " + lonSTb.Text);
-        }
-
+        private Forms.SetLonLatForm lonlatForm = null;
         private void setLLBut_Click(object sender, EventArgs e)
         {
+            if (lonlatForm == null)
+            {
+                lonlatForm = new Forms.SetLonLatForm();
+                lonlatForm.Owner = this;
+            }
+
             try
             {
+                if (lonlatForm.ShowDialog() != DialogResult.OK)
+                    return;
+
                 double lon, lat;
-                lon = ncUtils.Glob.parseLonLat(lonSTb.Text);
-                lat = ncUtils.Glob.parseLonLat(latSTb.Text);
+                lon = lonlatForm.longitude;
+                lat = lonlatForm.latitude;
                 opt.lon = lon;
                 opt.lat = lat;
                 opt.Updated();
@@ -854,6 +857,8 @@ namespace GMView
                 gpsdash.mode = DashMode.Normal;
                 trackdash.mode = DashMode.Normal;
                 zoomdash.mode = DashMode.Wrapped;
+                gpsTrackTBut.Checked = true;
+                gpsFollowMapTBut.Checked = true;
             }
             else
             {
