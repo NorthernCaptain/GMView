@@ -12,10 +12,13 @@ namespace GMView.UIHelper
     public class ManualTrackMode: MouseBaseProc
     {
         private GPSTrack manual_track;
+        private Color origColor = Color.DarkRed;
 
         private ContextMenuStrip contextMenu;
 
         private List<LinkedListNode<ncGeo.NMEA_LL>> selected = new List<LinkedListNode<ncGeo.NMEA_LL>>();
+
+        private ToolStripLabel pointSelectedLabel = new ToolStripLabel();
 
         /// <summary>
         /// Current stage of dragging. NoDrag means that drag is not started yet
@@ -40,16 +43,20 @@ namespace GMView.UIHelper
             set 
             {
                 if (manual_track != null)
-                {
-                    GPSTrackFactory.singleton.delTrack(manual_track);
-                    mainform.mapo.delSub(manual_track);
-                }
+                    manual_track.trackColor = origColor;
 
                 manual_track = value;
                 if (manual_track == null)
+                {
                     initTrack();
-                GPSTrackFactory.singleton.addTrack(manual_track);
-                mainform.mapo.addSub(manual_track);
+                    GPSTrackFactory.singleton.addTrack(manual_track);
+                    mainform.mapo.addSub(manual_track);
+                }
+                else
+                {
+                    origColor = manual_track.trackColor;
+                    manual_track.trackColor = Color.Red;
+                }
             }
         }
 
@@ -58,32 +65,42 @@ namespace GMView.UIHelper
             manual_track = new GPSTrack(mainform.mapo);
             manual_track.trackMode = GPSTrack.TrackMode.ViewSaved;
             manual_track.need_arrows = false;
-            manual_track.track_name = "Manual track";
+            manual_track.track_name = GPSTrackFactory.singleton.genUniqueName("Manual track");
         }
 
         public ManualTrackMode(GMViewForm form, UserControl dPane)
         {
             mainform = form;
             drawPane = dPane;
+
             areaselection = Program.opt.newUserSelectionArea(mainform.mapo);
             areaselection.onAreaSelection += areaselection_onAreaSelection;
 
             contextMenu = new ContextMenuStrip();
             contextMenu.Closed += new ToolStripDropDownClosedEventHandler(contextMenu_Closed);
             contextMenu.Opening += new System.ComponentModel.CancelEventHandler(contextMenu_Opening);
-        }
 
-        void contextMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e)
-        {           
-            contextMenu.Items.Clear();
-            contextMenu.Items.Add(new ToolStripLabel(selected.Count.ToString() + " points selected"));
+            contextMenu.Items.Add(pointSelectedLabel);
             contextMenu.Items.Add("-");
             contextMenu.Items.Add(new ToolStripMenuItem("Delete points", null, deleteSelectedPoints));
-            contextMenu.Items.Add("Extract into new track");
+            contextMenu.Items.Add(new ToolStripMenuItem("Extract into new track", null, extractPointsIntoNewTrack));
             contextMenu.Items.Add(new ToolStripMenuItem("Add point in between", null, addPointsInBetween));
             contextMenu.Items.Add("-");
             contextMenu.Items.Add(new ToolStripMenuItem("Reset selection", null, resetSelection));
             contextMenu.Items.Add(new ToolStripMenuItem("Continue selection", null, continueSelection));
+
+        }
+
+        void singleton_onCurrentTrackChanged(GPSTrack gtrack)
+        {
+            if (gtrack != null && gtrack != GPSTrackFactory.singleton.recordingTrack)
+                manualTrack = gtrack;
+            GML.repaint();
+        }
+
+        void contextMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            pointSelectedLabel.Text = selected.Count.ToString() + " points selected";
             e.Cancel = false;
         }
 
@@ -91,6 +108,8 @@ namespace GMView.UIHelper
         {
             areaselection.reset();
         }
+
+        #region ==== Selection area processing methods ====
 
         /// <summary>
         /// Called after we finished selecting the area and need to process this area
@@ -151,6 +170,61 @@ namespace GMView.UIHelper
             }
         }
 
+        private void resetSelection(object sender, EventArgs args)
+        {
+            selectionReset();
+            areaselection.reset();
+        }
+
+        private void continueSelection(object sender, EventArgs args)
+        {
+            markSelection();
+            GML.repaint();
+        }
+
+        /// <summary>
+        /// Starts the selection of area on the map
+        /// </summary>
+        /// <param name="xy"></param>
+        private void startSelection(Point xy)
+        {
+            Point lastxy = GML.translateAbsToScene(mouse_press_p);
+            areaselection.reset();
+            areaselection.setStartXY(lastxy);
+            areaselection.setDeltaXY(xy);
+            GML.repaint();
+            dragEnabled = DragStage.NewAreaSelection;
+            //           if (controlPressed == false && altPressed == false)
+            //                selectionReset();
+        }
+
+        /// <summary>
+        /// Clear the selection list
+        /// </summary>
+        private void selectionReset()
+        {
+            foreach (LinkedListNode<ncGeo.NMEA_LL> pt in selected)
+            {
+                if (pt.Value.ptype == ncGeo.NMEA_LL.PointType.MARKWP)
+                    pt.Value.ptype = pt.Value.prevPtype;
+            }
+            selected.Clear();
+            GML.repaint();
+        }
+
+        /// <summary>
+        /// Called when we finished selecting the area
+        /// </summary>
+        /// <param name="xy"></param>
+        private void finishAreaSelection(Point xy)
+        {
+            areaselection.setEndXY(xy);
+            GML.repaint();
+        }
+
+        #endregion
+
+        #region ==== Track selected points operations ====
         /// <summary>
         /// Delete selected points from the track
         /// </summary>
@@ -164,16 +238,43 @@ namespace GMView.UIHelper
             GML.repaint();
         }
 
-        private void resetSelection(object sender, EventArgs args)
+        /// <summary>
+        /// Extracts selected points into new track that is added on the fly
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private void extractPointsIntoNewTrack(object sender, EventArgs args)
         {
-            selectionReset();
-            areaselection.reset();
-        }
+            if (selected.Count == 0)
+                return;
 
-        private void continueSelection(object sender, EventArgs args)
-        {
-            markSelection();
-            GML.repaint();
+            string secondName = GPSTrackFactory.singleton.genUniqueName(manual_track.track_name);
+
+            GPSTrack newTrack = new GPSTrack(mainform.mapo);
+            newTrack.track_name = secondName;
+            newTrack.trackMode = GPSTrack.TrackMode.ViewSaved;
+            newTrack.need_arrows = false;
+
+            foreach (LinkedListNode<ncGeo.NMEA_LL> pointNode in selected)
+            {
+                pointNode.List.Remove(pointNode);
+                if (pointNode.Value.ptype == ncGeo.NMEA_LL.PointType.MARKWP)
+                    pointNode.Value.ptype = pointNode.Value.prevPtype;
+                newTrack.addManualPoint(pointNode.Value);
+            }
+
+
+            manual_track.calculateParameters();
+            manual_track.updateVisual();
+            newTrack.calculateParameters();
+            newTrack.initGLData();
+            newTrack.updateVisual();
+            newTrack.trackColor = Color.DarkRed;
+
+            GPSTrackFactory.singleton.addTrack(newTrack);
+            mainform.mapo.addSub(newTrack);
+            newTrack.show();
+            selectionReset();
         }
 
         /// <summary>
@@ -191,7 +292,7 @@ namespace GMView.UIHelper
                 if (pointNode.Next != null &&
                     selected.Contains(pointNode.Next))
                 {
-                    double lon = (pointNode.Value.lon + pointNode.Next.Value.lon)/2.0;
+                    double lon = (pointNode.Value.lon + pointNode.Next.Value.lon) / 2.0;
                     double lat = (pointNode.Value.lat + pointNode.Next.Value.lat) / 2.0;
                     ncGeo.NMEA_LL nmea_ll = new NMEA_RMC(lon, lat, ncGeo.NMEA_LL.PointType.MWP);
                     pointNode.List.AddAfter(pointNode, nmea_ll);
@@ -207,6 +308,8 @@ namespace GMView.UIHelper
             GML.repaint();
         }
 
+#endregion
+
         public override void initGL()
         {
             if (manual_track != null)
@@ -219,6 +322,14 @@ namespace GMView.UIHelper
             mainform.mapo.addSub(areaselection);
             areaselection.reset();
             areaselection.show();
+
+            GPSTrackFactory.singleton.onCurrentTrackChanged += singleton_onCurrentTrackChanged;
+
+            if (GPSTrackFactory.singleton.currentTrack != null &&
+                GPSTrackFactory.singleton.currentTrack != GPSTrackFactory.singleton.recordingTrack)
+                manualTrack = GPSTrackFactory.singleton.currentTrack;
+            else
+                manualTrack = manual_track;
         }
 
         public override void modeLeave()
@@ -226,6 +337,9 @@ namespace GMView.UIHelper
             base.modeLeave();
             mainform.mapo.delSub(areaselection);
             selectionReset();
+            GPSTrackFactory.singleton.onCurrentTrackChanged -= singleton_onCurrentTrackChanged;
+            if (manual_track != null)
+                manual_track.trackColor = origColor;
         }
 
         /// <summary>
@@ -353,46 +467,6 @@ namespace GMView.UIHelper
             ncGeo.NMEA_LL nmea_ll = new NMEA_RMC(lon, lat, ncGeo.NMEA_LL.PointType.ENDTP);
             manual_track.addManualPoint(nmea_ll);
             manual_track.show();
-        }
-
-        /// <summary>
-        /// Starts the selection of area on the map
-        /// </summary>
-        /// <param name="xy"></param>
-        private void startSelection(Point xy)
-        {
-            Point lastxy = GML.translateAbsToScene(mouse_press_p);
-            areaselection.reset();
-            areaselection.setStartXY(lastxy);
-            areaselection.setDeltaXY(xy);
-            GML.repaint();
-            dragEnabled = DragStage.NewAreaSelection;
- //           if (controlPressed == false && altPressed == false)
-//                selectionReset();
-        }
-
-        /// <summary>
-        /// Clear the selection list
-        /// </summary>
-        private void selectionReset()
-        {
-            foreach (LinkedListNode<ncGeo.NMEA_LL> pt in selected)
-            {
-                if (pt.Value.ptype == ncGeo.NMEA_LL.PointType.MARKWP)
-                    pt.Value.ptype = pt.Value.prevPtype;
-            }
-            selected.Clear();
-            GML.repaint();
-        }
-
-        /// <summary>
-        /// Called when we finished selecting the area
-        /// </summary>
-        /// <param name="xy"></param>
-        private void finishAreaSelection(Point xy)
-        {
-            areaselection.setEndXY(xy);
-            GML.repaint();
         }
 
     }

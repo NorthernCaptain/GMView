@@ -105,6 +105,39 @@ namespace GMView
         }
 
         /// <summary>
+        /// Return new name that is based on the given name and is unique among opened tracks
+        /// </summary>
+        /// <param name="basedOn"></param>
+        /// <returns></returns>
+        public string genUniqueName(string basedOn)
+        {
+            if (getTrackByName(basedOn) == null)
+                return basedOn;
+
+            for (int i = 1; ; i++)
+            {
+                string gename = basedOn + "-" + i.ToString();
+                if (getTrackByName(gename) == null)
+                    return gename;
+            }
+        }
+
+        /// <summary>
+        /// Search and return the track with the given name. Searches among opened tracks
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public GPSTrack getTrackByName(string name)
+        {
+            foreach (GPSTrack current in tracks)
+            {
+                if (current.track_name.Equals(name))
+                    return current;
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Adds new tracks to the factory and creates all neseccary objects
         /// </summary>
         /// <param name="gtrack"></param>
@@ -113,14 +146,13 @@ namespace GMView
             GPSTrackInfoForm nfo = new GPSTrackInfoForm(gtrack);
             tracks.Add(gtrack);
             infos.Add(gtrack, nfo);
+            if (onTrackListChanged != null)
+                onTrackListChanged(this);
 
             nfo.onRecord += onRecord;
             nfo.onRemove += onRemove;
 
             currentTrack = gtrack;
-
-            if (onTrackListChanged != null)
-                onTrackListChanged(this);
         }
 
         /// <summary>

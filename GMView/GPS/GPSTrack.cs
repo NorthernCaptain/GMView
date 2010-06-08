@@ -600,7 +600,8 @@ namespace GMView
                     if (nm.speed > travel_max_speed)
                         travel_max_speed = nm.speed;
 
-                    if ((nm.utc_time - first_nm.utc_time).TotalMinutes >= stopMinutes)
+                    if ((nm.utc_time - first_nm.utc_time).TotalMinutes >= stopMinutes 
+                        && nm.ptype != NMEA_LL.PointType.MWP)
                     {
                         nm.ptype = NMEA_LL.PointType.SWP;
                     }
@@ -618,7 +619,10 @@ namespace GMView
             reducedAddLast(trackData.Last);
             travel_avg_speed = distance / trav_time.TotalHours;
             if (mode == TrackMode.ViewSaved && trackData.Count > 1)
+            {
+                lastPos.ptype = NMEA_LL.PointType.ENDTP;
                 way.markWay(lastPos, distance_km, NMEA_LL.PointType.ENDTP);
+            }
             textInfo.fill_all_info(this);
         }
 
