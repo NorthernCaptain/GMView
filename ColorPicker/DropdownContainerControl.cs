@@ -113,12 +113,14 @@ namespace ColorPicker
 		{
 			//base.OnPaint(e);
 			Rectangle r = ClientRectangle;
-			ComboBoxRenderer.DrawTextBox(e.Graphics, r, System.Windows.Forms.VisualStyles.ComboBoxState.Normal);
 			r = ButtonRectangle;
+			/*
+			ComboBoxRenderer.DrawTextBox(e.Graphics, r, System.Windows.Forms.VisualStyles.ComboBoxState.Normal);
 			if (m_mouseIn)
 				ComboBoxRenderer.DrawDropDownButton(e.Graphics, r, System.Windows.Forms.VisualStyles.ComboBoxState.Hot);
 			else
 				ComboBoxRenderer.DrawDropDownButton(e.Graphics, r, System.Windows.Forms.VisualStyles.ComboBoxState.Normal);
+		    */
 			r = ItemRectangle;
 			r.Inflate(-1,-1);
 			DrawItem(e.Graphics, ItemRectangle);
