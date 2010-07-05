@@ -445,12 +445,14 @@
       <DependentUpon>IntroForm.cs</DependentUpon>
     </Compile>
     <Compile Include="TrackLoader\GPXLoader.cs" />
+    <Compile Include="TrackLoader\IExporter.cs" />
     <Compile Include="TrackLoader\IFormatLoader.cs" />
     <Compile Include="TrackLoader\IPOILoader.cs" />
     <Compile Include="TrackLoader\ITrackLoader.cs" />
     <Compile Include="TrackLoader\KMLLoader.cs" />
     <Compile Include="TrackLoader\NMEALoader.cs" />
     <Compile Include="TrackLoader\OldBmarkLoader.cs" />
+    <Compile Include="TrackLoader\OruxMapExporter.cs" />
     <Compile Include="TrackLoader\OziMapExporter.cs" />
     <Compile Include="TrackLoader\OZIPltLoader.cs" />
     <Compile Include="TrackLoader\OZIWptLoader.cs" />

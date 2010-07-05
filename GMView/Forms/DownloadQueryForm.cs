@@ -22,6 +22,7 @@ namespace GMView
             loadqueue = new ImgCollector.LoadTask(mapo);
             InitializeComponent();
             nearbyNT.Value = (mapo.tilePosNXNY.Width + 3) / 2;
+            exportTypeCB.SelectedIndex = 0;
         }
 
         private void cancelBut_Click(object sender, EventArgs e)
@@ -277,11 +278,22 @@ namespace GMView
                 {
                     loadqueue.type = ImgCollector.LoadTask.Type.imageMerge;
                     loadqueue.copyTo = saveFileDialog.FileName;
-                    loadqueue.oziexp = new TrackLoader.OziMapExporter(loadqueue.copyTo,
-                                                                      (double)fromLonNT.Value,
-                                                                      (double)fromLatNT.Value,
-                                                                      (double)toLonNT.Value,
-                                                                      (double)toLatNT.Value);
+                    if (exportTypeCB.SelectedIndex == 0)
+                    {
+                        loadqueue.exporter = new TrackLoader.OziMapExporter(loadqueue.copyTo,
+                                                                          (double)fromLonNT.Value,
+                                                                          (double)fromLatNT.Value,
+                                                                          (double)toLonNT.Value,
+                                                                          (double)toLatNT.Value);
+                    }
+                    else
+                    {
+                        loadqueue.exporter = new TrackLoader.OruxMapExporter(loadqueue.copyTo,
+                                                                            (double)fromLonNT.Value,
+                                                                            (double)fromLatNT.Value,
+                                                                            (double)toLonNT.Value,
+                                                                            (double)toLatNT.Value);
+                    }
                     mapo.schedDownloadTask(loadqueue);
                     loadqueue = null;
                     this.Dispose();

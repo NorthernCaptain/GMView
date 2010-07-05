@@ -26,7 +26,7 @@ namespace GMView
             public MapObject mapo;
             public Type type = Type.loadTask;
             public string copyTo = null;
-            public TrackLoader.OziMapExporter oziexp = null;
+            public TrackLoader.IExporter exporter = null;
 
             public LoadTask(MapObject imapo)
             {
@@ -195,6 +195,9 @@ namespace GMView
                 if (onSchedStartLoad != null)
                     onSchedStartLoad(task.tiles.Count);
 
+                if (task.exporter != null)
+                    task.exporter.startWork();
+                    
                 while (task.tiles.Count != 0)
                 {
                     ImgTile tile = task.tiles.Dequeue();
@@ -209,7 +212,7 @@ namespace GMView
                             break;
                         case LoadTask.Type.imageMerge:
                             loadTile(tile, task);
-                            task.oziexp.processOneTile(tile);
+                            task.exporter.processOneTile(tile);
                             break;
                         default:
                             break;
@@ -219,8 +222,8 @@ namespace GMView
                         onSchedLoadProgress(tile, (totals - task.tiles.Count) * 100.0 / totals);
                 }
 
-                if(task.oziexp != null)
-                    task.oziexp.writeImage();
+                if(task.exporter != null)
+                    task.exporter.finalizeWork();
 
                 if (onSchedFinishLoad != null)
                     onSchedFinishLoad();

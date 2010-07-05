@@ -64,6 +64,7 @@
             this.modeLbl = new System.Windows.Forms.Label();
             this.createOziBut = new System.Windows.Forms.Button();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.exportTypeCB = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -549,9 +550,9 @@
             this.createOziBut.Location = new System.Drawing.Point(15, 462);
             this.createOziBut.Margin = new System.Windows.Forms.Padding(4);
             this.createOziBut.Name = "createOziBut";
-            this.createOziBut.Size = new System.Drawing.Size(180, 34);
+            this.createOziBut.Size = new System.Drawing.Size(105, 34);
             this.createOziBut.TabIndex = 5;
-            this.createOziBut.Text = "Create Ozi Image";
+            this.createOziBut.Text = "Export to:";
             this.createOziBut.UseVisualStyleBackColor = true;
             this.createOziBut.Click += new System.EventHandler(this.oziImageBut_Click);
             // 
@@ -561,11 +562,26 @@
             this.saveFileDialog.FileName = "ozimap.png";
             this.saveFileDialog.Title = "Create OziExplorer Image map";
             // 
+            // exportTypeCB
+            // 
+            this.exportTypeCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.exportTypeCB.DropDownWidth = 130;
+            this.exportTypeCB.FormattingEnabled = true;
+            this.exportTypeCB.ItemHeight = 16;
+            this.exportTypeCB.Items.AddRange(new object[] {
+            "Ozi Explorer map",
+            "Orux maps (Android)"});
+            this.exportTypeCB.Location = new System.Drawing.Point(127, 468);
+            this.exportTypeCB.Name = "exportTypeCB";
+            this.exportTypeCB.Size = new System.Drawing.Size(68, 24);
+            this.exportTypeCB.TabIndex = 3;
+            // 
             // DownloadQueryForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(360, 551);
+            this.Controls.Add(this.exportTypeCB);
             this.Controls.Add(this.modeLbl);
             this.Controls.Add(this.forceDownloadCB);
             this.Controls.Add(this.createOziBut);
@@ -638,5 +654,6 @@
         private System.Windows.Forms.CheckBox needOSMRendCB;
         private System.Windows.Forms.Button createOziBut;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
+        private System.Windows.Forms.ComboBox exportTypeCB;
     }
 }

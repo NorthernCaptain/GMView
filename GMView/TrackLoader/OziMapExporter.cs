@@ -8,10 +8,10 @@ using ncGeo;
 
 namespace GMView.TrackLoader
 {
-    public class OziMapExporter: IDisposable
+    public class OziMapExporter: IExporter
     {
         private double lon1, lat1, lon2, lat2;
-        string  filepath;
+        private string  filepath;
 
         private Bitmap image = null;
         private ImgTile lastTile = null;
@@ -37,7 +37,7 @@ namespace GMView.TrackLoader
         {
             if (lastTile == null || lastTile.zoom != tile.zoom)
             {
-                writeImage();
+                finalizeWork();
                 createImage(tile);
             }
 
@@ -95,7 +95,7 @@ namespace GMView.TrackLoader
             }
         }
 
-        public void writeImage()
+        public void finalizeWork()
         {
             if (image == null)
                 return;
@@ -256,6 +256,15 @@ namespace GMView.TrackLoader
                 image.Dispose();
                 image = null;
             }
+        }
+
+        #endregion
+
+        #region IExporter Members
+
+        public void startWork()
+        {
+            // nothing to do here for Ozi
         }
 
         #endregion
