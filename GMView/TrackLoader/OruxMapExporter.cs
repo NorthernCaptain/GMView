@@ -4,6 +4,7 @@ using System.Text;
 using System.Drawing;
 using System.IO;
 using ncGeo;
+using System.Xml;
 
 namespace GMView.TrackLoader
 {
@@ -17,6 +18,10 @@ namespace GMView.TrackLoader
         private string  filename;
         private string  currentpathname;
         private string  currentname;
+
+        private int maxLvlX;
+        private int maxLvlY;
+        private int minZoom;
 
         private class OruxImage: IDisposable
         {
@@ -56,7 +61,8 @@ namespace GMView.TrackLoader
         private ImgTile lastTile = null;
 
         private int startx, starty;
-        private int len, hei;
+
+        private BaseGeo geo;
 
         public OruxMapExporter(string fname,
                                 double ilon1,
@@ -80,6 +86,7 @@ namespace GMView.TrackLoader
         public void startWork()
         {
             images.Clear();
+            minZoom = 100;
             try
             {
                 Directory.CreateDirectory(filepath);
@@ -111,6 +118,14 @@ namespace GMView.TrackLoader
             if (dx < 0 || dy < 0 || img == null)
                 return;
 
+            if (maxLvlX < oruxX)
+                maxLvlX = oruxX;
+            if (maxLvlY < oruxY)
+                maxLvlY = oruxY;
+
+            if (minZoom > tile.zoom)
+                minZoom = tile.zoom;
+
             lastTile = tile;
 
             tile.loadFromDisk(false);
@@ -135,27 +150,26 @@ namespace GMView.TrackLoader
                 img.Value.Dispose();
             }
             images.Clear();
+
+            writeLayerFile();
         }
 
         public void finalizeWork()
         {
             finalizeLayer();
+            writeMainFile();
         }
 
 
         private void initNewLayer(ImgTile tile)
         {
-            BaseGeo geo = Program.opt.getGeoSystem(tile.map_type);
+            geo = Program.opt.getGeoSystem(tile.map_type);
             geo.zoomLevel = tile.zoom;
 
-            Point xy1;
-            geo.getNXNYByLonLat(lon1, lat1, tile.zoom, out xy1);
+            startx = tile.x;
+            starty = tile.y;
 
-            Point xy2;
-            geo.getNXNYByLonLat(lon2, lat2, tile.zoom, out xy2);
-
-            startx = xy1.X;
-            starty = xy1.Y;
+            maxLvlX = maxLvlY = 0;
 
             currentname = filename + " " + tile.zoom.ToString("00");
             currentpathname = Path.Combine(filepath, currentname);
@@ -207,6 +221,154 @@ namespace GMView.TrackLoader
             int key = img.imgPosY << 10 | img.imgPosX;
             images.Remove(key);
             img.Dispose();
+        }
+
+
+        private void writeMainFile()
+        {
+            XmlTextWriter writer = null;
+
+            if (currentname == null)
+                return;
+
+            string fname = Path.Combine(filepath, filename + ".otrk2.xml");
+            try
+            {
+                writer = new XmlTextWriter(fname, Encoding.UTF8);
+                writer.Formatting = Formatting.Indented;
+                writer.WriteStartDocument();
+                writer.WriteStartElement("OruxTracker");
+                writer.WriteAttributeString("versionCode", "2.1");
+                writer.WriteAttributeString("xmlns:orux", @"http://oruxtracker.com/app/res/calibration");
+
+
+                {
+                    writer.WriteStartElement("MapCalibration");
+                    writer.WriteAttributeString("layers", "true");
+                    writer.WriteAttributeString("layerLevel", "0");
+                    writer.WriteStartElement("MapName");
+                    writer.WriteCData(filename);
+                    writer.WriteEndElement();
+                    writer.WriteEndElement();
+                }
+                writer.WriteEndElement();
+                writer.WriteEndDocument();
+                writer.Flush();
+                writer.Close();
+            }
+            catch (System.Exception ex)
+            {
+                Program.Err("Could not create main OruxMaps xml file: " + fname + "\nError:" + ex);
+                if (writer != null)
+                    writer.Close();
+            }
+        }
+
+        private void writeLayerFile()
+        {
+            XmlTextWriter writer = null;
+
+            if (currentname == null)
+                return;
+
+            string fname = Path.Combine(currentpathname, currentname + ".otrk2.xml" );
+            try
+            {
+                writer = new XmlTextWriter(fname, Encoding.UTF8);
+                writer.Formatting = Formatting.Indented;
+                writer.WriteStartDocument();
+                writer.WriteStartElement("OruxTracker");
+                writer.WriteAttributeString("versionCode", "2.1");
+                writer.WriteAttributeString("xmlns:orux", @"http://oruxtracker.com/app/res/calibration");
+
+
+                {
+                    writer.WriteStartElement("MapCalibration");
+                    writer.WriteAttributeString("layers", "false");
+                    writer.WriteAttributeString("layerLevel", geo.zoomLevel.ToString());
+                    writer.WriteStartElement("MapName");
+                    writer.WriteCData(currentname);
+                    writer.WriteEndElement();
+
+                    {
+                        writer.WriteStartElement("MapChunks");
+                        writer.WriteAttributeString("xMax", (maxLvlX + 1).ToString());
+                        writer.WriteAttributeString("yMax", (maxLvlY + 1).ToString());
+                        writer.WriteAttributeString("datum", "WGS84");
+                        writer.WriteAttributeString("projection", "Mercator");
+                        writer.WriteAttributeString("img_height", "512");
+                        writer.WriteAttributeString("img_width", "512");
+                        writer.WriteAttributeString("file_name", currentname);
+                        writer.WriteEndElement();
+
+                        writer.WriteStartElement("MapDimensions");
+                        writer.WriteAttributeString("height", ((maxLvlY + 1) * 512 - 1).ToString());
+                        writer.WriteAttributeString("width", ((maxLvlX + 1) * 512 - 1).ToString());
+                        writer.WriteEndElement();
+
+                        geo.getLonLatByXY(new Point(startx << 8, starty << 8), -1, out lon1, out lat1);
+                        {
+                            int realx2, realy2;
+
+                            realx2 = startx + (maxLvlX + 1) * 2;
+                            realx2 = (realx2 << 8) - 1;
+                            realy2 = starty + (maxLvlY + 1) * 2;
+                            realy2 = (realy2 << 8) - 1;
+
+                            geo.getLonLatByXY(new Point(realx2, realy2), -1, out lon2, out lat2);
+                        }
+
+                        writer.WriteStartElement("MapBounds");
+                        writer.WriteAttributeString("minLon", lon1.ToString("F6", ncUtils.Glob.numformat));
+                        writer.WriteAttributeString("maxLon", lon2.ToString("F6", ncUtils.Glob.numformat));
+                        writer.WriteAttributeString("maxLat", lat1.ToString("F6", ncUtils.Glob.numformat));
+                        writer.WriteAttributeString("minLat", lat2.ToString("F6", ncUtils.Glob.numformat));
+                        writer.WriteEndElement();
+
+                        writer.WriteStartElement("CalibrationPoints");
+                        {
+                            writer.WriteStartElement("CalibrationPoint");
+                            writer.WriteAttributeString("corner", "TL");
+                            writer.WriteAttributeString("lon", lon1.ToString("F6", ncUtils.Glob.numformat));
+                            writer.WriteAttributeString("lat", lat1.ToString("F6", ncUtils.Glob.numformat));
+                            writer.WriteEndElement();
+                        }
+                        {
+                            writer.WriteStartElement("CalibrationPoint");
+                            writer.WriteAttributeString("corner", "TR");
+                            writer.WriteAttributeString("lon", lon2.ToString("F6", ncUtils.Glob.numformat));
+                            writer.WriteAttributeString("lat", lat1.ToString("F6", ncUtils.Glob.numformat));
+                            writer.WriteEndElement();
+                        }
+                        {
+                            writer.WriteStartElement("CalibrationPoint");
+                            writer.WriteAttributeString("corner", "BL");
+                            writer.WriteAttributeString("lon", lon1.ToString("F6", ncUtils.Glob.numformat));
+                            writer.WriteAttributeString("lat", lat2.ToString("F6", ncUtils.Glob.numformat));
+                            writer.WriteEndElement();
+                        }
+                        {
+                            writer.WriteStartElement("CalibrationPoint");
+                            writer.WriteAttributeString("corner", "BR");
+                            writer.WriteAttributeString("lon", lon2.ToString("F6", ncUtils.Glob.numformat));
+                            writer.WriteAttributeString("lat", lat2.ToString("F6", ncUtils.Glob.numformat));
+                            writer.WriteEndElement();
+                        }
+                        writer.WriteEndElement();
+                    }
+                    writer.WriteEndElement();
+                }
+                writer.WriteEndElement();
+                writer.WriteEndDocument();
+                writer.Flush();
+                writer.Close();
+            }
+            catch (System.Exception ex)
+            {
+            	Program.Err("Could not create OruxMaps xml file: " + fname + "\nError:" + ex);
+                if (writer != null)
+                    writer.Close();
+            }
         }
 
         #endregion
