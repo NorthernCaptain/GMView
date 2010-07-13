@@ -185,7 +185,14 @@ namespace GMView.TrackLoader
                     xnode = node.SelectSingleNode("./gpx:sym", nsm);
                     if (xnode != null)
                     {
-                        bmark.PtypeS = xnode.InnerText.Trim();
+                        string ptname = xnode.InnerText.Trim();
+                        Bookmarks.POIType poit = Bookmarks.POITypeFactory.singleton().typeByName(ptname);
+                        if (poit == null)
+                        {
+                            bmark.Ptype = createPTypeFromXML(node, ptname, nsm);
+                        }
+                        else
+                            bmark.Ptype = poit;
                     }
 
                     bmark.swapFields(fi);
@@ -210,6 +217,42 @@ namespace GMView.TrackLoader
             Program.Log("Loaded " + count + " POI's in seconds: " + dTime.TotalSeconds.ToString("F3"));
 
             return count;
+        }
+
+        private GMView.Bookmarks.POIType createPTypeFromXML(XmlNode node, string ptname, XmlNamespaceManager nsm)
+        {
+            XmlNode xnode = node.SelectSingleNode("./gpx:extensions/knw:symimg", nsm);
+            if (xnode == null)
+                return null;
+
+            Bookmarks.POIType ptype = new Bookmarks.POIType();
+
+            try
+            {
+                ptype.iconName = xnode.InnerText.Trim();
+                xnode = node.SelectSingleNode("./gpx:extensions/knw:symimgx", nsm);
+                if (xnode != null)
+                    ptype.iconDeltaX = int.Parse(xnode.InnerText);
+                xnode = node.SelectSingleNode("./gpx:extensions/knw:symimgy", nsm);
+                if (xnode != null)
+                    ptype.iconDeltaY = int.Parse(xnode.InnerText);
+
+                ptype.Name = ptname;
+
+                xnode = node.SelectSingleNode("./gpx:extensions/knw:symdesc", nsm);
+                if (xnode != null)
+                    ptype.Text = xnode.InnerText.Trim();
+
+                ptype.IsAutoShow = true;
+
+                Bookmarks.POITypeFactory.singleton().registerType(ptype);
+                Bookmarks.POITypeFactory.singleton().resortAll();
+            }
+            catch (System.Exception ex)
+            {
+                return null;
+            }
+            return ptype;
         }
 
         /// <summary>
@@ -314,6 +357,10 @@ namespace GMView.TrackLoader
                     {
                         writer.WriteStartElement("extensions");
                         writer.WriteElementString("knw:group", currentGroupName);
+                        writer.WriteElementString("knw:symimg", book.Ptype.iconName);
+                        writer.WriteElementString("knw:symimgx", book.Ptype.iconDeltaX.ToString());
+                        writer.WriteElementString("knw:symimgy", book.Ptype.iconDeltaY.ToString());
+                        writer.WriteElementString("knw:symdesc", book.Ptype.Text);
                         writer.WriteEndElement();
                     }
                     writer.WriteEndElement();

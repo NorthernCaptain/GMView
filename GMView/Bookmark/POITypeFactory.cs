@@ -55,7 +55,9 @@ namespace GMView.Bookmarks
         /// <returns></returns>
         public POIType typeByName(string tname)
         {
-            return nameTypes[tname];
+            POIType val;
+            nameTypes.TryGetValue(tname, out val);
+            return val;
         }
 
         /// <summary>
@@ -141,6 +143,18 @@ namespace GMView.Bookmarks
             {
                 allTypes.Add(pair.Value);
             }
+        }
+
+        /// <summary>
+        /// Reloads all types from DB
+        /// </summary>
+        public void reloadAll()
+        {
+            allTypes.Clear();
+            nameTypes.Clear();
+            idTypes.Clear();
+
+            loadList();
         }
     }
 }

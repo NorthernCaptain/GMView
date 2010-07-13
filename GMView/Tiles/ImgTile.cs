@@ -16,6 +16,7 @@ namespace GMView
     public class ImgTile
     {
         public static int access_id = 1;
+        private static int failedTries = 1;
 
         protected const long Ticks2sec = 10000000L;
         /// <summary>
@@ -233,9 +234,23 @@ namespace GMView
                 lock (this)
                 {
                     if (status != ImgStatus.NoFile)
-                        status = ImgStatus.ForceDownload;
+                    {
+                        if ((flags & failedTries) == failedTries)
+                        {
+                            failToLoadTicks = DateTime.Now.Ticks;
+                            status = ImgStatus.NoFile;
+                        }
+                        else
+                        {
+                            status = ImgStatus.ForceDownload;
+                            flags++;
+                        }
+                    }
                     else
+                    {
                         failToLoadTicks = DateTime.Now.Ticks;
+                        flags &= ~failedTries;
+                    }
                 }
 
                 return false;

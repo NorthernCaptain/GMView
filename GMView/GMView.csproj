@@ -480,6 +480,7 @@
     <None Include="Resources\trackmenu.png" />
     <None Include="Resources\MapLayers.png" />
     <None Include="Resources\geotag_16.png" />
+    <None Include="Resources\unknown.png" />
     <Content Include="Satellite.ico" />
     <None Include="Resources\helpKeys.htm" />
     <None Include="Resources\dot_small_auto.png" />

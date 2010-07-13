@@ -62,7 +62,12 @@ namespace GMView
 
             string path = Path.Combine(currentPath, nfo.iconName);
             if (!File.Exists(path))
-                return null;
+            {
+                ImageDot dot = new ImageDot(global::GMView.Properties.Resources.unknown, 15, 34);
+                dotMap.Add(nfo.iconName, dot);
+                return dot;
+            }
+
             try
             {
                 Bitmap bmp = new Bitmap(path);
@@ -73,6 +78,9 @@ namespace GMView
             catch (System.Exception ex)
             {
                 Program.Log("GetIcon error: " + ex.ToString());
+                ImageDot dot = new ImageDot(global::GMView.Properties.Resources.unknown, 15, 34);
+                dotMap.Add(nfo.iconName, dot);
+                return dot;
             }
             return null;
         }

@@ -224,8 +224,15 @@ namespace GMView
             };
             mapo.onStartDownloadTask += delegate(int total_pieces)
             {
-                this.Invoke(new onStartDownloadDelegate(this.InitProgress),
-                    new Object[] { total_pieces });
+                try
+                {
+	                this.Invoke(new onStartDownloadDelegate(this.InitProgress),
+	                                    new Object[] { total_pieces });
+                }
+                catch (System.Exception ex)
+                {
+                	
+                }
             };
             mapo.onProgressDownloadTask += delegate(ImgTile tile, double percent)
             {
