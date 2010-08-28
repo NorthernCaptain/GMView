@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 
+
 namespace XnGFL
 {
     public partial class ExifViewControl : UserControl
@@ -368,7 +369,7 @@ namespace XnGFL
                     img.exif.dateTimeOriginal = dtnew;
                 if (needGPS)
                 {
-                    img.exif.setGPS(lon, lat, 0);
+                    img.exif.setGPS(lon, lat, manual_alt);
                 }
 
                 addModified(img);
@@ -420,7 +421,7 @@ namespace XnGFL
         /// <summary>
         /// LOn, lat coordinates for manual tab
         /// </summary>
-        private double manual_lon, manual_lat;
+        private double manual_lon, manual_lat, manual_alt = 0.0;
 
         /// <summary>
         /// Sets lon, lat coordinates in manual tab for later assigning
@@ -431,10 +432,12 @@ namespace XnGFL
         {
             manual_lat = lat;
             manual_lon = lon;
+            manual_alt = 0;
             manualLatTBox.Text = lat.ToString("F6", ncUtils.Glob.numformat);
             manualLonTBox.Text = lon.ToString("F6", ncUtils.Glob.numformat);
 
             ncGeo.IGPSTrack track = trackListCB.SelectedItem as ncGeo.IGPSTrack;
+
             if (track != null)
             {
                 ncGeo.FindNearestPointByDistance ctx = new ncGeo.FindNearestPointByDistance(lon, lat);
@@ -442,6 +445,7 @@ namespace XnGFL
                 if (ctx.distance < 20.0 && ctx.resultPoint != null)
                 {
                     gpsDatePicker.Value = ctx.resultPoint.Value.utc_time.ToLocalTime();
+                    manual_alt = ctx.resultPoint.Value.height;
                 }
             }
         }

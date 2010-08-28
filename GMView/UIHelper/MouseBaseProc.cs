@@ -195,13 +195,13 @@ namespace GMView.UIHelper
 
         protected virtual bool onMouseWheelUp()
         {
-            mainform.zoomOut();
+            mainform.zoomIn();
             return false;
         }
 
         protected virtual bool onMouseWheelDown()
         {
-            mainform.zoomIn();
+            mainform.zoomOut();
             return false;
         }
 
