@@ -368,6 +368,15 @@ namespace GMView
                 catch (DirectoryNotFoundException)
                 {
                 }
+                catch (UnauthorizedAccessException)
+                {
+                    lock (this)
+                    {
+                        status = ImgStatus.NoFile;
+                        failToLoadTicks = DateTime.Now.Ticks;
+                    }
+                    return false;
+                }
 
             goohttp = goohttp.Replace("{X}", x_idx.ToString()).Replace("{Y}", y_idx.ToString()).Replace("{Z}", (zoom_lvl - 1).ToString());
             goohttp = goohttp.Replace("{Zi}", (Program.opt.max_zoom_lvl - zoom_lvl).ToString());
